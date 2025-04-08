@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<link rel="shortcut icon" href="#">    <!-- removes favicon.ico console error -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js">debugger;</script>
+<body>
+  <h1>Hello there! (from parent)</h1>
+
+  <form id='form' method="POST" action="/" autocomplete="off">
+     <input id='textField' type='text' name='name' placeholder='Enter your name' value="">
+     <br><br>
+     <input id='btn' type='submit'>
+  </form>
+
+
+  <br>
+  <div>========== iframe - no form - set value - iteration 1 ==========</div>
+  <iframe id="lev-iframe"></iframe>
+  <script>
+    var doc = $("#lev-iframe")[0].contentWindow.document;
+    var $body = $('body',doc);
+    $body.html('<input class="uniqueclass" id="uniquename" type="text" value="" />')
+  </script>
+      <script type="text/javascript">
+        $("#lev-iframe")[0].contentWindow.document.getElementById('uniquename').value = 'myvalue';
+  </script>
+
+  <br>
+  <div>===============  End example  ===============</div>
+
+
+
+</body>
+</html>
+  

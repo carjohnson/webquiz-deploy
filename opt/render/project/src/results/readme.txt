@@ -1,0 +1,1 @@
+This is a placeholder text file so that the directory tree is committed in git repository.

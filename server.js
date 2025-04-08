@@ -1,8 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-//const port = process.env.PORT || 3000;
-const port = process.env.PORT ;
+const port = process.env.PORT || 3000;
 const fs = require('fs');
 
 var bodyParser = require('body-parser');
@@ -48,6 +47,10 @@ app.post('/', (req, res) => {
 
 
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(port, (err) => {
+  if (err) {
+    console.log(`There was a problem with app.listen: ${err} `);
+  }
+  console.log(`Listening on port ${port}`)
+});
+

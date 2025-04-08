@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <link rel="shortcut icon" href="#">    <!-- removes favicon.ico console error -->
-<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js">debugger;</script> -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
 <body>
   <h1>Hello there! (from parent)</h1>
 
@@ -16,6 +16,7 @@
   <div>========== iframe - no form - set value - iteration 1 ==========</div>
   <iframe id="lev-iframe"></iframe>
   <script>
+
     var doc = $("#lev-iframe")[0].contentWindow.document;
     var $body = $('body',doc);
     $body.html('<input class="uniqueclass" id="uniquename" type="text" value="" />')

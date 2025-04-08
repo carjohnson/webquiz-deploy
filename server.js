@@ -36,8 +36,9 @@ app.post('/', (req, res) => {
   res.send("New <b>name</b> added : ...."  + req.body.name);
   
   // folder must exist - file will be created then appended to
-  fs.writeFileSync(path.join(__dirname, './results/output.txt'), req.body.name + '\n', { flag: 'a+' }, err => {
-    if (err) {
+  // fs.writeFileSync(path.join(__dirname, './results/output.txt'), req.body.name + '\n', { flag: 'a+' }, err => {
+  fs.writeFileSync('./results/output.txt', req.body.name + '\n',{ flag: 'a+' }, err => {
+      if (err) {
       console.log(err);
     } else {
       console.log('*** File written ***');

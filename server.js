@@ -35,9 +35,19 @@ app.post('/', (req, res) => {
   // to send a response back to the client
   res.send("New <b>name</b> added : ...."  + req.body.name);
   
+
+  function canWrite(path, callback) {
+    fs.access(path, fs.W_OK, function(err) {
+      callback(null, !err);
+    });
+  }
+
+  canWrite(path.join(__dirname, './results/output.txt'), function(err, isWritable) {
+    console.log("In POST, file: ", path.join(__dirname, './results/output.txt'), ",", " is writable: ", isWritable); // true or false
+  });
+
   // folder must exist - file will be created then appended to
-  // fs.writeFileSync(path.join(__dirname, './results/output.txt'), req.body.name + '\n', { flag: 'a+' }, err => {
-  fs.writeFileSync('./results/output.txt', req.body.name + '\n',{ flag: 'a+' }, err => {
+  fs.writeFileSync(path.join(__dirname, './results/output.txt'), req.body.name + '\n', { flag: 'a+' }, err => {
       if (err) {
       console.log(err);
     } else {

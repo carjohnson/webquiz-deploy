@@ -9,8 +9,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 
-debugger;
-console.log(__dirname);
 // set up routes - to browser - you can set up many routes
 
 app.get('/', (req, res) => {
@@ -33,7 +31,7 @@ app.post('/', (req, res) => {
   console.log('client address: ' + req.socket.address().address);
 
   // to send a response back to the client
-  res.send("New <b>name</b> added : ...."  + req.body.name);
+  res.send("New <b>name</b> added : "  + req.body.name);
   
 
   function canWrite(path, callback) {
@@ -43,7 +41,11 @@ app.post('/', (req, res) => {
   }
 
   canWrite(path.join(__dirname, './results/output.txt'), function(err, isWritable) {
-    console.log("In POST, file: ", path.join(__dirname, './results/output.txt'), ",", " is writable: ", isWritable); // true or false
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("In POST, file: ", path.join(__dirname, './results/output.txt'), ",", " is writable: ", isWritable); // true or false
+    }
   });
 
   // folder must exist - file will be created then appended to

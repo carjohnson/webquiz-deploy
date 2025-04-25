@@ -3,7 +3,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 const fs = require('fs');
 const readline = require('readline');
 
@@ -59,9 +59,10 @@ console.log(lsOptions);
 
 
 // endpoint to provide frontend with the API URL
+const apiUrl = process.env.API_URL || `http://localhost:${port}`;
 app.get('/config', (req, res) => {
   console.log('Received request for config'); // Debugging log
-  res.json({ apiUrl: `http://localhost:${port}` });
+  res.json({ apiUrl });
 });
 
 

@@ -28,37 +28,17 @@ app.use(express.static(path.join(__dirname, 'react-app/build')));
 // })
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-// // Get contents of results file - to confirm it is being updated when deployed
-// var lsOptions = [];
-// function addToOptions(sOption) {
-//   lsOptions.push(sOption);
-// };
-
-// // Creating a readable stream from file
-// // readline module reads line by line 
-// // but from a readable stream only.
-// const resultsFile = readline.createInterface({
-//     input: fs.createReadStream('./results/output.txt'),
-//     output: process.stdout,
-//     terminal: false
-// });
-
-// // Printing the content of file line by
-// //  line to console by listening on the
-// // line event which will triggered
-// // whenever a new line is read from
-// // the stream
-// resultsFile.on('line', (line) => {
-//     addToOptions(line);
-//     console.log(lsOptions);
-// });
-// console.log(lsOptions);
+var lsOptions = [];
+app.get('/options', (req, res) => {
+  console.log('Received request for list of options: ', lsOptions);
+  res.json({lsOpt: lsOptions});
+});
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
 // endpoint to provide frontend with the API URL
+// environment variable API_URL is declared in web service provider account setup
 const apiUrl = process.env.API_URL || `http://localhost:${port}`;
 app.get('/config', (req, res) => {
   console.log('Received request for config'); // Debugging log
@@ -77,9 +57,10 @@ app.post('/', (req, res) => {
   console.log(req.headers);
   console.log('client address: ' + req.socket.address().address);
 
-  // to send a response back to the client
-  res.json({message: "New option added : ", option: req.body.option, options: lsOptions});
-  // res.send("New option added: " + req.body.option);  // sending text
+    // to send a response back to the client
+    res.json({message: "New option added : ", option: req.body.option, lsOptions});
+    // res.send("New option added: " + req.body.option);  // sending text
+  
 
   function canWrite(path, callback) {
     fs.access(path, fs.W_OK, function(err) {
@@ -107,7 +88,7 @@ app.post('/', (req, res) => {
   //>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   // Get contents of results file - to confirm it is being updated when deployed
-  var lsOptions = [];
+  lsOptions = [];
   function addToOptions(sOption) {
     lsOptions.push(sOption);
   };
@@ -121,22 +102,17 @@ app.post('/', (req, res) => {
       terminal: false
   });
 
-  // Printing the content of file line by
-  //  line to console by listening on the
-  // line event which will triggered
-  // whenever a new line is read from
-  // the stream
+  // Printing the content of file m
   resultsFile.on('line', (line) => {
       addToOptions(line);
       console.log(lsOptions);
   });
   console.log(lsOptions);
-
+  
 
 
 
 })
-
 
 
 app.listen(port, (err) => {

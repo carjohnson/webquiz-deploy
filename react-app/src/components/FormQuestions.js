@@ -1,5 +1,12 @@
 import React, {Component} from "react";
+import RadioBtnComponent from './RadioBtnComponent';
+import CheckboxComponent from './CheckboxComponent';
+import DropDownComponent from './DropDownComponent';
 
+
+const RADIOOPTIONS = ["Recurrence", "No-recurrence"];
+const DROPDOWNOPTIONS = ["3Planes", "Axial", "Sagittal", "Coronal"]
+var CHKBOXOPTIONS = ["One", "Two", "Three"];
 
 
 class FormQuestions extends Component{
@@ -9,6 +16,7 @@ class FormQuestions extends Component{
         this.state = {
             data: null, // store async function result here
             option: '',
+            lsOptions: [],
             results: 'saved',
         };
 
@@ -31,7 +39,20 @@ class FormQuestions extends Component{
         }
       }
 
-    
+    async getListOptions(){
+        try{
+            const response = await fetch('/options');
+            console.log('>>> Response >>> : ', response)
+            const data = await response.json();
+            console.log('List of Options: ', data.lsOpt);
+
+            this.setState({lsOptions: data.lsOpt});
+        } catch (error) {
+            console.error('Error fetching list of options: ', error);
+        }
+    }
+
+
     // set up handleChange to be generic
     handleChange = event => {
         const target = event.target;
@@ -62,12 +83,19 @@ class FormQuestions extends Component{
             const result = await response.json();
             console.log('Server response:', result);
             this.setState({ option: ''});
+            this.getListOptions();
 
         } catch (error) {
             console.error('Error submitting:', error);
         }
     };        
     
+    handleUpdate = () => {
+        // TODO: update function to change the checkbox options
+        //       based on the items in the results file
+        CHKBOXOPTIONS = this.state.lsOptions;
+        // TODO: quiz needs to be re-rendered
+    };
 
 
     render(){
@@ -95,6 +123,20 @@ class FormQuestions extends Component{
                                 Add
                             </button>
                         </div>
+
+                        <br />
+                        <br />
+                        <div className="form-group">
+
+                            <CheckboxComponent arr={CHKBOXOPTIONS}/>
+                            <RadioBtnComponent arr={RADIOOPTIONS}/>
+                            <DropDownComponent arr={DROPDOWNOPTIONS}/>
+
+                            </div>
+                            <br />
+                            <button onclick="handleUpdate()" > Update </button>
+                            <br />
+
                         </form>
                     </div>
                 </div>

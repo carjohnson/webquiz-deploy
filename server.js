@@ -29,31 +29,31 @@ app.use(express.static(path.join(__dirname, 'react-app/build')));
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-// Get contents of results file - to confirm it is being updated when deployed
-var lsOptions = [];
-function addToOptions(sOption) {
-  lsOptions.push(sOption);
-};
+// // Get contents of results file - to confirm it is being updated when deployed
+// var lsOptions = [];
+// function addToOptions(sOption) {
+//   lsOptions.push(sOption);
+// };
 
-// Creating a readable stream from file
-// readline module reads line by line 
-// but from a readable stream only.
-const resultsFile = readline.createInterface({
-    input: fs.createReadStream('./results/output.txt'),
-    output: process.stdout,
-    terminal: false
-});
+// // Creating a readable stream from file
+// // readline module reads line by line 
+// // but from a readable stream only.
+// const resultsFile = readline.createInterface({
+//     input: fs.createReadStream('./results/output.txt'),
+//     output: process.stdout,
+//     terminal: false
+// });
 
-// Printing the content of file line by
-//  line to console by listening on the
-// line event which will triggered
-// whenever a new line is read from
-// the stream
-resultsFile.on('line', (line) => {
-    addToOptions(line);
-    console.log(lsOptions);
-});
-console.log(lsOptions);
+// // Printing the content of file line by
+// //  line to console by listening on the
+// // line event which will triggered
+// // whenever a new line is read from
+// // the stream
+// resultsFile.on('line', (line) => {
+//     addToOptions(line);
+//     console.log(lsOptions);
+// });
+// console.log(lsOptions);
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -102,9 +102,39 @@ app.post('/', (req, res) => {
     } else {
       console.log('*** File written ***');
     }
-
-
   })
+
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  // Get contents of results file - to confirm it is being updated when deployed
+  var lsOptions = [];
+  function addToOptions(sOption) {
+    lsOptions.push(sOption);
+  };
+
+  // Creating a readable stream from file
+  // readline module reads line by line 
+  // but from a readable stream only.
+  const resultsFile = readline.createInterface({
+      input: fs.createReadStream('./results/output.txt'),
+      output: process.stdout,
+      terminal: false
+  });
+
+  // Printing the content of file line by
+  //  line to console by listening on the
+  // line event which will triggered
+  // whenever a new line is read from
+  // the stream
+  resultsFile.on('line', (line) => {
+      addToOptions(line);
+      console.log(lsOptions);
+  });
+  console.log(lsOptions);
+
+
+
+
 })
 
 

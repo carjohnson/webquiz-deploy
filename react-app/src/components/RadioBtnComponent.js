@@ -12,12 +12,6 @@ class RadioBtnComponent extends Component{
         }
     }
 
-    // >>>>>>>>>>>>>>>> I thought I needed this but constructor is accepting props now
-    // componentDidMount() {
-    //     this.setState({
-    //         options: this.props.arr
-    //     })
-    // }
 
     handleRadioChange = (e) => this.setState({ checkedOptionValue: e.target.value });
 
@@ -37,7 +31,7 @@ class RadioBtnComponent extends Component{
     render() {
         return (
             <div className="Radio App">
-                <div>.</div>
+                <br/>
                 {this.createRadioBtns()}
                 {/* <div>
                     {this.state.options.map((option,i) => (

@@ -3,7 +3,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5500;
 const fs = require('fs');
 const readline = require('readline');
 
@@ -31,7 +31,9 @@ app.use(express.static(path.join(__dirname, 'react-app/build')));
 var lsOptions = [];
 app.get('/options', (req, res) => {
   console.log('Received request for list of options: ', lsOptions);
-  res.json({lsOpt: lsOptions});
+  // res.setHeader('Cache-Control', 'no-store'); // Disable caching
+  res.json({lsOptions});
+
 });
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>

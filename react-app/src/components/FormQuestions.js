@@ -4,9 +4,8 @@ import CheckboxComponent from './CheckboxComponent';
 import DropDownComponent from './DropDownComponent';
 
 
-const RADIOOPTIONS = ["Recurrence", "No-recurrence"];
-const DROPDOWNOPTIONS = ["3Planes", "Axial", "Sagittal", "Coronal"]
-var CHKBOXOPTIONS = ["One", "Two", "Three"];
+const RADIOOPTIONS = ["Radio 1", "Radio 2"];
+const DROPDOWNOPTIONS = ["Dropdown 1", "Dropdown 2", "Dropdown 3", "Dropdown 4"]
 
 
 class FormQuestions extends Component{
@@ -18,6 +17,7 @@ class FormQuestions extends Component{
             option: '',
             lsOptions: [],
             results: 'saved',
+            checkboxOptions: ["Opt 1", "Opt 2", "Opt 3"],
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -42,13 +42,12 @@ class FormQuestions extends Component{
     async getListOptions(){
         try{
             const response = await fetch('/options');
-            console.log('>>> Response >>> : ', response)
             const data = await response.json();
-            console.log('List of Options: ', data.lsOpt);
-
-            this.setState({lsOptions: data.lsOpt});
+            console.log('>>> Response >>> : ', response)
+            console.log('List of Options: ', data.lsOptions);
+            this.setState({lsOptions: data.lsOptions});
         } catch (error) {
-            console.error('Error fetching list of options: ', error);
+            console.error('Error fetching list of options: ', error.message || error);
         }
     }
 
@@ -90,11 +89,23 @@ class FormQuestions extends Component{
         }
     };        
     
-    handleUpdate = () => {
-        // TODO: update function to change the checkbox options
-        //       based on the items in the results file
-        CHKBOXOPTIONS = this.state.lsOptions;
-        // TODO: quiz needs to be re-rendered
+    handleUpdate = async () => {
+        try {
+            // TODO: update function to change the checkbox options
+            //       based on the items in the results file
+            await this.getListOptions();
+            // TODO: quiz needs to be re-rendered
+            // this.checkboxRef.updateCheckboxes(this.state.lsOptions);   // update state in CheckboxComponent
+
+            const CHKBOXOPTIONS = this.state.lsOptions;
+            this.setState({ checkboxOptions: CHKBOXOPTIONS});
+            console.log('In handleUpdate - new checkboxOptions:', this.state.checkboxOptions);
+
+        } catch (error) {
+            console.error('Error updating options: ', error);
+
+        }
+        
     };
 
 
@@ -114,7 +125,6 @@ class FormQuestions extends Component{
                         </div>
                         <div className="button-container">
                             <br />
-                            <br />
                             <button
                                 type="submit"
                                 className="btn btn-primary"
@@ -123,20 +133,28 @@ class FormQuestions extends Component{
                                 Add
                             </button>
                         </div>
-
+                        </form>
+                        <form>
                         <br />
+                        <br />
+                        <div>===============  Form - Components  ===============</div>
                         <br />
                         <div className="form-group">
 
-                            <CheckboxComponent arr={CHKBOXOPTIONS}/>
+                            <CheckboxComponent
+                                arr={this.state.checkboxOptions}
+                                // arr={this.state.lsOptions}
+                                //  ref={(ref) => (this.checkboxRef = ref)}  // Reference to child component
+                            />
                             <RadioBtnComponent arr={RADIOOPTIONS}/>
                             <DropDownComponent arr={DROPDOWNOPTIONS}/>
 
+                            <br />
+                            <br />
+                            <div>===============  TODO - update options  ===============</div>
+                            <br />
                             </div>
-                            <br />
-                            <button onclick="handleUpdate()" > Update </button>
-                            <br />
-
+                            <button onClick={this.handleUpdate} > Update </button>
                         </form>
                     </div>
                 </div>

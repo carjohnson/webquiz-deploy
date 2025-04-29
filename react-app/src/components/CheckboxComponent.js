@@ -18,6 +18,38 @@ class CheckboxComponent extends Component{
     }
 
 
+    // updateCheckboxes(newOptions) {
+    //     // Update the checkboxes state with new options
+    //     const updatedCheckboxes = newOptions.reduce(
+    //         (options, option) => ({
+    //             ...options,
+    //             [option]: false,
+    //         }),
+    //         {}
+    //     );
+
+    //     this.setState({ checkboxes: updatedCheckboxes });
+    // }
+
+    // Update state when props change
+    componentDidUpdate(prevProps) {
+        if (prevProps.arr !== this.props.arr) {
+            console.log('Previous props: ',prevProps.arr);
+            console.log('Current props : ', this.props.arr);
+            const updatedCheckboxes = this.props.arr.reduce(
+            (options, option) => ({
+                ...options,
+                [option]: false,
+            }),
+            {}
+        );
+
+        this.setState({ checkboxes: updatedCheckboxes });
+
+        }
+    }
+
+
     selectAllCheckboxes = isSelected => {
         Object.keys(this.state.checkboxes).forEach(checkbox => {
           // BONUS: Can you explain why we pass updater function to setState instead of an object?
@@ -80,7 +112,7 @@ class CheckboxComponent extends Component{
                         </div>
                     ))} */}
                     
-
+                    <br/>
                     <div className="form-group">
                         <button
                             type = "button"

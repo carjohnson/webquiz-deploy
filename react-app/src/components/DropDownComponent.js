@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import DropDown from "./DropDown";
 
-// const DROPDOWNOPTIONS = ["3Planes", "Axial", "Sagittal", "Coronal"];
-
 class DropDownComponent extends Component {
 
     constructor(props) {
@@ -26,16 +24,16 @@ class DropDownComponent extends Component {
     render() {
         return(
             <div>
-                <div>.</div>
+                <br/>
                 <div>
                     <label>
-                        Select view : 
+                        Select from list : 
                     </label>
 
                     
                     <select id='dropdown' onChange={this.handleSelectChange} value={this.state.view}>
                         {/* default option is the first in the list if not defined here */}
-                        <option>options...</option>
+                        <option>items ...</option>
                         {/* dynamic render options from list */}
                         {
                             this.props.arr.map((option, index) => (
@@ -47,8 +45,8 @@ class DropDownComponent extends Component {
                     </select>
  
                     {/* {this.createDropDown()} */}
-                    <div>.</div>
-                    <label>View selected : </label>
+                    <br/>
+                    <label>Item selected : </label>
                     <label>{this.state.view}</label>
                 </div>
             </div>

@@ -46,5 +46,6 @@
   "devDependencies": {
     "@webpack-cli/remove": "^0.1.8",
     "webpack-cli": "^6.0.1"
-  }
+  },
+  "homepage": "/quiz"
 }

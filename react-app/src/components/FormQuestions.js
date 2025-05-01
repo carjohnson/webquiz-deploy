@@ -137,7 +137,7 @@ class FormQuestions extends Component{
                         <form>
                         <br />
                         <br />
-                        <div>===============  Form - Components  ===============</div>
+                        <div>===  Form - Components  ===</div>
                         <br />
                         <div className="form-group">
 
@@ -151,7 +151,7 @@ class FormQuestions extends Component{
 
                             <br />
                             <br />
-                            <div>===============  TODO - update options  ===============</div>
+                            <div>=== TODO - update options ===</div>
                             <br />
                             </div>
                             <button onClick={this.handleUpdate} > Update </button>

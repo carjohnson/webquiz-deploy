@@ -7,13 +7,12 @@ const port = process.env.PORT || 5500;
 const fs = require('fs');
 const readline = require('readline');
 
+// Dynamically set PUBLIC_URL
+process.env.PUBLIC_URL = process.env.PUBLIC_URL || `http://localhost:${port}`;
+
 // for cross origin requests - different ports on http requests
 const cors = require('cors');
 app.use(cors());
-
-
-// const ReactDOMServer = require('react-dom/server');
-// const App = require('./react-app/src/App').default;
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -21,11 +20,15 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 
-
+// Serve the React app
 app.use(express.static(path.join(__dirname, 'react-app/build')));
-// app.use((req, res) => {
-//   res.status(200).send('Hello from Baines Imaging Lab!');
-// })
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/new-page', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>
 var lsOptions = [];

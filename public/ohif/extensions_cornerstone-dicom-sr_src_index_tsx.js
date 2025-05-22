@@ -5,7 +5,7 @@
 /*!**********************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/commandsModule.ts ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -16,8 +16,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
 /* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
 /* harmony import */ var _utils_getFilteredCornerstoneToolState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/getFilteredCornerstoneToolState */ "../../../extensions/cornerstone-dicom-sr/src/utils/getFilteredCornerstoneToolState.ts");
+/* harmony import */ var _utils_hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/hydrateStructuredReport */ "../../../extensions/cornerstone-dicom-sr/src/utils/hydrateStructuredReport.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -30,9 +32,7 @@ const {
 const {
   log
 } = _ohif_core__WEBPACK_IMPORTED_MODULE_1__["default"];
-
 /**
- *
  * @param measurementData An array of measurements from the measurements service
  * that you wish to serialize.
  * @param additionalFindingTypes toolTypes that should be stored with labels as Findings
@@ -51,16 +51,42 @@ const _generateReport = (measurementData, additionalFindingTypes, options = {}) 
   if (typeof dataset.SpecificCharacterSet === 'undefined') {
     dataset.SpecificCharacterSet = 'ISO_IR 192';
   }
+  dataset.InstanceNumber = options.InstanceNumber ?? 1;
   return dataset;
 };
 const commandsModule = props => {
   const {
-    servicesManager
+    servicesManager,
+    extensionManager,
+    commandsManager
   } = props;
   const {
-    customizationService
+    customizationService,
+    viewportGridService,
+    displaySetService
   } = servicesManager.services;
   const actions = {
+    changeColorMeasurement: ({
+      uid
+    }) => {
+      // When this gets supported, it probably belongs in cornerstone, not sr
+      throw new Error('Unsupported operation: changeColorMeasurement');
+      // const { color } = measurementService.getMeasurement(uid);
+      // const rgbaColor = {
+      //   r: color[0],
+      //   g: color[1],
+      //   b: color[2],
+      //   a: color[3] / 255.0,
+      // };
+      // colorPickerDialog(uiDialogService, rgbaColor, (newRgbaColor, actionId) => {
+      //   if (actionId === 'cancel') {
+      //     return;
+      //   }
+
+      //   const color = [newRgbaColor.r, newRgbaColor.g, newRgbaColor.b, newRgbaColor.a * 255.0];
+      // segmentationService.setSegmentColor(viewportId, segmentationId, segmentIndex, color);
+      // });
+    },
     /**
      *
      * @param measurementData An array of measurements from the measurements service
@@ -74,7 +100,7 @@ const commandsModule = props => {
       additionalFindingTypes,
       options = {}
     }) => {
-      const srDataset = actions.generateReport(measurementData, additionalFindingTypes, options);
+      const srDataset = _generateReport(measurementData, additionalFindingTypes, options);
       const reportBlob = dcmjs__WEBPACK_IMPORTED_MODULE_2__["default"].data.datasetToBlob(srDataset);
 
       //Create a URL for the binary.
@@ -116,10 +142,11 @@ const commandsModule = props => {
           console.log('naturalizedReport missing imaging content', naturalizedReport);
           throw new Error('Invalid report, no content');
         }
-        const onBeforeDicomStore = customizationService.getModeCustomization('onBeforeDicomStore')?.value;
+        const onBeforeDicomStore = customizationService.getCustomization('onBeforeDicomStore');
         let dicomDict;
         if (typeof onBeforeDicomStore === 'function') {
           dicomDict = onBeforeDicomStore({
+            dicomDict,
             measurementData,
             naturalizedReport
           });
@@ -139,15 +166,25 @@ const commandsModule = props => {
         log.error(`[DICOMSR] Error while saving the measurements: ${error.message}`);
         throw new Error(error.message || 'Error while saving the measurements.');
       }
+    },
+    /**
+     * Loads measurements by hydrating and loading the SR for the given display set instance UID
+     * and displays it in the active viewport.
+     */
+    hydrateStructuredReport: ({
+      displaySetInstanceUID
+    }) => {
+      return (0,_utils_hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_5__["default"])({
+        servicesManager,
+        extensionManager,
+        commandsManager
+      }, displaySetInstanceUID);
     }
   };
   const definitions = {
-    downloadReport: {
-      commandFn: actions.downloadReport
-    },
-    storeMeasurements: {
-      commandFn: actions.storeMeasurements
-    }
+    downloadReport: actions.downloadReport,
+    storeMeasurements: actions.storeMeasurements,
+    hydrateStructuredReport: actions.hydrateStructuredReport
   };
   return {
     actions,
@@ -163,7 +200,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -178,7 +231,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/enums.ts ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -239,7 +292,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -254,7 +323,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/getHangingProtocolModule.ts ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -334,7 +403,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -349,21 +434,23 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/getSopClassHandlerModule.ts ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
-/* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
-/* harmony import */ var _utils_addSRAnnotation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/addSRAnnotation */ "../../../extensions/cornerstone-dicom-sr/src/utils/addSRAnnotation.ts");
-/* harmony import */ var _utils_isRehydratable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/isRehydratable */ "../../../extensions/cornerstone-dicom-sr/src/utils/isRehydratable.js");
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-sr/src/id.js");
-/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./enums */ "../../../extensions/cornerstone-dicom-sr/src/enums.ts");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
+/* harmony import */ var _utils_addSRAnnotation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/addSRAnnotation */ "../../../extensions/cornerstone-dicom-sr/src/utils/addSRAnnotation.ts");
+/* harmony import */ var _utils_isRehydratable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/isRehydratable */ "../../../extensions/cornerstone-dicom-sr/src/utils/isRehydratable.ts");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-sr/src/id.js");
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./enums */ "../../../extensions/cornerstone-dicom-sr/src/enums.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -378,14 +465,14 @@ const {
 const {
   CORNERSTONE_3D_TOOLS_SOURCE_NAME,
   CORNERSTONE_3D_TOOLS_SOURCE_VERSION
-} = _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.Enums;
+} = _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_2__.Enums;
 const {
   ImageSet,
   MetadataProvider: metadataProvider
 } = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.classes;
 const {
   CodeScheme: Cornerstone3DCodeScheme
-} = _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_2__.adaptersSR.Cornerstone3D;
+} = _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__.adaptersSR.Cornerstone3D;
 /**
  * TODO
  * - [ ] Add SR thumbnail
@@ -446,22 +533,24 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     SeriesDescription,
     SeriesNumber,
     SeriesDate,
+    SeriesTime,
     ConceptNameCodeSequence,
     SOPClassUID
   } = instance;
   validateSameStudyUID(instance.StudyInstanceUID, instances);
   const is3DSR = SOPClassUID === sopClassDictionary.Comprehensive3DSR;
-  const isImagingMeasurementReport = ConceptNameCodeSequence?.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.ImagingMeasurementReport;
+  const isImagingMeasurementReport = ConceptNameCodeSequence?.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.ImagingMeasurementReport;
   const displaySet = {
     Modality: 'SR',
     displaySetInstanceUID: _ohif_core__WEBPACK_IMPORTED_MODULE_0__.utils.guid(),
     SeriesDescription,
     SeriesNumber,
     SeriesDate,
+    SeriesTime,
     SOPInstanceUID,
     SeriesInstanceUID,
     StudyInstanceUID,
-    SOPClassHandlerId: is3DSR ? _id__WEBPACK_IMPORTED_MODULE_5__.SOPClassHandlerId3D : _id__WEBPACK_IMPORTED_MODULE_5__.SOPClassHandlerId,
+    SOPClassHandlerId: is3DSR ? _id__WEBPACK_IMPORTED_MODULE_6__.SOPClassHandlerId3D : _id__WEBPACK_IMPORTED_MODULE_6__.SOPClassHandlerId,
     SOPClassUID,
     instances,
     referencedImages: null,
@@ -471,7 +560,8 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     isImagingMeasurementReport,
     sopClassUids,
     instance,
-    addInstances
+    addInstances,
+    label: SeriesDescription || `${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('Series')} ${SeriesNumber} - ${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('SR')}`
   };
   displaySet.load = () => _load(displaySet, servicesManager, extensionManager);
   return [displaySet];
@@ -524,7 +614,7 @@ async function _load(srDisplaySet, servicesManager, extensionManager) {
   }
   const mappings = measurementService.getSourceMappings(CORNERSTONE_3D_TOOLS_SOURCE_NAME, CORNERSTONE_3D_TOOLS_SOURCE_VERSION);
   srDisplaySet.isHydrated = false;
-  srDisplaySet.isRehydratable = (0,_utils_isRehydratable__WEBPACK_IMPORTED_MODULE_4__["default"])(srDisplaySet, mappings);
+  srDisplaySet.isRehydratable = (0,_utils_isRehydratable__WEBPACK_IMPORTED_MODULE_5__["default"])(srDisplaySet, mappings);
   srDisplaySet.isLoaded = true;
 
   /** Check currently added displaySets and add measurements if the sources exist */
@@ -585,7 +675,7 @@ function _checkIfCanAddMeasurementsToDisplaySet(srDisplaySet, newDisplaySet, dat
   const is3DSR = srDisplaySet.SOPClassUID === sopClassDictionary.Comprehensive3DSR;
   for (let j = unloadedMeasurements.length - 1; j >= 0; j--) {
     let measurement = unloadedMeasurements[j];
-    const onBeforeSRAddMeasurement = customizationService.getModeCustomization('onBeforeSRAddMeasurement')?.value;
+    const onBeforeSRAddMeasurement = customizationService.getCustomization('onBeforeSRAddMeasurement');
     if (typeof onBeforeSRAddMeasurement === 'function') {
       measurement = onBeforeSRAddMeasurement({
         measurement,
@@ -596,7 +686,7 @@ function _checkIfCanAddMeasurementsToDisplaySet(srDisplaySet, newDisplaySet, dat
 
     // if it is 3d SR we can just add the SR annotation
     if (is3DSR) {
-      (0,_utils_addSRAnnotation__WEBPACK_IMPORTED_MODULE_3__["default"])(measurement, null, null);
+      (0,_utils_addSRAnnotation__WEBPACK_IMPORTED_MODULE_4__["default"])(measurement, null, null);
       measurement.loaded = true;
       continue;
     }
@@ -611,7 +701,7 @@ function _checkIfCanAddMeasurementsToDisplaySet(srDisplaySet, newDisplaySet, dat
     const key = `${ReferencedSOPInstanceUID}:${frame}`;
     const imageId = imageIdMap.get(key);
     if (imageId && _measurementReferencesSOPInstanceUID(measurement, ReferencedSOPInstanceUID, frame)) {
-      (0,_utils_addSRAnnotation__WEBPACK_IMPORTED_MODULE_3__["default"])(measurement, imageId, frame);
+      (0,_utils_addSRAnnotation__WEBPACK_IMPORTED_MODULE_4__["default"])(measurement, imageId, frame);
 
       // Update measurement properties
       measurement.loaded = true;
@@ -664,19 +754,20 @@ function _measurementReferencesSOPInstanceUID(measurement, SOPInstanceUID, frame
  * @param {Object} options.extensionManager - The extension manager.
  * @returns {Array} An array containing the SOP class handler module.
  */
-function getSopClassHandlerModule({
-  servicesManager,
-  extensionManager
-}) {
+function getSopClassHandlerModule(params) {
+  const {
+    servicesManager,
+    extensionManager
+  } = params;
   const getDisplaySetsFromSeries = instances => {
     return _getDisplaySetsFromSeries(instances, servicesManager, extensionManager);
   };
   return [{
-    name: _id__WEBPACK_IMPORTED_MODULE_5__.SOPClassHandlerName,
+    name: _id__WEBPACK_IMPORTED_MODULE_6__.SOPClassHandlerName,
     sopClassUids,
     getDisplaySetsFromSeries
   }, {
-    name: _id__WEBPACK_IMPORTED_MODULE_5__.SOPClassHandlerName3D,
+    name: _id__WEBPACK_IMPORTED_MODULE_6__.SOPClassHandlerName3D,
     sopClassUids: [sopClassDictionary.Comprehensive3DSR],
     getDisplaySetsFromSeries
   }];
@@ -689,11 +780,11 @@ function getSopClassHandlerModule({
  * @returns {Array} - The array of measurements.
  */
 function _getMeasurements(ImagingMeasurementReportContentSequence) {
-  const ImagingMeasurements = ImagingMeasurementReportContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.ImagingMeasurements);
+  const ImagingMeasurements = ImagingMeasurementReportContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.ImagingMeasurements);
   if (!ImagingMeasurements) {
     return [];
   }
-  const MeasurementGroups = _getSequenceAsArray(ImagingMeasurements.ContentSequence).filter(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.MeasurementGroup);
+  const MeasurementGroups = _getSequenceAsArray(ImagingMeasurements.ContentSequence).filter(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.MeasurementGroup);
   const mergedContentSequencesByTrackingUniqueIdentifiers = _getMergedContentSequencesByTrackingUniqueIdentifiers(MeasurementGroups);
   const measurements = [];
   Object.keys(mergedContentSequencesByTrackingUniqueIdentifiers).forEach(trackingUniqueIdentifier => {
@@ -716,7 +807,7 @@ function _getMergedContentSequencesByTrackingUniqueIdentifiers(MeasurementGroups
   const mergedContentSequencesByTrackingUniqueIdentifiers = {};
   MeasurementGroups.forEach(MeasurementGroup => {
     const ContentSequence = _getSequenceAsArray(MeasurementGroup.ContentSequence);
-    const TrackingUniqueIdentifierItem = ContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.TrackingUniqueIdentifier);
+    const TrackingUniqueIdentifierItem = ContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.TrackingUniqueIdentifier);
     if (!TrackingUniqueIdentifierItem) {
       console.warn('No Tracking Unique Identifier, skipping ambiguous measurement.');
     }
@@ -728,7 +819,7 @@ function _getMergedContentSequencesByTrackingUniqueIdentifiers(MeasurementGroups
       // Add the ContentSequence minus the tracking identifier, as we have this
       // Information in the merged ContentSequence anyway.
       ContentSequence.forEach(item => {
-        if (item.ConceptNameCodeSequence.CodeValue !== _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.TrackingUniqueIdentifier) {
+        if (item.ConceptNameCodeSequence.CodeValue !== _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.TrackingUniqueIdentifier) {
           mergedContentSequencesByTrackingUniqueIdentifiers[trackingUniqueIdentifier].push(item);
         }
       });
@@ -767,7 +858,7 @@ function _processTID1410Measurement(mergedContentSequence) {
 
   const graphicItem = mergedContentSequence.find(group => group.ValueType === 'SCOORD' || group.ValueType === 'SCOORD3D');
   const UIDREFContentItem = mergedContentSequence.find(group => group.ValueType === 'UIDREF');
-  const TrackingIdentifierContentItem = mergedContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.TrackingIdentifier);
+  const TrackingIdentifierContentItem = mergedContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.TrackingIdentifier);
   if (!graphicItem) {
     console.warn(`graphic ValueType ${graphicItem.ValueType} not currently supported, skipping annotation.`);
     return;
@@ -789,10 +880,10 @@ function _processTID1410Measurement(mergedContentSequence) {
       measurement.labels.push(_getLabelFromMeasuredValueSequence(ConceptNameCodeSequence, MeasuredValueSequence));
     }
   });
-  const findingSites = mergedContentSequence.filter(item => item.ConceptNameCodeSequence.CodingSchemeDesignator === _enums__WEBPACK_IMPORTED_MODULE_6__.CodingSchemeDesignators.SCT && item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.FindingSiteSCT);
+  const findingSites = mergedContentSequence.filter(item => item.ConceptNameCodeSequence.CodingSchemeDesignator === _enums__WEBPACK_IMPORTED_MODULE_7__.CodingSchemeDesignators.SCT && item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.FindingSiteSCT);
   if (findingSites.length) {
     measurement.labels.push({
-      label: _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.FindingSiteSCT,
+      label: _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.FindingSiteSCT,
       value: findingSites[0].ConceptCodeSequence.CodeMeaning
     });
   }
@@ -808,9 +899,9 @@ function _processTID1410Measurement(mergedContentSequence) {
 function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
   const NUMContentItems = mergedContentSequence.filter(group => group.ValueType === 'NUM');
   const UIDREFContentItem = mergedContentSequence.find(group => group.ValueType === 'UIDREF');
-  const TrackingIdentifierContentItem = mergedContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.TrackingIdentifier);
-  const finding = mergedContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.Finding);
-  const findingSites = mergedContentSequence.filter(item => item.ConceptNameCodeSequence.CodingSchemeDesignator === _enums__WEBPACK_IMPORTED_MODULE_6__.CodingSchemeDesignators.SRT && item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.FindingSite);
+  const TrackingIdentifierContentItem = mergedContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.TrackingIdentifier);
+  const finding = mergedContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.Finding);
+  const findingSites = mergedContentSequence.filter(item => item.ConceptNameCodeSequence.CodingSchemeDesignator === _enums__WEBPACK_IMPORTED_MODULE_7__.CodingSchemeDesignators.SRT && item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.FindingSite);
   const measurement = {
     loaded: false,
     labels: [],
@@ -818,7 +909,7 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
     TrackingUniqueIdentifier: UIDREFContentItem.UID,
     TrackingIdentifier: TrackingIdentifierContentItem.TextValue
   };
-  if (finding && _enums__WEBPACK_IMPORTED_MODULE_6__.CodingSchemeDesignators.CornerstoneCodeSchemes.includes(finding.ConceptCodeSequence.CodingSchemeDesignator) && finding.ConceptCodeSequence.CodeValue === Cornerstone3DCodeScheme.codeValues.CORNERSTONEFREETEXT) {
+  if (finding && _enums__WEBPACK_IMPORTED_MODULE_7__.CodingSchemeDesignators.CornerstoneCodeSchemes.includes(finding.ConceptCodeSequence.CodingSchemeDesignator) && finding.ConceptCodeSequence.CodeValue === Cornerstone3DCodeScheme.codeValues.CORNERSTONEFREETEXT) {
     measurement.labels.push({
       label: Cornerstone3DCodeScheme.codeValues.CORNERSTONEFREETEXT,
       value: finding.ConceptCodeSequence.CodeMeaning
@@ -827,7 +918,7 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
 
   // TODO -> Eventually hopefully support SNOMED or some proper code library, just free text for now.
   if (findingSites.length) {
-    const cornerstoneFreeTextFindingSite = findingSites.find(FindingSite => _enums__WEBPACK_IMPORTED_MODULE_6__.CodingSchemeDesignators.CornerstoneCodeSchemes.includes(FindingSite.ConceptCodeSequence.CodingSchemeDesignator) && FindingSite.ConceptCodeSequence.CodeValue === Cornerstone3DCodeScheme.codeValues.CORNERSTONEFREETEXT);
+    const cornerstoneFreeTextFindingSite = findingSites.find(FindingSite => _enums__WEBPACK_IMPORTED_MODULE_7__.CodingSchemeDesignators.CornerstoneCodeSchemes.includes(FindingSite.ConceptCodeSequence.CodingSchemeDesignator) && FindingSite.ConceptCodeSequence.CodeValue === Cornerstone3DCodeScheme.codeValues.CORNERSTONEFREETEXT);
     if (cornerstoneFreeTextFindingSite) {
       measurement.labels.push({
         label: Cornerstone3DCodeScheme.codeValues.CORNERSTONEFREETEXT,
@@ -914,11 +1005,11 @@ function _getLabelFromMeasuredValueSequence(ConceptNameCodeSequence, MeasuredVal
  * @returns {Array} - The list of referenced images.
  */
 function _getReferencedImagesList(ImagingMeasurementReportContentSequence) {
-  const ImageLibrary = ImagingMeasurementReportContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.ImageLibrary);
+  const ImageLibrary = ImagingMeasurementReportContentSequence.find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.ImageLibrary);
   if (!ImageLibrary) {
     return [];
   }
-  const ImageLibraryGroup = _getSequenceAsArray(ImageLibrary.ContentSequence).find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_6__.CodeNameCodeSequenceValues.ImageLibraryGroup);
+  const ImageLibraryGroup = _getSequenceAsArray(ImageLibrary.ContentSequence).find(item => item.ConceptNameCodeSequence.CodeValue === _enums__WEBPACK_IMPORTED_MODULE_7__.CodeNameCodeSequenceValues.ImageLibraryGroup);
   if (!ImageLibraryGroup) {
     return [];
   }
@@ -969,7 +1060,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -984,7 +1091,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/id.js ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1012,7 +1119,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1027,7 +1150,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/index.tsx ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1042,7 +1165,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _getSopClassHandlerModule__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getSopClassHandlerModule */ "../../../extensions/cornerstone-dicom-sr/src/getSopClassHandlerModule.ts");
 /* harmony import */ var _getHangingProtocolModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getHangingProtocolModule */ "../../../extensions/cornerstone-dicom-sr/src/getHangingProtocolModule.ts");
-/* harmony import */ var _onModeEnter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./onModeEnter */ "../../../extensions/cornerstone-dicom-sr/src/onModeEnter.js");
+/* harmony import */ var _onModeEnter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./onModeEnter */ "../../../extensions/cornerstone-dicom-sr/src/onModeEnter.tsx");
 /* harmony import */ var _commandsModule__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./commandsModule */ "../../../extensions/cornerstone-dicom-sr/src/commandsModule.ts");
 /* harmony import */ var _init__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./init */ "../../../extensions/cornerstone-dicom-sr/src/init.ts");
 /* harmony import */ var _id_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./id.js */ "../../../extensions/cornerstone-dicom-sr/src/id.js");
@@ -1076,7 +1199,6 @@ function _extends() {
 const Component = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().lazy(_c = () => {
   return __webpack_require__.e(/*! import() */ "extensions_cornerstone-dicom-sr_src_components_OHIFCornerstoneSRViewport_tsx").then(__webpack_require__.bind(__webpack_require__, /*! ./components/OHIFCornerstoneSRViewport */ "../../../extensions/cornerstone-dicom-sr/src/components/OHIFCornerstoneSRViewport.tsx"));
 });
-_c4 = Component;
 _c2 = Component;
 const OHIFCornerstoneSRViewport = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Suspense), {
@@ -1087,7 +1209,6 @@ const OHIFCornerstoneSRViewport = props => {
 /**
  *
  */
-_c5 = OHIFCornerstoneSRViewport;
 _c3 = OHIFCornerstoneSRViewport;
 const dicomSRExtension = {
   /**
@@ -1139,9 +1260,6 @@ var _c, _c2, _c3;
 __webpack_require__.$Refresh$.register(_c, "Component$React.lazy");
 __webpack_require__.$Refresh$.register(_c2, "Component");
 __webpack_require__.$Refresh$.register(_c3, "OHIFCornerstoneSRViewport");
-var _c4, _c5;
-__webpack_require__.$Refresh$.register(_c4, "Component");
-__webpack_require__.$Refresh$.register(_c5, "OHIFCornerstoneSRViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -1149,7 +1267,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1164,25 +1298,21 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/init.ts ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ init)
 /* harmony export */ });
 /* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
-/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
-/* harmony import */ var _tools_DICOMSRDisplayTool__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tools/DICOMSRDisplayTool */ "../../../extensions/cornerstone-dicom-sr/src/tools/DICOMSRDisplayTool.ts");
-/* harmony import */ var _tools_SCOORD3DPointTool__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./tools/SCOORD3DPointTool */ "../../../extensions/cornerstone-dicom-sr/src/tools/SCOORD3DPointTool.ts");
-/* harmony import */ var _utils_SRSCOOR3DProbeMapper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/SRSCOOR3DProbeMapper */ "../../../extensions/cornerstone-dicom-sr/src/utils/SRSCOOR3DProbeMapper.ts");
-/* harmony import */ var _utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/addToolInstance */ "../../../extensions/cornerstone-dicom-sr/src/utils/addToolInstance.ts");
-/* harmony import */ var _tools_toolNames__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./tools/toolNames */ "../../../extensions/cornerstone-dicom-sr/src/tools/toolNames.ts");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* harmony import */ var _tools_DICOMSRDisplayTool__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tools/DICOMSRDisplayTool */ "../../../extensions/cornerstone-dicom-sr/src/tools/DICOMSRDisplayTool.ts");
+/* harmony import */ var _tools_SCOORD3DPointTool__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tools/SCOORD3DPointTool */ "../../../extensions/cornerstone-dicom-sr/src/tools/SCOORD3DPointTool.ts");
+/* harmony import */ var _utils_SRSCOOR3DProbeMapper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/SRSCOOR3DProbeMapper */ "../../../extensions/cornerstone-dicom-sr/src/utils/SRSCOOR3DProbeMapper.ts");
+/* harmony import */ var _utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/addToolInstance */ "../../../extensions/cornerstone-dicom-sr/src/utils/addToolInstance.ts");
+/* harmony import */ var _tools_toolNames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tools/toolNames */ "../../../extensions/cornerstone-dicom-sr/src/tools/toolNames.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
 
 
 
@@ -1194,7 +1324,7 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 const {
   CORNERSTONE_3D_TOOLS_SOURCE_NAME,
   CORNERSTONE_3D_TOOLS_SOURCE_VERSION
-} = _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.Enums;
+} = _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.Enums;
 
 /**
  * @param {object} configuration
@@ -1207,31 +1337,31 @@ function init({
     measurementService,
     cornerstoneViewportService
   } = servicesManager.services;
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].DICOMSRDisplay, _tools_DICOMSRDisplayTool__WEBPACK_IMPORTED_MODULE_4__["default"]);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRLength, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.LengthTool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRBidirectional, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.BidirectionalTool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SREllipticalROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.EllipticalROITool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRCircleROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.CircleROITool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRArrowAnnotate, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.ArrowAnnotateTool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRAngle, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.AngleTool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRPlanarFreehandROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.PlanarFreehandROITool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRRectangleROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.RectangleROITool);
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRSCOORD3DPoint, _tools_SCOORD3DPointTool__WEBPACK_IMPORTED_MODULE_5__["default"]);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].DICOMSRDisplay, _tools_DICOMSRDisplayTool__WEBPACK_IMPORTED_MODULE_2__["default"]);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRLength, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.LengthTool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRBidirectional, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.BidirectionalTool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SREllipticalROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.EllipticalROITool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRCircleROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.CircleROITool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRArrowAnnotate, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.ArrowAnnotateTool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRAngle, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.AngleTool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRPlanarFreehandROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.PlanarFreehandROITool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRRectangleROI, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.RectangleROITool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRSCOORD3DPoint, _tools_SCOORD3DPointTool__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
   // TODO - fix the SR display of Cobb Angle, as it joins the two lines
-  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_7__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].SRCobbAngle, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.CobbAngleTool);
+  (0,_utils_addToolInstance__WEBPACK_IMPORTED_MODULE_5__["default"])(_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].SRCobbAngle, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.CobbAngleTool);
   const csTools3DVer1MeasurementSource = measurementService.getSource(CORNERSTONE_3D_TOOLS_SOURCE_NAME, CORNERSTONE_3D_TOOLS_SOURCE_VERSION);
   const {
     POINT
   } = measurementService.VALUE_TYPES;
-  measurementService.addMapping(csTools3DVer1MeasurementSource, 'SRSCOORD3DPoint', POINT, _utils_SRSCOOR3DProbeMapper__WEBPACK_IMPORTED_MODULE_6__["default"].toAnnotation, _utils_SRSCOOR3DProbeMapper__WEBPACK_IMPORTED_MODULE_6__["default"].toMeasurement);
+  measurementService.addMapping(csTools3DVer1MeasurementSource, 'SRSCOORD3DPoint', POINT, _utils_SRSCOOR3DProbeMapper__WEBPACK_IMPORTED_MODULE_4__["default"].toAnnotation, _utils_SRSCOOR3DProbeMapper__WEBPACK_IMPORTED_MODULE_4__["default"].toMeasurement);
 
   // Modify annotation tools to use dashed lines on SR
   const dashedLine = {
     lineDash: '4,4'
   };
   _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.annotation.config.style.setToolGroupToolStyles('SRToolGroup', {
-    [_tools_toolNames__WEBPACK_IMPORTED_MODULE_8__["default"].DICOMSRDisplay]: dashedLine,
+    [_tools_toolNames__WEBPACK_IMPORTED_MODULE_6__["default"].DICOMSRDisplay]: dashedLine,
     SRLength: dashedLine,
     SRBidirectional: dashedLine,
     SREllipticalROI: dashedLine,
@@ -1243,28 +1373,6 @@ function init({
     SRRectangleROI: dashedLine,
     global: {}
   });
-  measurementService.subscribe(_ohif_core__WEBPACK_IMPORTED_MODULE_1__.MeasurementService.EVENTS.JUMP_TO_MEASUREMENT_LAYOUT, ({
-    viewportId,
-    measurement,
-    isConsumed
-  }) => {
-    if (isConsumed) {
-      return;
-    }
-    try {
-      const currentViewport = cornerstoneViewportService.getCornerstoneViewport(viewportId);
-      const {
-        viewPlaneNormal
-      } = currentViewport.getCamera();
-      const referencedImageId = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.utilities.getClosestImageIdForStackViewport(currentViewport, measurement.points[0], viewPlaneNormal);
-      const imageIndex = currentViewport.getImageIds().indexOf(referencedImageId);
-      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.utilities.jumpToSlice(currentViewport.element, {
-        imageIndex
-      });
-    } catch (error) {
-      console.warn('Unable to jump to image based on measurement coordinate', error);
-    }
-  });
 }
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
@@ -1273,7 +1381,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1284,11 +1408,11 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/cornerstone-dicom-sr/src/onModeEnter.js":
-/*!*******************************************************************!*\
-  !*** ../../../extensions/cornerstone-dicom-sr/src/onModeEnter.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/cornerstone-dicom-sr/src/onModeEnter.tsx":
+/*!********************************************************************!*\
+  !*** ../../../extensions/cornerstone-dicom-sr/src/onModeEnter.tsx ***!
+  \********************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1319,7 +1443,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1334,7 +1474,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/tools/DICOMSRDisplayTool.ts ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1618,7 +1758,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1633,7 +1789,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/tools/SCOORD3DPointTool.ts ***!
   \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1802,7 +1958,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1817,7 +1989,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/tools/modules/dicomSRModule.js ***!
   \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1884,7 +2056,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1899,7 +2087,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/tools/toolNames.ts ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1929,7 +2117,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1944,7 +2148,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/SRSCOOR3DProbeMapper.ts ***!
   \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2020,7 +2224,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2035,7 +2255,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/addSRAnnotation.ts ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2115,7 +2335,6 @@ function addSRAnnotation(measurement, imageId, frameNumber) {
    * was not triggering annotation_added events.
    */
   _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.annotation.state.addAnnotation(SRAnnotation);
-  console.debug('Adding SR annotation:', SRAnnotation);
 }
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
@@ -2124,7 +2343,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2139,7 +2374,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/addToolInstance.ts ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2170,7 +2405,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2185,7 +2436,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/createReferencedImageDisplaySet.ts ***!
   \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2289,7 +2540,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2304,7 +2571,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/getFilteredCornerstoneToolState.ts ***!
   \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2406,7 +2673,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2421,7 +2704,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/getLabelFromDCMJSImportedToolData.js ***!
   \***********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2464,7 +2747,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2479,7 +2778,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/getRenderableData.ts ***!
   \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2627,7 +2926,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2642,7 +2957,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/hydrateStructuredReport.ts ***!
   \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2714,22 +3029,16 @@ const convertSites = (codingValues, sites) => {
 function hydrateStructuredReport({
   servicesManager,
   extensionManager,
-  appConfig
+  commandsManager
 }, displaySetInstanceUID) {
-  const annotationManager = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_4__.annotation.state.getAnnotationManager();
   const dataSource = extensionManager.getActiveDataSource()[0];
   const {
     measurementService,
     displaySetService,
     customizationService
   } = servicesManager.services;
-  const codingValues = customizationService.getCustomization('codingValues', {});
-  const {
-    disableEditing
-  } = customizationService.getCustomization('PanelMeasurement.disableEditing', {
-    id: 'default.disableEditing',
-    disableEditing: false
-  });
+  const codingValues = customizationService.getCustomization('codingValues');
+  const disableEditing = customizationService.getCustomization('panelMeasurement.disableEditing');
   const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
 
   // TODO -> We should define a strict versioning somewhere.
@@ -2754,7 +3063,9 @@ function hydrateStructuredReport({
       imageIdsForToolState[ReferencedSOPInstanceUID][frameNumber] = imageId;
     }
   });
-  const datasetToUse = _mapLegacyDataSet(instance);
+
+  // Mapping of legacy datasets is now directly handled by adapters module
+  const datasetToUse = instance;
 
   // Use dcmjs to generate toolState.
   let storedMeasurementByAnnotationType = MeasurementReport.generateToolState(datasetToUse,
@@ -2763,7 +3074,7 @@ function hydrateStructuredReport({
   // that measurements were added to the display set are the same order as
   // the measurementGroups in the instance.
   sopInstanceUIDToImageId, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.utilities.imageToWorldCoords, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.metaData);
-  const onBeforeSRHydration = customizationService.getModeCustomization('onBeforeSRHydration')?.value;
+  const onBeforeSRHydration = customizationService.getCustomization('onBeforeSRHydration')?.value;
   if (typeof onBeforeSRHydration === 'function') {
     storedMeasurementByAnnotationType = onBeforeSRHydration({
       storedMeasurementByAnnotationType,
@@ -2845,14 +3156,21 @@ function hydrateStructuredReport({
       annotation.data.label = (0,_getLabelFromDCMJSImportedToolData__WEBPACK_IMPORTED_MODULE_2__["default"])(toolData);
       annotation.data.finding = convertCode(codingValues, toolData.finding?.[0]);
       annotation.data.findingSites = convertSites(codingValues, toolData.findingSites);
-      annotation.data.site = annotation.data.findingSites?.[0];
+      annotation.data.findingSites?.forEach(site => {
+        if (site.type) {
+          annotation.data[site.type] = site;
+        }
+      });
       const matchingMapping = mappings.find(m => m.annotationType === annotationType);
       const newAnnotationUID = measurementService.addRawMeasurement(source, annotationType, {
         annotation
       }, matchingMapping.toMeasurementSchema, dataSource);
+      commandsManager.runCommand('updateMeasurement', {
+        uid: newAnnotationUID,
+        code: annotation.data.finding
+      });
       if (disableEditing) {
-        const addedAnnotation = annotationManager.getAnnotation(newAnnotationUID);
-        locking.setAnnotationLocked(addedAnnotation, true);
+        locking.setAnnotationLocked(newAnnotationUID, true);
       }
       if (!imageIds.includes(imageId)) {
         imageIds.push(imageId);
@@ -2865,46 +3183,6 @@ function hydrateStructuredReport({
     SeriesInstanceUIDs
   };
 }
-function _mapLegacyDataSet(dataset) {
-  const REPORT = 'Imaging Measurements';
-  const GROUP = 'Measurement Group';
-  const TRACKING_IDENTIFIER = 'Tracking Identifier';
-
-  // Identify the Imaging Measurements
-  const imagingMeasurementContent = toArray(dataset.ContentSequence).find(codeMeaningEquals(REPORT));
-
-  // Retrieve the Measurements themselves
-  const measurementGroups = toArray(imagingMeasurementContent.ContentSequence).filter(codeMeaningEquals(GROUP));
-
-  // For each of the supported measurement types, compute the measurement data
-  const measurementData = {};
-  const cornerstoneToolClasses = MeasurementReport.CORNERSTONE_TOOL_CLASSES_BY_UTILITY_TYPE;
-  const registeredToolClasses = [];
-  Object.keys(cornerstoneToolClasses).forEach(key => {
-    registeredToolClasses.push(cornerstoneToolClasses[key]);
-    measurementData[key] = [];
-  });
-  measurementGroups.forEach((measurementGroup, index) => {
-    const measurementGroupContentSequence = toArray(measurementGroup.ContentSequence);
-    const TrackingIdentifierGroup = measurementGroupContentSequence.find(contentItem => contentItem.ConceptNameCodeSequence.CodeMeaning === TRACKING_IDENTIFIER);
-    const TrackingIdentifier = TrackingIdentifierGroup.TextValue;
-    let [cornerstoneTag, toolName] = TrackingIdentifier.split(':');
-    if (supportedLegacyCornerstoneTags.includes(cornerstoneTag)) {
-      cornerstoneTag = CORNERSTONE_3D_TAG;
-    }
-    const mappedTrackingIdentifier = `${cornerstoneTag}:${toolName}`;
-    TrackingIdentifierGroup.TextValue = mappedTrackingIdentifier;
-  });
-  return dataset;
-}
-const toArray = function (x) {
-  return Array.isArray(x) ? x : [x];
-};
-const codeMeaningEquals = codeMeaningName => {
-  return contentItem => {
-    return contentItem.ConceptNameCodeSequence.CodeMeaning === codeMeaningName;
-  };
-};
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -2912,7 +3190,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2923,11 +3217,11 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/cornerstone-dicom-sr/src/utils/isRehydratable.js":
+/***/ "../../../extensions/cornerstone-dicom-sr/src/utils/isRehydratable.ts":
 /*!****************************************************************************!*\
-  !*** ../../../extensions/cornerstone-dicom-sr/src/utils/isRehydratable.js ***!
+  !*** ../../../extensions/cornerstone-dicom-sr/src/utils/isRehydratable.ts ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2938,9 +3232,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
-const cornerstoneAdapters = _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_0__.adaptersSR.Cornerstone3D.MeasurementReport.CORNERSTONE_TOOL_CLASSES_BY_UTILITY_TYPE;
-const supportedLegacyCornerstoneTags = ['cornerstoneTools@^4.0.0'];
-const CORNERSTONE_3D_TAG = _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_0__.adaptersSR.Cornerstone3D.CORNERSTONE_3D_TAG;
+const {
+  MeasurementReport
+} = _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_0__.adaptersSR.Cornerstone3D;
 
 /**
  * Checks if the given `displaySet`can be rehydrated into the `measurementService`.
@@ -2953,31 +3247,23 @@ function isRehydratable(displaySet, mappings) {
   if (!mappings || !mappings.length) {
     return false;
   }
-  const mappingDefinitions = mappings.map(m => m.annotationType);
+  const mappingDefinitions = new Set();
+  for (const m of mappings) {
+    mappingDefinitions.add(m.annotationType);
+  }
   const {
     measurements
   } = displaySet;
-  const adapterKeys = Object.keys(cornerstoneAdapters).filter(adapterKey => typeof cornerstoneAdapters[adapterKey].isValidCornerstoneTrackingIdentifier === 'function');
-  const adapters = [];
-  adapterKeys.forEach(key => {
-    if (mappingDefinitions.includes(key)) {
-      // Must have both a dcmjs adapter and a measurementService
-      // Definition in order to be a candidate for import.
-      adapters.push(cornerstoneAdapters[key]);
-    }
-  });
   for (let i = 0; i < measurements.length; i++) {
     const {
       TrackingIdentifier
     } = measurements[i] || {};
-    const hydratable = adapters.some(adapter => {
-      let [cornerstoneTag, toolName] = TrackingIdentifier.split(':');
-      if (supportedLegacyCornerstoneTags.includes(cornerstoneTag)) {
-        cornerstoneTag = CORNERSTONE_3D_TAG;
-      }
-      const mappedTrackingIdentifier = `${cornerstoneTag}:${toolName}`;
-      return adapter.isValidCornerstoneTrackingIdentifier(mappedTrackingIdentifier);
-    });
+    if (!TrackingIdentifier) {
+      console.warn('No tracking identifier for measurement ', measurements[i]);
+      continue;
+    }
+    const adapter = MeasurementReport.getAdapterForTrackingIdentifier(TrackingIdentifier);
+    const hydratable = adapter && mappingDefinitions.has(adapter.toolType);
     if (hydratable) {
       return true;
     }
@@ -2993,7 +3279,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3010,7 +3312,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \*************************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-sr","version":"3.9.1","description":"OHIF extension for an SR Cornerstone Viewport","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-cornerstone-dicom-sr.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist","README.md"],"publishConfig":{"access":"public"},"keywords":["ohif-extension"],"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-cornerstone":"3.9.1","@ohif/extension-measurement-tracking":"3.9.1","@ohif/ui":"3.9.1","dcmjs":"*","dicom-parser":"^1.8.9","hammerjs":"^2.0.8","prop-types":"^15.6.2","react":"^18.3.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/adapters":"^2.2.20","@cornerstonejs/core":"^2.2.20","@cornerstonejs/tools":"^2.2.20","classnames":"^2.3.2"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-sr","version":"3.11.0-beta.37","description":"OHIF extension for an SR Cornerstone Viewport","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-cornerstone-dicom-sr.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist","README.md"],"publishConfig":{"access":"public"},"keywords":["ohif-extension"],"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-cornerstone":"3.11.0-beta.37","@ohif/extension-measurement-tracking":"3.11.0-beta.37","@ohif/ui":"3.11.0-beta.37","dcmjs":"*","dicom-parser":"^1.8.9","hammerjs":"^2.0.8","prop-types":"^15.6.2","react":"^18.3.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/adapters":"^3.15.1","@cornerstonejs/core":"^3.15.1","@cornerstonejs/tools":"^3.15.1","classnames":"^2.3.2"}}');
 
 /***/ })
 

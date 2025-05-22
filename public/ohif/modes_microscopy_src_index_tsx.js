@@ -5,7 +5,7 @@
 /*!*******************************************!*\
   !*** ../../../modes/microscopy/src/id.js ***!
   \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -25,7 +25,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -40,20 +56,18 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************!*\
   !*** ../../../modes/microscopy/src/index.tsx ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   cornerstone: () => (/* binding */ cornerstone),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var i18next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18next */ "../../../node_modules/i18next/dist/esm/i18next.js");
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./id */ "../../../modes/microscopy/src/id.js");
-/* harmony import */ var _toolbarButtons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./toolbarButtons */ "../../../modes/microscopy/src/toolbarButtons.js");
+/* harmony import */ var i18next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18next */ "../../../node_modules/i18next/dist/esm/i18next.js");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./id */ "../../../modes/microscopy/src/id.js");
+/* harmony import */ var _toolbarButtons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./toolbarButtons */ "../../../modes/microscopy/src/toolbarButtons.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
 
 
 
@@ -63,7 +77,7 @@ const ohif = {
   sopClassHandler: '@ohif/extension-default.sopClassHandlerModule.stack',
   hangingProtocols: '@ohif/extension-default.hangingProtocolModule.default',
   leftPanel: '@ohif/extension-default.panelModule.seriesList',
-  rightPanel: '@ohif/extension-default.panelModule.measure'
+  rightPanel: '@ohif/extension-dicom-microscopy.panelModule.measure'
 };
 const cornerstone = {
   viewport: '@ohif/extension-cornerstone.viewportModule.cornerstone'
@@ -89,24 +103,21 @@ function modeFactory({
   modeConfiguration
 }) {
   return {
-    // TODO: We're using this as a route segment
-    // We should not be.
-    id: _id__WEBPACK_IMPORTED_MODULE_2__.id,
+    id: _id__WEBPACK_IMPORTED_MODULE_1__.id,
     routeName: 'microscopy',
-    displayName: i18next__WEBPACK_IMPORTED_MODULE_1__["default"].t('Modes:Microscopy'),
+    displayName: i18next__WEBPACK_IMPORTED_MODULE_0__["default"].t('Modes:Microscopy'),
     /**
      * Lifecycle hooks
      */
     onModeEnter: ({
-      servicesManager,
-      extensionManager,
-      commandsManager
+      servicesManager
     }) => {
       const {
         toolbarService
       } = servicesManager.services;
-      toolbarService.addButtons(_toolbarButtons__WEBPACK_IMPORTED_MODULE_3__["default"]);
-      toolbarService.createButtonSection('primary', ['MeasurementTools', 'dragPan', 'TagBrowser']);
+      toolbarService.register(_toolbarButtons__WEBPACK_IMPORTED_MODULE_2__["default"]);
+      toolbarService.updateSection('primary', ['MeasurementTools', 'dragPan', 'TagBrowser']);
+      toolbarService.updateSection('MeasurementTools', ['line', 'point', 'polygon', 'circle', 'box', 'freehandpolygon', 'freehandline']);
     },
     onModeExit: ({
       servicesManager
@@ -116,7 +127,7 @@ function modeFactory({
         uiDialogService,
         uiModalService
       } = servicesManager.services;
-      uiDialogService.dismissAll();
+      uiDialogService.hideAll();
       uiModalService.hide();
       toolbarService.reset();
     },
@@ -135,9 +146,6 @@ function modeFactory({
     },
     routes: [{
       path: 'microscopy',
-      /*init: ({ servicesManager, extensionManager }) => {
-        //defaultViewerRouteInit
-      },*/
       layoutTemplate: ({
         location,
         servicesManager
@@ -146,11 +154,12 @@ function modeFactory({
           id: ohif.layout,
           props: {
             leftPanels: [ohif.leftPanel],
+            leftPanelResizable: true,
             leftPanelClosed: true,
             // we have problem with rendering thumbnails for microscopy images
-            rightPanelClosed: true,
-            // we do not have the save microscopy measurements yet
-            rightPanels: ['@ohif/extension-dicom-microscopy.panelModule.measure'],
+            // rightPanelClosed: true, // we do not have the save microscopy measurements yet
+            rightPanels: [ohif.rightPanel],
+            rightPanelResizable: true,
             viewports: [{
               namespace: '@ohif/extension-dicom-microscopy.viewportModule.microscopy-dicom',
               displaySetsToDisplay: [
@@ -170,12 +179,11 @@ function modeFactory({
     extensions: extensionDependencies,
     hangingProtocol: 'default',
     sopClassHandlers: ['@ohif/extension-cornerstone.sopClassHandlerModule.DicomMicroscopySopClassHandler', '@ohif/extension-dicom-microscopy.sopClassHandlerModule.DicomMicroscopySRSopClassHandler', dicomvideo.sopClassHandler, dicompdf.sopClassHandler],
-    hotkeys: [..._ohif_core__WEBPACK_IMPORTED_MODULE_0__.hotkeys.defaults.hotkeyBindings],
     ...modeConfiguration
   };
 }
 const mode = {
-  id: _id__WEBPACK_IMPORTED_MODULE_2__.id,
+  id: _id__WEBPACK_IMPORTED_MODULE_1__.id,
   modeFactory,
   extensionDependencies
 };
@@ -187,7 +195,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -198,165 +222,155 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../modes/microscopy/src/toolbarButtons.js":
+/***/ "../../../modes/microscopy/src/toolbarButtons.ts":
 /*!*******************************************************!*\
-  !*** ../../../modes/microscopy/src/toolbarButtons.js ***!
+  !*** ../../../modes/microscopy/src/toolbarButtons.ts ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   setToolActiveToolbar: () => (/* binding */ setToolActiveToolbar)
 /* harmony export */ });
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-
+const setToolActiveToolbar = {
+  commandName: 'setToolActive',
+  commandOptions: {
+    toolName: 'line'
+  },
+  context: 'MICROSCOPY'
+};
 const toolbarButtons = [{
   id: 'MeasurementTools',
-  uiType: 'ohif.splitButton',
+  uiType: 'ohif.toolButtonList',
   props: {
-    groupId: 'MeasurementTools',
-    // group evaluate to determine which item should move to the top
-    evaluate: 'evaluate.group.promoteToPrimary',
-    primary: _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'line',
-      icon: 'tool-length',
-      label: 'Line',
-      tooltip: 'Line',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'line'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    }),
-    secondary: {
-      icon: 'chevron-down',
-      tooltip: 'More Measure Tools'
+    buttonSection: true
+  }
+}, {
+  id: 'line',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-length',
+    label: 'Line',
+    tooltip: 'Line',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.microscopyTool'
+  }
+}, {
+  id: 'point',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-point',
+    label: 'Point',
+    tooltip: 'Point Tool',
+    commands: {
+      ...setToolActiveToolbar,
+      commandOptions: {
+        toolName: 'point'
+      }
     },
-    items: [_ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'line',
-      icon: 'tool-length',
-      label: 'Line',
-      tooltip: 'Line',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'line'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    }), _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'point',
-      icon: 'tool-point',
-      label: 'Point',
-      tooltip: 'Point Tool',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'point'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    }),
-    // Point Tool was previously defined
-    _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'polygon',
-      icon: 'tool-polygon',
-      label: 'Polygon',
-      tooltip: 'Polygon Tool',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'polygon'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    }), _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'circle',
-      icon: 'tool-circle',
-      label: 'Circle',
-      tooltip: 'Circle Tool',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'circle'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    }), _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'box',
-      icon: 'tool-rectangle',
-      label: 'Box',
-      tooltip: 'Box Tool',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'box'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    }), _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'freehandpolygon',
-      icon: 'tool-freehand-polygon',
-      label: 'Freehand Polygon',
-      tooltip: 'Freehand Polygon Tool',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'freehandpolygon'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    }), _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService.createButton({
-      id: 'freehandline',
-      icon: 'tool-freehand-line',
-      label: 'Freehand Line',
-      tooltip: 'Freehand Line Tool',
-      commands: [{
-        commandName: 'setToolActive',
-        commandOptions: {
-          toolName: 'freehandline'
-        },
-        context: 'MICROSCOPY'
-      }],
-      evaluate: 'evaluate.microscopyTool'
-    })]
+    evaluate: 'evaluate.microscopyTool'
+  }
+}, {
+  id: 'polygon',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-polygon',
+    label: 'Polygon',
+    tooltip: 'Polygon Tool',
+    commands: {
+      ...setToolActiveToolbar,
+      commandOptions: {
+        toolName: 'polygon'
+      }
+    },
+    evaluate: 'evaluate.microscopyTool'
+  }
+}, {
+  id: 'circle',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-circle',
+    label: 'Circle',
+    tooltip: 'Circle Tool',
+    commands: {
+      ...setToolActiveToolbar,
+      commandOptions: {
+        toolName: 'circle'
+      }
+    },
+    evaluate: 'evaluate.microscopyTool'
+  }
+}, {
+  id: 'box',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-rectangle',
+    label: 'Box',
+    tooltip: 'Box Tool',
+    commands: {
+      ...setToolActiveToolbar,
+      commandOptions: {
+        toolName: 'box'
+      }
+    },
+    evaluate: 'evaluate.microscopyTool'
+  }
+}, {
+  id: 'freehandpolygon',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-freehand-polygon',
+    label: 'Freehand Polygon',
+    tooltip: 'Freehand Polygon Tool',
+    commands: {
+      ...setToolActiveToolbar,
+      commandOptions: {
+        toolName: 'freehandpolygon'
+      }
+    },
+    evaluate: 'evaluate.microscopyTool'
+  }
+}, {
+  id: 'freehandline',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-freehand-line',
+    label: 'Freehand Line',
+    tooltip: 'Freehand Line Tool',
+    commands: {
+      ...setToolActiveToolbar,
+      commandOptions: {
+        toolName: 'freehandline'
+      }
+    },
+    evaluate: 'evaluate.microscopyTool'
   }
 }, {
   id: 'dragPan',
-  uiType: 'ohif.radioGroup',
+  uiType: 'ohif.toolButton',
   props: {
     icon: 'tool-move',
     label: 'Pan',
-    commands: [{
-      commandName: 'setToolActive',
+    commands: {
+      ...setToolActiveToolbar,
       commandOptions: {
         toolName: 'dragPan'
-      },
-      context: 'MICROSCOPY'
-    }],
+      }
+    },
     evaluate: 'evaluate.microscopyTool'
   }
 }, {
   id: 'TagBrowser',
-  uiType: 'ohif.radioGroup',
+  uiType: 'ohif.toolButton',
   props: {
     icon: 'dicom-tag-browser',
     label: 'Dicom Tag Browser',
-    commands: [{
-      commandName: 'openDICOMTagViewer'
-    }],
+    tooltip: 'Dicom Tag Browser',
+    commands: 'openDICOMTagViewer',
     evaluate: 'evaluate.action'
   }
 }];
@@ -368,7 +382,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -385,7 +415,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \**********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/mode-microscopy","version":"3.9.1","description":"OHIF mode for DICOM microscopy","author":"OHIF","license":"MIT","main":"dist/ohif-mode-microscopy.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-mode"],"publishConfig":{"access":"public"},"module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-dicom-microscopy":"3.9.1"},"dependencies":{"@babel/runtime":"^7.20.13","i18next":"^17.0.3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/mode-microscopy","version":"3.11.0-beta.37","description":"OHIF mode for DICOM microscopy","author":"OHIF","license":"MIT","main":"dist/ohif-mode-microscopy.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-mode"],"publishConfig":{"access":"public"},"module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-dicom-microscopy":"3.11.0-beta.37"},"dependencies":{"@babel/runtime":"^7.20.13","i18next":"^17.0.3"}}');
 
 /***/ })
 

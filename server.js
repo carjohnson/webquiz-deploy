@@ -20,15 +20,6 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 
-
-
-// // home page
-// app.use((req, res) => {
-//   res.status(200).send('Hello world');
-// })
-
-
-
 // Serve the React app
 app.use('/quiz', express.static(path.join(__dirname, 'react-app/build')));
 
@@ -39,7 +30,7 @@ app.get('/quiz', (req, res) => {
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get((req, res) => {
+app.get('/ohif', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 

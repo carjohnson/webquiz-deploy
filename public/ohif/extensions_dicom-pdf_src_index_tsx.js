@@ -5,7 +5,7 @@
 /*!*********************************************************************!*\
   !*** ../../../extensions/dicom-pdf/src/getSopClassHandlerModule.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -13,14 +13,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./id */ "../../../extensions/dicom-pdf/src/id.js");
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
-const {
-  ImageSet
-} = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.classes;
+
 const SOP_CLASS_UIDS = {
   ENCAPSULATED_PDF: '1.2.840.10008.5.1.4.1.1.104.1'
 };
@@ -43,7 +42,7 @@ const _getDisplaySetsFromSeries = (instances, servicesManager, extensionManager)
       StudyInstanceUID,
       SOPClassUID
     } = instance;
-    const pdfUrl = dataSource.retrieve.directURL({
+    const renderedUrl = dataSource.retrieve.directURL({
       instance,
       tag: 'EncapsulatedDocument',
       defaultType: MIMETypeOfEncapsulatedDocument || 'application/pdf',
@@ -63,28 +62,26 @@ const _getDisplaySetsFromSeries = (instances, servicesManager, extensionManager)
       SOPClassUID,
       referencedImages: null,
       measurements: null,
-      pdfUrl,
+      renderedUrl: renderedUrl,
       instances: [instance],
-      thumbnailSrc: dataSource.retrieve.directURL({
-        instance,
-        defaultPath: '/thumbnail',
-        defaultType: 'image/jpeg',
-        tag: 'Absent'
-      }),
+      thumbnailSrc: null,
       isDerivedDisplaySet: true,
       isLoaded: false,
       sopClassUids,
       numImageFrames: 0,
       numInstances: 1,
-      instance
+      instance,
+      supportsWindowLevel: true,
+      label: SeriesDescription || `${_ohif_i18n__WEBPACK_IMPORTED_MODULE_2__["default"].t('Series')} ${SeriesNumber} - ${_ohif_i18n__WEBPACK_IMPORTED_MODULE_2__["default"].t(Modality)}`
     };
     return displaySet;
   });
 };
-function getSopClassHandlerModule({
-  servicesManager,
-  extensionManager
-}) {
+function getSopClassHandlerModule(params) {
+  const {
+    servicesManager,
+    extensionManager
+  } = params;
   const getDisplaySetsFromSeries = instances => {
     return _getDisplaySetsFromSeries(instances, servicesManager, extensionManager);
   };
@@ -101,7 +98,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -116,7 +129,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************!*\
   !*** ../../../extensions/dicom-pdf/src/id.js ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -138,7 +151,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -153,7 +182,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************!*\
   !*** ../../../extensions/dicom-pdf/src/index.tsx ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -181,7 +210,6 @@ function _extends() {
 const Component = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().lazy(_c = () => {
   return __webpack_require__.e(/*! import() */ "extensions_dicom-pdf_src_viewports_OHIFCornerstonePdfViewport_tsx").then(__webpack_require__.bind(__webpack_require__, /*! ./viewports/OHIFCornerstonePdfViewport */ "../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.tsx"));
 });
-_c4 = Component;
 _c2 = Component;
 const OHIFCornerstonePdfViewport = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Suspense), {
@@ -192,7 +220,6 @@ const OHIFCornerstonePdfViewport = props => {
 /**
  *
  */
-_c5 = OHIFCornerstonePdfViewport;
 _c3 = OHIFCornerstonePdfViewport;
 const dicomPDFExtension = {
   /**
@@ -227,9 +254,6 @@ var _c, _c2, _c3;
 __webpack_require__.$Refresh$.register(_c, "Component$React.lazy");
 __webpack_require__.$Refresh$.register(_c2, "Component");
 __webpack_require__.$Refresh$.register(_c3, "OHIFCornerstonePdfViewport");
-var _c4, _c5;
-__webpack_require__.$Refresh$.register(_c4, "Component");
-__webpack_require__.$Refresh$.register(_c5, "OHIFCornerstonePdfViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -237,7 +261,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -254,7 +294,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-dicom-pdf","version":"3.9.1","description":"OHIF extension for PDF display","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-dicom-pdf.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist","README.md"],"publishConfig":{"access":"public"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/ui":"3.9.1","dcmjs":"*","dicom-parser":"^1.8.9","hammerjs":"^2.0.8","prop-types":"^15.6.2","react":"^18.3.1"},"dependencies":{"@babel/runtime":"^7.20.13","classnames":"^2.3.2"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-dicom-pdf","version":"3.11.0-beta.37","description":"OHIF extension for PDF display","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-dicom-pdf.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist","README.md"],"publishConfig":{"access":"public"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/ui":"3.11.0-beta.37","dcmjs":"*","dicom-parser":"^1.8.9","hammerjs":"^2.0.8","prop-types":"^15.6.2","react":"^18.3.1"},"dependencies":{"@babel/runtime":"^7.20.13","classnames":"^2.3.2"}}');
 
 /***/ })
 

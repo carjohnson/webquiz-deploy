@@ -5,7 +5,7 @@
 /*!*********************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/viewports/TrackedCornerstoneViewport.tsx ***!
   \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -15,15 +15,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
-/* harmony import */ var _getContextModule__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../getContextModule */ "../../../extensions/measurement-tracking/src/getContextModule.tsx");
-/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
-/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _getContextModule__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../getContextModule */ "../../../extensions/measurement-tracking/src/getContextModule.tsx");
+/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {
@@ -41,32 +41,26 @@ function _extends() {
 
 
 
+
 function TrackedCornerstoneViewport(props) {
-  _s2();
   _s();
   const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_7__.useSystem)();
+  const {
     displaySets,
-    viewportId,
-    servicesManager,
-    extensionManager
+    viewportId
   } = props;
   const {
     measurementService,
     cornerstoneViewportService,
     viewportGridService,
-    viewportActionCornersService
+    toolbarService
   } = servicesManager.services;
 
   // Todo: handling more than one displaySet on the same viewport
   const displaySet = displaySets[0];
-  const {
-    t
-  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_6__.useTranslation)('Common');
-  const [viewportGrid] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid)();
-  const {
-    activeViewportId
-  } = viewportGrid;
-  const [trackedMeasurements, sendTrackedMeasurementsEvent] = (0,_getContextModule__WEBPACK_IMPORTED_MODULE_4__.useTrackedMeasurements)();
+  const [trackedMeasurements, sendTrackedMeasurementsEvent] = (0,_getContextModule__WEBPACK_IMPORTED_MODULE_5__.useTrackedMeasurements)();
   const [isTracked, setIsTracked] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [trackedMeasurementUID, setTrackedMeasurementUID] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [viewportElem, setViewportElem] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
@@ -78,7 +72,7 @@ function TrackedCornerstoneViewport(props) {
   } = displaySet;
   const updateIsTracked = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
     const viewport = cornerstoneViewportService.getCornerstoneViewport(viewportId);
-    if (viewport instanceof _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_5__.BaseVolumeViewport) {
+    if (viewport instanceof _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_6__.BaseVolumeViewport) {
       // A current image id will only exist for volume viewports that can have measurements tracked.
       // Typically these are those volume viewports for the series of acquisition.
       const currentImageId = viewport?.getCurrentImageId();
@@ -96,12 +90,12 @@ function TrackedCornerstoneViewport(props) {
   const onElementEnabled = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(evt => {
     if (evt.detail.element !== viewportElem) {
       // The VOLUME_VIEWPORT_NEW_VOLUME event allows updateIsTracked to reliably fetch the image id for a volume viewport.
-      evt.detail.element?.addEventListener(_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.VOLUME_VIEWPORT_NEW_VOLUME, updateIsTracked);
+      evt.detail.element?.addEventListener(_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_6__.Enums.Events.VOLUME_VIEWPORT_NEW_VOLUME, updateIsTracked);
       setViewportElem(evt.detail.element);
     }
   }, [updateIsTracked, viewportElem]);
   const onElementDisabled = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
-    viewportElem?.removeEventListener(_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.VOLUME_VIEWPORT_NEW_VOLUME, updateIsTracked);
+    viewportElem?.removeEventListener(_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_6__.Enums.Events.VOLUME_VIEWPORT_NEW_VOLUME, updateIsTracked);
   }, [updateIsTracked, viewportElem]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(updateIsTracked, [updateIsTracked]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -119,7 +113,7 @@ function TrackedCornerstoneViewport(props) {
   }, [updateIsTracked, viewportId]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (isTracked) {
-      _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.config.style.setViewportToolStyles(viewportId, {
+      _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_4__.annotation.config.style.setViewportToolStyles(viewportId, {
         ReferenceLines: {
           lineDash: '4,4'
         },
@@ -130,14 +124,14 @@ function TrackedCornerstoneViewport(props) {
       cornerstoneViewportService.getRenderingEngine().renderViewport(viewportId);
       return;
     }
-    _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.config.style.setViewportToolStyles(viewportId, {
+    _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_4__.annotation.config.style.setViewportToolStyles(viewportId, {
       global: {
         lineDash: '4,4'
       }
     });
     cornerstoneViewportService.getRenderingEngine().renderViewport(viewportId);
     return () => {
-      _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.config.style.setViewportToolStyles(viewportId, {});
+      _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_4__.annotation.config.style.setViewportToolStyles(viewportId, {});
     };
   }, [isTracked]);
 
@@ -168,7 +162,8 @@ function TrackedCornerstoneViewport(props) {
           const {
             referenceStudyUID: StudyInstanceUID,
             referenceSeriesUID: SeriesInstanceUID,
-            uid: measurementId
+            uid: measurementId,
+            toolName
           } = measurement;
           sendTrackedMeasurementsEvent('SET_DIRTY', {
             SeriesInstanceUID
@@ -177,7 +172,8 @@ function TrackedCornerstoneViewport(props) {
             viewportId,
             StudyInstanceUID,
             SeriesInstanceUID,
-            measurementId
+            measurementId,
+            toolName
           });
         }
       }).unsubscribe);
@@ -196,28 +192,8 @@ function TrackedCornerstoneViewport(props) {
     setTrackedMeasurementUID(newTrackedMeasurementUID);
     measurementService.jumpToMeasurement(viewportId, newTrackedMeasurementUID);
   }, [measurementService, servicesManager, trackedMeasurementUID, trackedMeasurements, viewportId]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const statusComponent = _getStatusComponent(isTracked, t);
-    const arrowsComponent = _getArrowsComponent(isTracked, switchMeasurement, viewportId === activeViewportId);
-    viewportActionCornersService.addComponents([{
-      viewportId,
-      id: 'viewportStatusComponent',
-      component: statusComponent,
-      indexPriority: -100,
-      location: viewportActionCornersService.LOCATIONS.topLeft
-    }, {
-      viewportId,
-      id: 'viewportActionArrowsComponent',
-      component: arrowsComponent,
-      indexPriority: 0,
-      location: viewportActionCornersService.LOCATIONS.topRight
-    }]);
-  }, [activeViewportId, isTracked, switchMeasurement, viewportActionCornersService, viewportId]);
   const getCornerstoneViewport = () => {
-    const {
-      component: Component
-    } = extensionManager.getModuleEntry('@ohif/extension-cornerstone.viewportModule.cornerstone');
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, _extends({}, props, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.OHIFCornerstoneViewport, _extends({}, props, {
       onElementEnabled: evt => {
         props.onElementEnabled?.(evt);
         onElementEnabled(evt);
@@ -225,16 +201,12 @@ function TrackedCornerstoneViewport(props) {
       onElementDisabled: onElementDisabled
     }));
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "relative flex h-full w-full flex-row overflow-hidden"
-  }, getCornerstoneViewport()));
+  }, getCornerstoneViewport());
 }
-_s2(TrackedCornerstoneViewport, "oJ3zaPPQB1zwLtgXCeDcRC2GmGg=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_6__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid, _getContextModule__WEBPACK_IMPORTED_MODULE_4__.useTrackedMeasurements];
-});
-_c2 = TrackedCornerstoneViewport;
-_s(TrackedCornerstoneViewport, "Yp4/i21rXQ7X8GYxbBWGoZLiH/8=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_6__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid, _getContextModule__WEBPACK_IMPORTED_MODULE_4__.useTrackedMeasurements];
+_s(TrackedCornerstoneViewport, "fj1J4cKvMi3ryZxIpiJTLs/MwXY=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_7__.useSystem, _getContextModule__WEBPACK_IMPORTED_MODULE_5__.useTrackedMeasurements];
 });
 _c = TrackedCornerstoneViewport;
 TrackedCornerstoneViewport.propTypes = {
@@ -291,41 +263,14 @@ const _getArrowsComponent = (isTracked, switchMeasurement, isActiveViewport) => 
   if (!isTracked) {
     return null;
   }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.ViewportActionArrows, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ViewportActionArrows, {
     onArrowsClick: direction => switchMeasurement(direction),
     className: isActiveViewport ? 'visible' : 'invisible group-hover/pane:visible'
   });
 };
-function _getStatusComponent(isTracked, t) {
-  if (!isTracked) {
-    return null;
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "relative"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Tooltip, {
-    position: "bottom-left",
-    content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex py-2"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex pt-1"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-      name: "info-link",
-      className: "text-primary-main w-4"
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "ml-4 flex"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "text-common-light text-base"
-    }, isTracked ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, t('Series is tracked and can be viewed in the measurement panel')) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, t('Measurements for untracked series will not be shown in the measurements panel')))))
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-    name: 'viewport-status-tracked',
-    className: "text-aqua-pale"
-  })));
-}
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TrackedCornerstoneViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "TrackedCornerstoneViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "TrackedCornerstoneViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -333,7 +278,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {

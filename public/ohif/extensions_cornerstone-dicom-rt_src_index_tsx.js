@@ -42,6 +42,9 @@ var ChangeTypes;
     ChangeTypes["InitialSetup"] = "InitialSetup";
     ChangeTypes["Completed"] = "Completed";
     ChangeTypes["InterpolationUpdated"] = "InterpolationUpdated";
+    ChangeTypes["History"] = "History";
+    ChangeTypes["MetadataReferenceModified"] = "MetadataReferenceModified";
+    ChangeTypes["LabelChange"] = "LabelChange";
 })(ChangeTypes || (ChangeTypes = {}));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChangeTypes);
 
@@ -64,6 +67,7 @@ var Events;
     Events["TOOLGROUP_VIEWPORT_ADDED"] = "CORNERSTONE_TOOLS_TOOLGROUP_VIEWPORT_ADDED";
     Events["TOOLGROUP_VIEWPORT_REMOVED"] = "CORNERSTONE_TOOLS_TOOLGROUP_VIEWPORT_REMOVED";
     Events["TOOL_MODE_CHANGED"] = "CORNERSTONE_TOOLS_TOOL_MODE_CHANGED";
+    Events["CROSSHAIR_TOOL_CENTER_CHANGED"] = "CORNERSTONE_TOOLS_CROSSHAIR_TOOL_CENTER_CHANGED";
     Events["ANNOTATION_ADDED"] = "CORNERSTONE_TOOLS_ANNOTATION_ADDED";
     Events["ANNOTATION_COMPLETED"] = "CORNERSTONE_TOOLS_ANNOTATION_COMPLETED";
     Events["ANNOTATION_MODIFIED"] = "CORNERSTONE_TOOLS_ANNOTATION_MODIFIED";
@@ -82,6 +86,8 @@ var Events;
     Events["SEGMENTATION_REMOVED"] = "CORNERSTONE_TOOLS_SEGMENTATION_REMOVED";
     Events["SEGMENTATION_REPRESENTATION_REMOVED"] = "CORNERSTONE_TOOLS_SEGMENTATION_REPRESENTATION_REMOVED";
     Events["SEGMENTATION_DATA_MODIFIED"] = "CORNERSTONE_TOOLS_SEGMENTATION_DATA_MODIFIED";
+    Events["HISTORY_UNDO"] = "CORNERSTONE_TOOLS_HISTORY_UNDO";
+    Events["HISTORY_REDO"] = "CORNERSTONE_TOOLS_HISTORY_REDO";
     Events["KEY_DOWN"] = "CORNERSTONE_TOOLS_KEY_DOWN";
     Events["KEY_UP"] = "CORNERSTONE_TOOLS_KEY_UP";
     Events["MOUSE_DOWN"] = "CORNERSTONE_TOOLS_MOUSE_DOWN";
@@ -144,11 +150,16 @@ var StrategyCallbacks;
     StrategyCallbacks["RejectPreview"] = "rejectPreview";
     StrategyCallbacks["AcceptPreview"] = "acceptPreview";
     StrategyCallbacks["Fill"] = "fill";
+    StrategyCallbacks["Interpolate"] = "interpolate";
     StrategyCallbacks["StrategyFunction"] = "strategyFunction";
     StrategyCallbacks["CreateIsInThreshold"] = "createIsInThreshold";
     StrategyCallbacks["Initialize"] = "initialize";
     StrategyCallbacks["INTERNAL_setValue"] = "setValue";
+    StrategyCallbacks["AddPreview"] = "addPreview";
     StrategyCallbacks["ComputeInnerCircleRadius"] = "computeInnerCircleRadius";
+    StrategyCallbacks["GetStatistics"] = "getStatistics";
+    StrategyCallbacks["EnsureImageVolumeFor3DManipulation"] = "ensureImageVolumeFor3DManipulation";
+    StrategyCallbacks["EnsureSegmentationVolumeFor3DManipulation"] = "ensureSegmentationVolumeFor3DManipulation";
 })(StrategyCallbacks || (StrategyCallbacks = {}));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (StrategyCallbacks);
 
@@ -259,6 +270,10 @@ var ChangeTypes;
     ChangeTypes["POLYSEG_CONTOUR_TO_SURFACE"] = "Converting Contour to Surface";
     ChangeTypes["POLYSEG_LABELMAP_TO_SURFACE"] = "Converting Labelmap to Surface";
     ChangeTypes["SURFACE_CLIPPING"] = "Clipping Surfaces";
+    ChangeTypes["COMPUTE_STATISTICS"] = "Computing Statistics";
+    ChangeTypes["INTERPOLATE_LABELMAP"] = "Interpolating Labelmap";
+    ChangeTypes["COMPUTE_LARGEST_BIDIRECTIONAL"] = "Computing Largest Bidirectional";
+    ChangeTypes["GENERATE_CONTOUR_SETS"] = "Generating Contour Sets";
 })(ChangeTypes || (ChangeTypes = {}));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChangeTypes);
 
@@ -311,7 +326,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/getCommandsModule.ts ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -354,7 +369,7 @@ const commandsModule = ({
       // it will be in the correct position zoom and pan
       commandsManager.runCommand('updateStoredPositionPresentation', {
         viewportId,
-        displaySetInstanceUID: referencedDisplaySet.displaySetInstanceUID
+        displaySetInstanceUIDs: [referencedDisplaySet.displaySetInstanceUID]
       });
       viewportGridService.setDisplaySetsForViewport({
         viewportId,
@@ -383,7 +398,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -398,17 +429,19 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/getSopClassHandlerModule.ts ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-rt/src/id.js");
-/* harmony import */ var _loadRTStruct__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./loadRTStruct */ "../../../extensions/cornerstone-dicom-rt/src/loadRTStruct.js");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-rt/src/id.js");
+/* harmony import */ var _loadRTStruct__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./loadRTStruct */ "../../../extensions/cornerstone-dicom-rt/src/loadRTStruct.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -441,7 +474,7 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     SOPInstanceUID,
     SeriesInstanceUID,
     StudyInstanceUID,
-    SOPClassHandlerId: _id__WEBPACK_IMPORTED_MODULE_1__.SOPClassHandlerId,
+    SOPClassHandlerId: _id__WEBPACK_IMPORTED_MODULE_2__.SOPClassHandlerId,
     SOPClassUID,
     referencedImages: null,
     referencedSeriesInstanceUID: null,
@@ -455,7 +488,8 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     wadoRoot,
     wadoUriRoot,
     wadoUri,
-    isOverlayDisplaySet: true
+    isOverlayDisplaySet: true,
+    label: SeriesDescription || `${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('Series')} ${SeriesNumber} - ${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('RTSTRUCT')}`
   };
   let referencedSeriesSequence = instance.ReferencedSeriesSequence;
   if (instance.ReferencedFrameOfReferenceSequence && !instance.ReferencedSeriesSequence) {
@@ -490,11 +524,12 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     displaySet.referencedDisplaySetInstanceUID = referencedDisplaySet.displaySetInstanceUID;
   }
   displaySet.load = ({
-    headers
-  }) => _load(displaySet, servicesManager, extensionManager, headers);
+    headers,
+    createSegmentation = true
+  }) => _load(displaySet, servicesManager, extensionManager, headers, createSegmentation);
   return [displaySet];
 }
-function _load(rtDisplaySet, servicesManager, extensionManager, headers) {
+function _load(rtDisplaySet, servicesManager, extensionManager, headers, createSegmentation = true) {
   const {
     SOPInstanceUID
   } = rtDisplaySet;
@@ -510,16 +545,21 @@ function _load(rtDisplaySet, servicesManager, extensionManager, headers) {
   // and also return the same promise to any other callers.
   loadPromises[SOPInstanceUID] = new Promise(async (resolve, reject) => {
     if (!rtDisplaySet.structureSet) {
-      const structureSet = await (0,_loadRTStruct__WEBPACK_IMPORTED_MODULE_2__["default"])(extensionManager, rtDisplaySet, headers);
+      const structureSet = await (0,_loadRTStruct__WEBPACK_IMPORTED_MODULE_3__["default"])(extensionManager, rtDisplaySet, headers);
       rtDisplaySet.structureSet = structureSet;
     }
-    segmentationService.createSegmentationForRTDisplaySet(rtDisplaySet).then(() => {
+    if (createSegmentation) {
+      segmentationService.createSegmentationForRTDisplaySet(rtDisplaySet).then(() => {
+        rtDisplaySet.loading = false;
+        resolve();
+      }).catch(error => {
+        rtDisplaySet.loading = false;
+        reject(error);
+      });
+    } else {
       rtDisplaySet.loading = false;
       resolve();
-    }).catch(error => {
-      rtDisplaySet.loading = false;
-      reject(error);
-    });
+    }
   });
   return loadPromises[SOPInstanceUID];
 }
@@ -555,18 +595,15 @@ function _deriveReferencedSeriesSequenceFromFrameOfReferenceSequence(ReferencedF
   });
   return ReferencedSeriesSequence;
 }
-function _segmentationExistsInCache(rtDisplaySet, segmentationService) {
+function _segmentationExistsInCache() {
   // Todo: fix this
   return false;
-  // This should be abstracted with the CornerstoneCacheService
-  const rtContourId = rtDisplaySet.displaySetInstanceUID;
-  const contour = segmentationService.getContour(rtContourId);
-  return contour !== undefined;
 }
-function getSopClassHandlerModule({
-  servicesManager,
-  extensionManager
-}) {
+function getSopClassHandlerModule(params) {
+  const {
+    servicesManager,
+    extensionManager
+  } = params;
   return [{
     name: 'dicom-rt',
     sopClassUids,
@@ -583,7 +620,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -598,7 +651,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/id.js ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -622,7 +675,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -637,7 +706,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/index.tsx ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -665,9 +734,8 @@ function _extends() {
 
 
 const Component = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().lazy(_c = () => {
-  return __webpack_require__.e(/*! import() */ "extensions_cornerstone-dicom-rt_src_viewports_OHIFCornerstoneRTViewport_tsx").then(__webpack_require__.bind(__webpack_require__, /*! ./viewports/OHIFCornerstoneRTViewport */ "../../../extensions/cornerstone-dicom-rt/src/viewports/OHIFCornerstoneRTViewport.tsx"));
+  return Promise.all(/*! import() */[__webpack_require__.e("vendors-node_modules_cornerstonejs_tools_dist_esm_utilities_segmentation_index_js"), __webpack_require__.e("vendors-node_modules_cornerstonejs_tools_dist_esm_index_js"), __webpack_require__.e("vendors-node_modules_cornerstonejs_calculate-suv_dist_calculate-suv_esm_js-node_modules_brows-f8a8b3"), __webpack_require__.e("vendors-node_modules_cornerstonejs_ai_dist_esm_index_js-node_modules_cornerstonejs_core_dist_-1038f6"), __webpack_require__.e("extensions_default_src_index_ts"), __webpack_require__.e("extensions_cornerstone_src_components_NavigationComponent_NavigationComponent_tsx-extensions_-cc794b"), __webpack_require__.e("extensions_cornerstone-dicom-rt_src_viewports_OHIFCornerstoneRTViewport_tsx")]).then(__webpack_require__.bind(__webpack_require__, /*! ./viewports/OHIFCornerstoneRTViewport */ "../../../extensions/cornerstone-dicom-rt/src/viewports/OHIFCornerstoneRTViewport.tsx"));
 });
-_c4 = Component;
 _c2 = Component;
 const OHIFCornerstoneRTViewport = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Suspense), {
@@ -678,7 +746,6 @@ const OHIFCornerstoneRTViewport = props => {
 /**
  * You can remove any of the following modules if you don't need them.
  */
-_c5 = OHIFCornerstoneRTViewport;
 _c3 = OHIFCornerstoneRTViewport;
 const extension = {
   /**
@@ -723,9 +790,6 @@ var _c, _c2, _c3;
 __webpack_require__.$Refresh$.register(_c, "Component$React.lazy");
 __webpack_require__.$Refresh$.register(_c2, "Component");
 __webpack_require__.$Refresh$.register(_c3, "OHIFCornerstoneRTViewport");
-var _c4, _c5;
-__webpack_require__.$Refresh$.register(_c4, "Component");
-__webpack_require__.$Refresh$.register(_c5, "OHIFCornerstoneRTViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -733,7 +797,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -748,7 +828,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/loadRTStruct.js ***!
   \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -869,7 +949,8 @@ async function loadRTStruct(extensionManager, rtStructDisplaySet, headers) {
     StructureSetLabel: instance.StructureSetLabel,
     SeriesInstanceUID: instance.SeriesInstanceUID,
     ROIContours: [],
-    visible: true
+    visible: true,
+    ReferencedSOPInstanceUIDsSet: new Set()
   };
   for (let i = 0; i < ROIContourSequence.length; i++) {
     const ROIContour = ROIContourSequence[i];
@@ -886,7 +967,8 @@ async function loadRTStruct(extensionManager, rtStructDisplaySet, headers) {
       const {
         ContourData,
         NumberOfContourPoints,
-        ContourGeometricType
+        ContourGeometricType,
+        ContourImageSequence
       } = ContourSequenceArray[c];
       let isSupported = false;
       const points = [];
@@ -912,6 +994,9 @@ async function loadRTStruct(extensionManager, rtStructDisplaySet, headers) {
         type: ContourGeometricType,
         isSupported
       });
+      if (ContourImageSequence?.ReferencedSOPInstanceUID) {
+        structureSet.ReferencedSOPInstanceUIDsSet.add(ContourImageSequence?.ReferencedSOPInstanceUID);
+      }
     }
     _setROIContourMetadata(structureSet, StructureSetROISequence, RTROIObservationsSequence, ROIContour, contourPoints, isSupported);
   }
@@ -976,7 +1061,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -993,7 +1094,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \*************************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-rt","version":"3.9.1","description":"DICOM RT read workflow","author":"OHIF","license":"MIT","main":"dist/ohif-extension-cornerstone-dicom-rt.umd.js","module":"src/index.tsx","files":["dist/**","public/**","README.md"],"publishConfig":{"access":"public"},"repository":"OHIF/Viewers","keywords":["ohif-extension"],"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-seg":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-cornerstone":"3.9.1","@ohif/extension-default":"3.9.1","@ohif/i18n":"3.9.1","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^10.11.0","react-router":"^6.23.1","react-router-dom":"^6.23.1"},"dependencies":{"@babel/runtime":"^7.20.13","react-color":"^2.19.3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-rt","version":"3.11.0-beta.37","description":"DICOM RT read workflow","author":"OHIF","license":"MIT","main":"dist/ohif-extension-cornerstone-dicom-rt.umd.js","module":"src/index.tsx","files":["dist/**","public/**","README.md"],"publishConfig":{"access":"public"},"repository":"OHIF/Viewers","keywords":["ohif-extension"],"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-seg":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-cornerstone":"3.11.0-beta.37","@ohif/extension-default":"3.11.0-beta.37","@ohif/i18n":"3.11.0-beta.37","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^10.11.0","react-router":"^6.23.1","react-router-dom":"^6.23.1"},"dependencies":{"@babel/runtime":"^7.20.13","react-color":"^2.19.3"}}');
 
 /***/ })
 

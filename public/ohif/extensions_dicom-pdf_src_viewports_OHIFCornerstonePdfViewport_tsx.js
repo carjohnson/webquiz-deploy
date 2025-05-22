@@ -4,7 +4,7 @@
 /*!**********************************************************************************!*\
   !*** ../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.tsx ***!
   \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -15,26 +15,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _OHIFCornerstonePdfViewport_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OHIFCornerstonePdfViewport.css */ "../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.css");
-/* harmony import */ var _OHIFCornerstonePdfViewport_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_OHIFCornerstonePdfViewport_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _OHIFCornerstonePdfViewport_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./OHIFCornerstonePdfViewport.css */ "../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.css");
+/* harmony import */ var _OHIFCornerstonePdfViewport_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_OHIFCornerstonePdfViewport_css__WEBPACK_IMPORTED_MODULE_3__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
 
+
 function OHIFCornerstonePdfViewport({
-  displaySets
+  displaySets,
+  viewportId = 'pdf-viewport'
 }) {
-  _s2();
   _s();
   const [url, setUrl] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const viewportElementRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const viewportRef = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useViewportRef)(viewportId);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     document.body.addEventListener('drag', makePdfDropTarget);
     return function cleanup() {
       document.body.removeEventListener('drag', makePdfDropTarget);
+      viewportRef.unregister();
     };
   }, []);
   const [style, setStyle] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('pdf-yes-click');
@@ -48,35 +52,39 @@ function OHIFCornerstonePdfViewport({
     throw new Error('OHIFCornerstonePdfViewport: only one display set is supported for dicom pdf right now');
   }
   const {
-    pdfUrl
+    renderedUrl
   } = displaySets[0];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     const load = async () => {
-      setUrl(await pdfUrl);
+      setUrl(await renderedUrl);
     };
     load();
-  }, [pdfUrl]);
+  }, [renderedUrl]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "bg-primary-black h-full w-full text-white",
-    onClick: makePdfScrollable
+    onClick: makePdfScrollable,
+    ref: el => {
+      viewportElementRef.current = el;
+      if (el) viewportRef.register(el);
+    },
+    "data-viewport-id": viewportId
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("object", {
     data: url,
     type: "application/pdf",
     className: style
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "No online PDF viewer installed")));
 }
-_s2(OHIFCornerstonePdfViewport, "jce2Nm/O+WMk/fBT8KpwQ9I6k/o=");
-_c2 = OHIFCornerstonePdfViewport;
-_s(OHIFCornerstonePdfViewport, "jce2Nm/O+WMk/fBT8KpwQ9I6k/o=");
+_s(OHIFCornerstonePdfViewport, "OdpzEKeVU8Go9lzU9zthfLn7mEE=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useViewportRef];
+});
 _c = OHIFCornerstonePdfViewport;
 OHIFCornerstonePdfViewport.propTypes = {
-  displaySets: prop_types__WEBPACK_IMPORTED_MODULE_1___default().arrayOf((prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)).isRequired
+  displaySets: prop_types__WEBPACK_IMPORTED_MODULE_1___default().arrayOf((prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)).isRequired,
+  viewportId: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OHIFCornerstonePdfViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstonePdfViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstonePdfViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -84,7 +92,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -156,6 +180,69 @@ options.singleton = false;
 var update = api(content, options);
 
 
+if (true) {
+  if (!content.locals || module.hot.invalidate) {
+    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
+  if (!a && b || a && !b) {
+    return false;
+  }
+
+  var p;
+
+  for (p in a) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (a[p] !== b[p]) {
+      return false;
+    }
+  }
+
+  for (p in b) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (!a[p]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+    var oldLocals = content.locals;
+
+    module.hot.accept(
+      /*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./OHIFCornerstonePdfViewport.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.css",
+      function () {
+        content = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./OHIFCornerstonePdfViewport.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.css");
+
+              content = content.__esModule ? content.default : content;
+
+              if (typeof content === 'string') {
+                content = [[module.id, content, '']];
+              }
+
+              if (!isEqualLocals(oldLocals, content.locals)) {
+                module.hot.invalidate();
+
+                return;
+              }
+
+              oldLocals = content.locals;
+
+              update(content);
+      }
+    )
+  }
+
+  module.hot.dispose(function() {
+    update();
+  });
+}
 
 module.exports = content.locals || {};
 

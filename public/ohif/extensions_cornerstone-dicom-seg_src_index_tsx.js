@@ -5,21 +5,19 @@
 /*!***********************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-seg/src/commandsModule.ts ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
-/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
 /* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
 /* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _kitware_vtk_js_Filters_General_ImageMarchingSquares__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @kitware/vtk.js/Filters/General/ImageMarchingSquares */ "../../../node_modules/@kitware/vtk.js/Filters/General/ImageMarchingSquares.js");
-/* harmony import */ var _kitware_vtk_js_Common_Core_DataArray__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @kitware/vtk.js/Common/Core/DataArray */ "../../../node_modules/@kitware/vtk.js/Common/Core/DataArray.js");
-/* harmony import */ var _kitware_vtk_js_Common_DataModel_ImageData__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @kitware/vtk.js/Common/DataModel/ImageData */ "../../../node_modules/@kitware/vtk.js/Common/DataModel/ImageData.js");
+/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
+/* harmony import */ var _default_src_utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../default/src/utils/_shared/PROMPT_RESPONSES */ "../../../extensions/default/src/utils/_shared/PROMPT_RESPONSES.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -31,10 +29,6 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
-
-const {
-  segmentation: segmentationUtils
-} = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.utilities;
 const {
   datasetToBlob
 } = dcmjs__WEBPACK_IMPORTED_MODULE_0__["default"].data;
@@ -73,7 +67,6 @@ const commandsModule = ({
 }) => {
   const {
     segmentationService,
-    uiDialogService,
     displaySetService,
     viewportGridService,
     toolGroupService
@@ -238,12 +231,6 @@ const commandsModule = ({
       segmentationId,
       dataSource
     }) => {
-      const promptResult = await (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_1__.createReportDialogPrompt)(uiDialogService, {
-        extensionManager
-      });
-      if (promptResult.action !== 1 && !promptResult.value) {
-        return;
-      }
       const segmentation = segmentationService.getSegmentation(segmentationId);
       if (!segmentation) {
         throw new Error('No segmentation found');
@@ -251,29 +238,47 @@ const commandsModule = ({
       const {
         label
       } = segmentation;
-      const SeriesDescription = promptResult.value || label || 'Research Derived Series';
-      const generatedData = actions.generateSegmentation({
-        segmentationId,
-        options: {
-          SeriesDescription
-        }
-      });
-      if (!generatedData || !generatedData.dataset) {
-        throw new Error('Error during segmentation generation');
-      }
+      const defaultDataSource = dataSource ?? extensionManager.getActiveDataSource()[0];
       const {
-        dataset: naturalizedReport
-      } = generatedData;
-      await dataSource.store.dicom(naturalizedReport);
+        value: reportName,
+        dataSourceName: selectedDataSource,
+        action
+      } = await (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__.createReportDialogPrompt)({
+        servicesManager,
+        extensionManager,
+        title: 'Store Segmentation'
+      });
+      if (action === _default_src_utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_6__["default"].CREATE_REPORT) {
+        try {
+          const selectedDataSourceConfig = selectedDataSource ? extensionManager.getDataSources(selectedDataSource)[0] : defaultDataSource;
+          const generatedData = actions.generateSegmentation({
+            segmentationId,
+            options: {
+              SeriesDescription: reportName || label || 'Research Derived Series'
+            }
+          });
+          if (!generatedData || !generatedData.dataset) {
+            throw new Error('Error during segmentation generation');
+          }
+          const {
+            dataset: naturalizedReport
+          } = generatedData;
 
-      // The "Mode" route listens for DicomMetadataStore changes
-      // When a new instance is added, it listens and
-      // automatically calls makeDisplaySets
+          // DCMJS assigns a dummy study id during creation, and this can cause problems, so clearing it out
+          if (naturalizedReport.StudyID === 'No Study ID') {
+            naturalizedReport.StudyID = '';
+          }
+          await selectedDataSourceConfig.store.dicom(naturalizedReport);
 
-      // add the information for where we stored it to the instance as well
-      naturalizedReport.wadoRoot = dataSource.getConfig().wadoRoot;
-      _ohif_core__WEBPACK_IMPORTED_MODULE_5__.DicomMetadataStore.addInstances([naturalizedReport], true);
-      return naturalizedReport;
+          // add the information for where we stored it to the instance as well
+          naturalizedReport.wadoRoot = selectedDataSourceConfig.getConfig().wadoRoot;
+          _ohif_core__WEBPACK_IMPORTED_MODULE_1__.DicomMetadataStore.addInstances([naturalizedReport], true);
+          return naturalizedReport;
+        } catch (error) {
+          console.debug('Error storing segmentation:', error);
+          throw error;
+        }
+      }
     },
     /**
      * Converts segmentations into RTSS for download.
@@ -282,16 +287,17 @@ const commandsModule = ({
      * converts dataset to downloadable blob.
      *
      */
-    downloadRTSS: ({
+    downloadRTSS: async ({
       segmentationId
     }) => {
       const segmentations = segmentationService.getSegmentation(segmentationId);
-      const vtkUtils = {
-        vtkImageMarchingSquares: _kitware_vtk_js_Filters_General_ImageMarchingSquares__WEBPACK_IMPORTED_MODULE_6__["default"],
-        vtkDataArray: _kitware_vtk_js_Common_Core_DataArray__WEBPACK_IMPORTED_MODULE_7__["default"],
-        vtkImageData: _kitware_vtk_js_Common_DataModel_ImageData__WEBPACK_IMPORTED_MODULE_8__["default"]
-      };
-      const RTSS = generateRTSSFromSegmentations(segmentations, _ohif_core__WEBPACK_IMPORTED_MODULE_5__.classes.MetadataProvider, _ohif_core__WEBPACK_IMPORTED_MODULE_5__.DicomMetadataStore, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.cache, _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.Enums, vtkUtils);
+
+      // inject colors to the segmentIndex
+      const firstRepresentation = segmentationService.getRepresentationsForSegmentation(segmentationId)[0];
+      Object.entries(segmentations.segments).forEach(([segmentIndex, segment]) => {
+        segment.color = segmentationService.getSegmentColor(firstRepresentation.viewportId, segmentationId, segmentIndex);
+      });
+      const RTSS = await generateRTSSFromSegmentations(segmentations, _ohif_core__WEBPACK_IMPORTED_MODULE_1__.classes.MetadataProvider, _ohif_core__WEBPACK_IMPORTED_MODULE_1__.DicomMetadataStore);
       try {
         const reportBlob = datasetToBlob(RTSS);
 
@@ -301,50 +307,9 @@ const commandsModule = ({
       } catch (e) {
         console.warn(e);
       }
-    },
-    setBrushSize: ({
-      value,
-      toolNames
-    }) => {
-      const brushSize = Number(value);
-      toolGroupService.getToolGroupIds()?.forEach(toolGroupId => {
-        if (toolNames?.length === 0) {
-          segmentationUtils.setBrushSizeForToolGroup(toolGroupId, brushSize);
-        } else {
-          toolNames?.forEach(toolName => {
-            segmentationUtils.setBrushSizeForToolGroup(toolGroupId, brushSize, toolName);
-          });
-        }
-      });
-    },
-    setThresholdRange: ({
-      value,
-      toolNames = ['ThresholdCircularBrush', 'ThresholdSphereBrush']
-    }) => {
-      toolGroupService.getToolGroupIds()?.forEach(toolGroupId => {
-        const toolGroup = toolGroupService.getToolGroup(toolGroupId);
-        toolNames?.forEach(toolName => {
-          toolGroup.setToolConfiguration(toolName, {
-            strategySpecificConfiguration: {
-              THRESHOLD: {
-                threshold: value
-              }
-            }
-          });
-        });
-      });
     }
   };
   const definitions = {
-    /**
-     * Obsolete?
-     */
-    loadSegmentationDisplaySetsForViewport: {
-      commandFn: actions.loadSegmentationDisplaySetsForViewport
-    },
-    /**
-     * Obsolete?
-     */
     loadSegmentationsForViewport: {
       commandFn: actions.loadSegmentationsForViewport
     },
@@ -359,12 +324,6 @@ const commandsModule = ({
     },
     downloadRTSS: {
       commandFn: actions.downloadRTSS
-    },
-    setBrushSize: {
-      commandFn: actions.setBrushSize
-    },
-    setThresholdRange: {
-      commandFn: actions.setThresholdRange
     }
   };
   return {
@@ -381,7 +340,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -396,7 +371,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-seg/src/getHangingProtocolModule.ts ***!
   \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -494,7 +469,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -509,20 +500,22 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-seg/src/getSopClassHandlerModule.ts ***!
   \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
-/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
-/* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-seg/src/id.js");
-/* harmony import */ var _utils_dicomlabToRGB__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/dicomlabToRGB */ "../../../extensions/cornerstone-dicom-seg/src/utils/dicomlabToRGB.ts");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-seg/src/id.js");
+/* harmony import */ var _utils_dicomlabToRGB__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/dicomlabToRGB */ "../../../extensions/cornerstone-dicom-seg/src/utils/dicomlabToRGB.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -558,7 +551,7 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     SOPInstanceUID,
     SeriesInstanceUID,
     StudyInstanceUID,
-    SOPClassHandlerId: _id__WEBPACK_IMPORTED_MODULE_4__.SOPClassHandlerId,
+    SOPClassHandlerId: _id__WEBPACK_IMPORTED_MODULE_5__.SOPClassHandlerId,
     SOPClassUID,
     referencedImages: null,
     referencedSeriesInstanceUID: null,
@@ -573,7 +566,8 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     wadoRoot,
     wadoUriRoot,
     wadoUri,
-    isOverlayDisplaySet: true
+    isOverlayDisplaySet: true,
+    label: SeriesDescription || `${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('Series')} ${SeriesNumber} - ${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('SEG')}`
   };
   const referencedSeriesSequence = instance.ReferencedSeriesSequence;
   if (!referencedSeriesSequence) {
@@ -670,17 +664,20 @@ async function _loadSegments({
   if (!referencedDisplaySet) {
     throw new Error('referencedDisplaySet is missing for SEG');
   }
-  const {
-    instances: images
+  let {
+    imageIds
   } = referencedDisplaySet;
-  const imageIds = images.map(({
-    imageId
-  }) => imageId);
+  if (!imageIds) {
+    // try images
+    const {
+      images
+    } = referencedDisplaySet;
+    imageIds = images.map(image => image.imageId);
+  }
 
   // Todo: what should be defaults here
   const tolerance = 0.001;
-  const skipOverlapping = true;
-  _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.eventTarget.addEventListener(_cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__.Enums.Events.SEGMENTATION_LOAD_PROGRESS, evt => {
+  _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.eventTarget.addEventListener(_cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_4__.Enums.Events.SEGMENTATION_LOAD_PROGRESS, evt => {
     const {
       percentComplete
     } = evt.detail;
@@ -688,31 +685,22 @@ async function _loadSegments({
       percentComplete
     });
   });
-  const results = await _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__.adaptersSEG.Cornerstone3D.Segmentation.generateToolState(imageIds, arrayBuffer, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.metaData, {
-    skipOverlapping,
-    tolerance,
-    eventTarget: _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.eventTarget,
-    triggerEvent: _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.triggerEvent
+  const results = await _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_4__.adaptersSEG.Cornerstone3D.Segmentation.createFromDICOMSegBuffer(imageIds, arrayBuffer, {
+    metadataProvider: _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.metaData,
+    tolerance
   });
   let usedRecommendedDisplayCIELabValue = true;
   results.segMetadata.data.forEach((data, i) => {
     if (i > 0) {
       data.rgba = data.RecommendedDisplayCIELabValue;
       if (data.rgba) {
-        data.rgba = (0,_utils_dicomlabToRGB__WEBPACK_IMPORTED_MODULE_5__.dicomlabToRGB)(data.rgba);
+        data.rgba = (0,_utils_dicomlabToRGB__WEBPACK_IMPORTED_MODULE_6__.dicomlabToRGB)(data.rgba);
       } else {
         usedRecommendedDisplayCIELabValue = false;
-        data.rgba = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.CONSTANTS.COLOR_LUT[i % _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.CONSTANTS.COLOR_LUT.length];
+        data.rgba = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.CONSTANTS.COLOR_LUT[i % _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.CONSTANTS.COLOR_LUT.length];
       }
     }
   });
-  if (results.overlappingSegments) {
-    uiNotificationService.show({
-      title: 'Overlapping Segments',
-      message: 'Unsupported overlapping segments detected, segmentation rendering results may be incorrect.',
-      type: 'warning'
-    });
-  }
   if (!usedRecommendedDisplayCIELabValue) {
     // Display a notification about the non-utilization of RecommendedDisplayCIELabValue
     uiNotificationService.show({
@@ -725,12 +713,13 @@ async function _loadSegments({
   Object.assign(segDisplaySet, results);
 }
 function _segmentationExists(segDisplaySet) {
-  return _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.segmentation.state.getSegmentation(segDisplaySet.displaySetInstanceUID);
+  return _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.segmentation.state.getSegmentation(segDisplaySet.displaySetInstanceUID);
 }
-function getSopClassHandlerModule({
-  servicesManager,
-  extensionManager
-}) {
+function getSopClassHandlerModule(params) {
+  const {
+    servicesManager,
+    extensionManager
+  } = params;
   const getDisplaySetsFromSeries = instances => {
     return _getDisplaySetsFromSeries(instances, servicesManager, extensionManager);
   };
@@ -748,7 +737,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -763,7 +768,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-seg/src/getToolbarModule.ts ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -781,6 +786,16 @@ function getToolbarModule({
     toolGroupService
   } = servicesManager.services;
   return [{
+    name: 'evaluate.cornerstone.hasSegmentation',
+    evaluate: ({
+      viewportId
+    }) => {
+      const segmentations = segmentationService.getSegmentationRepresentations(viewportId);
+      return {
+        disabled: !segmentations?.length
+      };
+    }
+  }, {
     name: 'evaluate.cornerstone.segmentation',
     evaluate: ({
       viewportId,
@@ -796,33 +811,39 @@ function getToolbarModule({
       if (!segmentations?.length) {
         return {
           disabled: true,
-          className: '!text-common-bright !bg-black opacity-50',
           disabledText: disabledText ?? 'No segmentations available'
+        };
+      }
+      const activeSegmentation = segmentationService.getActiveSegmentation(viewportId);
+      if (!Object.keys(activeSegmentation.segments).length) {
+        return {
+          disabled: true,
+          disabledText: 'Add segment to enable this tool'
         };
       }
       const toolGroup = toolGroupService.getToolGroupForViewport(viewportId);
       if (!toolGroup) {
         return {
           disabled: true,
-          className: '!text-common-bright ohif-disabled',
           disabledText: disabledText ?? 'Not available on the current viewport'
+        };
+      }
+      if (!toolNames) {
+        return {
+          disabled: false
+          // isActive: false,
         };
       }
       const toolName = toolbarService.getToolNameForButton(button);
       if (!toolGroup.hasTool(toolName) && !toolNames) {
         return {
           disabled: true,
-          className: '!text-common-bright ohif-disabled',
           disabledText: disabledText ?? 'Not available on the current viewport'
         };
       }
       const isPrimaryActive = toolNames ? toolNames.includes(toolGroup.getActivePrimaryMouseButtonTool()) : toolGroup.getActivePrimaryMouseButtonTool() === toolName;
       return {
         disabled: false,
-        className: isPrimaryActive ? '!text-black !bg-primary-light hover:bg-primary-light hover-text-black hover:cursor-pointer' : '!text-common-bright !bg-black hover:bg-primary-light hover:cursor-pointer hover:text-black',
-        // Todo: isActive right now is used for nested buttons where the primary
-        // button needs to be fully rounded (vs partial rounded) when active
-        // otherwise it does not have any other use
         isActive: isPrimaryActive
       };
     }
@@ -835,7 +856,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -850,7 +887,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-seg/src/id.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -874,7 +911,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -889,7 +942,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-seg/src/index.tsx ***!
   \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -921,9 +974,8 @@ function _extends() {
 
 
 const Component = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().lazy(_c = () => {
-  return __webpack_require__.e(/*! import() */ "extensions_cornerstone-dicom-seg_src_viewports_OHIFCornerstoneSEGViewport_tsx").then(__webpack_require__.bind(__webpack_require__, /*! ./viewports/OHIFCornerstoneSEGViewport */ "../../../extensions/cornerstone-dicom-seg/src/viewports/OHIFCornerstoneSEGViewport.tsx"));
+  return Promise.all(/*! import() */[__webpack_require__.e("vendors-node_modules_cornerstonejs_ai_dist_esm_index_js-node_modules_cornerstonejs_core_dist_-1038f6"), __webpack_require__.e("extensions_cornerstone_src_components_NavigationComponent_NavigationComponent_tsx-extensions_-cc794b"), __webpack_require__.e("extensions_cornerstone-dicom-seg_src_viewports_OHIFCornerstoneSEGViewport_tsx")]).then(__webpack_require__.bind(__webpack_require__, /*! ./viewports/OHIFCornerstoneSEGViewport */ "../../../extensions/cornerstone-dicom-seg/src/viewports/OHIFCornerstoneSEGViewport.tsx"));
 });
-_c4 = Component;
 _c2 = Component;
 const OHIFCornerstoneSEGViewport = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Suspense), {
@@ -934,7 +986,6 @@ const OHIFCornerstoneSEGViewport = props => {
 /**
  * You can remove any of the following modules if you don't need them.
  */
-_c5 = OHIFCornerstoneSEGViewport;
 _c3 = OHIFCornerstoneSEGViewport;
 const extension = {
   /**
@@ -975,9 +1026,6 @@ var _c, _c2, _c3;
 __webpack_require__.$Refresh$.register(_c, "Component$React.lazy");
 __webpack_require__.$Refresh$.register(_c2, "Component");
 __webpack_require__.$Refresh$.register(_c3, "OHIFCornerstoneSEGViewport");
-var _c4, _c5;
-__webpack_require__.$Refresh$.register(_c4, "Component");
-__webpack_require__.$Refresh$.register(_c5, "OHIFCornerstoneSEGViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -985,7 +1033,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1000,7 +1064,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-seg/src/utils/dicomlabToRGB.ts ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1029,7 +1093,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1046,7 +1126,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \**************************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-seg","version":"3.9.1","description":"DICOM SEG read workflow","author":"OHIF","license":"MIT","main":"dist/ohif-extension-cornerstone-dicom-seg.umd.js","module":"src/index.tsx","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-seg":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-cornerstone":"3.9.1","@ohif/extension-default":"3.9.1","@ohif/i18n":"3.9.1","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-router":"^6.23.1","react-router-dom":"^6.23.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/adapters":"^2.2.20","@cornerstonejs/core":"^2.2.20","@kitware/vtk.js":"32.1.0","react-color":"^2.19.3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-seg","version":"3.11.0-beta.37","description":"DICOM SEG read workflow","author":"OHIF","license":"MIT","main":"dist/ohif-extension-cornerstone-dicom-seg.umd.js","module":"src/index.tsx","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-seg":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-cornerstone":"3.11.0-beta.37","@ohif/extension-default":"3.11.0-beta.37","@ohif/i18n":"3.11.0-beta.37","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-router":"^6.23.1","react-router-dom":"^6.23.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/adapters":"^3.15.1","@cornerstonejs/core":"^3.15.1","@kitware/vtk.js":"32.12.0","react-color":"^2.19.3"}}');
 
 /***/ })
 

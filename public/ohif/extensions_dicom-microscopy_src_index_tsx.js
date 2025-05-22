@@ -5,7 +5,7 @@
 /*!************************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/DicomMicroscopySRSopClassHandler.js ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -127,7 +127,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -142,7 +158,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/components/MicroscopyPanel/MicroscopyPanel.tsx ***!
   \***********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -150,18 +166,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var _services_MicroscopyService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/MicroscopyService */ "../../../extensions/dicom-microscopy/src/services/MicroscopyService.ts");
-/* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
-/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
+/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
+/* harmony import */ var _services_MicroscopyService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/MicroscopyService */ "../../../extensions/dicom-microscopy/src/services/MicroscopyService.ts");
+/* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
 /* harmony import */ var _utils_constructSR__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/constructSR */ "../../../extensions/dicom-microscopy/src/utils/constructSR.ts");
 /* harmony import */ var _utils_saveByteArray__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/saveByteArray */ "../../../extensions/dicom-microscopy/src/utils/saveByteArray.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -175,7 +190,7 @@ var _s = __webpack_require__.$Refresh$.signature();
 let saving = false;
 const {
   datasetToBuffer
-} = dcmjs__WEBPACK_IMPORTED_MODULE_5__["default"].data;
+} = dcmjs__WEBPACK_IMPORTED_MODULE_6__["default"].data;
 const formatArea = area => {
   let mult = 1;
   let unit = 'mm';
@@ -213,7 +228,6 @@ const formatLength = (length, unit) => {
  * @returns
  */
 function MicroscopyPanel(props) {
-  _s2();
   _s();
   const {
     microscopyService
@@ -252,13 +266,13 @@ function MicroscopyPanel(props) {
     };
     const {
       unsubscribe: unsubscribeAnnotationUpdated
-    } = microscopyService.subscribe(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_4__.EVENTS.ANNOTATION_UPDATED, onAnnotationUpdated);
+    } = microscopyService.subscribe(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_5__.EVENTS.ANNOTATION_UPDATED, onAnnotationUpdated);
     const {
       unsubscribe: unsubscribeAnnotationSelected
-    } = microscopyService.subscribe(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_4__.EVENTS.ANNOTATION_SELECTED, onAnnotationSelected);
+    } = microscopyService.subscribe(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_5__.EVENTS.ANNOTATION_SELECTED, onAnnotationSelected);
     const {
       unsubscribe: unsubscribeAnnotationRemoved
-    } = microscopyService.subscribe(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_4__.EVENTS.ANNOTATION_REMOVED, onAnnotationRemoved);
+    } = microscopyService.subscribe(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_5__.EVENTS.ANNOTATION_REMOVED, onAnnotationRemoved);
     onAnnotationUpdated();
     onAnnotationSelected();
 
@@ -281,17 +295,12 @@ function MicroscopyPanel(props) {
     if (!annotations || saving) {
       return;
     }
-    (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_6__.callInputDialog)({
+    (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_1__.callInputDialog)({
       uiDialogService,
       title: 'Enter description of the Series',
       defaultValue: '',
-      callback: (value, action) => {
-        switch (action) {
-          case 'save':
-            {
-              saveFunction(value);
-            }
-        }
+      onSave: value => {
+        saveFunction(value);
       }
     });
   };
@@ -322,7 +331,7 @@ function MicroscopyPanel(props) {
     // Since once study contains multiple resolution levels (series) of one whole
     // Slide image.
 
-    const studyMetadata = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.DicomMetadataStore.getStudy(studyInstanceUID);
+    const studyMetadata = _ohif_core__WEBPACK_IMPORTED_MODULE_2__.DicomMetadataStore.getStudy(studyInstanceUID);
     const displaySets = getAllDisplaySets(studyMetadata);
     const smDisplaySet = displaySets.find(ds => ds.Modality === 'SM');
 
@@ -391,7 +400,7 @@ function MicroscopyPanel(props) {
       } = activeViewport;
 
       // TODO: studies?
-      const study = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.DicomMetadataStore.getStudy(StudyInstanceUID);
+      const study = _ohif_core__WEBPACK_IMPORTED_MODULE_2__.DicomMetadataStore.getStudy(StudyInstanceUID);
       const lastDerivedDisplaySet = study.derivedDisplaySets.sort((ds1, ds2) => {
         const dateTime1 = Number(`${ds1.SeriesDate}${ds1.SeriesTime}`);
         const dateTime2 = Number(`${ds2.SeriesDate}${ds2.SeriesTime}`);
@@ -486,25 +495,43 @@ function MicroscopyPanel(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "ohif-scrollbar overflow-y-auto overflow-x-hidden",
     "data-cy": 'measurements-panel'
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.MeasurementTable, {
-    title: "Measurements",
-    servicesManager: props.servicesManager,
-    data: data,
-    onClick: onMeasurementItemClickHandler,
-    onEdit: onMeasurementItemEditHandler,
-    onDelete: onMeasurementDeleteHandler
-  })));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col"
+  }, data.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.DataRow, {
+    key: item.uid,
+    number: item.index + 1,
+    title: item.label,
+    isSelected: item.isActive,
+    onSelect: () => onMeasurementItemClickHandler({
+      uid: item.uid
+    }),
+    details: {
+      primary: item.displayText,
+      secondary: []
+    },
+    isVisible: true,
+    onToggleVisibility: () => {},
+    isLocked: false,
+    onToggleLocked: () => {},
+    onRename: () => onMeasurementItemEditHandler({
+      uid: item.uid,
+      isActive: item.isActive
+    }),
+    onDelete: () => onMeasurementDeleteHandler({
+      uid: item.uid,
+      isActive: item.isActive
+    }),
+    onColor: () => {},
+    disableEditing: false,
+    description: item.displayText.join(', ')
+  })))));
 }
-_s2(MicroscopyPanel, "/re50xd4XZu0tZ8ab/g3kIVSXgc=");
-_c2 = MicroscopyPanel;
-_s(MicroscopyPanel, "J1kKkIVQlRYfh9In16mgH2bqm40=");
+_s(MicroscopyPanel, "/re50xd4XZu0tZ8ab/g3kIVSXgc=");
 _c = MicroscopyPanel;
-const connectedMicroscopyPanel = (0,react_i18next__WEBPACK_IMPORTED_MODULE_3__.withTranslation)(['MicroscopyTable', 'Common'])(MicroscopyPanel);
+const connectedMicroscopyPanel = (0,react_i18next__WEBPACK_IMPORTED_MODULE_4__.withTranslation)(['MicroscopyTable', 'Common'])(MicroscopyPanel);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (connectedMicroscopyPanel);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "MicroscopyPanel");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "MicroscopyPanel");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -512,7 +539,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -527,7 +570,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/getCommandsModule.ts ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -569,14 +612,9 @@ function getCommandsModule({
       (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_0__.callInputDialog)({
         uiDialogService,
         defaultValue: '',
-        callback: (value, action) => {
-          switch (action) {
-            case 'save':
-              {
-                roiAnnotation.setLabel(value);
-                microscopyService.triggerRelabel(roiAnnotation);
-              }
-          }
+        onSave: value => {
+          roiAnnotation.setLabel(value);
+          microscopyService.triggerRelabel(roiAnnotation);
         }
       });
     },
@@ -677,7 +715,73 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/dicom-microscopy/src/getCustomizationModule.ts":
+/*!**************************************************************************!*\
+  !*** ../../../extensions/dicom-microscopy/src/getCustomizationModule.ts ***!
+  \**************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getCustomizationModule)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+function getCustomizationModule() {
+  return [];
+}
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -692,7 +796,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/getPanelModule.tsx ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -700,7 +804,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var _components_MicroscopyPanel_MicroscopyPanel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/MicroscopyPanel/MicroscopyPanel */ "../../../extensions/dicom-microscopy/src/components/MicroscopyPanel/MicroscopyPanel.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
@@ -719,15 +823,13 @@ function getPanelModule({
   extensionManager,
   servicesManager
 }) {
-  var _s2 = __webpack_require__.$Refresh$.signature();
   var _s = __webpack_require__.$Refresh$.signature();
   const wrappedMeasurementPanel = ({}) => {
-    _s2();
     _s();
     const [{
       activeViewportId,
       viewports
-    }] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid)();
+    }] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid)();
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_MicroscopyPanel_MicroscopyPanel__WEBPACK_IMPORTED_MODULE_2__["default"], {
       viewports: viewports,
       activeViewportId: activeViewportId,
@@ -738,11 +840,8 @@ function getPanelModule({
       extensionManager: extensionManager
     });
   };
-  _s2(wrappedMeasurementPanel, "EV8IprZhHE92zX5UCb7fBNmhByk=", false, function () {
-    return [_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid];
-  });
-  _s(wrappedMeasurementPanel, "mffltpitSyHqcFBe1XGpHczyI0E=", false, function () {
-    return [_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid];
+  _s(wrappedMeasurementPanel, "EV8IprZhHE92zX5UCb7fBNmhByk=", false, function () {
+    return [_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid];
   });
   return [{
     name: 'measure',
@@ -760,7 +859,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -775,7 +890,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/id.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -795,7 +910,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -810,7 +941,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/index.tsx ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -821,12 +952,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _getPanelModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getPanelModule */ "../../../extensions/dicom-microscopy/src/getPanelModule.tsx");
 /* harmony import */ var _getCommandsModule__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getCommandsModule */ "../../../extensions/dicom-microscopy/src/getCommandsModule.ts");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _DicomMicroscopySRSopClassHandler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DicomMicroscopySRSopClassHandler */ "../../../extensions/dicom-microscopy/src/DicomMicroscopySRSopClassHandler.js");
-/* harmony import */ var _services_MicroscopyService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/MicroscopyService */ "../../../extensions/dicom-microscopy/src/services/MicroscopyService.ts");
-/* harmony import */ var react_resize_detector__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-resize-detector */ "../../../node_modules/react-resize-detector/build/index.esm.js");
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash.debounce */ "../../../node_modules/lodash.debounce/index.js");
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _getCustomizationModule__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getCustomizationModule */ "../../../extensions/dicom-microscopy/src/getCustomizationModule.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _DicomMicroscopySRSopClassHandler__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DicomMicroscopySRSopClassHandler */ "../../../extensions/dicom-microscopy/src/DicomMicroscopySRSopClassHandler.js");
+/* harmony import */ var _services_MicroscopyService__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/MicroscopyService */ "../../../extensions/dicom-microscopy/src/services/MicroscopyService.ts");
+/* harmony import */ var react_resize_detector__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-resize-detector */ "../../../node_modules/react-resize-detector/build/index.esm.js");
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lodash.debounce */ "../../../node_modules/lodash.debounce/index.js");
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_9__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -848,10 +980,10 @@ function _extends() {
 
 
 
+
 const Component = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().lazy(_c = () => {
   return __webpack_require__.e(/*! import() */ "extensions_dicom-microscopy_src_DicomMicroscopyViewport_tsx").then(__webpack_require__.bind(__webpack_require__, /*! ./DicomMicroscopyViewport */ "../../../extensions/dicom-microscopy/src/DicomMicroscopyViewport.tsx"));
 });
-_c4 = Component;
 _c2 = Component;
 const MicroscopyViewport = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react__WEBPACK_IMPORTED_MODULE_1__.Suspense, {
@@ -862,7 +994,6 @@ const MicroscopyViewport = props => {
 /**
  * You can remove any of the following modules if you don't need them.
  */
-_c5 = MicroscopyViewport;
 _c3 = MicroscopyViewport;
 const extension = {
   /**
@@ -873,7 +1004,7 @@ const extension = {
   async preRegistration({
     servicesManager
   }) {
-    servicesManager.registerService(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_6__["default"].REGISTRATION(servicesManager));
+    servicesManager.registerService(_services_MicroscopyService__WEBPACK_IMPORTED_MODULE_7__["default"].REGISTRATION(servicesManager));
   },
   /**
    * ViewportModule should provide a list of viewports that will be available in OHIF
@@ -886,7 +1017,6 @@ const extension = {
     extensionManager,
     commandsManager
   }) {
-    var _s2 = __webpack_require__.$Refresh$.signature();
     var _s = __webpack_require__.$Refresh$.signature();
     /**
      *
@@ -900,19 +1030,18 @@ const extension = {
      * @returns
      */
     const ExtendedMicroscopyViewport = props => {
-      _s2();
       _s();
       const {
         viewportOptions
       } = props;
-      const [viewportGrid, viewportGridService] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid)();
+      const [viewportGrid, viewportGridService] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid)();
       const {
         activeViewportId
       } = viewportGrid;
       const displaySetsKey = (0,react__WEBPACK_IMPORTED_MODULE_1__.useMemo)(() => {
         return props.displaySets.map(ds => ds.displaySetInstanceUID).join('-');
       }, [props.displaySets]);
-      const onResize = lodash_debounce__WEBPACK_IMPORTED_MODULE_8___default()(() => {
+      const onResize = lodash_debounce__WEBPACK_IMPORTED_MODULE_9___default()(() => {
         const {
           microscopyService
         } = servicesManager.services;
@@ -923,16 +1052,13 @@ const extension = {
       }, 100);
       const {
         ref: resizeRef
-      } = (0,react_resize_detector__WEBPACK_IMPORTED_MODULE_7__.useResizeDetector)({
+      } = (0,react_resize_detector__WEBPACK_IMPORTED_MODULE_8__.useResizeDetector)({
         onResize,
         handleHeight: true,
         handleWidth: true
       });
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(MicroscopyViewport, _extends({
         key: displaySetsKey,
-        servicesManager: servicesManager,
-        extensionManager: extensionManager,
-        commandsManager: commandsManager,
         activeViewportId: activeViewportId,
         setViewportActive: viewportId => {
           viewportGridService.setActiveViewportId(viewportId);
@@ -941,11 +1067,8 @@ const extension = {
         resizeRef: resizeRef
       }, props));
     };
-    _s2(ExtendedMicroscopyViewport, "1OBN5DeIGEx8FjxA7gaPex5Jr+o=", false, function () {
-      return [_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid, react_resize_detector__WEBPACK_IMPORTED_MODULE_7__.useResizeDetector];
-    });
-    _s(ExtendedMicroscopyViewport, "CkVZPp0CToZmEUjFoMBBLRh4nvc=", false, function () {
-      return [_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid, react_resize_detector__WEBPACK_IMPORTED_MODULE_7__.useResizeDetector];
+    _s(ExtendedMicroscopyViewport, "1OBN5DeIGEx8FjxA7gaPex5Jr+o=", false, function () {
+      return [_ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid, react_resize_detector__WEBPACK_IMPORTED_MODULE_8__.useResizeDetector];
     });
     return [{
       name: 'microscopy-dicom',
@@ -995,19 +1118,17 @@ const extension = {
    * Examples include the default sop class handler provided by the default extension
    */
   getSopClassHandlerModule(params) {
-    return [(0,_DicomMicroscopySRSopClassHandler__WEBPACK_IMPORTED_MODULE_5__["default"])(params)];
+    return [(0,_DicomMicroscopySRSopClassHandler__WEBPACK_IMPORTED_MODULE_6__["default"])(params)];
   },
   getPanelModule: _getPanelModule__WEBPACK_IMPORTED_MODULE_2__["default"],
-  getCommandsModule: _getCommandsModule__WEBPACK_IMPORTED_MODULE_3__["default"]
+  getCommandsModule: _getCommandsModule__WEBPACK_IMPORTED_MODULE_3__["default"],
+  getCustomizationModule: _getCustomizationModule__WEBPACK_IMPORTED_MODULE_4__["default"]
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (extension);
 var _c, _c2, _c3;
 __webpack_require__.$Refresh$.register(_c, "Component$React.lazy");
 __webpack_require__.$Refresh$.register(_c2, "Component");
 __webpack_require__.$Refresh$.register(_c3, "MicroscopyViewport");
-var _c4, _c5;
-__webpack_require__.$Refresh$.register(_c4, "Component");
-__webpack_require__.$Refresh$.register(_c5, "MicroscopyViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -1015,7 +1136,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1030,7 +1167,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/services/MicroscopyService.ts ***!
   \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1661,7 +1798,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1676,7 +1829,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/tools/viewerManager.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2116,7 +2269,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2131,7 +2300,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/DEVICE_OBSERVER_UID.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2151,7 +2320,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2166,7 +2351,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/RoiAnnotation.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2348,7 +2533,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2363,7 +2564,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/areaOfPolygon.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2393,7 +2594,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2408,7 +2625,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/constructSR.ts ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2608,7 +2825,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2623,7 +2856,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/coordinateFormatScoord3d2Geometry.js ***!
   \*******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2735,7 +2968,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2750,7 +2999,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/dcmCodeValues.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2779,7 +3028,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2794,7 +3059,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/getSourceDisplaySet.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2831,7 +3096,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2846,7 +3127,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/loadSR.ts ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3010,7 +3291,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3025,7 +3322,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/saveByteArray.ts ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3055,7 +3352,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3070,7 +3383,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/styles.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3127,7 +3440,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3142,7 +3471,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/toArray.js ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3161,7 +3490,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3178,7 +3523,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \*********************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-dicom-microscopy","version":"3.9.1","description":"OHIF extension for DICOM microscopy","author":"Bill Wallace, md-prog","license":"MIT","main":"dist/ohif-extension-dicom-microscopy.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pdf":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-default":"3.9.1","@ohif/i18n":"3.9.1","@ohif/ui":"3.9.1","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^10.11.0","react-router":"^6.23.1","react-router-dom":"^6.23.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/codec-charls":"^1.2.3","@cornerstonejs/codec-libjpeg-turbo-8bit":"^1.2.2","@cornerstonejs/codec-openjpeg":"^1.2.4","colormap":"^2.3","mathjs":"^12.4.2"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-dicom-microscopy","version":"3.11.0-beta.37","description":"OHIF extension for DICOM microscopy","author":"Bill Wallace, md-prog","license":"MIT","main":"dist/ohif-extension-dicom-microscopy.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pdf":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-default":"3.11.0-beta.37","@ohif/i18n":"3.11.0-beta.37","@ohif/ui":"3.11.0-beta.37","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^10.11.0","react-router":"^6.23.1","react-router-dom":"^6.23.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/codec-charls":"^1.2.3","@cornerstonejs/codec-libjpeg-turbo-8bit":"^1.2.2","@cornerstonejs/codec-openjpeg":"^1.2.4","colormap":"^2.3","lodash.debounce":"^4.0.8","mathjs":"^12.4.2"}}');
 
 /***/ })
 

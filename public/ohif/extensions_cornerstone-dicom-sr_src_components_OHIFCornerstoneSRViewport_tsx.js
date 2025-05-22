@@ -5,7 +5,7 @@
 /*!**********************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/components/OHIFCornerstoneSRContainer.tsx ***!
   \**********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -79,7 +79,6 @@ function OHIFCornerstoneSRContainer(props) {
     className: "ml-4 mb-2"
   }, contentItems));
 }
-_c2 = OHIFCornerstoneSRContainer;
 _c = OHIFCornerstoneSRContainer;
 OHIFCornerstoneSRContainer.propTypes = {
   /**
@@ -107,8 +106,6 @@ OHIFCornerstoneSRContainer.propTypes = {
 };
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstoneSRContainer");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstoneSRContainer");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -116,7 +113,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -131,7 +144,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/components/OHIFCornerstoneSRContentItem.tsx ***!
   \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -192,7 +205,6 @@ function OHIFCornerstoneSRContentItem(props) {
     className: className
   }, formattedValue)));
 }
-_c2 = OHIFCornerstoneSRContentItem;
 _c = OHIFCornerstoneSRContentItem;
 OHIFCornerstoneSRContentItem.propTypes = {
   contentItem: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().object),
@@ -202,8 +214,6 @@ OHIFCornerstoneSRContentItem.propTypes = {
 
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstoneSRContentItem");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstoneSRContentItem");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -211,7 +221,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -226,7 +252,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/components/OHIFCornerstoneSRMeasurementViewport.tsx ***!
   \********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -236,17 +262,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _tools_modules_dicomSRModule__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tools/modules/dicomSRModule */ "../../../extensions/cornerstone-dicom-sr/src/tools/modules/dicomSRModule.js");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _utils_hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/hydrateStructuredReport */ "../../../extensions/cornerstone-dicom-sr/src/utils/hydrateStructuredReport.ts");
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @state */ "./state/index.js");
-/* harmony import */ var _utils_createReferencedImageDisplaySet__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/createReferencedImageDisplaySet */ "../../../extensions/cornerstone-dicom-sr/src/utils/createReferencedImageDisplaySet.ts");
+/* harmony import */ var _tools_modules_dicomSRModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tools/modules/dicomSRModule */ "../../../extensions/cornerstone-dicom-sr/src/tools/modules/dicomSRModule.js");
+/* harmony import */ var _utils_createReferencedImageDisplaySet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/createReferencedImageDisplaySet */ "../../../extensions/cornerstone-dicom-sr/src/utils/createReferencedImageDisplaySet.ts");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core_src_contextProviders_SystemProvider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/core/src/contextProviders/SystemProvider */ "../../core/src/contextProviders/SystemProvider.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {
@@ -264,28 +287,20 @@ function _extends() {
 
 
 
-
-
-const MEASUREMENT_TRACKING_EXTENSION_ID = '@ohif/extension-measurement-tracking';
 const SR_TOOLGROUP_BASE_NAME = 'SRToolGroup';
 function OHIFCornerstoneSRMeasurementViewport(props) {
-  _s2();
   _s();
   const {
-    commandsManager,
+    servicesManager
+  } = (0,_ohif_core_src_contextProviders_SystemProvider__WEBPACK_IMPORTED_MODULE_6__.useSystem)();
+  const {
     children,
     dataSource,
     displaySets,
-    viewportOptions,
-    servicesManager,
-    extensionManager
+    viewportOptions
   } = props;
-  const [appConfig] = (0,_state__WEBPACK_IMPORTED_MODULE_7__.useAppConfig)();
   const {
-    displaySetService,
-    cornerstoneViewportService,
-    measurementService,
-    viewportActionCornersService
+    displaySetService
   } = servicesManager.services;
   const viewportId = viewportOptions.viewportId;
 
@@ -294,9 +309,11 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
     throw new Error('SR viewport should only have a single display set');
   }
   const srDisplaySet = displaySets[0];
-  const [viewportGrid, viewportGridService] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid)();
+  const {
+    setPositionPresentation
+  } = (0,_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_4__.usePositionPresentationStore)();
+  const [viewportGrid, viewportGridService] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid)();
   const [measurementSelected, setMeasurementSelected] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
-  const [measurementCount, setMeasurementCount] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1);
   const [activeImageDisplaySetData, setActiveImageDisplaySetData] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
   const [referencedDisplaySetMetadata, setReferencedDisplaySetMetadata] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
   const [element, setElement] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
@@ -304,59 +321,11 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
     viewports,
     activeViewportId
   } = viewportGrid;
-  const {
-    t
-  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation)('Common');
-
-  // Optional hook into tracking extension, if present.
-  let trackedMeasurements;
-  let sendTrackedMeasurementsEvent;
-  const hasMeasurementTrackingExtension = extensionManager.registeredExtensionIds.includes(MEASUREMENT_TRACKING_EXTENSION_ID);
-  if (hasMeasurementTrackingExtension) {
-    const contextModule = extensionManager.getModuleEntry('@ohif/extension-measurement-tracking.contextModule.TrackedMeasurementsContext');
-    const tracked = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(contextModule.context);
-    trackedMeasurements = tracked?.[0];
-    sendTrackedMeasurementsEvent = tracked?.[1];
-  }
-  if (!sendTrackedMeasurementsEvent) {
-    // if no panels from measurement-tracking extension is used, this code will run
-    trackedMeasurements = null;
-    sendTrackedMeasurementsEvent = (eventName, {
-      displaySetInstanceUID
-    }) => {
-      measurementService.clearMeasurements();
-      const {
-        SeriesInstanceUIDs
-      } = (0,_utils_hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_6__["default"])({
-        servicesManager,
-        extensionManager,
-        appConfig
-      }, displaySetInstanceUID);
-      const displaySets = displaySetService.getDisplaySetsForSeries(SeriesInstanceUIDs[0]);
-      if (displaySets.length) {
-        viewportGridService.setDisplaySetsForViewports([{
-          viewportId: activeViewportId,
-          displaySetInstanceUIDs: [displaySets[0].displaySetInstanceUID]
-        }]);
-      }
-    };
-  }
-
-  /**
-   * Todo: what is this, not sure what it does regarding the react aspect,
-   * it is updating a local variable? which is not state.
-   */
-  const [isLocked, setIsLocked] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(trackedMeasurements?.context?.trackedSeries?.length > 0);
-  /**
-   * Store the tracking identifiers per viewport in order to be able to
-   * show the SR measurements on the referenced image on the correct viewport,
-   * when multiple viewports are used.
-   */
   const setTrackingIdentifiers = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(measurementSelected => {
     const {
       measurements
     } = srDisplaySet;
-    (0,_tools_modules_dicomSRModule__WEBPACK_IMPORTED_MODULE_4__.setTrackingUniqueIdentifiersForElement)(element, measurements.map(measurement => measurement.TrackingUniqueIdentifier), measurementSelected);
+    (0,_tools_modules_dicomSRModule__WEBPACK_IMPORTED_MODULE_2__.setTrackingUniqueIdentifiersForElement)(element, measurements.map(measurement => measurement.TrackingUniqueIdentifier), measurementSelected);
   }, [element, measurementSelected, srDisplaySet]);
 
   /**
@@ -382,11 +351,6 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
       // not throwing an error?
       console.warn('More than one SOPClassUID in the same series is not yet supported.');
     }
-
-    // if (!srDisplaySet.measurements || !srDisplaySet.measurements.length) {
-    //   return;
-    // }
-
     _getViewportReferencedDisplaySetData(srDisplaySet, newMeasurementSelected, displaySetService).then(({
       referencedDisplaySet,
       referencedDisplaySetMetadata
@@ -397,25 +361,15 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
       setMeasurementSelected(newMeasurementSelected);
       setActiveImageDisplaySetData(referencedDisplaySet);
       setReferencedDisplaySetMetadata(referencedDisplaySetMetadata);
-      if (referencedDisplaySet.displaySetInstanceUID === activeImageDisplaySetData?.displaySetInstanceUID) {
-        const {
-          measurements
-        } = srDisplaySet;
-
-        // it means that we have a new referenced display set, and the
-        // imageIdIndex will handle it by updating the viewport, but if they
-        // are the same we just need to use measurementService to jump to the
-        // new measurement
-        const csViewport = cornerstoneViewportService.getCornerstoneViewport(viewportId);
-        if (!csViewport) {
-          return;
+      const {
+        presentationIds
+      } = viewportOptions;
+      const measurement = srDisplaySet.measurements[newMeasurementSelected];
+      setPositionPresentation(presentationIds.positionPresentationId, {
+        viewReference: {
+          referencedImageId: measurement.imageId
         }
-        const imageIds = csViewport.getImageIds();
-        const imageIdIndex = imageIds.indexOf(measurements[newMeasurementSelected].imageId);
-        if (imageIdIndex !== -1) {
-          csViewport.setImageIdIndex(imageIdIndex);
-        }
-      }
+      });
     });
   }, [dataSource, srDisplaySet, activeImageDisplaySetData, viewportId]);
   const getCornerstoneViewport = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(() => {
@@ -423,17 +377,13 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
       return null;
     }
     const {
-      component: Component
-    } = extensionManager.getModuleEntry('@ohif/extension-cornerstone.viewportModule.cornerstone');
-    const {
       measurements
     } = srDisplaySet;
     const measurement = measurements[measurementSelected];
     if (!measurement) {
       return null;
     }
-    const initialImageIndex = activeImageDisplaySetData.images.findIndex(image => image.imageId === measurement.imageId);
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(Component, _extends({}, props, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_4__.OHIFCornerstoneViewport, _extends({}, props, {
       // should be passed second since we don't want SR displaySet to
       // override the activeImageDisplaySetData
       displaySets: [activeImageDisplaySetData]
@@ -457,21 +407,9 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
         props.onElementEnabled?.(evt);
         onElementEnabled(evt);
       },
-      initialImageIndex: initialImageIndex,
       isJumpToMeasurementDisabled: true
     }));
   }, [activeImageDisplaySetData, viewportId, measurementSelected]);
-  const onMeasurementChange = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(direction => {
-    let newMeasurementSelected = measurementSelected;
-    newMeasurementSelected += direction;
-    if (newMeasurementSelected >= measurementCount) {
-      newMeasurementSelected = 0;
-    } else if (newMeasurementSelected < 0) {
-      newMeasurementSelected = measurementCount - 1;
-    }
-    setTrackingIdentifiers(newMeasurementSelected);
-    updateViewport(newMeasurementSelected);
-  }, [measurementSelected, measurementCount, updateViewport, setTrackingIdentifiers]);
 
   /**
    Cleanup the SR viewport when the viewport is destroyed
@@ -505,8 +443,6 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
       if (!srDisplaySet.isLoaded) {
         await srDisplaySet.load();
       }
-      const numMeasurements = srDisplaySet.measurements.length;
-      setMeasurementCount(numMeasurements);
       updateViewport(measurementSelected);
     };
     loadSR();
@@ -528,35 +464,6 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
     };
     updateSR();
   }, [measurementSelected, element, setTrackingIdentifiers, srDisplaySet]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    setIsLocked(trackedMeasurements?.context?.trackedSeries?.length > 0);
-  }, [trackedMeasurements]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    viewportActionCornersService.addComponents([{
-      viewportId,
-      id: 'viewportStatusComponent',
-      component: _getStatusComponent({
-        srDisplaySet,
-        viewportId,
-        isRehydratable: srDisplaySet.isRehydratable,
-        isLocked,
-        sendTrackedMeasurementsEvent,
-        t
-      }),
-      indexPriority: -100,
-      location: viewportActionCornersService.LOCATIONS.topLeft
-    }, {
-      viewportId,
-      id: 'viewportActionArrowsComponent',
-      index: 0,
-      component: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.ViewportActionArrows, {
-        key: "actionArrows",
-        onArrowsClick: onMeasurementChange
-      }),
-      indexPriority: 0,
-      location: viewportActionCornersService.LOCATIONS.topRight
-    }]);
-  }, [isLocked, onMeasurementChange, sendTrackedMeasurementsEvent, srDisplaySet, t, viewportActionCornersService, viewportId]);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   let childrenWithProps = null;
@@ -575,12 +482,8 @@ function OHIFCornerstoneSRMeasurementViewport(props) {
     className: "relative flex h-full w-full flex-row overflow-hidden"
   }, getCornerstoneViewport(), childrenWithProps));
 }
-_s2(OHIFCornerstoneSRMeasurementViewport, "ln4zqzngneU4pLqZPDDhCQotwQY=", false, function () {
-  return [_state__WEBPACK_IMPORTED_MODULE_7__.useAppConfig, _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
-});
-_c2 = OHIFCornerstoneSRMeasurementViewport;
-_s(OHIFCornerstoneSRMeasurementViewport, "XMNSK6EPBWNrlg+sj37F8P1i0y8=", false, function () {
-  return [_state__WEBPACK_IMPORTED_MODULE_7__.useAppConfig, _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
+_s(OHIFCornerstoneSRMeasurementViewport, "SSRixUzJStWyj6ZIn2Xxj1l92f8=", false, function () {
+  return [_ohif_core_src_contextProviders_SystemProvider__WEBPACK_IMPORTED_MODULE_6__.useSystem, _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_4__.usePositionPresentationStore, _ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid];
 });
 _c = OHIFCornerstoneSRMeasurementViewport;
 OHIFCornerstoneSRMeasurementViewport.propTypes = {
@@ -589,9 +492,7 @@ OHIFCornerstoneSRMeasurementViewport.propTypes = {
   dataSource: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().object),
   children: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().node),
   viewportLabel: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().string),
-  viewportOptions: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().object),
-  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().object).isRequired,
-  extensionManager: prop_types__WEBPACK_IMPORTED_MODULE_0___default().instanceOf(_ohif_core__WEBPACK_IMPORTED_MODULE_3__.ExtensionManager).isRequired
+  viewportOptions: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().object)
 };
 async function _getViewportReferencedDisplaySetData(displaySet, measurementSelected, displaySetService) {
   const {
@@ -606,7 +507,7 @@ async function _getViewportReferencedDisplaySetData(displaySet, measurementSelec
     // so that it can be re-displayed and shown inside the SR viewport.
     // This is only for ease of redisplay - the display set is stored in the
     // usual manner in the display set service.
-    displaySet.keyImageDisplaySet = (0,_utils_createReferencedImageDisplaySet__WEBPACK_IMPORTED_MODULE_8__["default"])(displaySetService, displaySet);
+    displaySet.keyImageDisplaySet = (0,_utils_createReferencedImageDisplaySet__WEBPACK_IMPORTED_MODULE_3__["default"])(displaySetService, displaySet);
   }
   if (!displaySetInstanceUID) {
     return {
@@ -634,71 +535,9 @@ async function _getViewportReferencedDisplaySetData(displaySet, measurementSelec
     referencedDisplaySet
   };
 }
-function _getStatusComponent({
-  srDisplaySet,
-  viewportId,
-  isRehydratable,
-  isLocked,
-  sendTrackedMeasurementsEvent,
-  t
-}) {
-  const handleMouseUp = () => {
-    sendTrackedMeasurementsEvent('HYDRATE_SR', {
-      displaySetInstanceUID: srDisplaySet.displaySetInstanceUID,
-      viewportId
-    });
-  };
-  const loadStr = t('LOAD');
-
-  // 1 - Incompatible
-  // 2 - Locked
-  // 3 - Rehydratable / Open
-  const state = isRehydratable && !isLocked ? 3 : isRehydratable && isLocked ? 2 : 1;
-  let ToolTipMessage = null;
-  let StatusIcon = null;
-  switch (state) {
-    case 1:
-      StatusIcon = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.Icon, {
-        name: "status-alert"
-      });
-      ToolTipMessage = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, "This structured report is not compatible", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("br", null), "with this application.");
-      break;
-    case 2:
-      StatusIcon = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.Icon, {
-        name: "status-locked"
-      });
-      ToolTipMessage = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, "This structured report is currently read-only", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("br", null), "because you are tracking measurements in", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("br", null), "another viewport.");
-      break;
-    case 3:
-      StatusIcon = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.Icon, {
-        className: "text-aqua-pale",
-        name: "status-untracked"
-      });
-      ToolTipMessage = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, `Click ${loadStr} to restore measurements.`);
-  }
-  const StatusArea = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "flex h-6 cursor-default text-sm leading-6 text-white"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "bg-customgray-100 flex min-w-[45px] items-center rounded-l-xl rounded-r p-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(StatusIcon, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", {
-    className: "ml-1"
-  }, "SR")), state === 3 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "bg-primary-main hover:bg-primary-light ml-1 cursor-pointer rounded px-1.5 hover:text-black"
-    // Using onMouseUp here because onClick is not working when the viewport is not active and is styled with pointer-events:none
-    ,
-
-    onMouseUp: handleMouseUp
-  }, loadStr));
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, ToolTipMessage && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.Tooltip, {
-    content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(ToolTipMessage, null),
-    position: "bottom-left"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(StatusArea, null)), !ToolTipMessage && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(StatusArea, null));
-}
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OHIFCornerstoneSRMeasurementViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstoneSRMeasurementViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstoneSRMeasurementViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -706,7 +545,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -721,7 +576,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/components/OHIFCornerstoneSRTextViewport.tsx ***!
   \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -752,7 +607,6 @@ function OHIFCornerstoneSRTextViewport(props) {
     container: instance
   })));
 }
-_c2 = OHIFCornerstoneSRTextViewport;
 _c = OHIFCornerstoneSRTextViewport;
 OHIFCornerstoneSRTextViewport.propTypes = {
   displaySets: prop_types__WEBPACK_IMPORTED_MODULE_0___default().arrayOf((prop_types__WEBPACK_IMPORTED_MODULE_0___default().object)),
@@ -767,8 +621,6 @@ OHIFCornerstoneSRTextViewport.propTypes = {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OHIFCornerstoneSRTextViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstoneSRTextViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstoneSRTextViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -776,7 +628,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -791,7 +659,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/components/OHIFCornerstoneSRViewport.tsx ***!
   \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -824,7 +692,6 @@ function OHIFCornerstoneSRViewport(props) {
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_OHIFCornerstoneSRTextViewport__WEBPACK_IMPORTED_MODULE_4__["default"], props);
 }
-_c2 = OHIFCornerstoneSRViewport;
 _c = OHIFCornerstoneSRViewport;
 OHIFCornerstoneSRViewport.propTypes = {
   displaySets: prop_types__WEBPACK_IMPORTED_MODULE_0___default().arrayOf((prop_types__WEBPACK_IMPORTED_MODULE_0___default().object)),
@@ -839,8 +706,6 @@ OHIFCornerstoneSRViewport.propTypes = {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OHIFCornerstoneSRViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstoneSRViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstoneSRViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -848,7 +713,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -863,7 +744,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-sr/src/utils/formatContentItem.ts ***!
   \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -903,7 +784,7 @@ const contentItemFormatters = {
     return `${NumericValue} ${CodeValue}`;
   },
   PNAME: contentItem => {
-    const personName = contentItem.PersonName?.[0]?.Alphabetic;
+    const personName = contentItem.PersonName?.[0];
     return personName ? _ohif_core__WEBPACK_IMPORTED_MODULE_0__.utils.formatPN(personName) : undefined;
   },
   DATE: contentItem => {
@@ -952,7 +833,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {

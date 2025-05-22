@@ -5,7 +5,7 @@
 /*!************************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-pmap/src/viewports/OHIFCornerstonePMAPViewport.tsx ***!
   \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -15,11 +15,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {
@@ -33,30 +33,31 @@ function _extends() {
 
 
 
+
 function OHIFCornerstonePMAPViewport(props) {
-  _s2();
   _s();
   const {
     displaySets,
     children,
     viewportOptions,
     displaySetOptions,
-    servicesManager,
-    extensionManager
+    servicesManager
   } = props;
   const viewportId = viewportOptions.viewportId;
   const {
     displaySetService,
     segmentationService,
-    uiNotificationService
+    uiNotificationService,
+    customizationService
   } = servicesManager.services;
 
   // PMAP viewport will always have a single display set
   if (displaySets.length !== 1) {
     throw new Error('PMAP viewport must have a single display set');
   }
+  const LoadingIndicatorTotalPercent = customizationService.getCustomization('ui.loadingIndicatorTotalPercent');
   const pmapDisplaySet = displaySets[0];
-  const [viewportGrid, viewportGridService] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid)();
+  const [viewportGrid, viewportGridService] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid)();
   const referencedDisplaySetRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const {
     viewports,
@@ -87,9 +88,6 @@ function OHIFCornerstonePMAPViewport(props) {
     const {
       displaySet: referencedDisplaySet
     } = referencedDisplaySetRef.current;
-    const {
-      component: Component
-    } = extensionManager.getModuleEntry('@ohif/extension-cornerstone.viewportModule.cornerstone');
     displaySetOptions.unshift({});
     const [pmapDisplaySetOptions] = displaySetOptions;
 
@@ -125,17 +123,18 @@ function OHIFCornerstonePMAPViewport(props) {
       type: 'warning',
       message: 'The values are multiplied by 100 in the viewport for better visibility'
     });
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(Component, _extends({}, props, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.OHIFCornerstoneViewport, _extends({}, props, {
       // Referenced + PMAP displaySets must be passed as parameter in this order
       displaySets: [referencedDisplaySet, pmapDisplaySet],
       viewportOptions: {
         viewportType: 'volume',
         orientation: viewportOptions.orientation,
-        viewportId: viewportOptions.viewportId
+        viewportId: viewportOptions.viewportId,
+        presentationIds: viewportOptions.presentationIds
       },
       displaySetOptions: [{}, pmapDisplaySetOptions]
     }));
-  }, [extensionManager, displaySetOptions, props, pmapDisplaySet, viewportOptions.orientation, viewportOptions.viewportId]);
+  }, [displaySetOptions, props, pmapDisplaySet, viewportOptions.orientation, viewportOptions.viewportId, viewportOptions.presentationIds, uiNotificationService]);
 
   // Cleanup the PMAP viewport when the viewport is destroyed
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -165,19 +164,15 @@ function OHIFCornerstonePMAPViewport(props) {
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "relative flex h-full w-full flex-row overflow-hidden"
-  }, pmapIsLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.LoadingIndicatorTotalPercent, {
+  }, pmapIsLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(LoadingIndicatorTotalPercent, {
     className: "h-full w-full",
     totalNumbers: null,
     percentComplete: null,
     loadingText: "Loading Parametric Map..."
   }), getCornerstoneViewport(), childrenWithProps));
 }
-_s2(OHIFCornerstonePMAPViewport, "3whYhi9J5zbOCfBDSPAFkvwXIjE=", false, function () {
-  return [_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid];
-});
-_c2 = OHIFCornerstonePMAPViewport;
 _s(OHIFCornerstonePMAPViewport, "3whYhi9J5zbOCfBDSPAFkvwXIjE=", false, function () {
-  return [_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid];
+  return [_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid];
 });
 _c = OHIFCornerstonePMAPViewport;
 OHIFCornerstonePMAPViewport.propTypes = {
@@ -218,8 +213,6 @@ function _getReferencedDisplaySetMetadata(referencedDisplaySet, pmapDisplaySet) 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OHIFCornerstonePMAPViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstonePMAPViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstonePMAPViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -227,7 +220,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {

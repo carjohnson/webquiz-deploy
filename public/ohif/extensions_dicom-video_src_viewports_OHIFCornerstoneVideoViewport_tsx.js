@@ -5,7 +5,7 @@
 /*!**************************************************************************************!*\
   !*** ../../../extensions/dicom-video/src/viewports/OHIFCornerstoneVideoViewport.tsx ***!
   \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -18,14 +18,12 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
 function OHIFCornerstoneVideoViewport({
   displaySets
 }) {
-  _s2();
   _s();
   if (displaySets && displaySets.length > 1) {
     throw new Error('OHIFCornerstoneVideoViewport: only one display set is supported for dicom video right now');
@@ -62,8 +60,6 @@ function OHIFCornerstoneVideoViewport({
     href: url
   }, url, " of type ", mimeType)));
 }
-_s2(OHIFCornerstoneVideoViewport, "2bP48bgC9x4MxGX+fFJYZwu2rfU=");
-_c2 = OHIFCornerstoneVideoViewport;
 _s(OHIFCornerstoneVideoViewport, "2bP48bgC9x4MxGX+fFJYZwu2rfU=");
 _c = OHIFCornerstoneVideoViewport;
 OHIFCornerstoneVideoViewport.propTypes = {
@@ -72,8 +68,6 @@ OHIFCornerstoneVideoViewport.propTypes = {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OHIFCornerstoneVideoViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstoneVideoViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstoneVideoViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -81,7 +75,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {

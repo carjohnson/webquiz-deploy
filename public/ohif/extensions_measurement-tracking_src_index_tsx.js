@@ -5,7 +5,7 @@
 /*!***********************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/TrackedMeasurementsContext.tsx ***!
   \***********************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -19,25 +19,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var xstate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! xstate */ "../../../node_modules/xstate/es/index.js");
 /* harmony import */ var _xstate_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @xstate/react */ "../../../node_modules/@xstate/react/es/index.js");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
-/* harmony import */ var _measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./measurementTrackingMachine */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/measurementTrackingMachine.js");
-/* harmony import */ var _promptBeginTracking__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./promptBeginTracking */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js");
-/* harmony import */ var _promptTrackNewSeries__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./promptTrackNewSeries */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptTrackNewSeries.js");
-/* harmony import */ var _promptTrackNewStudy__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./promptTrackNewStudy */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptTrackNewStudy.ts");
-/* harmony import */ var _promptHydrateStructuredReport__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./promptHydrateStructuredReport */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHydrateStructuredReport.js");
-/* harmony import */ var _hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./hydrateStructuredReport */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/hydrateStructuredReport.tsx");
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @state */ "./state/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./measurementTrackingMachine */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/measurementTrackingMachine.js");
+/* harmony import */ var _promptBeginTracking__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./promptBeginTracking */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js");
+/* harmony import */ var _hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./hydrateStructuredReport */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/hydrateStructuredReport.tsx");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @state */ "./state/index.js");
+/* harmony import */ var _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./promptWrapperFunctions */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptWrapperFunctions.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s3 = __webpack_require__.$Refresh$.signature(),
-  _s4 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature(),
   _s2 = __webpack_require__.$Refresh$.signature();
-
-
-
 
 
 
@@ -51,11 +43,9 @@ var _s = __webpack_require__.$Refresh$.signature(),
 const TrackedMeasurementsContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
 TrackedMeasurementsContext.displayName = 'TrackedMeasurementsContext';
 const useTrackedMeasurements = () => {
-  _s3();
   _s();
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(TrackedMeasurementsContext);
 };
-_s3(useTrackedMeasurements, "gDsCjeeItUuvgOWf1v4qoK9RF6k=");
 _s(useTrackedMeasurements, "gDsCjeeItUuvgOWf1v4qoK9RF6k=");
 const SR_SOPCLASSHANDLERID = '@ohif/extension-cornerstone-dicom-sr.sopClassHandlerModule.dicom-sr';
 
@@ -73,10 +63,9 @@ function TrackedMeasurementsContextProvider({
   children
 } // Component props
 ) {
-  _s4();
   _s2();
-  const [appConfig] = (0,_state__WEBPACK_IMPORTED_MODULE_12__.useAppConfig)();
-  const [viewportGrid, viewportGridService] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid)();
+  const [appConfig] = (0,_state__WEBPACK_IMPORTED_MODULE_8__.useAppConfig)();
+  const [viewportGrid, viewportGridService] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid)();
   const {
     activeViewportId,
     viewports
@@ -84,16 +73,19 @@ function TrackedMeasurementsContextProvider({
   const {
     measurementService,
     displaySetService,
-    customizationService
+    customizationService,
+    trackedMeasurementsService
   } = servicesManager.services;
-  const machineOptions = Object.assign({}, _measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_6__.defaultOptions);
+  const machineOptions = Object.assign({}, _measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_5__.defaultOptions);
   machineOptions.actions = Object.assign({}, machineOptions.actions, {
     jumpToFirstMeasurementInActiveViewport: (ctx, evt) => {
       const {
         trackedStudy,
-        trackedSeries,
-        activeViewportId
+        trackedSeries
       } = ctx;
+      const {
+        viewportId: activeViewportId
+      } = evt.data;
       const measurements = measurementService.getMeasurements();
       const trackedMeasurements = measurements.filter(m => trackedStudy === m.referenceStudyUID && trackedSeries.includes(m.referenceSeriesUID));
       console.log('jumping to measurement reset viewport', activeViewportId, trackedMeasurements[0]);
@@ -128,12 +120,20 @@ function TrackedMeasurementsContextProvider({
     jumpToSameImageInActiveViewport: (ctx, evt) => {
       const {
         trackedStudy,
-        trackedSeries,
-        activeViewportId
+        trackedSeries
       } = ctx;
+      const {
+        viewportId: activeViewportId
+      } = evt.data;
       const measurements = measurementService.getMeasurements();
       const trackedMeasurements = measurements.filter(m => trackedStudy === m.referenceStudyUID && trackedSeries.includes(m.referenceSeriesUID));
-      const trackedMeasurement = trackedMeasurements[0];
+
+      // Jump to the last tracked measurement - most recent
+      if (!trackedMeasurements?.length) {
+        console.warn("Didn't find any tracked measurements", measurements, trackedStudy, trackedSeries);
+        return;
+      }
+      const trackedMeasurement = trackedMeasurements[trackedMeasurements.length - 1];
       const referencedDisplaySetUID = trackedMeasurement.displaySetInstanceUID;
 
       // update the previously stored positionPresentation with the new viewportId
@@ -141,7 +141,8 @@ function TrackedMeasurementsContextProvider({
       // it will be in the correct position zoom and pan
       commandsManager.runCommand('updateStoredPositionPresentation', {
         viewportId: activeViewportId,
-        displaySetInstanceUID: referencedDisplaySetUID
+        displaySetInstanceUIDs: [referencedDisplaySetUID],
+        referencedImageId: trackedMeasurement.referencedImageId
       });
       viewportGridService.setDisplaySetsForViewport({
         viewportId: activeViewportId,
@@ -171,53 +172,97 @@ function TrackedMeasurementsContextProvider({
       for (let i = 0; i < measurementIds.length; i++) {
         measurementService.remove(measurementIds[i]);
       }
+      measurementService.setIsMeasurementDeletedIndividually(false);
+    },
+    clearDisplaySetHydratedState: (ctx, evt) => {
+      const {
+        displaySetInstanceUID
+      } = evt.data ?? evt;
+      const displaysets = displaySetService.getActiveDisplaySets();
+      displaysets?.forEach(displayset => {
+        if (displayset.Modality === 'SR' && displayset.displaySetInstanceUID !== displaySetInstanceUID && displayset.isHydrated) {
+          displayset.isHydrated = false;
+          displayset.isLoaded = false;
+        }
+      });
+    },
+    updatedViewports: (ctx, evt) => {
+      const {
+        hangingProtocolService
+      } = servicesManager.services;
+      const {
+        displaySetInstanceUID,
+        viewportId
+      } = evt.data ?? evt;
+      const updatedViewports = hangingProtocolService.getViewportsRequireUpdate(viewportId, displaySetInstanceUID);
+      viewportGridService.setDisplaySetsForViewports(updatedViewports);
     }
   });
   machineOptions.services = Object.assign({}, machineOptions.services, {
-    promptBeginTracking: _promptBeginTracking__WEBPACK_IMPORTED_MODULE_7__["default"].bind(null, {
+    promptBeginTracking: _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__.promptBeginTrackingWrapper.bind(null, {
       servicesManager,
       extensionManager,
       appConfig
     }),
-    promptTrackNewSeries: _promptTrackNewSeries__WEBPACK_IMPORTED_MODULE_8__["default"].bind(null, {
+    promptTrackNewSeries: _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__.promptTrackNewSeriesWrapper.bind(null, {
       servicesManager,
       extensionManager,
       appConfig
     }),
-    promptTrackNewStudy: _promptTrackNewStudy__WEBPACK_IMPORTED_MODULE_9__["default"].bind(null, {
+    promptTrackNewStudy: _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__.promptTrackNewStudyWrapper.bind(null, {
       servicesManager,
       extensionManager,
       appConfig
     }),
-    promptSaveReport: _ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__.promptSaveReport.bind(null, {
+    promptSaveReport: _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__.promptSaveReportWrapper.bind(null, {
       servicesManager,
       commandsManager,
       extensionManager,
       appConfig
     }),
-    promptHydrateStructuredReport: _promptHydrateStructuredReport__WEBPACK_IMPORTED_MODULE_10__["default"].bind(null, {
+    promptHydrateStructuredReport: _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__.promptHydrateStructuredReportWrapper.bind(null, {
       servicesManager,
       extensionManager,
+      commandsManager,
       appConfig
     }),
-    hydrateStructuredReport: _hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_11__["default"].bind(null, {
+    promptHasDirtyAnnotations: _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__.promptHasDirtyAnnotationsWrapper.bind(null, {
       servicesManager,
       extensionManager,
+      commandsManager,
       appConfig
     }),
-    promptLabelAnnotation: _ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__.promptLabelAnnotation.bind(null, {
+    hydrateStructuredReport: _hydrateStructuredReport__WEBPACK_IMPORTED_MODULE_7__["default"].bind(null, {
       servicesManager,
-      extensionManager
+      extensionManager,
+      commandsManager,
+      appConfig
+    }),
+    promptLabelAnnotation: _promptWrapperFunctions__WEBPACK_IMPORTED_MODULE_9__.promptLabelAnnotationWrapper.bind(null, {
+      servicesManager,
+      extensionManager,
+      commandsManager
     })
   });
   machineOptions.guards = Object.assign({}, machineOptions.guards, {
     isLabelOnMeasure: (ctx, evt, condMeta) => {
-      const labelConfig = customizationService.get('measurementLabels');
+      const labelConfig = customizationService.getCustomization('measurementLabels');
       return labelConfig?.labelOnMeasure;
     },
     isLabelOnMeasureAndShouldKillMachine: (ctx, evt, condMeta) => {
-      const labelConfig = customizationService.get('measurementLabels');
-      return evt.data && evt.data.userResponse === _measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_6__.RESPONSE.NO_NEVER && labelConfig?.labelOnMeasure;
+      const labelConfig = customizationService.getCustomization('measurementLabels');
+      return evt.data && evt.data.userResponse === _measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_5__.RESPONSE.NO_NEVER && labelConfig?.labelOnMeasure;
+    },
+    isSimplifiedConfig: (ctx, evt, condMeta) => {
+      return appConfig?.measurementTrackingMode === _promptBeginTracking__WEBPACK_IMPORTED_MODULE_6__.measurementTrackingMode.SIMPLIFIED;
+    },
+    simplifiedAndLoadSR: (ctx, evt, condMeta) => {
+      return appConfig?.measurementTrackingMode === _promptBeginTracking__WEBPACK_IMPORTED_MODULE_6__.measurementTrackingMode.SIMPLIFIED && evt.data.isBackupSave === false;
+    },
+    hasDirtyAndSimplified: (ctx, evt, condMeta) => {
+      const measurements = measurementService.getMeasurements();
+      const hasDirtyMeasurements = measurements.some(measurement => measurement.isDirty) || measurements.length && measurementService.getIsMeasurementDeletedIndividually();
+      return appConfig?.measurementTrackingMode === _promptBeginTracking__WEBPACK_IMPORTED_MODULE_6__.measurementTrackingMode.SIMPLIFIED && hasDirtyMeasurements;
     }
   });
 
@@ -231,10 +276,17 @@ function TrackedMeasurementsContextProvider({
   // - created/destroyed hooks for extensions (cornerstone measurement subscriptions in it's `init`)
 
   const measurementTrackingMachine = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
-    return (0,xstate__WEBPACK_IMPORTED_MODULE_2__.Machine)(_measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_6__.machineConfiguration, machineOptions);
+    return (0,xstate__WEBPACK_IMPORTED_MODULE_2__.Machine)(_measurementTrackingMachine__WEBPACK_IMPORTED_MODULE_5__.machineConfiguration, machineOptions);
   }, []); // Empty dependency array ensures this is only created once
 
   const [trackedMeasurements, sendTrackedMeasurementsEvent] = (0,_xstate_react__WEBPACK_IMPORTED_MODULE_3__.useMachine)(measurementTrackingMachine);
+
+  // Update TrackedMeasurementsService when trackedSeries changes in context
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (trackedMeasurements?.context?.trackedSeries && trackedMeasurementsService) {
+      trackedMeasurementsService.updateTrackedSeries(trackedMeasurements.context.trackedSeries);
+    }
+  }, [trackedMeasurements?.context?.trackedSeries, trackedMeasurementsService]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     // Update the state machine with the active viewport ID
     sendTrackedMeasurementsEvent('UPDATE_ACTIVE_VIEWPORT_ID', {
@@ -280,42 +332,47 @@ function TrackedMeasurementsContextProvider({
 
         // Magic string
         // load function added by our sopClassHandler module
-        if (displaySet.SOPClassHandlerId === SR_SOPCLASSHANDLERID && displaySet.isRehydratable === true) {
-          console.log('sending event...', trackedMeasurements);
-          sendTrackedMeasurementsEvent('PROMPT_HYDRATE_SR', {
+        if (displaySet.SOPClassHandlerId === SR_SOPCLASSHANDLERID && displaySet.isRehydratable === true && !displaySet.isHydrated) {
+          const params = {
             displaySetInstanceUID: displaySet.displaySetInstanceUID,
             SeriesInstanceUID: displaySet.SeriesInstanceUID,
             viewportId: activeViewportId
-          });
+          };
+
+          // Check if we should bypass the confirmation prompt
+          const disableConfirmationPrompts = appConfig?.disableConfirmationPrompts;
+          if (disableConfirmationPrompts) {
+            sendTrackedMeasurementsEvent('HYDRATE_SR', params);
+          } else {
+            sendTrackedMeasurementsEvent('PROMPT_HYDRATE_SR', params);
+          }
         }
       }
     };
     triggerPromptHydrateFlow();
-  }, [trackedMeasurements, activeViewportId, sendTrackedMeasurementsEvent, servicesManager.services, viewports]);
+  }, [trackedMeasurements, activeViewportId, sendTrackedMeasurementsEvent, servicesManager.services, viewports, appConfig]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    // The command needs to be bound to the context's sendTrackedMeasurementsEvent
+    // so the command has to be registered in a React component.
+    commandsManager.registerCommand('DEFAULT', 'loadTrackedSRMeasurements', {
+      commandFn: props => sendTrackedMeasurementsEvent('HYDRATE_SR', props)
+    });
+  }, [commandsManager, sendTrackedMeasurementsEvent]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(TrackedMeasurementsContext.Provider, {
     value: [trackedMeasurements, sendTrackedMeasurementsEvent]
   }, children);
 }
-_s4(TrackedMeasurementsContextProvider, "8x8FhSTgkSOMFm7aUXRMau44qGk=", false, function () {
-  return [_state__WEBPACK_IMPORTED_MODULE_12__.useAppConfig, _ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid, _xstate_react__WEBPACK_IMPORTED_MODULE_3__.useMachine];
-});
-_c2 = TrackedMeasurementsContextProvider;
-_s2(TrackedMeasurementsContextProvider, "8x8FhSTgkSOMFm7aUXRMau44qGk=", false, function () {
-  return [_state__WEBPACK_IMPORTED_MODULE_12__.useAppConfig, _ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid, _xstate_react__WEBPACK_IMPORTED_MODULE_3__.useMachine];
+_s2(TrackedMeasurementsContextProvider, "ddn/GVNwuNtX9GoD7fByjJ55dJc=", false, function () {
+  return [_state__WEBPACK_IMPORTED_MODULE_8__.useAppConfig, _ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.useViewportGrid, _xstate_react__WEBPACK_IMPORTED_MODULE_3__.useMachine];
 });
 _c = TrackedMeasurementsContextProvider;
 TrackedMeasurementsContextProvider.propTypes = {
   children: prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOf([(prop_types__WEBPACK_IMPORTED_MODULE_1___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_1___default().node)]),
-  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired,
-  commandsManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired,
-  extensionManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired,
   appConfig: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
 };
 
 var _c;
 __webpack_require__.$Refresh$.register(_c, "TrackedMeasurementsContextProvider");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "TrackedMeasurementsContextProvider");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -323,7 +380,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -338,7 +411,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/hydrateStructuredReport.tsx ***!
   \********************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -352,6 +425,7 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 function hydrateStructuredReport({
   servicesManager,
   extensionManager,
+  commandsManager,
   appConfig
 }, ctx, evt) {
   const {
@@ -366,6 +440,7 @@ function hydrateStructuredReport({
     const hydrationResult = (0,_ohif_extension_cornerstone_dicom_sr__WEBPACK_IMPORTED_MODULE_0__.hydrateStructuredReport)({
       servicesManager,
       extensionManager,
+      commandsManager,
       appConfig
     }, displaySetInstanceUID);
     const StudyInstanceUID = hydrationResult.StudyInstanceUID;
@@ -387,7 +462,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -402,7 +493,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/index.js ***!
   \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -422,7 +513,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -437,7 +544,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/measurementTrackingMachine.js ***!
   \**********************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -500,7 +607,6 @@ const machineConfiguration = {
           target: 'promptBeginTracking',
           actions: ['setPreviousState']
         }],
-        // Unused? We may only do PROMPT_HYDRATE_SR now?
         SET_TRACKED_SERIES: [{
           target: 'tracking',
           actions: ['setTrackedStudyAndMultipleSeries', 'setIsDirtyToClean']
@@ -554,8 +660,14 @@ const machineConfiguration = {
         }],
         UNTRACK_SERIES: [{
           target: 'tracking',
-          actions: ['removeTrackedSeries', 'setIsDirty'],
+          actions: ['removeTrackedSeries', 'setIsDirty', 'clearDisplaySetHydratedState'],
           cond: 'hasRemainingTrackedSeries'
+        }, {
+          target: 'idle'
+        }],
+        UNTRACK_ALL: [{
+          target: 'tracking',
+          actions: ['clearContext', 'setIsDirtyToClean', 'clearDisplaySetHydratedState', 'clearAllMeasurements']
         }, {
           target: 'idle'
         }],
@@ -570,7 +682,16 @@ const machineConfiguration = {
           cond: 'shouldSetDirty'
         }, {
           target: 'tracking'
-        }]
+        }],
+        CHECK_DIRTY: {
+          target: 'promptHasDirtyAnnotations',
+          cond: 'hasDirtyAndSimplified'
+        },
+        PROMPT_HYDRATE_SR: {
+          target: 'promptHydrateStructuredReport',
+          cond: 'isSimplifiedConfig',
+          actions: ['clearAllMeasurements', 'clearDisplaySetHydratedState']
+        }
       }
     },
     promptTrackNewSeries: {
@@ -620,7 +741,11 @@ const machineConfiguration = {
     promptSaveReport: {
       invoke: {
         src: 'promptSaveReport',
-        onDone: [
+        onDone: [{
+          target: 'tracking',
+          actions: ['clearAllMeasurements', 'clearDisplaySetHydratedState', 'setIsDirty', 'updatedViewports'],
+          cond: 'simplifiedAndLoadSR'
+        },
         // "clicked the save button"
         // - should clear all measurements
         // - show DICOM SR
@@ -695,6 +820,21 @@ const machineConfiguration = {
           cond: 'wasTracking'
         }, {
           target: 'off'
+        }]
+      }
+    },
+    promptHasDirtyAnnotations: {
+      invoke: {
+        src: 'promptHasDirtyAnnotations',
+        onDone: [{
+          target: 'tracking',
+          actions: ['clearAllMeasurements', 'clearDisplaySetHydratedState', 'setIsDirty', 'updatedViewports'],
+          cond: 'shouldSetStudyAndSeries'
+        }, {
+          target: 'promptSaveReport',
+          cond: 'shouldPromptSaveReport'
+        }, {
+          target: 'tracking'
         }]
       }
     }
@@ -850,7 +990,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -865,17 +1021,16 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js ***!
   \***************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   measurementTrackingMode: () => (/* binding */ measurementTrackingMode)
 /* harmony export */ });
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var i18next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! i18next */ "../../../node_modules/i18next/dist/esm/i18next.js");
+/* harmony import */ var i18next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18next */ "../../../node_modules/i18next/dist/esm/i18next.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
 
 
 const RESPONSE = {
@@ -885,12 +1040,18 @@ const RESPONSE = {
   ADD_SERIES: 2,
   SET_STUDY_AND_SERIES: 3
 };
+const measurementTrackingMode = {
+  STANDARD: 'standard',
+  SIMPLIFIED: 'simplified',
+  NONE: 'none'
+};
 function promptBeginTracking({
   servicesManager,
   extensionManager
 }, ctx, evt) {
   const {
-    uiViewportDialogService
+    uiViewportDialogService,
+    customizationService
   } = servicesManager.services;
   const appConfig = extensionManager._appConfig;
   // When the state change happens after a promise, the state machine sends the retult in evt.data;
@@ -901,7 +1062,10 @@ function promptBeginTracking({
     SeriesInstanceUID
   } = evt.data || evt;
   return new Promise(async function (resolve, reject) {
-    let promptResult = appConfig?.disableConfirmationPrompts ? RESPONSE.SET_STUDY_AND_SERIES : await _askTrackMeasurements(uiViewportDialogService, viewportId);
+    const standardMode = appConfig?.measurementTrackingMode === measurementTrackingMode.STANDARD;
+    const noTrackingMode = appConfig?.measurementTrackingMode === measurementTrackingMode.NONE;
+    let promptResult;
+    promptResult = noTrackingMode ? RESPONSE.NO_NEVER : standardMode ? await _askTrackMeasurements(uiViewportDialogService, customizationService, viewportId) : RESPONSE.SET_STUDY_AND_SERIES;
     resolve({
       userResponse: promptResult,
       StudyInstanceUID,
@@ -910,23 +1074,23 @@ function promptBeginTracking({
     });
   });
 }
-function _askTrackMeasurements(uiViewportDialogService, viewportId) {
+function _askTrackMeasurements(uiViewportDialogService, customizationService, viewportId) {
   return new Promise(function (resolve, reject) {
-    const message = i18next__WEBPACK_IMPORTED_MODULE_1__["default"].t('MeasurementTable:Track measurements for this series?');
+    const message = customizationService.getCustomization('viewportNotification.beginTrackingMessage');
     const actions = [{
       id: 'prompt-begin-tracking-cancel',
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.secondary,
-      text: i18next__WEBPACK_IMPORTED_MODULE_1__["default"].t('Common:No'),
+      type: 'secondary',
+      text: i18next__WEBPACK_IMPORTED_MODULE_0__["default"].t('Common:No'),
       value: RESPONSE.CANCEL
     }, {
       id: 'prompt-begin-tracking-no-do-not-ask-again',
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.secondary,
-      text: i18next__WEBPACK_IMPORTED_MODULE_1__["default"].t('MeasurementTable:No, do not ask again'),
+      type: 'secondary',
+      text: i18next__WEBPACK_IMPORTED_MODULE_0__["default"].t('MeasurementTable:No, do not ask again'),
       value: RESPONSE.NO_NEVER
     }, {
       id: 'prompt-begin-tracking-yes',
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.primary,
-      text: i18next__WEBPACK_IMPORTED_MODULE_1__["default"].t('Common:Yes'),
+      type: 'primary',
+      text: i18next__WEBPACK_IMPORTED_MODULE_0__["default"].t('Common:Yes'),
       value: RESPONSE.SET_STUDY_AND_SERIES
     }];
     const onSubmit = result => {
@@ -961,7 +1125,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -972,22 +1152,18 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHydrateStructuredReport.js":
-/*!*************************************************************************************************************************!*\
-  !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHydrateStructuredReport.js ***!
-  \*************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHasDirtyAnnotations.ts":
+/*!*********************************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHasDirtyAnnotations.ts ***!
+  \*********************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _ohif_extension_cornerstone_dicom_sr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/extension-cornerstone-dicom-sr */ "../../../extensions/cornerstone-dicom-sr/src/index.tsx");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
 
 const RESPONSE = {
   NO_NEVER: -1,
@@ -995,16 +1171,127 @@ const RESPONSE = {
   CREATE_REPORT: 1,
   ADD_SERIES: 2,
   SET_STUDY_AND_SERIES: 3,
-  NO_NOT_FOR_SERIES: 4,
-  HYDRATE_REPORT: 5
+  NO_NOT_FOR_SERIES: 4
 };
-function promptHydrateStructuredReport({
-  servicesManager,
-  extensionManager,
-  appConfig
+function promptHasDirtyAnnotations({
+  servicesManager
 }, ctx, evt) {
   const {
-    uiViewportDialogService,
+    viewportId,
+    displaySetInstanceUID
+  } = evt.data || evt;
+  return new Promise(async function (resolve, reject) {
+    const {
+      uiViewportDialogService,
+      customizationService
+    } = servicesManager.services;
+    const promptResult = await _askSaveDiscardOrCancel(uiViewportDialogService, customizationService, viewportId);
+    resolve({
+      displaySetInstanceUID,
+      userResponse: promptResult,
+      viewportId,
+      isBackupSave: false
+    });
+  });
+}
+function _askSaveDiscardOrCancel(UIViewportDialogService, customizationService, viewportId) {
+  return new Promise(function (resolve, reject) {
+    const message = customizationService.getCustomization('viewportNotification.discardDirtyMessage');
+    const actions = [{
+      id: 'cancel',
+      type: 'cancel',
+      text: 'Cancel',
+      value: RESPONSE.CANCEL
+    }, {
+      id: 'discard-existing',
+      type: 'secondary',
+      text: 'No, discard existing',
+      value: RESPONSE.SET_STUDY_AND_SERIES
+    }, {
+      id: 'save-existing',
+      type: 'primary',
+      text: 'Yes',
+      value: RESPONSE.CREATE_REPORT
+    }];
+    const onSubmit = result => {
+      UIViewportDialogService.hide();
+      resolve(result);
+    };
+    UIViewportDialogService.show({
+      viewportId,
+      id: 'measurement-tracking-prompt-dirty-measurement',
+      type: 'info',
+      message,
+      actions,
+      onSubmit,
+      onOutsideClick: () => {
+        UIViewportDialogService.hide();
+        resolve(RESPONSE.CANCEL);
+      },
+      onKeyPress: event => {
+        if (event.key === 'Enter') {
+          const action = actions.find(action => action.id === 'save-existing');
+          onSubmit(action.value);
+        }
+      }
+    });
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (promptHasDirtyAnnotations);
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHydrateStructuredReport.ts":
+/*!*************************************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHydrateStructuredReport.ts ***!
+  \*************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+function promptHydrateStructuredReport({
+  servicesManager,
+  commandsManager
+}, ctx, evt) {
+  const {
     displaySetService
   } = servicesManager.services;
   const {
@@ -1012,66 +1299,24 @@ function promptHydrateStructuredReport({
     displaySetInstanceUID
   } = evt;
   const srDisplaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
-  return new Promise(async function (resolve, reject) {
-    const promptResult = appConfig?.disableConfirmationPrompts ? RESPONSE.HYDRATE_REPORT : await _askTrackMeasurements(uiViewportDialogService, viewportId);
+  const hydrateCallback = async () => {
+    return commandsManager.runCommand('hydrateSecondaryDisplaySet', {
+      displaySet: srDisplaySet,
+      viewportId
+    });
+  };
 
-    // Need to do action here... So we can set state...
-    let StudyInstanceUID, SeriesInstanceUIDs;
-    if (promptResult === RESPONSE.HYDRATE_REPORT) {
-      console.warn('!! HYDRATING STRUCTURED REPORT');
-      const hydrationResult = (0,_ohif_extension_cornerstone_dicom_sr__WEBPACK_IMPORTED_MODULE_0__.hydrateStructuredReport)({
-        servicesManager,
-        extensionManager,
-        appConfig
-      }, displaySetInstanceUID);
-      StudyInstanceUID = hydrationResult.StudyInstanceUID;
-      SeriesInstanceUIDs = hydrationResult.SeriesInstanceUIDs;
-    }
-    resolve({
-      userResponse: promptResult,
-      displaySetInstanceUID: evt.displaySetInstanceUID,
-      srSeriesInstanceUID: srDisplaySet.SeriesInstanceUID,
-      viewportId,
-      StudyInstanceUID,
-      SeriesInstanceUIDs
-    });
-  });
-}
-function _askTrackMeasurements(uiViewportDialogService, viewportId) {
-  return new Promise(function (resolve, reject) {
-    const message = 'Do you want to continue tracking measurements for this study?';
-    const actions = [{
-      id: 'no-hydrate',
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonEnums.type.secondary,
-      text: 'No',
-      value: RESPONSE.CANCEL
-    }, {
-      id: 'yes-hydrate',
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonEnums.type.primary,
-      text: 'Yes',
-      value: RESPONSE.HYDRATE_REPORT
-    }];
-    const onSubmit = result => {
-      uiViewportDialogService.hide();
-      resolve(result);
-    };
-    uiViewportDialogService.show({
-      viewportId,
-      type: 'info',
-      message,
-      actions,
-      onSubmit,
-      onOutsideClick: () => {
-        uiViewportDialogService.hide();
-        resolve(RESPONSE.CANCEL);
-      },
-      onKeyPress: event => {
-        if (event.key === 'Enter') {
-          const action = actions.find(action => action.value === RESPONSE.HYDRATE_REPORT);
-          onSubmit(action.value);
-        }
-      }
-    });
+  // For SR we need to use the whole context
+  const enhancedSrDisplaySet = {
+    ...srDisplaySet,
+    displaySetInstanceUID
+  };
+  return _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_0__.utils.promptHydrationDialog({
+    servicesManager,
+    viewportId,
+    displaySet: enhancedSrDisplaySet,
+    hydrateCallback,
+    type: 'SR'
   });
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (promptHydrateStructuredReport);
@@ -1082,7 +1327,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1097,13 +1358,13 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptTrackNewSeries.js ***!
   \****************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _promptBeginTracking__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./promptBeginTracking */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -1121,7 +1382,8 @@ function promptTrackNewSeries({
   extensionManager
 }, ctx, evt) {
   const {
-    UIViewportDialogService
+    UIViewportDialogService,
+    customizationService
   } = servicesManager.services;
   // When the state change happens after a promise, the state machine sends the retult in evt.data;
   // In case of direct transition to the state, the state machine sends the data in evt;
@@ -1131,9 +1393,11 @@ function promptTrackNewSeries({
     SeriesInstanceUID
   } = evt.data || evt;
   return new Promise(async function (resolve, reject) {
-    let promptResult = await _askShouldAddMeasurements(UIViewportDialogService, viewportId);
+    const appConfig = extensionManager._appConfig;
+    const showPrompt = appConfig?.measurementTrackingMode === _promptBeginTracking__WEBPACK_IMPORTED_MODULE_0__.measurementTrackingMode.STANDARD;
+    let promptResult = showPrompt ? await _askShouldAddMeasurements(UIViewportDialogService, customizationService, viewportId) : RESPONSE.ADD_SERIES;
     if (promptResult === RESPONSE.CREATE_REPORT) {
-      promptResult = ctx.isDirty ? await _askSaveDiscardOrCancel(UIViewportDialogService, viewportId) : RESPONSE.SET_STUDY_AND_SERIES;
+      promptResult = ctx.isDirty ? await _askSaveDiscardOrCancel(UIViewportDialogService, customizationService, viewportId) : RESPONSE.SET_STUDY_AND_SERIES;
     }
     resolve({
       userResponse: promptResult,
@@ -1144,19 +1408,19 @@ function promptTrackNewSeries({
     });
   });
 }
-function _askShouldAddMeasurements(uiViewportDialogService, viewportId) {
+function _askShouldAddMeasurements(uiViewportDialogService, customizationService, viewportId) {
   return new Promise(function (resolve, reject) {
-    const message = 'Do you want to add this measurement to the existing report?';
+    const message = customizationService.getCustomization('viewportNotification.trackNewSeriesMessage');
     const actions = [{
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.secondary,
+      type: 'secondary',
       text: 'Cancel',
       value: RESPONSE.CANCEL
     }, {
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.primary,
+      type: 'primary',
       text: 'Create new report',
       value: RESPONSE.CREATE_REPORT
     }, {
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.primary,
+      type: 'primary',
       text: 'Add to existing report',
       value: RESPONSE.ADD_SERIES
     }];
@@ -1177,11 +1441,11 @@ function _askShouldAddMeasurements(uiViewportDialogService, viewportId) {
     });
   });
 }
-function _askSaveDiscardOrCancel(UIViewportDialogService, viewportId) {
+function _askSaveDiscardOrCancel(UIViewportDialogService, customizationService, viewportId) {
   return new Promise(function (resolve, reject) {
-    const message = 'You have existing tracked measurements. What would you like to do with your existing tracked measurements?';
+    const message = customizationService.getCustomization('viewportNotification.discardSeriesMessage');
     const actions = [{
-      type: 'cancel',
+      type: 'secondary',
       text: 'Cancel',
       value: RESPONSE.CANCEL
     }, {
@@ -1218,7 +1482,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1233,15 +1513,17 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptTrackNewStudy.ts ***!
   \***************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var i18next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! i18next */ "../../../node_modules/i18next/dist/esm/i18next.js");
+/* harmony import */ var _promptBeginTracking__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./promptBeginTracking */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 const RESPONSE = {
@@ -1257,7 +1539,8 @@ function promptTrackNewStudy({
   extensionManager
 }, ctx, evt) {
   const {
-    uiViewportDialogService
+    uiViewportDialogService,
+    customizationService
   } = servicesManager.services;
   // When the state change happens after a promise, the state machine sends the retult in evt.data;
   // In case of direct transition to the state, the state machine sends the data in evt;
@@ -1267,9 +1550,12 @@ function promptTrackNewStudy({
     SeriesInstanceUID
   } = evt.data || evt;
   return new Promise(async function (resolve, reject) {
-    let promptResult = await _askTrackMeasurements(uiViewportDialogService, viewportId);
+    const appConfig = extensionManager._appConfig;
+    const standardMode = appConfig?.measurementTrackingMode === _promptBeginTracking__WEBPACK_IMPORTED_MODULE_1__.measurementTrackingMode.STANDARD;
+    const simplifiedMode = appConfig?.measurementTrackingMode === _promptBeginTracking__WEBPACK_IMPORTED_MODULE_1__.measurementTrackingMode.SIMPLIFIED;
+    let promptResult = standardMode ? await _askTrackMeasurements(uiViewportDialogService, customizationService, viewportId) : RESPONSE.SET_STUDY_AND_SERIES;
     if (promptResult === RESPONSE.SET_STUDY_AND_SERIES) {
-      promptResult = ctx.isDirty ? await _askSaveDiscardOrCancel(uiViewportDialogService, viewportId) : RESPONSE.SET_STUDY_AND_SERIES;
+      promptResult = ctx.isDirty && (standardMode || simplifiedMode) ? await _askSaveDiscardOrCancel(uiViewportDialogService, customizationService, viewportId) : RESPONSE.SET_STUDY_AND_SERIES;
     }
     resolve({
       userResponse: promptResult,
@@ -1280,9 +1566,9 @@ function promptTrackNewStudy({
     });
   });
 }
-function _askTrackMeasurements(UIViewportDialogService, viewportId) {
+function _askTrackMeasurements(UIViewportDialogService, customizationService, viewportId) {
   return new Promise(function (resolve, reject) {
-    const message = i18next__WEBPACK_IMPORTED_MODULE_0__["default"].t('MeasurementTable:Track measurements for this series?');
+    const message = customizationService.getCustomization('viewportNotification.trackNewStudyMessage');
     const actions = [{
       type: 'cancel',
       text: i18next__WEBPACK_IMPORTED_MODULE_0__["default"].t('MeasurementTable:No'),
@@ -1319,9 +1605,9 @@ function _askTrackMeasurements(UIViewportDialogService, viewportId) {
     });
   });
 }
-function _askSaveDiscardOrCancel(UIViewportDialogService, viewportId) {
+function _askSaveDiscardOrCancel(UIViewportDialogService, customizationService, viewportId) {
   return new Promise(function (resolve, reject) {
-    const message = 'Measurements cannot span across multiple studies. Do you want to save your tracked measurements?';
+    const message = customizationService.getCustomization('viewportNotification.discardStudyMessage');
     const actions = [{
       type: 'cancel',
       text: 'Cancel',
@@ -1360,7 +1646,174 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptWrapperFunctions.ts":
+/*!******************************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptWrapperFunctions.ts ***!
+  \******************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   promptBeginTrackingWrapper: () => (/* binding */ promptBeginTrackingWrapper),
+/* harmony export */   promptHasDirtyAnnotationsWrapper: () => (/* binding */ promptHasDirtyAnnotationsWrapper),
+/* harmony export */   promptHydrateStructuredReportWrapper: () => (/* binding */ promptHydrateStructuredReportWrapper),
+/* harmony export */   promptLabelAnnotationWrapper: () => (/* binding */ promptLabelAnnotationWrapper),
+/* harmony export */   promptSaveReportWrapper: () => (/* binding */ promptSaveReportWrapper),
+/* harmony export */   promptTrackNewSeriesWrapper: () => (/* binding */ promptTrackNewSeriesWrapper),
+/* harmony export */   promptTrackNewStudyWrapper: () => (/* binding */ promptTrackNewStudyWrapper)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+const promptBeginTrackingWrapper = ({
+  servicesManager,
+  extensionManager
+}, ctx, evt) => {
+  const {
+    customizationService
+  } = servicesManager.services;
+  const promptBeginTracking = customizationService.getCustomization('measurement.promptBeginTracking');
+  return promptBeginTracking({
+    servicesManager,
+    extensionManager
+  }, ctx, evt);
+};
+const promptHydrateStructuredReportWrapper = ({
+  servicesManager,
+  extensionManager,
+  commandsManager,
+  appConfig
+}, ctx, evt) => {
+  const {
+    customizationService
+  } = servicesManager.services;
+  const promptHydrateStructuredReport = customizationService.getCustomization('measurement.promptHydrateStructuredReport');
+  return promptHydrateStructuredReport({
+    servicesManager,
+    extensionManager,
+    commandsManager,
+    appConfig
+  }, ctx, evt);
+};
+const promptTrackNewSeriesWrapper = ({
+  servicesManager,
+  extensionManager
+}, ctx, evt) => {
+  const {
+    customizationService
+  } = servicesManager.services;
+  const promptTrackNewSeries = customizationService.getCustomization('measurement.promptTrackNewSeries');
+  return promptTrackNewSeries({
+    servicesManager,
+    extensionManager
+  }, ctx, evt);
+};
+const promptTrackNewStudyWrapper = ({
+  servicesManager,
+  extensionManager
+}, ctx, evt) => {
+  const {
+    customizationService
+  } = servicesManager.services;
+  const promptTrackNewStudy = customizationService.getCustomization('measurement.promptTrackNewStudy');
+  return promptTrackNewStudy({
+    servicesManager,
+    extensionManager
+  }, ctx, evt);
+};
+const promptLabelAnnotationWrapper = ({
+  servicesManager
+}, ctx, evt) => {
+  const {
+    customizationService
+  } = servicesManager.services;
+  const promptLabelAnnotation = customizationService.getCustomization('measurement.promptLabelAnnotation');
+  return promptLabelAnnotation({
+    servicesManager
+  }, ctx, evt);
+};
+const promptSaveReportWrapper = ({
+  servicesManager,
+  commandsManager,
+  extensionManager
+}, ctx, evt) => {
+  const {
+    customizationService
+  } = servicesManager.services;
+  const promptSaveReport = customizationService.getCustomization('measurement.promptSaveReport');
+  return promptSaveReport({
+    servicesManager,
+    commandsManager,
+    extensionManager
+  }, ctx, evt);
+};
+const promptHasDirtyAnnotationsWrapper = ({
+  servicesManager,
+  commandsManager,
+  extensionManager
+}, ctx, evt) => {
+  const {
+    customizationService
+  } = servicesManager.services;
+  const promptHasDirtyAnnotations = customizationService.getCustomization('measurement.promptHasDirtyAnnotations');
+  return promptHasDirtyAnnotations({
+    servicesManager,
+    commandsManager,
+    extensionManager
+  }, ctx, evt);
+};
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1375,7 +1828,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/contexts/index.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1395,7 +1848,200 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/customizations/measurementTrackingPrompts.tsx":
+/*!**************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/customizations/measurementTrackingPrompts.tsx ***!
+  \**************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _contexts_TrackedMeasurementsContext_promptBeginTracking__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../contexts/TrackedMeasurementsContext/promptBeginTracking */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js");
+/* harmony import */ var _contexts_TrackedMeasurementsContext_promptHasDirtyAnnotations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../contexts/TrackedMeasurementsContext/promptHasDirtyAnnotations */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHasDirtyAnnotations.ts");
+/* harmony import */ var _contexts_TrackedMeasurementsContext_promptHydrateStructuredReport__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../contexts/TrackedMeasurementsContext/promptHydrateStructuredReport */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptHydrateStructuredReport.ts");
+/* harmony import */ var _contexts_TrackedMeasurementsContext_promptTrackNewSeries__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../contexts/TrackedMeasurementsContext/promptTrackNewSeries */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptTrackNewSeries.js");
+/* harmony import */ var _contexts_TrackedMeasurementsContext_promptTrackNewStudy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../contexts/TrackedMeasurementsContext/promptTrackNewStudy */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptTrackNewStudy.ts");
+/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'measurement.promptBeginTracking': _contexts_TrackedMeasurementsContext_promptBeginTracking__WEBPACK_IMPORTED_MODULE_0__["default"],
+  'measurement.promptHydrateStructuredReport': _contexts_TrackedMeasurementsContext_promptHydrateStructuredReport__WEBPACK_IMPORTED_MODULE_2__["default"],
+  'measurement.promptTrackNewSeries': _contexts_TrackedMeasurementsContext_promptTrackNewSeries__WEBPACK_IMPORTED_MODULE_3__["default"],
+  'measurement.promptTrackNewStudy': _contexts_TrackedMeasurementsContext_promptTrackNewStudy__WEBPACK_IMPORTED_MODULE_4__["default"],
+  'measurement.promptLabelAnnotation': _ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__.promptLabelAnnotation,
+  'measurement.promptSaveReport': _ohif_extension_default__WEBPACK_IMPORTED_MODULE_5__.promptSaveReport,
+  'measurement.promptHasDirtyAnnotations': _contexts_TrackedMeasurementsContext_promptHasDirtyAnnotations__WEBPACK_IMPORTED_MODULE_1__["default"]
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/customizations/studyBrowserCustomization.ts":
+/*!************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/customizations/studyBrowserCustomization.ts ***!
+  \************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   customOnDropHandlerCallback: () => (/* binding */ customOnDropHandlerCallback),
+/* harmony export */   onDoubleClickHandler: () => (/* binding */ onDoubleClickHandler)
+/* harmony export */ });
+/* harmony import */ var _contexts_TrackedMeasurementsContext_promptBeginTracking__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../contexts/TrackedMeasurementsContext/promptBeginTracking */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+const onDoubleClickHandler = {
+  callbacks: [({
+    activeViewportId,
+    servicesManager,
+    isHangingProtocolLayout,
+    appConfig
+  }) => async displaySetInstanceUID => {
+    const {
+      hangingProtocolService,
+      viewportGridService,
+      uiNotificationService
+    } = servicesManager.services;
+    let updatedViewports = [];
+    const viewportId = activeViewportId;
+    const haveDirtyMeasurementsInSimplifiedMode = checkHasDirtyAndSimplifiedMode({
+      servicesManager,
+      appConfig,
+      displaySetInstanceUID
+    });
+    try {
+      if (!haveDirtyMeasurementsInSimplifiedMode) {
+        updatedViewports = hangingProtocolService.getViewportsRequireUpdate(viewportId, displaySetInstanceUID, isHangingProtocolLayout);
+        viewportGridService.setDisplaySetsForViewports(updatedViewports);
+      }
+    } catch (error) {
+      console.warn(error);
+      uiNotificationService.show({
+        title: 'Thumbnail Double Click',
+        message: 'The selected display sets could not be added to the viewport.',
+        type: 'error',
+        duration: 3000
+      });
+    }
+  }]
+};
+const customOnDropHandlerCallback = async props => {
+  const handled = checkHasDirtyAndSimplifiedMode(props);
+  return Promise.resolve({
+    handled
+  });
+};
+const checkHasDirtyAndSimplifiedMode = props => {
+  const {
+    servicesManager,
+    appConfig,
+    displaySetInstanceUID
+  } = props;
+  const simplifiedMode = appConfig.measurementTrackingMode === _contexts_TrackedMeasurementsContext_promptBeginTracking__WEBPACK_IMPORTED_MODULE_0__.measurementTrackingMode.SIMPLIFIED;
+  const {
+    measurementService,
+    displaySetService
+  } = servicesManager.services;
+  const measurements = measurementService.getMeasurements();
+  const haveDirtyMeasurements = measurements.some(m => m.isDirty) || measurements.length && measurementService.getIsMeasurementDeletedIndividually();
+  const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
+  const hasDirtyAndSimplifiedMode = displaySet.Modality === 'SR' && simplifiedMode && haveDirtyMeasurements;
+  return hasDirtyAndSimplifiedMode;
+};
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1410,7 +2056,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/getContextModule.tsx ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1447,7 +2093,80 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/getCustomizationModule.ts":
+/*!******************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/getCustomizationModule.ts ***!
+  \******************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getCustomizationModule)
+/* harmony export */ });
+/* harmony import */ var _customizations_measurementTrackingPrompts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./customizations/measurementTrackingPrompts */ "../../../extensions/measurement-tracking/src/customizations/measurementTrackingPrompts.tsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+function getCustomizationModule() {
+  return [{
+    name: 'default',
+    value: {
+      ..._customizations_measurementTrackingPrompts__WEBPACK_IMPORTED_MODULE_0__["default"]
+    }
+  }];
+}
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1462,7 +2181,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/getPanelModule.tsx ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1503,17 +2222,14 @@ function getPanelModule({
     iconName: 'tab-studies',
     iconLabel: 'Studies',
     label: i18next__WEBPACK_IMPORTED_MODULE_1__["default"].t('SidePanel:Studies'),
-    component: props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_panels__WEBPACK_IMPORTED_MODULE_0__.PanelStudyBrowserTracking, _extends({}, props, {
-      commandsManager: commandsManager,
-      extensionManager: extensionManager,
-      servicesManager: servicesManager
-    }))
+    component: props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_panels__WEBPACK_IMPORTED_MODULE_0__.PanelStudyBrowserTracking, props)
   }, {
     name: 'trackedMeasurements',
     iconName: 'tab-linear',
     iconLabel: 'Measure',
     label: i18next__WEBPACK_IMPORTED_MODULE_1__["default"].t('SidePanel:Measurements'),
     component: props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_panels__WEBPACK_IMPORTED_MODULE_0__.PanelMeasurementTableTracking, _extends({}, props, {
+      key: "trackedMeasurements-panel",
       commandsManager: commandsManager,
       extensionManager: extensionManager,
       servicesManager: servicesManager
@@ -1528,7 +2244,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1543,7 +2275,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/getViewportModule.tsx ***!
   \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1551,6 +2283,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -1564,17 +2297,16 @@ function _extends() {
   }, _extends.apply(null, arguments);
 }
 
+
 const Component = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().lazy(_c = () => {
   return __webpack_require__.e(/*! import() */ "extensions_measurement-tracking_src_viewports_TrackedCornerstoneViewport_tsx").then(__webpack_require__.bind(__webpack_require__, /*! ./viewports/TrackedCornerstoneViewport */ "../../../extensions/measurement-tracking/src/viewports/TrackedCornerstoneViewport.tsx"));
 });
-_c4 = Component;
 _c2 = Component;
 const OHIFCornerstoneViewport = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Suspense), {
     fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Loading...")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, props));
 };
-_c5 = OHIFCornerstoneViewport;
 _c3 = OHIFCornerstoneViewport;
 function getViewportModule({
   servicesManager,
@@ -1590,7 +2322,11 @@ function getViewportModule({
   };
   return [{
     name: 'cornerstone-tracked',
-    component: ExtendedOHIFCornerstoneTrackingViewport
+    component: ExtendedOHIFCornerstoneTrackingViewport,
+    isReferenceViewable: props => _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.utils.isReferenceViewable({
+      ...props,
+      servicesManager
+    })
   }];
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getViewportModule);
@@ -1598,9 +2334,6 @@ var _c, _c2, _c3;
 __webpack_require__.$Refresh$.register(_c, "Component$React.lazy");
 __webpack_require__.$Refresh$.register(_c2, "Component");
 __webpack_require__.$Refresh$.register(_c3, "OHIFCornerstoneViewport");
-var _c4, _c5;
-__webpack_require__.$Refresh$.register(_c4, "Component");
-__webpack_require__.$Refresh$.register(_c5, "OHIFCornerstoneViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -1608,7 +2341,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1623,7 +2372,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/id.js ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1643,7 +2392,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1658,22 +2423,34 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/index.tsx ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   measurementTrackingMode: () => (/* reexport safe */ _contexts_TrackedMeasurementsContext_promptBeginTracking__WEBPACK_IMPORTED_MODULE_4__.measurementTrackingMode)
 /* harmony export */ });
 /* harmony import */ var _getContextModule__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getContextModule */ "../../../extensions/measurement-tracking/src/getContextModule.tsx");
 /* harmony import */ var _getPanelModule__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getPanelModule */ "../../../extensions/measurement-tracking/src/getPanelModule.tsx");
 /* harmony import */ var _getViewportModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getViewportModule */ "../../../extensions/measurement-tracking/src/getViewportModule.tsx");
 /* harmony import */ var _id_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./id.js */ "../../../extensions/measurement-tracking/src/id.js");
+/* harmony import */ var _contexts_TrackedMeasurementsContext_promptBeginTracking__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./contexts/TrackedMeasurementsContext/promptBeginTracking */ "../../../extensions/measurement-tracking/src/contexts/TrackedMeasurementsContext/promptBeginTracking.js");
+/* harmony import */ var _getCustomizationModule__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./getCustomizationModule */ "../../../extensions/measurement-tracking/src/getCustomizationModule.ts");
+/* harmony import */ var _customizations_studyBrowserCustomization__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./customizations/studyBrowserCustomization */ "../../../extensions/measurement-tracking/src/customizations/studyBrowserCustomization.ts");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services */ "../../../extensions/measurement-tracking/src/services/index.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./types */ "../../../extensions/measurement-tracking/src/types/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
 
+
+
+
+
+
+// Import types to ensure they're included in the build
 
 const measurementTrackingExtension = {
   /**
@@ -1682,9 +2459,37 @@ const measurementTrackingExtension = {
   id: _id_js__WEBPACK_IMPORTED_MODULE_3__.id,
   getContextModule: _getContextModule__WEBPACK_IMPORTED_MODULE_0__["default"],
   getPanelModule: _getPanelModule__WEBPACK_IMPORTED_MODULE_1__["default"],
-  getViewportModule: _getViewportModule__WEBPACK_IMPORTED_MODULE_2__["default"]
+  getViewportModule: _getViewportModule__WEBPACK_IMPORTED_MODULE_2__["default"],
+  /**
+   * Service configuration
+   */
+  preRegistration({
+    servicesManager
+  }) {
+    servicesManager.registerService(_services__WEBPACK_IMPORTED_MODULE_7__.TrackedMeasurementsService.REGISTRATION);
+  },
+  onModeEnter({
+    servicesManager
+  }) {
+    const {
+      customizationService,
+      toolbarService,
+      trackedMeasurementsService
+    } = servicesManager.services;
+    toolbarService.registerEventForToolbarUpdate(trackedMeasurementsService, [trackedMeasurementsService.EVENTS.TRACKED_SERIES_CHANGED, trackedMeasurementsService.EVENTS.SERIES_ADDED, trackedMeasurementsService.EVENTS.SERIES_REMOVED, trackedMeasurementsService.EVENTS.TRACKING_ENABLED, trackedMeasurementsService.EVENTS.TRACKING_DISABLED]);
+    customizationService.setCustomizations({
+      'studyBrowser.thumbnailDoubleClickCallback': {
+        $set: _customizations_studyBrowserCustomization__WEBPACK_IMPORTED_MODULE_6__.onDoubleClickHandler
+      },
+      customOnDropHandler: {
+        $set: _customizations_studyBrowserCustomization__WEBPACK_IMPORTED_MODULE_6__.customOnDropHandlerCallback
+      }
+    });
+  },
+  getCustomizationModule: _getCustomizationModule__WEBPACK_IMPORTED_MODULE_5__["default"]
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (measurementTrackingExtension);
+
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -1692,7 +2497,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1707,7 +2528,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/panels/PanelMeasurementTableTracking.tsx ***!
   \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1715,19 +2536,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _getContextModule__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../getContextModule */ "../../../extensions/measurement-tracking/src/getContextModule.tsx");
-/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* harmony import */ var _getContextModule__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../getContextModule */ "../../../extensions/measurement-tracking/src/getContextModule.tsx");
+/* harmony import */ var _PanelStudyBrowserTracking_untrackSeriesModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./PanelStudyBrowserTracking/untrackSeriesModal */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/untrackSeriesModal.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
-
-
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
 
 
 
@@ -1735,194 +2561,95 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 const {
-  downloadCSVReport,
-  formatDate
-} = _ohif_core__WEBPACK_IMPORTED_MODULE_4__.utils;
-const DISPLAY_STUDY_SUMMARY_INITIAL_VALUE = {
-  key: undefined,
-  //
-  date: '',
-  // '07-Sep-2010',
-  modality: '',
-  // 'CT',
-  description: '' // 'CHEST/ABD/PELVIS W CONTRAST',
-};
-function PanelMeasurementTableTracking({
-  servicesManager,
-  extensionManager,
-  commandsManager
-}) {
-  _s2();
+  filterAnd,
+  filterPlanarMeasurement,
+  filterMeasurementsBySeriesUID
+} = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.utils.MeasurementFilters;
+function PanelMeasurementTableTracking(props) {
   _s();
-  const [viewportGrid] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid)();
+  const [viewportGrid] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid)();
   const {
-    t
-  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_6__.useTranslation)('MeasurementTable');
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useSystem)();
   const {
     measurementService,
-    customizationService,
-    uiDialogService
+    uiModalService
   } = servicesManager.services;
-  const [trackedMeasurements, sendTrackedMeasurementsEvent] = (0,_getContextModule__WEBPACK_IMPORTED_MODULE_5__.useTrackedMeasurements)();
+  const [trackedMeasurements, sendTrackedMeasurementsEvent] = (0,_getContextModule__WEBPACK_IMPORTED_MODULE_4__.useTrackedMeasurements)();
   const {
     trackedStudy,
     trackedSeries
   } = trackedMeasurements.context;
-  const [displayStudySummary, setDisplayStudySummary] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(DISPLAY_STUDY_SUMMARY_INITIAL_VALUE);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const updateDisplayStudySummary = async () => {
-      if (trackedMeasurements.matches('tracking') && trackedStudy) {
-        const studyMeta = _ohif_core__WEBPACK_IMPORTED_MODULE_4__.DicomMetadataStore.getStudy(trackedStudy);
-        if (!studyMeta || !studyMeta.series || studyMeta.series.length === 0) {
-          console.debug('Study metadata not available');
-          return;
-        }
-        const instanceMeta = studyMeta.series[0].instances[0];
-        const {
-          StudyDate,
-          StudyDescription
-        } = instanceMeta;
-        const modalities = new Set();
-        studyMeta.series.forEach(series => {
-          if (trackedSeries.includes(series.SeriesInstanceUID)) {
-            modalities.add(series.instances[0].Modality);
-          }
-        });
-        const modality = Array.from(modalities).join('/');
-        setDisplayStudySummary(prevSummary => {
-          if (prevSummary.key !== trackedStudy) {
-            return {
-              key: trackedStudy,
-              date: StudyDate,
-              modality,
-              description: StudyDescription
-            };
-          }
-          return prevSummary;
-        });
-      } else if (!trackedStudy) {
-        setDisplayStudySummary(DISPLAY_STUDY_SUMMARY_INITIAL_VALUE);
+  const measurementFilter = trackedStudy ? filterAnd(filterPlanarMeasurement, filterMeasurementsBySeriesUID(trackedSeries)) : filterPlanarMeasurement;
+  const onUntrackConfirm = () => {
+    sendTrackedMeasurementsEvent('UNTRACK_ALL', {});
+  };
+  const onDelete = () => {
+    const hasDirtyMeasurements = measurementService.getMeasurements().some(measurement => measurement.isDirty);
+    hasDirtyMeasurements ? uiModalService.show({
+      title: 'Untrack Study',
+      content: _PanelStudyBrowserTracking_untrackSeriesModal__WEBPACK_IMPORTED_MODULE_5__.UntrackSeriesModal,
+      contentProps: {
+        onConfirm: onUntrackConfirm,
+        message: 'Are you sure you want to untrack study and delete all measurements?'
       }
-    };
-    updateDisplayStudySummary();
-  }, [trackedMeasurements, trackedStudy, trackedSeries]);
-  const {
-    disableEditing
-  } = customizationService.getCustomization('PanelMeasurement.disableEditing', {
-    id: 'default.disableEditing',
-    disableEditing: false
-  });
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, displayStudySummary.key && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.StudySummary, {
-    date: formatDate(displayStudySummary.date),
-    description: displayStudySummary.description
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.PanelMeasurement, {
-    servicesManager: servicesManager,
-    extensionManager: extensionManager,
-    commandsManager: commandsManager,
-    measurementFilter: measurement => trackedStudy === measurement.referenceStudyUID && trackedSeries.includes(measurement.referenceSeriesUID),
-    customHeader: ({
-      additionalFindings,
-      measurements
+    }) : onUntrackConfirm();
+  };
+  const EmptyComponent = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": "trackedMeasurements-panel"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.MeasurementTable, {
+    title: "Measurements",
+    isExpanded: false
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.MeasurementTable.Body, null)));
+  const actions = {
+    createSR: ({
+      StudyInstanceUID
     }) => {
-      const disabled = additionalFindings.length === 0 && measurements.length === 0;
-      if (disableEditing || disabled) {
-        return null;
-      }
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: "bg-background flex h-9 w-full items-center rounded pr-0.5"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: "flex space-x-1"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Button, {
-        size: "sm",
-        variant: "ghost",
-        className: "pl-1.5",
-        onClick: () => {
-          const measurements = measurementService.getMeasurements();
-          const trackedMeasurements = measurements.filter(m => trackedStudy === m.referenceStudyUID && trackedSeries.includes(m.referenceSeriesUID));
-          downloadCSVReport(trackedMeasurements);
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons.Download, {
-        className: "h-5 w-5"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-        className: "pl-1"
-      }, "CSV")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Button, {
-        size: "sm",
-        variant: "ghost",
-        className: "pl-0.5",
-        onClick: () => {
-          sendTrackedMeasurementsEvent('SAVE_REPORT', {
-            viewportId: viewportGrid.activeViewportId,
-            isBackupSave: true
-          });
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons.Add, null), "Create SR"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Button, {
-        size: "sm",
-        variant: "ghost",
-        className: "pl-0.5",
-        onClick: () => {
-          uiDialogService.create({
-            id: 'delete-all-measurements',
-            centralize: true,
-            isDraggable: false,
-            showOverlay: true,
-            content: _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Dialog,
-            contentProps: {
-              title: 'Delete All Measurements',
-              body: () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-                className: "bg-primary-dark text-white"
-              }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Are you sure you want to delete all measurements?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-                className: "mt-2"
-              }, "This action cannot be undone.")),
-              actions: [{
-                id: 'cancel',
-                text: 'Cancel',
-                type: _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.ButtonEnums.type.secondary
-              }, {
-                id: 'yes',
-                text: 'Delete All',
-                type: _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.ButtonEnums.type.primary,
-                classes: ['delete-all-yes-button']
-              }],
-              onClose: () => uiDialogService.dismiss({
-                id: 'delete-all-measurements'
-              }),
-              onSubmit: async ({
-                action
-              }) => {
-                switch (action.id) {
-                  case 'yes':
-                    measurementService.clearMeasurements();
-                    uiDialogService.dismiss({
-                      id: 'delete-all-measurements'
-                    });
-                    break;
-                  case 'cancel':
-                    uiDialogService.dismiss({
-                      id: 'delete-all-measurements'
-                    });
-                    break;
-                }
-              }
-            }
-          });
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons.Delete, null), "Delete All")));
-    }
-  }));
+      sendTrackedMeasurementsEvent('SAVE_REPORT', {
+        viewportId: viewportGrid.activeViewportId,
+        isBackupSave: true,
+        StudyInstanceUID,
+        measurementFilter
+      });
+    },
+    onDelete
+  };
+  const Header = props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.AccordionTrigger, {
+    asChild: true,
+    className: "px-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": "TrackingHeader"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.StudySummaryFromMetadata, _extends({}, props, {
+    actions: actions
+  }))));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ScrollArea, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": "trackedMeasurements-panel"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.PanelMeasurement, {
+    measurementFilter: measurementFilter,
+    emptyComponent: EmptyComponent,
+    sourceChildren: props.children
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.StudyMeasurements, {
+    grouping: props.grouping
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.AccordionGroup.Trigger, {
+    key: "trackingMeasurementsHeader",
+    asChild: true
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Header, {
+    key: "trackingHeadChild"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.MeasurementsOrAdditionalFindings, {
+    key: "measurementsOrAdditionalFindings",
+    activeStudyUID: trackedStudy,
+    customHeader: _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.StudyMeasurementsActions,
+    measurementFilter: measurementFilter,
+    actions: actions
+  })))));
 }
-_s2(PanelMeasurementTableTracking, "y8s1oCzl2RwrM8vDUkkGY51bd2c=", false, function () {
-  return [_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid, react_i18next__WEBPACK_IMPORTED_MODULE_6__.useTranslation, _getContextModule__WEBPACK_IMPORTED_MODULE_5__.useTrackedMeasurements];
-});
-_c2 = PanelMeasurementTableTracking;
-_s(PanelMeasurementTableTracking, "aSSpCyla9qqwjUIfzJQwI+Nh1eM=", false, function () {
-  return [_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid, react_i18next__WEBPACK_IMPORTED_MODULE_6__.useTranslation, _getContextModule__WEBPACK_IMPORTED_MODULE_5__.useTrackedMeasurements];
+_s(PanelMeasurementTableTracking, "0kwOg5uN4eGzxd1vUg2OO0Byh08=", false, function () {
+  return [_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid, _ohif_core__WEBPACK_IMPORTED_MODULE_1__.useSystem, _getContextModule__WEBPACK_IMPORTED_MODULE_4__.useTrackedMeasurements];
 });
 _c = PanelMeasurementTableTracking;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PanelMeasurementTableTracking);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "PanelMeasurementTableTracking");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "PanelMeasurementTableTracking");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -1930,7 +2657,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1945,7 +2688,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/PanelStudyBrowserTracking.tsx ***!
   \*******************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -1953,20 +2696,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router-dom/dist/index.js");
-/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
-/* harmony import */ var _getContextModule__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../getContextModule */ "../../../extensions/measurement-tracking/src/getContextModule.tsx");
-/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./constants */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/index.ts");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_extension_default_src_Panels_StudyBrowser_PanelStudyBrowser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-default/src/Panels/StudyBrowser/PanelStudyBrowser */ "../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowser.tsx");
+/* harmony import */ var _untrackSeriesModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./untrackSeriesModal */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/untrackSeriesModal.tsx");
+/* harmony import */ var _getContextModule__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../getContextModule */ "../../../extensions/measurement-tracking/src/getContextModule.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -1974,331 +2712,51 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 
+const thumbnailNoImageModalities = ['SR', 'SEG', 'RTSTRUCT', 'RTPLAN', 'RTDOSE', 'PMAP'];
 
-
-
-
-
-const {
-  formatDate,
-  createStudyBrowserTabs
-} = _ohif_core__WEBPACK_IMPORTED_MODULE_4__.utils;
-const thumbnailNoImageModalities = ['SR', 'SEG', 'SM', 'RTSTRUCT', 'RTPLAN', 'RTDOSE', 'DOC', 'OT', 'PMAP'];
 /**
- *
- * @param {*} param0
+ * Panel component for the Study Browser with tracking capabilities
  */
 function PanelStudyBrowserTracking({
-  servicesManager,
   getImageSrc,
   getStudiesForPatientByMRN,
   requestDisplaySetCreationForStudy,
-  dataSource,
-  commandsManager
+  dataSource
 }) {
-  _s2();
   _s();
   const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
+  const {
     displaySetService,
-    uiDialogService,
-    hangingProtocolService,
-    uiNotificationService,
+    uiModalService,
     measurementService,
-    studyPrefetcherService,
-    customizationService
+    viewportGridService
   } = servicesManager.services;
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
-  const {
-    mode: studyMode
-  } = customizationService.getCustomization('PanelStudyBrowser.studyMode', {
-    id: 'default',
-    mode: 'all'
-  });
-  const {
-    t
-  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation)('Common');
-
-  // Normally you nest the components so the tree isn't so deep, and the data
-  // doesn't have to have such an intense shape. This works well enough for now.
-  // Tabs --> Studies --> DisplaySets --> Thumbnails
-  const {
-    StudyInstanceUIDs
-  } = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useImageViewer)();
-  const [{
-    activeViewportId,
-    viewports,
-    isHangingProtocolLayout
-  }, viewportGridService] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid)();
-  const [trackedMeasurements, sendTrackedMeasurementsEvent] = (0,_getContextModule__WEBPACK_IMPORTED_MODULE_7__.useTrackedMeasurements)();
-  const [activeTabName, setActiveTabName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(studyMode);
-  const [expandedStudyInstanceUIDs, setExpandedStudyInstanceUIDs] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([...StudyInstanceUIDs]);
-  const [studyDisplayList, setStudyDisplayList] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const [hasLoadedViewports, setHasLoadedViewports] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [displaySets, setDisplaySets] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const [displaySetsLoadingState, setDisplaySetsLoadingState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
-  const [thumbnailImageSrcMap, setThumbnailImageSrcMap] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
-  const [jumpToDisplaySet, setJumpToDisplaySet] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
-  const [viewPresets, setViewPresets] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(customizationService.getCustomization('studyBrowser.viewPresets')?.value || _constants__WEBPACK_IMPORTED_MODULE_9__.defaultViewPresets);
-  const [actionIcons, setActionIcons] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_constants__WEBPACK_IMPORTED_MODULE_9__.defaultActionIcons);
-  const updateActionIconValue = actionIcon => {
-    actionIcon.value = !actionIcon.value;
-    const newActionIcons = [...actionIcons];
-    setActionIcons(newActionIcons);
-  };
-  const updateViewPresetValue = viewPreset => {
-    if (!viewPreset) {
-      return;
-    }
-    const newViewPresets = viewPresets.map(preset => {
-      preset.selected = preset.id === viewPreset.id;
-      return preset;
-    });
-    setViewPresets(newViewPresets);
-  };
-  const onDoubleClickThumbnailHandler = displaySetInstanceUID => {
-    let updatedViewports = [];
-    const viewportId = activeViewportId;
-    try {
-      updatedViewports = hangingProtocolService.getViewportsRequireUpdate(viewportId, displaySetInstanceUID, isHangingProtocolLayout);
-    } catch (error) {
-      console.warn(error);
-      uiNotificationService.show({
-        title: 'Thumbnail Double Click',
-        message: 'The selected display sets could not be added to the viewport due to a mismatch in the Hanging Protocol rules.',
-        type: 'error',
-        duration: 3000
-      });
-    }
-    viewportGridService.setDisplaySetsForViewports(updatedViewports);
-  };
-  const activeViewportDisplaySetInstanceUIDs = viewports.get(activeViewportId)?.displaySetInstanceUIDs;
+  const [trackedMeasurements, sendTrackedMeasurementsEvent] = (0,_getContextModule__WEBPACK_IMPORTED_MODULE_5__.useTrackedMeasurements)();
   const {
     trackedSeries
   } = trackedMeasurements.context;
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    setActiveTabName(studyMode);
-  }, [studyMode]);
-
-  // ~~ studyDisplayList
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // Fetch all studies for the patient in each primary study
-    async function fetchStudiesForPatient(StudyInstanceUID) {
-      // current study qido
-      const qidoForStudyUID = await dataSource.query.studies.search({
-        studyInstanceUid: StudyInstanceUID
-      });
-      if (!qidoForStudyUID?.length) {
-        navigate('/notfoundstudy', '_self');
-        throw new Error('Invalid study URL');
-      }
-      let qidoStudiesForPatient = qidoForStudyUID;
-
-      // try to fetch the prior studies based on the patientID if the
-      // server can respond.
-      try {
-        qidoStudiesForPatient = await getStudiesForPatientByMRN(qidoForStudyUID);
-      } catch (error) {
-        console.warn(error);
-      }
-      const mappedStudies = _mapDataSourceStudies(qidoStudiesForPatient);
-      const actuallyMappedStudies = mappedStudies.map(qidoStudy => {
-        return {
-          studyInstanceUid: qidoStudy.StudyInstanceUID,
-          date: formatDate(qidoStudy.StudyDate) || t('NoStudyDate'),
-          description: qidoStudy.StudyDescription,
-          modalities: qidoStudy.ModalitiesInStudy,
-          numInstances: qidoStudy.NumInstances
-        };
-      });
-      setStudyDisplayList(prevArray => {
-        const ret = [...prevArray];
-        for (const study of actuallyMappedStudies) {
-          if (!prevArray.find(it => it.studyInstanceUid === study.studyInstanceUid)) {
-            ret.push(study);
-          }
-        }
-        return ret;
+  const checkDirtyMeasurements = displaySetInstanceUID => {
+    const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
+    if (displaySet.Modality === 'SR') {
+      const activeViewportId = viewportGridService.getActiveViewportId();
+      sendTrackedMeasurementsEvent('CHECK_DIRTY', {
+        viewportId: activeViewportId,
+        displaySetInstanceUID: displaySetInstanceUID
       });
     }
-    StudyInstanceUIDs.forEach(sid => fetchStudiesForPatient(sid));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [StudyInstanceUIDs, getStudiesForPatientByMRN]);
-
-  // ~~ Initial Thumbnails
+  };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (!hasLoadedViewports) {
-      if (activeViewportId) {
-        // Once there is an active viewport id, it means the layout is ready
-        // so wait a bit of time to allow the viewports preferential loading
-        // which improves user experience of responsiveness significantly on slower
-        // systems.
-        window.setTimeout(() => setHasLoadedViewports(true), 250);
-      }
-      return;
-    }
-    let currentDisplaySets = displaySetService.activeDisplaySets;
-    // filter non based on the list of modalities that are supported by cornerstone
-    currentDisplaySets = currentDisplaySets.filter(ds => !thumbnailNoImageModalities.includes(ds.Modality));
-    if (!currentDisplaySets.length) {
-      return;
-    }
-    currentDisplaySets.forEach(async dSet => {
-      const newImageSrcEntry = {};
-      const displaySet = displaySetService.getDisplaySetByUID(dSet.displaySetInstanceUID);
-      const imageIds = dataSource.getImageIdsForDisplaySet(displaySet);
-      const imageId = getImageIdForThumbnail(displaySet, imageIds);
-
-      // TODO: Is it okay that imageIds are not returned here for SR displaySets?
-      if (!imageId || displaySet?.unsupported) {
-        return;
-      }
-      // When the image arrives, render it and store the result in the thumbnailImgSrcMap
-      newImageSrcEntry[dSet.displaySetInstanceUID] = await getImageSrc(imageId);
-      setThumbnailImageSrcMap(prevState => {
-        return {
-          ...prevState,
-          ...newImageSrcEntry
-        };
-      });
-    });
-  }, [displaySetService, dataSource, getImageSrc, activeViewportId, hasLoadedViewports]);
-
-  // ~~ displaySets
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const currentDisplaySets = displaySetService.activeDisplaySets;
-    if (!currentDisplaySets.length) {
-      return;
-    }
-    const mappedDisplaySets = _mapDisplaySets(currentDisplaySets, displaySetsLoadingState, thumbnailImageSrcMap, trackedSeries, viewports, viewportGridService, dataSource, displaySetService, uiDialogService, uiNotificationService);
-    setDisplaySets(mappedDisplaySets);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displaySetService.activeDisplaySets, displaySetsLoadingState, trackedSeries, viewports, dataSource, thumbnailImageSrcMap]);
-
-  // -- displaySetsLoadingState
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const {
-      unsubscribe
-    } = studyPrefetcherService.subscribe(studyPrefetcherService.EVENTS.DISPLAYSET_LOAD_PROGRESS, updatedDisplaySetLoadingState => {
-      const {
-        displaySetInstanceUID,
-        loadingProgress
-      } = updatedDisplaySetLoadingState;
-      setDisplaySetsLoadingState(prevState => ({
-        ...prevState,
-        [displaySetInstanceUID]: loadingProgress
-      }));
-    });
-    return () => unsubscribe();
-  }, [studyPrefetcherService]);
-
-  // ~~ subscriptions --> displaySets
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // DISPLAY_SETS_ADDED returns an array of DisplaySets that were added
-    const SubscriptionDisplaySetsAdded = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_ADDED, data => {
-      if (!hasLoadedViewports) {
-        return;
-      }
-      const {
-        displaySetsAdded,
-        options
-      } = data;
-      displaySetsAdded.forEach(async dSet => {
-        const displaySetInstanceUID = dSet.displaySetInstanceUID;
-        const newImageSrcEntry = {};
-        const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
-        if (displaySet?.unsupported) {
-          return;
-        }
-        if (options.madeInClient) {
-          setJumpToDisplaySet(displaySetInstanceUID);
-        }
-        const imageIds = dataSource.getImageIdsForDisplaySet(displaySet);
-        const imageId = getImageIdForThumbnail(displaySet, imageIds);
-
-        // TODO: Is it okay that imageIds are not returned here for SR displaysets?
-        if (!imageId) {
-          return;
-        }
-
-        // When the image arrives, render it and store the result in the thumbnailImgSrcMap
-        newImageSrcEntry[displaySetInstanceUID] = await getImageSrc(imageId);
-        setThumbnailImageSrcMap(prevState => {
-          return {
-            ...prevState,
-            ...newImageSrcEntry
-          };
-        });
-      });
+    const subscriptionOndropFired = viewportGridService.subscribe(viewportGridService.EVENTS.VIEWPORT_ONDROP_HANDLED, ({
+      eventData
+    }) => {
+      checkDirtyMeasurements(eventData.displaySetInstanceUID);
     });
     return () => {
-      SubscriptionDisplaySetsAdded.unsubscribe();
+      subscriptionOndropFired.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displaySetService, dataSource, getImageSrc, thumbnailImageSrcMap, trackedSeries, viewports]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // TODO: Will this always hold _all_ the displaySets we care about?
-    // DISPLAY_SETS_CHANGED returns `DisplaySerService.activeDisplaySets`
-    const SubscriptionDisplaySetsChanged = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_CHANGED, changedDisplaySets => {
-      const mappedDisplaySets = _mapDisplaySets(changedDisplaySets, displaySetsLoadingState, thumbnailImageSrcMap, trackedSeries, viewports, viewportGridService, dataSource, displaySetService, uiDialogService, uiNotificationService);
-      setDisplaySets(mappedDisplaySets);
-    });
-    const SubscriptionDisplaySetMetaDataInvalidated = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SET_SERIES_METADATA_INVALIDATED, () => {
-      const mappedDisplaySets = _mapDisplaySets(displaySetService.getActiveDisplaySets(), displaySetsLoadingState, thumbnailImageSrcMap, trackedSeries, viewports, viewportGridService, dataSource, displaySetService, uiDialogService, uiNotificationService);
-      setDisplaySets(mappedDisplaySets);
-    });
-    return () => {
-      SubscriptionDisplaySetsChanged.unsubscribe();
-      SubscriptionDisplaySetMetaDataInvalidated.unsubscribe();
-    };
-  }, [displaySetsLoadingState, thumbnailImageSrcMap, trackedSeries, viewports, dataSource, displaySetService]);
-  const tabs = createStudyBrowserTabs(StudyInstanceUIDs, studyDisplayList, displaySets);
-
-  // TODO: Should not fire this on "close"
-  function _handleStudyClick(StudyInstanceUID) {
-    const shouldCollapseStudy = expandedStudyInstanceUIDs.includes(StudyInstanceUID);
-    const updatedExpandedStudyInstanceUIDs = shouldCollapseStudy ? [...expandedStudyInstanceUIDs.filter(stdyUid => stdyUid !== StudyInstanceUID)] : [...expandedStudyInstanceUIDs, StudyInstanceUID];
-    setExpandedStudyInstanceUIDs(updatedExpandedStudyInstanceUIDs);
-    if (!shouldCollapseStudy) {
-      const madeInClient = true;
-      requestDisplaySetCreationForStudy(displaySetService, StudyInstanceUID, madeInClient);
-    }
-  }
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (jumpToDisplaySet) {
-      // Get element by displaySetInstanceUID
-      const displaySetInstanceUID = jumpToDisplaySet;
-      const element = document.getElementById(`thumbnail-${displaySetInstanceUID}`);
-      if (element && typeof element.scrollIntoView === 'function') {
-        // TODO: Any way to support IE here?
-        element.scrollIntoView({
-          behavior: 'smooth'
-        });
-        setJumpToDisplaySet(null);
-      }
-    }
-  }, [jumpToDisplaySet, expandedStudyInstanceUIDs, activeTabName]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (!jumpToDisplaySet) {
-      return;
-    }
-    const displaySetInstanceUID = jumpToDisplaySet;
-    // Set the activeTabName and expand the study
-    const thumbnailLocation = _findTabAndStudyOfDisplaySet(displaySetInstanceUID, tabs);
-    if (!thumbnailLocation) {
-      console.warn('jumpToThumbnail: displaySet thumbnail not found.');
-      return;
-    }
-    const {
-      tabName,
-      StudyInstanceUID
-    } = thumbnailLocation;
-    setActiveTabName(tabName);
-    const studyExpanded = expandedStudyInstanceUIDs.includes(StudyInstanceUID);
-    if (!studyExpanded) {
-      const updatedExpandedStudyInstanceUIDs = [...expandedStudyInstanceUIDs, StudyInstanceUID];
-      setExpandedStudyInstanceUIDs(updatedExpandedStudyInstanceUIDs);
-    }
-  }, [expandedStudyInstanceUIDs, jumpToDisplaySet, tabs]);
+  }, []);
   const onClickUntrack = displaySetInstanceUID => {
     const onConfirm = () => {
       const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
@@ -2312,280 +2770,83 @@ function PanelStudyBrowserTracking({
         }
       });
     };
-    uiDialogService.create({
-      id: 'untrack-series',
-      centralize: true,
-      isDraggable: false,
-      showOverlay: true,
-      content: _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.Dialog,
+    uiModalService.show({
+      title: 'Untrack Series',
+      content: _untrackSeriesModal__WEBPACK_IMPORTED_MODULE_4__.UntrackSeriesModal,
       contentProps: {
-        title: 'Untrack Series',
-        body: () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-          className: "bg-primary-dark p-4 text-white"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Are you sure you want to untrack this series?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-          className: "mt-2"
-        }, "This action cannot be undone and will delete all your existing measurements.")),
-        actions: [{
-          id: 'cancel',
-          text: 'Cancel',
-          type: _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.ButtonEnums.type.secondary
-        }, {
-          id: 'yes',
-          text: 'Yes',
-          type: _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.ButtonEnums.type.primary,
-          classes: ['untrack-yes-button']
-        }],
-        onClose: () => uiDialogService.dismiss({
-          id: 'untrack-series'
-        }),
-        onSubmit: async ({
-          action
-        }) => {
-          switch (action.id) {
-            case 'yes':
-              onConfirm();
-              uiDialogService.dismiss({
-                id: 'untrack-series'
-              });
-              break;
-            case 'cancel':
-              uiDialogService.dismiss({
-                id: 'untrack-series'
-              });
-              break;
-          }
-        }
+        onConfirm,
+        message: 'Are you sure you want to untrack this series?'
       }
     });
   };
-  const onThumbnailContextMenu = (commandName, options) => {
-    commandsManager.runCommand(commandName, options);
+
+  // Custom mapping function to add tracking data to display sets
+  const mapDisplaySetsWithTracking = (displaySets, displaySetLoadingState, thumbnailImageSrcMap, viewports) => {
+    const thumbnailDisplaySets = [];
+    const thumbnailNoImageDisplaySets = [];
+    displaySets.filter(ds => !ds.excludeFromThumbnailBrowser).forEach(ds => {
+      const {
+        thumbnailSrc,
+        displaySetInstanceUID
+      } = ds;
+      const componentType = getComponentType(ds);
+      const array = componentType === 'thumbnailTracked' ? thumbnailDisplaySets : thumbnailNoImageDisplaySets;
+      const loadingProgress = displaySetLoadingState?.[displaySetInstanceUID];
+      array.push({
+        displaySetInstanceUID,
+        description: ds.SeriesDescription || '',
+        seriesNumber: ds.SeriesNumber,
+        modality: ds.Modality,
+        seriesDate: ds.SeriesDate ? new Date(ds.SeriesDate).toLocaleDateString() : '',
+        numInstances: ds.numImageFrames,
+        loadingProgress,
+        countIcon: ds.countIcon,
+        messages: ds.messages,
+        StudyInstanceUID: ds.StudyInstanceUID,
+        componentType,
+        imageSrc: thumbnailSrc || thumbnailImageSrcMap[displaySetInstanceUID],
+        dragData: {
+          type: 'displayset',
+          displaySetInstanceUID
+        },
+        isTracked: trackedSeries.includes(ds.SeriesInstanceUID),
+        isHydratedForDerivedDisplaySet: ds.isHydrated
+      });
+    });
+    return [...thumbnailDisplaySets, ...thumbnailNoImageDisplaySets];
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_default__WEBPACK_IMPORTED_MODULE_8__.PanelStudyBrowserHeader, {
-    viewPresets: viewPresets,
-    updateViewPresetValue: updateViewPresetValue,
-    actionIcons: actionIcons,
-    updateActionIconValue: updateActionIconValue
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__.Separator, {
-    orientation: "horizontal",
-    className: "bg-black",
-    thickness: "2px"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__.StudyBrowser, {
-    tabs: tabs,
-    servicesManager: servicesManager,
-    activeTabName: activeTabName,
-    expandedStudyInstanceUIDs: expandedStudyInstanceUIDs,
-    onClickStudy: _handleStudyClick,
-    onClickTab: clickedTabName => {
-      setActiveTabName(clickedTabName);
-    },
-    onClickUntrack: displaySetInstanceUID => {
-      onClickUntrack(displaySetInstanceUID);
-    },
-    onClickThumbnail: () => {},
-    onDoubleClickThumbnail: onDoubleClickThumbnailHandler,
-    activeDisplaySetInstanceUIDs: activeViewportDisplaySetInstanceUIDs,
-    showSettings: actionIcons.find(icon => icon.id === 'settings').value,
-    viewPresets: viewPresets,
-    onThumbnailContextMenu: onThumbnailContextMenu
-  }));
+
+  // Override component type to use tracking specific components
+  const getComponentType = ds => {
+    if (thumbnailNoImageModalities.includes(ds.Modality) || ds.unsupported || ds.thumbnailSrc === null) {
+      return 'thumbnailNoImage';
+    }
+    return 'thumbnailTracked';
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_default_src_Panels_StudyBrowser_PanelStudyBrowser__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    getImageSrc: getImageSrc,
+    getStudiesForPatientByMRN: getStudiesForPatientByMRN,
+    requestDisplaySetCreationForStudy: requestDisplaySetCreationForStudy,
+    dataSource: dataSource,
+    customMapDisplaySets: mapDisplaySetsWithTracking,
+    onClickUntrack: onClickUntrack,
+    onDoubleClickThumbnailHandlerCallBack: checkDirtyMeasurements
+  });
 }
-_s2(PanelStudyBrowserTracking, "XDcjenRxSIpWQG8Jbi6VozRVPck=", false, function () {
-  return [react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useImageViewer, _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid, _getContextModule__WEBPACK_IMPORTED_MODULE_7__.useTrackedMeasurements];
-});
-_c2 = PanelStudyBrowserTracking;
-_s(PanelStudyBrowserTracking, "bCa+8wIXRIP9cRQK4N64Sc9T2/8=", false, function () {
-  return [react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useImageViewer, _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.useViewportGrid, _getContextModule__WEBPACK_IMPORTED_MODULE_7__.useTrackedMeasurements];
+_s(PanelStudyBrowserTracking, "5m5U/U2UCChT3+4bFaWe32/76lM=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem, _getContextModule__WEBPACK_IMPORTED_MODULE_5__.useTrackedMeasurements];
 });
 _c = PanelStudyBrowserTracking;
 PanelStudyBrowserTracking.propTypes = {
-  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().object).isRequired,
-  dataSource: prop_types__WEBPACK_IMPORTED_MODULE_3___default().shape({
-    getImageIdsForDisplaySet: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func).isRequired
+  dataSource: prop_types__WEBPACK_IMPORTED_MODULE_1___default().shape({
+    getImageIdsForDisplaySet: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func).isRequired
   }).isRequired,
-  getImageSrc: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func).isRequired,
-  getStudiesForPatientByMRN: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func).isRequired,
-  requestDisplaySetCreationForStudy: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func).isRequired
+  getImageSrc: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func).isRequired,
+  getStudiesForPatientByMRN: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func).isRequired,
+  requestDisplaySetCreationForStudy: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func).isRequired
 };
-function getImageIdForThumbnail(displaySet, imageIds) {
-  let imageId;
-  if (displaySet.isDynamicVolume) {
-    const timePoints = displaySet.dynamicVolumeInfo.timePoints;
-    const middleIndex = Math.floor(timePoints.length / 2);
-    const middleTimePointImageIds = timePoints[middleIndex];
-    imageId = middleTimePointImageIds[Math.floor(middleTimePointImageIds.length / 2)];
-  } else {
-    imageId = imageIds[Math.floor(imageIds.length / 2)];
-  }
-  return imageId;
-}
-
-/**
- * Maps from the DataSource's format to a naturalized object
- *
- * @param {*} studies
- */
-function _mapDataSourceStudies(studies) {
-  return studies.map(study => {
-    // TODO: Why does the data source return in this format?
-    return {
-      AccessionNumber: study.accession,
-      StudyDate: study.date,
-      StudyDescription: study.description,
-      NumInstances: study.instances,
-      ModalitiesInStudy: study.modalities,
-      PatientID: study.mrn,
-      PatientName: study.patientName,
-      StudyInstanceUID: study.studyInstanceUid,
-      StudyTime: study.time
-    };
-  });
-}
-function _mapDisplaySets(displaySets, displaySetLoadingState, thumbnailImageSrcMap, trackedSeriesInstanceUIDs, viewports,
-// TODO: make array of `displaySetInstanceUIDs`?
-viewportGridService, dataSource, displaySetService, uiDialogService, uiNotificationService) {
-  const thumbnailDisplaySets = [];
-  const thumbnailNoImageDisplaySets = [];
-  displaySets.filter(ds => !ds.excludeFromThumbnailBrowser).forEach(ds => {
-    const imageSrc = thumbnailImageSrcMap[ds.displaySetInstanceUID];
-    const componentType = _getComponentType(ds);
-    const numPanes = viewportGridService.getNumViewportPanes();
-    const array = componentType === 'thumbnailTracked' ? thumbnailDisplaySets : thumbnailNoImageDisplaySets;
-    const {
-      displaySetInstanceUID
-    } = ds;
-    const loadingProgress = displaySetLoadingState?.[displaySetInstanceUID];
-    const thumbnailProps = {
-      displaySetInstanceUID,
-      description: ds.SeriesDescription,
-      seriesNumber: ds.SeriesNumber,
-      modality: ds.Modality,
-      seriesDate: formatDate(ds.SeriesDate),
-      numInstances: ds.numImageFrames,
-      loadingProgress,
-      countIcon: ds.countIcon,
-      messages: ds.messages,
-      StudyInstanceUID: ds.StudyInstanceUID,
-      componentType,
-      imageSrc,
-      dragData: {
-        type: 'displayset',
-        displaySetInstanceUID
-        // .. Any other data to pass
-      },
-      isTracked: trackedSeriesInstanceUIDs.includes(ds.SeriesInstanceUID),
-      isHydratedForDerivedDisplaySet: ds.isHydrated
-    };
-    if (componentType === 'thumbnailNoImage') {
-      if (dataSource.reject && dataSource.reject.series) {
-        thumbnailProps.canReject = !ds?.unsupported;
-        thumbnailProps.onReject = () => {
-          uiDialogService.create({
-            id: 'ds-reject-sr',
-            centralize: true,
-            isDraggable: false,
-            showOverlay: true,
-            content: _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.Dialog,
-            contentProps: {
-              title: 'Delete Report',
-              body: () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-                className: "bg-primary-dark p-4 text-white"
-              }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Are you sure you want to delete this report?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-                className: "mt-2"
-              }, "This action cannot be undone.")),
-              actions: [{
-                id: 'cancel',
-                text: 'Cancel',
-                type: _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.ButtonEnums.type.secondary
-              }, {
-                id: 'yes',
-                text: 'Yes',
-                type: _ohif_ui__WEBPACK_IMPORTED_MODULE_5__.ButtonEnums.type.primary,
-                classes: ['reject-yes-button']
-              }],
-              onClose: () => uiDialogService.dismiss({
-                id: 'ds-reject-sr'
-              }),
-              onShow: () => {
-                const yesButton = document.querySelector('.reject-yes-button');
-                yesButton.focus();
-              },
-              onSubmit: async ({
-                action
-              }) => {
-                switch (action.id) {
-                  case 'yes':
-                    try {
-                      await dataSource.reject.series(ds.StudyInstanceUID, ds.SeriesInstanceUID);
-                      displaySetService.deleteDisplaySet(displaySetInstanceUID);
-                      uiDialogService.dismiss({
-                        id: 'ds-reject-sr'
-                      });
-                      uiNotificationService.show({
-                        title: 'Delete Report',
-                        message: 'Report deleted successfully',
-                        type: 'success'
-                      });
-                    } catch (error) {
-                      uiDialogService.dismiss({
-                        id: 'ds-reject-sr'
-                      });
-                      uiNotificationService.show({
-                        title: 'Delete Report',
-                        message: 'Failed to delete report',
-                        type: 'error'
-                      });
-                    }
-                    break;
-                  case 'cancel':
-                    uiDialogService.dismiss({
-                      id: 'ds-reject-sr'
-                    });
-                    break;
-                }
-              }
-            }
-          });
-        };
-      } else {
-        thumbnailProps.canReject = false;
-      }
-    }
-    array.push(thumbnailProps);
-  });
-  return [...thumbnailDisplaySets, ...thumbnailNoImageDisplaySets];
-}
-function _getComponentType(ds) {
-  if (thumbnailNoImageModalities.includes(ds.Modality) || ds?.unsupported) {
-    return 'thumbnailNoImage';
-  }
-  return 'thumbnailTracked';
-}
-function _findTabAndStudyOfDisplaySet(displaySetInstanceUID, tabs) {
-  for (let t = 0; t < tabs.length; t++) {
-    const {
-      studies
-    } = tabs[t];
-    for (let s = 0; s < studies.length; s++) {
-      const {
-        displaySets
-      } = studies[s];
-      for (let d = 0; d < displaySets.length; d++) {
-        const displaySet = displaySets[d];
-        if (displaySet.displaySetInstanceUID === displaySetInstanceUID) {
-          return {
-            tabName: tabs[t].name,
-            StudyInstanceUID: studies[s].studyInstanceUid
-          };
-        }
-      }
-    }
-  }
-}
 var _c;
 __webpack_require__.$Refresh$.register(_c, "PanelStudyBrowserTracking");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "PanelStudyBrowserTracking");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -2593,122 +2854,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/actionIcons.ts":
-/*!**************************************************************************************************************!*\
-  !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/actionIcons.ts ***!
-  \**************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   defaultActionIcons: () => (/* binding */ defaultActionIcons)
-/* harmony export */ });
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-const defaultActionIcons = [{
-  id: 'settings',
-  iconName: 'Settings',
-  value: false
-}];
-
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/index.ts":
-/*!********************************************************************************************************!*\
-  !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/index.ts ***!
-  \********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   defaultActionIcons: () => (/* reexport safe */ _actionIcons__WEBPACK_IMPORTED_MODULE_0__.defaultActionIcons),
-/* harmony export */   defaultViewPresets: () => (/* reexport safe */ _viewPresets__WEBPACK_IMPORTED_MODULE_1__.defaultViewPresets)
-/* harmony export */ });
-/* harmony import */ var _actionIcons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actionIcons */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/actionIcons.ts");
-/* harmony import */ var _viewPresets__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./viewPresets */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/viewPresets.ts");
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
-
-
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/viewPresets.ts":
-/*!**************************************************************************************************************!*\
-  !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/constants/viewPresets.ts ***!
-  \**************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   defaultViewPresets: () => (/* binding */ defaultViewPresets)
-/* harmony export */ });
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-const defaultViewPresets = [{
-  id: 'list',
-  iconName: 'ListView',
-  selected: false
-}, {
-  id: 'thumbnails',
-  iconName: 'ThumbnailView',
-  selected: true
-}];
-
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2723,7 +2885,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/getImageSrcFromImageId.js ***!
   \***************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2756,7 +2918,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2771,7 +2949,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/index.tsx ***!
   \***********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2779,19 +2957,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _PanelStudyBrowserTracking__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PanelStudyBrowserTracking */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/PanelStudyBrowserTracking.tsx");
-/* harmony import */ var _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getImageSrcFromImageId */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/getImageSrcFromImageId.js");
-/* harmony import */ var _requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./requestDisplaySetCreationForStudy */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/requestDisplaySetCreationForStudy.js");
+/* harmony import */ var _PanelStudyBrowserTracking__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PanelStudyBrowserTracking */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/PanelStudyBrowserTracking.tsx");
+/* harmony import */ var _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getImageSrcFromImageId */ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/getImageSrcFromImageId.js");
+/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
-
 //
+
 
 
 
@@ -2810,21 +2986,17 @@ function _getStudyForPatientUtility(extensionManager) {
  * @param {object} commandsManager
  * @param {object} extensionManager
  */
-function WrappedPanelStudyBrowserTracking({
-  commandsManager,
-  extensionManager,
-  servicesManager
-}) {
-  _s2();
+function WrappedPanelStudyBrowserTracking() {
   _s();
+  const {
+    extensionManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_4__.useSystem)();
   const dataSource = extensionManager.getActiveDataSource()[0];
   const getStudiesForPatientByMRN = _getStudyForPatientUtility(extensionManager);
   const _getStudiesForPatientByMRN = getStudiesForPatientByMRN.bind(null, dataSource);
   const _getImageSrcFromImageId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(_createGetImageSrcFromImageIdFn(extensionManager), []);
-  const _requestDisplaySetCreationForStudy = _requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_4__["default"].bind(null, dataSource);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PanelStudyBrowserTracking__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    servicesManager: servicesManager,
-    commandsManager: commandsManager,
+  const _requestDisplaySetCreationForStudy = _ohif_extension_default__WEBPACK_IMPORTED_MODULE_3__.requestDisplaySetCreationForStudy.bind(null, dataSource);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PanelStudyBrowserTracking__WEBPACK_IMPORTED_MODULE_1__["default"], {
     dataSource: dataSource,
     getImageSrc: _getImageSrcFromImageId,
     getStudiesForPatientByMRN: _getStudiesForPatientByMRN,
@@ -2841,9 +3013,9 @@ function WrappedPanelStudyBrowserTracking({
  * @returns {func} getImageSrcFromImageId - A utility function powered by
  * cornerstone
  */
-_s2(WrappedPanelStudyBrowserTracking, "6UNZGNSlqXCQ9xMAv9ueU6g1qw0=");
-_c2 = WrappedPanelStudyBrowserTracking;
-_s(WrappedPanelStudyBrowserTracking, "6UNZGNSlqXCQ9xMAv9ueU6g1qw0=");
+_s(WrappedPanelStudyBrowserTracking, "VBl3w6h1VvKF7U9AVeERoMHQXTM=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_4__.useSystem];
+});
 _c = WrappedPanelStudyBrowserTracking;
 function _createGetImageSrcFromImageIdFn(extensionManager) {
   const utilities = extensionManager.getModuleEntry('@ohif/extension-cornerstone.utilityModule.common');
@@ -2851,21 +3023,14 @@ function _createGetImageSrcFromImageIdFn(extensionManager) {
     const {
       cornerstone
     } = utilities.exports.getCornerstoneLibraries();
-    return _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_3__["default"].bind(null, cornerstone);
+    return _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_2__["default"].bind(null, cornerstone);
   } catch (ex) {
     throw new Error('Required command not found');
   }
 }
-WrappedPanelStudyBrowserTracking.propTypes = {
-  commandsManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired,
-  extensionManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired,
-  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired
-};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WrappedPanelStudyBrowserTracking);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "WrappedPanelStudyBrowserTracking");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "WrappedPanelStudyBrowserTracking");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -2873,7 +3038,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2884,29 +3065,47 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/requestDisplaySetCreationForStudy.js":
-/*!**************************************************************************************************************************!*\
-  !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/requestDisplaySetCreationForStudy.js ***!
-  \**************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/untrackSeriesModal.tsx":
+/*!************************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/panels/PanelStudyBrowserTracking/untrackSeriesModal.tsx ***!
+  \************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   UntrackSeriesModal: () => (/* binding */ UntrackSeriesModal)
 /* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-function requestDisplaySetCreationForStudy(dataSource, displaySetService, StudyInstanceUID, madeInClient) {
-  if (displaySetService.activeDisplaySets.some(displaySet => displaySet.StudyInstanceUID === StudyInstanceUID)) {
-    return;
-  }
-  dataSource.retrieve.series.metadata({
-    StudyInstanceUID,
-    madeInClient
-  });
+
+
+function UntrackSeriesModal({
+  hide,
+  onConfirm,
+  message
+}) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "text-foreground text-[13px]"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, message), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "mt-2"
+  }, "This action cannot be undone and will delete all your existing measurements.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.FooterAction, {
+    className: "mt-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.FooterAction.Right, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.FooterAction.Secondary, {
+    onClick: hide
+  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.FooterAction.Primary, {
+    onClick: () => {
+      onConfirm();
+      hide();
+    }
+  }, "Untrack"))));
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (requestDisplaySetCreationForStudy);
+_c = UntrackSeriesModal;
+var _c;
+__webpack_require__.$Refresh$.register(_c, "UntrackSeriesModal");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -2914,7 +3113,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2929,7 +3144,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************!*\
   !*** ../../../extensions/measurement-tracking/src/panels/index.js ***!
   \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2951,7 +3166,412 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/services/TrackedMeasurementsService/TrackedMeasurementsService.ts":
+/*!**********************************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/services/TrackedMeasurementsService/TrackedMeasurementsService.ts ***!
+  \**********************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TrackedMeasurementsService: () => (/* binding */ TrackedMeasurementsService),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _TrackedMeasurementsService;
+
+const EVENTS = {
+  TRACKED_SERIES_CHANGED: 'event::trackedmeasurements:trackedserieschanged',
+  SERIES_ADDED: 'event::trackedmeasurements:seriesadded',
+  SERIES_REMOVED: 'event::trackedmeasurements:seriesremoved',
+  TRACKING_ENABLED: 'event::trackedmeasurements:trackingenabled',
+  TRACKING_DISABLED: 'event::trackedmeasurements:trackingdisabled'
+};
+
+/**
+ * Service class for accessing tracked measurements data.
+ * This service provides a robust way to access tracked series information
+ * from anywhere in the application, including outside of React components.
+ */
+class TrackedMeasurementsService extends _ohif_core__WEBPACK_IMPORTED_MODULE_0__.PubSubService {
+  constructor() {
+    super(EVENTS);
+    this._trackedSeries = [];
+  }
+
+  /**
+   * Updates the tracked series and notifies subscribers
+   * @param trackedSeries Array of series UIDs being tracked
+   */
+  updateTrackedSeries(trackedSeries) {
+    if (!trackedSeries) {
+      trackedSeries = [];
+    }
+    const hasChanged = this._trackedSeries.length !== trackedSeries.length || this._trackedSeries.some((seriesUID, index) => seriesUID !== trackedSeries[index]);
+    if (hasChanged) {
+      const oldSeries = [...this._trackedSeries];
+      this._trackedSeries = [...trackedSeries];
+      const wasEmpty = oldSeries.length === 0;
+      const isEmpty = trackedSeries.length === 0;
+      if (wasEmpty && !isEmpty) {
+        this._broadcastEvent(EVENTS.TRACKING_ENABLED, {
+          trackedSeries: this.getTrackedSeries()
+        });
+      } else if (!wasEmpty && isEmpty) {
+        this._broadcastEvent(EVENTS.TRACKING_DISABLED, {
+          trackedSeries: this.getTrackedSeries()
+        });
+      }
+      this._broadcastEvent(EVENTS.TRACKED_SERIES_CHANGED, {
+        trackedSeries: this.getTrackedSeries()
+      });
+    }
+  }
+
+  /**
+   * Adds a single series to tracking
+   * @param seriesInstanceUID Series instance UID to add to tracking
+   */
+  addTrackedSeries(seriesInstanceUID) {
+    if (!seriesInstanceUID || this.isSeriesTracked(seriesInstanceUID)) {
+      return;
+    }
+    const wasEmpty = this._trackedSeries.length === 0;
+    this._trackedSeries = [...this._trackedSeries, seriesInstanceUID];
+    this._broadcastEvent(EVENTS.SERIES_ADDED, {
+      seriesInstanceUID,
+      trackedSeries: this.getTrackedSeries()
+    });
+    if (wasEmpty) {
+      this._broadcastEvent(EVENTS.TRACKING_ENABLED, {
+        trackedSeries: this.getTrackedSeries()
+      });
+    }
+    this._broadcastEvent(EVENTS.TRACKED_SERIES_CHANGED, {
+      trackedSeries: this.getTrackedSeries()
+    });
+  }
+
+  /**
+   * Removes a single series from tracking
+   * @param seriesInstanceUID Series instance UID to remove from tracking
+   */
+  removeTrackedSeries(seriesInstanceUID) {
+    if (!seriesInstanceUID || !this.isSeriesTracked(seriesInstanceUID)) {
+      return;
+    }
+    this._trackedSeries = this._trackedSeries.filter(uid => uid !== seriesInstanceUID);
+    this._broadcastEvent(EVENTS.SERIES_REMOVED, {
+      seriesInstanceUID,
+      trackedSeries: this.getTrackedSeries()
+    });
+    if (this._trackedSeries.length === 0) {
+      this._broadcastEvent(EVENTS.TRACKING_DISABLED, {
+        trackedSeries: this.getTrackedSeries()
+      });
+    }
+    this._broadcastEvent(EVENTS.TRACKED_SERIES_CHANGED, {
+      trackedSeries: this.getTrackedSeries()
+    });
+  }
+
+  /**
+   * Retrieves the currently tracked series
+   * @returns Array of series UIDs being tracked
+   */
+  getTrackedSeries() {
+    return [...this._trackedSeries];
+  }
+
+  /**
+   * Checks if a specific series is being tracked
+   * @param seriesInstanceUID Series instance UID to check
+   * @returns boolean indicating if series is tracked
+   */
+  isSeriesTracked(seriesInstanceUID) {
+    return this._trackedSeries.includes(seriesInstanceUID);
+  }
+
+  /**
+   * Resets the service state
+   */
+  reset() {
+    const wasTracking = this._trackedSeries.length > 0;
+    this._trackedSeries = [];
+    if (wasTracking) {
+      this._broadcastEvent(EVENTS.TRACKING_DISABLED, {
+        trackedSeries: []
+      });
+      this._broadcastEvent(EVENTS.TRACKED_SERIES_CHANGED, {
+        trackedSeries: []
+      });
+    }
+    super.reset();
+  }
+
+  /**
+   * Checks if any series are being tracked
+   * @returns boolean indicating if tracking is active
+   */
+  isTrackingEnabled() {
+    return this._trackedSeries.length > 0;
+  }
+}
+_TrackedMeasurementsService = TrackedMeasurementsService;
+TrackedMeasurementsService.REGISTRATION = {
+  name: 'trackedMeasurementsService',
+  altName: 'TrackedMeasurementsService',
+  create: ({
+    configuration = {}
+  }) => {
+    return new _TrackedMeasurementsService();
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TrackedMeasurementsService);
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/services/TrackedMeasurementsService/index.ts":
+/*!*************************************************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/services/TrackedMeasurementsService/index.ts ***!
+  \*************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TrackedMeasurementsService: () => (/* reexport safe */ _TrackedMeasurementsService__WEBPACK_IMPORTED_MODULE_0__.TrackedMeasurementsService)
+/* harmony export */ });
+/* harmony import */ var _TrackedMeasurementsService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TrackedMeasurementsService */ "../../../extensions/measurement-tracking/src/services/TrackedMeasurementsService/TrackedMeasurementsService.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/services/index.ts":
+/*!**********************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/services/index.ts ***!
+  \**********************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TrackedMeasurementsService: () => (/* reexport safe */ _TrackedMeasurementsService__WEBPACK_IMPORTED_MODULE_0__.TrackedMeasurementsService)
+/* harmony export */ });
+/* harmony import */ var _TrackedMeasurementsService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TrackedMeasurementsService */ "../../../extensions/measurement-tracking/src/services/TrackedMeasurementsService/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/types/AppTypes.ts":
+/*!**********************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/types/AppTypes.ts ***!
+  \**********************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/measurement-tracking/src/types/index.ts":
+/*!*******************************************************************!*\
+  !*** ../../../extensions/measurement-tracking/src/types/index.ts ***!
+  \*******************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AppTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AppTypes */ "../../../extensions/measurement-tracking/src/types/AppTypes.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2968,7 +3588,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \*************************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-measurement-tracking","version":"3.9.1","description":"Tracking features and functionality for basic image viewing","author":"OHIF Core Team","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-measurement-tracking.umd.js","module":"src/index.tsx","publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"files":["dist","README.md"],"keywords":["ohif-extension"],"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pdf":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@cornerstonejs/core":"^2.2.20","@cornerstonejs/tools":"^2.2.20","@ohif/core":"3.9.1","@ohif/extension-cornerstone-dicom-sr":"3.9.1","@ohif/extension-default":"3.9.1","@ohif/ui":"3.9.1","classnames":"^2.3.2","dcmjs":"*","lodash.debounce":"^4.0.8","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","webpack":"5.89.0","webpack-merge":"^5.7.3"},"dependencies":{"@babel/runtime":"^7.20.13","@ohif/ui":"3.9.1","@xstate/react":"^3.2.2","xstate":"^4.10.0"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-measurement-tracking","version":"3.11.0-beta.37","description":"Tracking features and functionality for basic image viewing","author":"OHIF Core Team","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-measurement-tracking.umd.js","module":"src/index.tsx","publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"files":["dist","README.md"],"keywords":["ohif-extension"],"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pdf":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@cornerstonejs/core":"^3.15.1","@cornerstonejs/tools":"^3.15.1","@ohif/core":"3.11.0-beta.37","@ohif/extension-cornerstone-dicom-sr":"3.11.0-beta.37","@ohif/extension-default":"3.11.0-beta.37","@ohif/ui":"3.11.0-beta.37","classnames":"^2.3.2","dcmjs":"*","lodash.debounce":"^4.0.8","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","webpack":"5.89.0","webpack-merge":"^5.7.3"},"dependencies":{"@babel/runtime":"^7.20.13","@ohif/ui":"3.11.0-beta.37","@xstate/react":"^3.2.2","xstate":"^4.10.0"}}');
 
 /***/ })
 

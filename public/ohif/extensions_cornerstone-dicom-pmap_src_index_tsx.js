@@ -5,17 +5,18 @@
 /*!**********************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-pmap/src/getSopClassHandlerModule.ts ***!
   \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
-/* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-pmap/src/id.js");
-/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./id */ "../../../extensions/cornerstone-dicom-pmap/src/id.js");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -24,7 +25,7 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
-const VOLUME_LOADER_SCHEME = 'cornerstoneStreamingImageVolume';
+
 const sopClassUids = ['1.2.840.10008.5.1.4.1.1.30'];
 function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager) {
   const instance = instances[0];
@@ -53,7 +54,7 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     SOPInstanceUID,
     SeriesInstanceUID,
     StudyInstanceUID,
-    SOPClassHandlerId: _id__WEBPACK_IMPORTED_MODULE_3__.SOPClassHandlerId,
+    SOPClassHandlerId: _id__WEBPACK_IMPORTED_MODULE_4__.SOPClassHandlerId,
     SOPClassUID,
     referencedImages: null,
     referencedSeriesInstanceUID: null,
@@ -71,7 +72,8 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     wadoRoot,
     wadoUriRoot,
     wadoUri,
-    isOverlayDisplaySet: true
+    supportsWindowLevel: true,
+    label: SeriesDescription || `${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('Series')} ${SeriesNumber} - ${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('PMAP')}`
   };
   const referencedSeriesSequence = instance.ReferencedSeriesSequence;
   if (!referencedSeriesSequence) {
@@ -108,7 +110,7 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     }
     const referencedDisplaySet = displaySet.getReferenceDisplaySet();
     const referencedVolumeURI = referencedDisplaySet.displaySetInstanceUID;
-    const referencedVolumeId = `${VOLUME_LOADER_SCHEME}:${referencedVolumeURI}`;
+    const referencedVolumeId = `${_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_5__.VOLUME_LOADER_SCHEME}:${referencedVolumeURI}`;
     displaySet.referencedVolumeURI = referencedVolumeURI;
     displaySet.referencedVolumeId = referencedVolumeId;
     return referencedVolumeId;
@@ -132,8 +134,8 @@ const getRangeFromPixelData = pixelData => {
   return [lowest, highest];
 };
 async function _load(displaySet, servicesManager, extensionManager, headers) {
-  const volumeId = `${VOLUME_LOADER_SCHEME}:${displaySet.displaySetInstanceUID}`;
-  const volumeLoadObject = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolumeLoadObject(volumeId);
+  const volumeId = `${_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_5__.VOLUME_LOADER_SCHEME}:${displaySet.displaySetInstanceUID}`;
+  const volumeLoadObject = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.cache.getVolumeLoadObject(volumeId);
   if (volumeLoadObject) {
     return volumeLoadObject.promise;
   }
@@ -147,7 +149,7 @@ async function _load(displaySet, servicesManager, extensionManager, headers) {
     displaySet,
     headers
   });
-  _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.putVolumeLoadObject(volumeId, {
+  _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.cache.putVolumeLoadObject(volumeId, {
     promise
   }).catch(err => {
     throw err;
@@ -170,9 +172,9 @@ async function _loadParametricMap({
   displaySet,
   headers
 }) {
-  const arrayBuffer = await _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_4__.dicomLoaderService.findDicomDataPromise(displaySet, null, headers);
+  const arrayBuffer = await _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_5__.dicomLoaderService.findDicomDataPromise(displaySet, null, headers);
   const referencedVolumeId = displaySet.getReferencedVolumeId();
-  const cachedReferencedVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(referencedVolumeId);
+  const cachedReferencedVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.cache.getVolume(referencedVolumeId);
 
   // Parametric map can be loaded only if its referenced volume exists otherwise it will fail
   if (!cachedReferencedVolume) {
@@ -181,13 +183,13 @@ async function _loadParametricMap({
   const {
     imageIds
   } = cachedReferencedVolume;
-  const results = await _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_2__.adaptersPMAP.Cornerstone3D.ParametricMap.generateToolState(imageIds, arrayBuffer, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.metaData);
+  const results = await _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_3__.adaptersPMAP.Cornerstone3D.ParametricMap.generateToolState(imageIds, arrayBuffer, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.metaData);
   const {
     pixelData
   } = results;
   const TypedArrayConstructor = pixelData.constructor;
   const paramMapId = displaySet.displaySetInstanceUID;
-  const derivedVolume = await _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.volumeLoader.createAndCacheDerivedVolume(referencedVolumeId, {
+  const derivedVolume = await _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.volumeLoader.createAndCacheDerivedVolume(referencedVolumeId, {
     volumeId: paramMapId,
     targetBuffer: {
       type: TypedArrayConstructor.name
@@ -199,17 +201,18 @@ async function _loadParametricMap({
   }
   derivedVolume.voxelManager.setCompleteScalarDataArray(newPixelData);
   const range = getRangeFromPixelData(newPixelData);
-  const windowLevel = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.utilities.windowLevel.toWindowLevel(range[0], range[1]);
+  const windowLevel = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_2__.utilities.windowLevel.toWindowLevel(range[0], range[1]);
   derivedVolume.metadata.voiLut = [windowLevel];
   derivedVolume.loadStatus = {
     loaded: true
   };
   return derivedVolume;
 }
-function getSopClassHandlerModule({
-  servicesManager,
-  extensionManager
-}) {
+function getSopClassHandlerModule(params) {
+  const {
+    servicesManager,
+    extensionManager
+  } = params;
   const getDisplaySetsFromSeries = instances => {
     return _getDisplaySetsFromSeries(instances, servicesManager, extensionManager);
   };
@@ -227,7 +230,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -242,7 +261,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-pmap/src/id.js ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -266,7 +285,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -281,7 +316,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-pmap/src/index.tsx ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -309,7 +344,6 @@ function _extends() {
 const Component = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().lazy(_c = () => {
   return __webpack_require__.e(/*! import() */ "extensions_cornerstone-dicom-pmap_src_viewports_OHIFCornerstonePMAPViewport_tsx").then(__webpack_require__.bind(__webpack_require__, /*! ./viewports/OHIFCornerstonePMAPViewport */ "../../../extensions/cornerstone-dicom-pmap/src/viewports/OHIFCornerstonePMAPViewport.tsx"));
 });
-_c4 = Component;
 _c2 = Component;
 const OHIFCornerstonePMAPViewport = props => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Suspense), {
@@ -320,7 +354,6 @@ const OHIFCornerstonePMAPViewport = props => {
 /**
  * You can remove any of the following modules if you don't need them.
  */
-_c5 = OHIFCornerstonePMAPViewport;
 _c3 = OHIFCornerstonePMAPViewport;
 const extension = {
   id: _id__WEBPACK_IMPORTED_MODULE_0__.id,
@@ -348,9 +381,6 @@ var _c, _c2, _c3;
 __webpack_require__.$Refresh$.register(_c, "Component$React.lazy");
 __webpack_require__.$Refresh$.register(_c2, "Component");
 __webpack_require__.$Refresh$.register(_c3, "OHIFCornerstonePMAPViewport");
-var _c4, _c5;
-__webpack_require__.$Refresh$.register(_c4, "Component");
-__webpack_require__.$Refresh$.register(_c5, "OHIFCornerstonePMAPViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -358,7 +388,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -375,7 +421,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \***************************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-pmap","version":"3.9.1","description":"DICOM Parametric Map read workflow","author":"OHIF","license":"MIT","main":"dist/ohif-extension-cornerstone-dicom-pmap.umd.js","module":"src/index.tsx","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pmap":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-cornerstone":"3.9.1","@ohif/extension-default":"3.9.1","@ohif/i18n":"3.9.1","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-router":"^6.8.1","react-router-dom":"^6.8.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/adapters":"^2.2.20","@cornerstonejs/core":"^2.2.20","@kitware/vtk.js":"32.1.0","react-color":"^2.19.3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-cornerstone-dicom-pmap","version":"3.11.0-beta.37","description":"DICOM Parametric Map read workflow","author":"OHIF","license":"MIT","main":"dist/ohif-extension-cornerstone-dicom-pmap.umd.js","module":"src/index.tsx","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pmap":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-cornerstone":"3.11.0-beta.37","@ohif/extension-default":"3.11.0-beta.37","@ohif/i18n":"3.11.0-beta.37","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-router":"^6.8.1","react-router-dom":"^6.8.1"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/adapters":"^3.15.1","@cornerstonejs/core":"^3.15.1","@kitware/vtk.js":"32.12.0","react-color":"^2.19.3"}}');
 
 /***/ })
 

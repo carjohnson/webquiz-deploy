@@ -1,0 +1,1 @@
+{"version":3,"sources":["config_ohif-build.js"],"names":["routerBasename"],"mappings":";;AAAAA,cAAc,GAAC,OAAf","sourcesContent":["routerBasename=\"/ohif\""],"file":"config_ohif-build.dev.js"}

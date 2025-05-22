@@ -5,7 +5,7 @@
 /*!***********************************************************!*\
   !*** ../../../extensions/tmtv/src/Panels/PanelPetSUV.tsx ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -15,14 +15,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core/src */ "../../core/src/index.ts");
+/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
 
 
 
@@ -46,19 +55,51 @@ const DEFAULT_MEATADATA = {
  * @param param0
  * @returns
  */
-function PanelPetSUV({
-  servicesManager,
-  commandsManager
-}) {
-  _s2();
+
+// InputRow compound component
+const InputRow = ({
+  children,
+  className,
+  ...props
+}) => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", _extends({
+    className: `flex flex-row items-center space-x-4 ${className || ''}`
+  }, props), children);
+};
+
+// InputRow sub-components
+_c = InputRow;
+InputRow.Label = ({
+  children,
+  unit,
+  className,
+  ...props
+}) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.Label, _extends({
+  className: `min-w-32 flex-shrink-0 ${className || ''}`
+}, props), children, unit && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+  className: "text-muted-foreground"
+}, " ", unit));
+InputRow.Input = ({
+  className,
+  ...props
+}) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.Input, _extends({
+  className: `h-7 flex-1 ${className || ''}`
+}, props));
+
+// Set display names for better debugging
+InputRow.Label.displayName = 'InputRow.Label';
+InputRow.Input.displayName = 'InputRow.Input';
+function PanelPetSUV() {
   _s();
   const {
+    commandsManager,
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
+  const {
     t
-  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_4__.useTranslation)('PanelSUV');
+  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_3__.useTranslation)('PanelSUV');
   const {
     displaySetService,
-    toolGroupService,
-    toolbarService,
     hangingProtocolService
   } = servicesManager.services;
   const [metadata, setMetadata] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(DEFAULT_MEATADATA);
@@ -144,7 +185,7 @@ function PanelPetSUV({
     }
 
     // metadata should be dcmjs naturalized
-    _ohif_core__WEBPACK_IMPORTED_MODULE_3__.DicomMetadataStore.updateMetadataForSeries(ptDisplaySet.StudyInstanceUID, ptDisplaySet.SeriesInstanceUID, metadata);
+    _ohif_core__WEBPACK_IMPORTED_MODULE_2__.DicomMetadataStore.updateMetadataForSeries(ptDisplaySet.StudyInstanceUID, ptDisplaySet.SeriesInstanceUID, metadata);
 
     // update the displaySets
     displaySetService.setDisplaySetMetadataInvalidated(ptDisplaySet.displaySetInstanceUID);
@@ -158,32 +199,21 @@ function PanelPetSUV({
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "ohif-scrollbar flex min-h-0 flex-auto select-none flex-col justify-between overflow-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex min-h-0 flex-1 flex-col bg-black text-[13px] font-[300]"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.PanelSection, {
-    title: t('Patient Information')
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-col"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-primary-dark flex flex-col gap-4 p-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
-    containerClassName: '!flex-row !justify-between items-center',
-    label: t('Patient Sex'),
-    labelClassName: "text-[13px] font-inter text-white",
-    className: "!m-0 !h-[26px] !w-[117px]",
+    className: "flex min-h-0 flex-1 flex-col bg-black text-base"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.PanelSection, {
+    defaultOpen: true
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.PanelSection.Header, null, t('Patient Information')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.PanelSection.Content, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-primary-dark flex flex-col gap-3 p-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Label, null, t('Patient Sex')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Input, {
     value: metadata.PatientSex || '',
     onChange: e => {
       handleMetadataChange({
         PatientSex: e.target.value
       });
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
-    containerClassName: '!flex-row !justify-between items-center',
-    label: t('Weight'),
-    labelChildren: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "text-aqua-pale"
-    }, " kg"),
-    labelClassName: "text-[13px] font-inter text-white",
-    className: "!m-0 !h-[26px] !w-[117px]",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Label, {
+    unit: "kg"
+  }, t('Weight')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Input, {
     value: metadata.PatientWeight || '',
     onChange: e => {
       handleMetadataChange({
@@ -191,14 +221,9 @@ function PanelPetSUV({
       });
     },
     id: "weight-input"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
-    containerClassName: '!flex-row !justify-between items-center',
-    label: t('Total Dose'),
-    labelChildren: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "text-aqua-pale"
-    }, " bq"),
-    labelClassName: "text-[13px] font-inter text-white",
-    className: "!m-0 !h-[26px] !w-[117px]",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Label, {
+    unit: "bq"
+  }, t('Total Dose')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Input, {
     value: metadata.RadiopharmaceuticalInformationSequence.RadionuclideTotalDose || '',
     onChange: e => {
       handleMetadataChange({
@@ -207,14 +232,9 @@ function PanelPetSUV({
         }
       });
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
-    containerClassName: '!flex-row !justify-between items-center',
-    label: t('Half Life'),
-    labelChildren: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "text-aqua-pale"
-    }, " s"),
-    labelClassName: "text-[13px] font-inter text-white",
-    className: "!m-0 !h-[26px] !w-[117px]",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Label, {
+    unit: "s"
+  }, t('Half Life')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Input, {
     value: metadata.RadiopharmaceuticalInformationSequence.RadionuclideHalfLife || '',
     onChange: e => {
       handleMetadataChange({
@@ -223,14 +243,9 @@ function PanelPetSUV({
         }
       });
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
-    containerClassName: '!flex-row !justify-between items-center',
-    label: t('Injection Time'),
-    labelChildren: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "text-aqua-pale"
-    }, " s"),
-    labelClassName: "text-[13px] font-inter text-white",
-    className: "!m-0 !h-[26px] !w-[117px]",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Label, {
+    unit: "s"
+  }, t('Injection Time')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Input, {
     value: metadata.RadiopharmaceuticalInformationSequence.RadiopharmaceuticalStartTime || '',
     onChange: e => {
       handleMetadataChange({
@@ -239,29 +254,22 @@ function PanelPetSUV({
         }
       });
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
-    containerClassName: '!flex-row !justify-between items-center',
-    label: t('Acquisition Time'),
-    labelChildren: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "text-aqua-pale"
-    }, " s"),
-    labelClassName: "text-[13px] font-inter text-white",
-    className: "!m-0 !h-[26px] !w-[117px]",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Label, {
+    unit: "s"
+  }, t('Acquisition Time')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InputRow.Input, {
     value: metadata.SeriesTime || '',
     onChange: () => {}
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Button, {
-    className: "!h-[26px] !w-[115px] self-end !p-0",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.Button, {
+    variant: "default",
+    size: "sm",
+    className: "w-28 self-end",
     onClick: updateMetadata
   }, "Reload Data")))))));
 }
-_s2(PanelPetSUV, "9s2ottHWreFSj2uFUW3/JrDLBVE=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_4__.useTranslation];
+_s(PanelPetSUV, "Q1NuMN+mHy1r1FE7KqV1y3pIK+0=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem, react_i18next__WEBPACK_IMPORTED_MODULE_3__.useTranslation];
 });
 _c2 = PanelPetSUV;
-_s(PanelPetSUV, "IPB00jupIT/8SWikKIOy9yjSj+g=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_4__.useTranslation];
-});
-_c = PanelPetSUV;
 PanelPetSUV.propTypes = {
   servicesManager: prop_types__WEBPACK_IMPORTED_MODULE_1___default().shape({
     services: prop_types__WEBPACK_IMPORTED_MODULE_1___default().shape({
@@ -274,9 +282,8 @@ PanelPetSUV.propTypes = {
     }).isRequired
   }).isRequired
 };
-var _c;
-__webpack_require__.$Refresh$.register(_c, "PanelPetSUV");
-var _c2;
+var _c, _c2;
+__webpack_require__.$Refresh$.register(_c, "InputRow");
 __webpack_require__.$Refresh$.register(_c2, "PanelPetSUV");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
@@ -285,7 +292,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -300,7 +323,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/Panels/PanelROIThresholdSegmentation/PanelROIThresholdExport.tsx ***!
   \*****************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -311,31 +334,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
 /* harmony import */ var _utils_handleROIThresholding__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/handleROIThresholding */ "../../../extensions/tmtv/src/utils/handleROIThresholding.ts");
 /* harmony import */ var _ohif_core_src_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core/src/utils */ "../../core/src/utils/index.ts");
+/* harmony import */ var _ohif_core_src__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/core/src */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
 
 
-function PanelRoiThresholdSegmentation({
-  servicesManager,
-  commandsManager
-}) {
-  _s2();
+
+
+function PanelRoiThresholdSegmentation() {
   _s();
+  const {
+    commandsManager,
+    servicesManager
+  } = (0,_ohif_core_src__WEBPACK_IMPORTED_MODULE_4__.useSystem)();
   const {
     segmentationService
   } = servicesManager.services;
   const {
     segmentationsWithRepresentations: segmentationsInfo
-  } = (0,_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations)({
-    servicesManager
-  });
+  } = (0,_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations)();
+  const segmentationIds = segmentationsInfo?.map(info => info.segmentation.segmentationId) || [];
+  const segmentations = segmentationsInfo?.map(info => info.segmentation) || [];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const segmentationIds = segmentationsInfo.map(segmentationInfo => segmentationInfo.segmentation.segmentationId);
     const initialRun = async () => {
       for (const segmentationId of segmentationIds) {
         await (0,_utils_handleROIThresholding__WEBPACK_IMPORTED_MODULE_2__.handleROIThresholding)({
@@ -368,32 +393,47 @@ function PanelRoiThresholdSegmentation({
   }, [commandsManager, segmentationService]);
 
   // Find the first segmentation with a TMTV value since all of them have the same value
-  const tmtvSegmentation = segmentationsInfo.find(info => info.segmentation.cachedStats?.tmtv !== undefined);
-  const tmtvValue = tmtvSegmentation?.segmentation.cachedStats?.tmtv;
+  const stats = segmentationService.getSegmentationGroupStats(segmentationIds);
+  const tmtvValue = stats?.tmtv;
+  const handleExportCSV = () => {
+    if (!segmentations.length) {
+      return;
+    }
+    commandsManager.runCommand('exportTMTVReportCSV', {
+      segmentations,
+      tmtv: tmtvValue,
+      config: {}
+    });
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "mt-2 mb-10 flex flex-col"
+    className: "mb-1 flex flex-col"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "invisible-scrollbar overflow-y-auto overflow-x-hidden"
-  }, tmtvValue !== null && tmtvValue !== undefined ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "bg-secondary-dark flex items-baseline justify-between px-2 py-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "py-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: "text-base font-bold uppercase tracking-widest text-white"
-  }, 'TMTV:'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-white"
-  }, `${tmtvValue.toFixed(3)} mL`)) : null));
+    className: "text-muted-foreground text-base font-bold uppercase"
+  }, 'TMTV: '), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-foreground"
+  }, tmtvValue ? `${tmtvValue.toFixed(3)} mL` : '')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.Button, {
+    size: "sm",
+    variant: "ghost",
+    className: "text-blue-500",
+    onClick: handleExportCSV
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "pl-1"
+  }, "CSV"))))));
 }
-_s2(PanelRoiThresholdSegmentation, "dActmvrvp+x6UQHMO4KR+Z9iVGY=", false, function () {
-  return [_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations];
-});
-_c2 = PanelRoiThresholdSegmentation;
-_s(PanelRoiThresholdSegmentation, "hWmObWJcsVALB8Sl9s6oF1mH6DE=", false, function () {
-  return [_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations];
+_s(PanelRoiThresholdSegmentation, "ewFqhyrrbGbH2S2gZLyAI+drn4Q=", false, function () {
+  return [_ohif_core_src__WEBPACK_IMPORTED_MODULE_4__.useSystem, _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations];
 });
 _c = PanelRoiThresholdSegmentation;
 var _c;
 __webpack_require__.$Refresh$.register(_c, "PanelRoiThresholdSegmentation");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "PanelRoiThresholdSegmentation");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -401,7 +441,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -416,7 +472,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/Panels/PanelROIThresholdSegmentation/ROIThresholdConfiguration.tsx ***!
   \*******************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -425,12 +481,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -451,27 +506,19 @@ function ROIThresholdConfiguration({
   dispatch,
   runCommand
 }) {
-  _s2();
   _s();
   const {
     t
   } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation)('ROIThresholdConfiguration');
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-primary-dark flex flex-col space-y-4"
+    className: "bg-primary-dark flex flex-col space-y-4 p-px"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex items-end space-x-2"
+    className: "flex items-end space-x-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex w-1/2 flex-col"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
-    label: t('Strategy'),
-    closeMenuOnSelect: true,
-    className: "border-primary-main mr-2 bg-black text-white ",
-    options: options,
-    placeholder: options.find(option => option.value === config.strategy).placeHolder,
+    className: "flex min-w-0 flex-1 flex-col"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Select, {
     value: config.strategy,
-    onChange: ({
-      value
-    }) => {
+    onValueChange: value => {
       dispatch({
         type: 'setStrategy',
         payload: {
@@ -479,26 +526,32 @@ function ROIThresholdConfiguration({
         }
       });
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "w-1/2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.LegacyButtonGroup, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.LegacyButton, {
-    size: "initial",
-    className: "px-2 py-2 text-base text-white",
-    color: "primaryLight",
-    variant: "outlined",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, {
+    className: "w-full"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
+    placeholder: options.find(option => option.value === config.strategy)?.placeHolder
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectContent, {
+    className: ""
+  }, options.map(option => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
+    key: option.value,
+    value: option.value
+  }, option.label))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex-shrink-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex justify-end space-x-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "secondary",
     onClick: () => runCommand('setStartSliceForROIThresholdTool')
-  }, t('Start')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.LegacyButton, {
-    size: "initial",
-    color: "primaryLight",
-    variant: "outlined",
-    className: "px-2 py-2 text-base text-white",
+  }, t('Start')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "secondary",
     onClick: () => runCommand('setEndSliceForROIThresholdTool')
-  }, t('End'))))), config.strategy === ROI_STAT && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
-    label: t('Percentage of Max SUV'),
-    labelClassName: "text-[13px] font-inter text-white",
-    className: "border-primary-main bg-black",
+  }, t('End'))))), config.strategy === ROI_STAT && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mr-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mb-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Label, null, t('Percentage of Max SUV'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    className: "w-full",
     type: "text",
-    containerClassName: "mr-2",
     value: config.weight,
     onChange: e => {
       dispatch({
@@ -508,31 +561,21 @@ function ROIThresholdConfiguration({
         }
       });
     }
-  }), config.strategy !== ROI_STAT && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  })), config.strategy !== ROI_STAT && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "mr-2 text-sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
-    className: "mt-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "pr-4",
-    colSpan: "3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Label, {
-    className: "font-inter text-[13px] text-white",
-    text: "Lower & Upper Ranges"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
-    className: "mt-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "pr-4 pt-2 text-center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Label, {
-    className: "text-white",
-    text: "CT"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-between"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
-    label: t(''),
-    labelClassName: "text-white",
-    className: "border-primary-main mt-2 bg-black",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col space-y-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Label, null, "Lower & Upper Ranges"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-10 text-left"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Label, null, "CT")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-1 space-x-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    className: "w-full",
     type: "text",
-    containerClassName: "mr-2",
     value: config.ctLower,
     onChange: e => {
       dispatch({
@@ -542,12 +585,11 @@ function ROIThresholdConfiguration({
         }
       });
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
-    label: t(''),
-    labelClassName: "text-white",
-    className: "border-primary-main mt-2 bg-black",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    className: "w-full",
     type: "text",
-    containerClassName: "mr-2",
     value: config.ctUpper,
     onChange: e => {
       dispatch({
@@ -557,19 +599,17 @@ function ROIThresholdConfiguration({
         }
       });
     }
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "pr-4 pt-2 text-center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Label, {
-    className: "text-white",
-    text: "PT"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-between"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
-    label: t(''),
-    labelClassName: "text-white",
-    className: "border-primary-main mt-2 bg-black",
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-10 text-left"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Label, null, "PT")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-1 space-x-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    className: "w-full",
     type: "text",
-    containerClassName: "mr-2",
     value: config.ptLower,
     onChange: e => {
       dispatch({
@@ -579,12 +619,11 @@ function ROIThresholdConfiguration({
         }
       });
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
-    label: t(''),
-    labelClassName: "text-white",
-    className: "border-primary-main mt-2 bg-black",
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    className: "w-full",
     type: "text",
-    containerClassName: "mr-2",
     value: config.ptUpper,
     onChange: e => {
       dispatch({
@@ -594,21 +633,15 @@ function ROIThresholdConfiguration({
         }
       });
     }
-  }))))))));
+  })))))));
 }
-_s2(ROIThresholdConfiguration, "vu2xTFBfHkv41zWfADiErp1aWcA=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
-});
-_c2 = ROIThresholdConfiguration;
-_s(ROIThresholdConfiguration, "zlIdU9EjM2llFt74AbE2KsUJXyM=", false, function () {
+_s(ROIThresholdConfiguration, "vu2xTFBfHkv41zWfADiErp1aWcA=", false, function () {
   return [react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
 });
 _c = ROIThresholdConfiguration;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ROIThresholdConfiguration);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "ROIThresholdConfiguration");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ROIThresholdConfiguration");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -616,7 +649,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -631,7 +680,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************************!*\
   !*** ../../../extensions/tmtv/src/Panels/PanelROIThresholdSegmentation/index.ts ***!
   \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -650,7 +699,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -665,7 +730,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************!*\
   !*** ../../../extensions/tmtv/src/Panels/PanelTMTV.tsx ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -674,80 +739,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _PanelROIThresholdSegmentation_PanelROIThresholdExport__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PanelROIThresholdSegmentation/PanelROIThresholdExport */ "../../../extensions/tmtv/src/Panels/PanelROIThresholdSegmentation/PanelROIThresholdExport.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
-var _s = __webpack_require__.$Refresh$.signature();
 
 
 
 function PanelTMTV({
-  servicesManager,
-  commandsManager,
-  extensionManager,
   configuration
 }) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.PanelSegmentation, {
-    servicesManager: servicesManager,
-    commandsManager: commandsManager,
-    extensionManager: extensionManager,
     configuration: configuration
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ExportCSV, {
-    servicesManager: servicesManager,
-    commandsManager: commandsManager
-  })));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PanelROIThresholdSegmentation_PanelROIThresholdExport__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
 }
-_c3 = PanelTMTV;
 _c = PanelTMTV;
-const ExportCSV = ({
-  servicesManager,
-  commandsManager
-}) => {
-  _s2();
-  _s();
-  const {
-    segmentationsWithRepresentations: representations
-  } = (0,_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations)({
-    servicesManager
-  });
-  const tmtv = representations[0]?.segmentation.cachedStats?.tmtv;
-  const segmentations = representations.map(representation => representation.segmentation);
-  if (!segmentations.length) {
-    return null;
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex h-8 w-full items-center rounded pr-0.5"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Button, {
-    size: "sm",
-    variant: "ghost",
-    className: "pl-1.5",
-    onClick: () => {
-      commandsManager.runCommand('exportTMTVReportCSV', {
-        segmentations,
-        tmtv,
-        config: {}
-      });
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Icons.Download, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: "pl-1"
-  }, "CSV")));
-};
-_s2(ExportCSV, "qw4n3wb5KlKkfHeENz8O7ggxl7Y=", false, function () {
-  return [_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations];
-});
-_c4 = ExportCSV;
-_s(ExportCSV, "KwNyyMBhhdV/xHs8zjYqtvFcW4s=", false, function () {
-  return [_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_1__.useActiveViewportSegmentationRepresentations];
-});
-_c2 = ExportCSV;
-var _c, _c2;
+var _c;
 __webpack_require__.$Refresh$.register(_c, "PanelTMTV");
-__webpack_require__.$Refresh$.register(_c2, "ExportCSV");
-var _c3, _c4;
-__webpack_require__.$Refresh$.register(_c3, "PanelTMTV");
-__webpack_require__.$Refresh$.register(_c4, "ExportCSV");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -755,7 +763,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -770,7 +794,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/tmtv/src/Panels/RectangleROIOptions.tsx ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -778,14 +802,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var _PanelROIThresholdSegmentation_ROIThresholdConfiguration__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PanelROIThresholdSegmentation/ROIThresholdConfiguration */ "../../../extensions/tmtv/src/Panels/PanelROIThresholdSegmentation/ROIThresholdConfiguration.tsx");
 /* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
+
+
 
 
 
@@ -831,16 +858,13 @@ function reducer(state, action) {
       return state;
   }
 }
-function RectangleROIOptions({
-  servicesManager,
-  commandsManager
-}) {
-  _s2();
+function RectangleROIOptions() {
   _s();
   const {
-    segmentationService
-  } = servicesManager.services;
-  const [selectedSegmentationId, setSelectedSegmentationId] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+    commandsManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_4__.useSystem)();
+  const segmentations = (0,_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_5__.useSegmentations)();
+  const activeSegmentation = segmentations[0];
   const runCommand = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((commandName, commandOptions = {}) => {
     return commandsManager.runCommand(commandName, commandOptions);
   }, [commandsManager]);
@@ -853,72 +877,36 @@ function RectangleROIOptions({
     weight: WEIGHT_DEFAULT
   });
   const handleROIThresholding = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
-    const segmentationId = selectedSegmentationId;
+    if (!activeSegmentation) {
+      return;
+    }
+    const segmentationId = activeSegmentation.segmentationId;
     const activeSegmentIndex = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.segmentation.segmentIndex.getActiveSegmentIndex(segmentationId);
-
-    // run the threshold based on the active segment index
-    // Todo: later find a way to associate each rectangle with a segment (e.g., maybe with color?)
     runCommand('thresholdSegmentationByRectangleROITool', {
       segmentationId,
       config,
       segmentIndex: activeSegmentIndex
     });
-  }, [selectedSegmentationId, config]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const segmentations = segmentationService.getSegmentationRepresentations();
-    if (!segmentations.length) {
-      return;
-    }
-    const isActive = segmentations.find(seg => seg.isActive);
-    setSelectedSegmentationId(isActive.id);
-  }, []);
-
-  /**
-   * Update UI based on segmentation changes (added, removed, updated)
-   */
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // ~~ Subscription
-    const updated = segmentationService.EVENTS.SEGMENTATION_MODIFIED;
-    const subscriptions = [];
-    [updated].forEach(evt => {
-      const {
-        unsubscribe
-      } = segmentationService.subscribe(evt, () => {
-        const segmentations = segmentationService.getSegmentationRepresentations();
-        if (!segmentations.length) {
-          return;
-        }
-        const isActive = segmentations.find(seg => seg.isActive);
-        setSelectedSegmentationId(isActive.id);
-      });
-      subscriptions.push(unsubscribe);
-    });
-    return () => {
-      subscriptions.forEach(unsub => {
-        unsub();
-      });
-    };
-  }, []);
+  }, [activeSegmentation, config]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "invisible-scrollbar mb-2 flex flex-col overflow-y-auto overflow-x-hidden"
+    className: "invisible-scrollbar mb-1 flex flex-col overflow-y-auto overflow-x-hidden"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PanelROIThresholdSegmentation_ROIThresholdConfiguration__WEBPACK_IMPORTED_MODULE_2__["default"], {
     config: config,
     dispatch: dispatch,
     runCommand: runCommand
-  }), selectedSegmentationId !== null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    className: "mt-2 !h-[26px] !w-[75px]",
+  }), activeSegmentation && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "default",
+    className: "my-3 mr-auto w-20",
     onClick: handleROIThresholding
   }, "Run"));
 }
-_s2(RectangleROIOptions, "veurJOE/aJCOzf9R8TmZNEs/fpw=");
-_c2 = RectangleROIOptions;
-_s(RectangleROIOptions, "tVpN+M//pSOzaiI2UIKNfvDVi64=");
+_s(RectangleROIOptions, "a5D22L8Xb1Uv3ExgPVZOJ6kEHIU=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_4__.useSystem, _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_5__.useSegmentations];
+});
 _c = RectangleROIOptions;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RectangleROIOptions);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "RectangleROIOptions");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "RectangleROIOptions");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -926,7 +914,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -941,7 +945,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************!*\
   !*** ../../../extensions/tmtv/src/Panels/index.tsx ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -963,7 +967,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -978,7 +998,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************!*\
   !*** ../../../extensions/tmtv/src/commandsModule.ts ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -987,11 +1007,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
 /* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
-/* harmony import */ var _utils_getThresholdValue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/getThresholdValue */ "../../../extensions/tmtv/src/utils/getThresholdValue.ts");
-/* harmony import */ var _utils_createAndDownloadTMTVReport__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/createAndDownloadTMTVReport */ "../../../extensions/tmtv/src/utils/createAndDownloadTMTVReport.js");
-/* harmony import */ var _utils_dicomRTAnnotationExport_RTStructureSet__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/dicomRTAnnotationExport/RTStructureSet */ "../../../extensions/tmtv/src/utils/dicomRTAnnotationExport/RTStructureSet/index.js");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* harmony import */ var _utils_getThresholdValue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/getThresholdValue */ "../../../extensions/tmtv/src/utils/getThresholdValue.ts");
+/* harmony import */ var _utils_createAndDownloadTMTVReport__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/createAndDownloadTMTVReport */ "../../../extensions/tmtv/src/utils/createAndDownloadTMTVReport.js");
+/* harmony import */ var _utils_dicomRTAnnotationExport_RTStructureSet__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/dicomRTAnnotationExport/RTStructureSet */ "../../../extensions/tmtv/src/utils/dicomRTAnnotationExport/RTStructureSet/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -1005,46 +1027,11 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 const {
   SegmentationRepresentations
 } = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.Enums;
+const {
+  formatPN
+} = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.utils;
 const metadataProvider = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.classes.MetadataProvider;
 const ROI_THRESHOLD_MANUAL_TOOL_IDS = ['RectangleROIStartEndThreshold', 'RectangleROIThreshold', 'CircleROIStartEndThreshold'];
-const workerManager = (0,_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.getWebWorkerManager)();
-const options = {
-  maxWorkerInstances: 1,
-  autoTerminateOnIdle: {
-    enabled: true,
-    idleTimeThreshold: 3000
-  }
-};
-
-// Register the task
-const workerFn = () => {
-  return new Worker(new URL(/* worker import */ __webpack_require__.p + __webpack_require__.u("suv-peak-worker"), __webpack_require__.b), {
-    name: 'suv-peak-worker' // name used by the browser to name the worker
-  });
-};
-function getVolumesFromSegmentation(segmentationId) {
-  const csSegmentation = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.segmentation.state.getSegmentation(segmentationId);
-  const labelmapData = csSegmentation.representationData[SegmentationRepresentations.Labelmap];
-  const {
-    volumeId,
-    referencedVolumeId
-  } = labelmapData;
-  const labelmapVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(volumeId);
-  const referencedVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(referencedVolumeId);
-  return {
-    labelmapVolume,
-    referencedVolume
-  };
-}
-function getLabelmapVolumeFromSegmentation(segmentation) {
-  const {
-    representationData
-  } = segmentation;
-  const {
-    volumeId
-  } = representationData[SegmentationRepresentations.Labelmap];
-  return _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(volumeId);
-}
 const commandsModule = ({
   servicesManager,
   commandsManager,
@@ -1089,7 +1076,7 @@ const commandsModule = ({
       // corrected PT vs the non-attenuation correct PT)
 
       let ptDisplaySet = null;
-      for (const [viewportId, viewportDetails] of viewportMatchDetails) {
+      for (const [, viewportDetails] of viewportMatchDetails) {
         const {
           displaySetsInfo
         } = viewportDetails;
@@ -1164,7 +1151,7 @@ const commandsModule = ({
         label: `Segmentation ${currentSegmentations.length + 1}`,
         segments: {
           1: {
-            label: 'Segment 1',
+            label: `${_ohif_i18n__WEBPACK_IMPORTED_MODULE_3__["default"].t('Segment')} 1`,
             active: true
           }
         }
@@ -1186,17 +1173,14 @@ const commandsModule = ({
       const {
         displaySetMatchDetails: matchDetails
       } = hangingProtocolService.getMatchDetails();
-      const volumeLoaderScheme = 'cornerstoneStreamingImageVolume'; // Loader id which defines which volume loader to use
-
-      const ctDisplaySet = matchDetails.get('ctDisplaySet');
-      const ctVolumeId = `${volumeLoaderScheme}:${ctDisplaySet.displaySetInstanceUID}`; // VolumeId with loader id + volume id
-
+      const ctDisplaySetMatch = matchDetails.get('ctDisplaySet');
+      const ptDisplaySetMatch = matchDetails.get('ptDisplaySet');
+      const ctDisplaySet = displaySetService.getDisplaySetByUID(ctDisplaySetMatch.displaySetInstanceUID);
+      const ptDisplaySet = displaySetService.getDisplaySetByUID(ptDisplaySetMatch.displaySetInstanceUID);
       const {
         volumeId: segVolumeId
       } = representationData[SegmentationRepresentations.Labelmap];
-      const {
-        referencedVolumeId
-      } = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(segVolumeId);
+      const labelmapVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(segVolumeId);
       const annotationUIDs = _getAnnotationsSelectedByToolNames(ROI_THRESHOLD_MANUAL_TOOL_IDS);
       if (annotationUIDs.length === 0) {
         uiNotificationService.show({
@@ -1206,206 +1190,54 @@ const commandsModule = ({
         });
         return;
       }
-      const labelmapVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(segmentationId);
-      let referencedVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(referencedVolumeId);
-      const ctReferencedVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(ctVolumeId);
-
-      // check if viewport is
-
-      if (!referencedVolume) {
-        throw new Error('No Reference volume found');
-      }
-      if (!labelmapVolume) {
-        throw new Error('No Reference labelmap found');
-      }
-      const annotation = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.annotation.state.getAnnotation(annotationUIDs[0]);
-      const {
-        metadata: {
-          enabledElement: {
-            viewport
-          }
-        }
-      } = annotation;
-      const showingReferenceVolume = viewport.hasVolumeId(referencedVolumeId);
-      if (!showingReferenceVolume) {
-        // if the reference volume is not being displayed, we can't
-        // rely on it for thresholding, we have couple of options here
-        // 1. We choose whatever volume is being displayed
-        // 2. We check if it is a fusion viewport, we pick the volume
-        // that matches the size and dimensions of the labelmap. This might
-        // happen if the 4D PT is converted to a computed volume and displayed
-        // and wants to threshold the labelmap
-        // 3. We throw an error
-        const displaySetInstanceUIDs = viewportGridService.getDisplaySetsUIDsForViewport(viewport.id);
-        displaySetInstanceUIDs.forEach(displaySetInstanceUID => {
-          const volume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolumes().find(volume => volume.volumeId.includes(displaySetInstanceUID));
-          if (_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.utilities.isEqual(volume.dimensions, labelmapVolume.dimensions) && _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.utilities.isEqual(volume.spacing, labelmapVolume.spacing)) {
-            referencedVolume = volume;
-          }
-        });
-      }
       const {
         ptLower,
         ptUpper,
         ctLower,
         ctUpper
-      } = (0,_utils_getThresholdValue__WEBPACK_IMPORTED_MODULE_3__["default"])(annotationUIDs, [referencedVolume, ctReferencedVolume], config);
+      } = (0,_utils_getThresholdValue__WEBPACK_IMPORTED_MODULE_4__["default"])(annotationUIDs, ptDisplaySet, config);
+      const {
+        imageIds: ptImageIds
+      } = ptDisplaySet;
+      const ptVolumeInfo = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolumeContainingImageId(ptImageIds[0]);
+      if (!ptVolumeInfo) {
+        uiNotificationService.error('No PT volume found');
+        return;
+      }
+      const {
+        imageIds: ctImageIds
+      } = ctDisplaySet;
+      const ctVolumeInfo = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolumeContainingImageId(ctImageIds[0]);
+      if (!ctVolumeInfo) {
+        uiNotificationService.error('No CT volume found');
+        return;
+      }
+      const ptVolume = ptVolumeInfo.volume;
+      const ctVolume = ctVolumeInfo.volume;
       return _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.utilities.segmentation.rectangleROIThresholdVolumeByRange(annotationUIDs, labelmapVolume, [{
-        volume: referencedVolume,
+        volume: ptVolume,
         lower: ptLower,
         upper: ptUpper
       }, {
-        volume: ctReferencedVolume,
+        volume: ctVolume,
         lower: ctLower,
         upper: ctUpper
       }], {
         overwrite: true,
-        segmentIndex
+        segmentIndex,
+        segmentationId
       });
-    },
-    calculateSuvPeak: async ({
-      segmentationId,
-      segmentIndex
-    }) => {
-      const segmentation = segmentationService.getSegmentation(segmentationId);
-      const {
-        representationData
-      } = segmentation;
-      const {
-        volumeId,
-        referencedVolumeId
-      } = representationData[SegmentationRepresentations.Labelmap];
-      const labelmap = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(volumeId);
-      const referencedVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(referencedVolumeId);
-
-      // if we put it in the top, it will appear in other modes
-      workerManager.registerWorker('suv-peak-worker', workerFn, options);
-      const annotationUIDs = _getAnnotationsSelectedByToolNames(ROI_THRESHOLD_MANUAL_TOOL_IDS);
-      const annotations = annotationUIDs.map(annotationUID => _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.annotation.state.getAnnotation(annotationUID));
-      const labelmapProps = {
-        dimensions: labelmap.dimensions,
-        origin: labelmap.origin,
-        direction: labelmap.direction,
-        spacing: labelmap.spacing,
-        metadata: labelmap.metadata,
-        scalarData: labelmap.voxelManager.getCompleteScalarDataArray()
-      };
-      const referenceVolumeProps = {
-        dimensions: referencedVolume.dimensions,
-        origin: referencedVolume.origin,
-        direction: referencedVolume.direction,
-        spacing: referencedVolume.spacing,
-        metadata: referencedVolume.metadata,
-        scalarData: referencedVolume.voxelManager.getCompleteScalarDataArray()
-      };
-
-      // metadata in annotations has enabledElement which is not serializable
-      // we need to remove it
-      // Todo: we should probably have a sanitization function for this
-      const annotationsToSend = annotations.map(annotation => {
-        return {
-          ...annotation,
-          metadata: {
-            ...annotation.metadata,
-            enabledElement: {
-              ...annotation.metadata.enabledElement,
-              viewport: null,
-              renderingEngine: null,
-              element: null
-            }
-          }
-        };
-      });
-      const suvPeak = (await workerManager.executeTask('suv-peak-worker', 'calculateSuvPeak', {
-        labelmapProps,
-        referenceVolumeProps,
-        annotations: annotationsToSend,
-        segmentIndex
-      })) || {};
-      return {
-        suvPeak: suvPeak.mean,
-        suvMax: suvPeak.max,
-        suvMaxIJK: suvPeak.maxIJK,
-        suvMaxLPS: suvPeak.maxLPS
-      };
-    },
-    getLesionStats: ({
-      segmentationId,
-      segmentIndex = 1
-    }) => {
-      const {
-        labelmapVolume,
-        referencedVolume
-      } = getVolumesFromSegmentation(segmentationId);
-      const {
-        voxelManager: segVoxelManager,
-        imageData,
-        spacing
-      } = labelmapVolume;
-      const {
-        voxelManager: refVoxelManager
-      } = referencedVolume;
-      let segmentationMax = -Infinity;
-      let segmentationMin = Infinity;
-      const segmentationValues = [];
-      let voxelCount = 0;
-      const callback = ({
-        value,
-        index
-      }) => {
-        if (value === segmentIndex) {
-          const refValue = refVoxelManager.getAtIndex(index);
-          segmentationValues.push(refValue);
-          if (refValue > segmentationMax) {
-            segmentationMax = refValue;
-          }
-          if (refValue < segmentationMin) {
-            segmentationMin = refValue;
-          }
-          voxelCount++;
-        }
-      };
-      segVoxelManager.forEach(callback, {
-        imageData
-      });
-      const mean = segmentationValues.reduce((a, b) => a + b, 0) / voxelCount;
-      const stats = {
-        minValue: segmentationMin,
-        maxValue: segmentationMax,
-        meanValue: mean,
-        stdValue: Math.sqrt(segmentationValues.map(k => (k - mean) ** 2).reduce((acc, curr) => acc + curr, 0) / voxelCount),
-        volume: voxelCount * spacing[0] * spacing[1] * spacing[2] * 1e-3
-      };
-      return stats;
-    },
-    calculateLesionGlycolysis: ({
-      lesionStats
-    }) => {
-      const {
-        meanValue,
-        volume
-      } = lesionStats;
-      return {
-        lesionGlyoclysisStats: volume * meanValue
-      };
     },
     calculateTMTV: async ({
       segmentations
     }) => {
-      const labelmapProps = segmentations.map(segmentation => {
-        const labelmap = getLabelmapVolumeFromSegmentation(segmentation);
-        return {
-          dimensions: labelmap.dimensions,
-          spacing: labelmap.spacing,
-          scalarData: labelmap.voxelManager.getCompleteScalarDataArray(),
-          origin: labelmap.origin,
-          direction: labelmap.direction
-        };
+      const segmentationIds = segmentations.map(segmentation => segmentation.segmentationId);
+      const stats = await _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.utilities.segmentation.computeMetabolicStats({
+        segmentationIds,
+        segmentIndex: 1
       });
-      if (!labelmapProps.length) {
-        return;
-      }
-      return await workerManager.executeTask('suv-peak-worker', 'calculateTMTV', labelmapProps);
+      segmentationService.setSegmentationGroupStats(segmentationIds, stats);
+      return stats;
     },
     exportTMTVReportCSV: async ({
       segmentations,
@@ -1416,13 +1248,16 @@ const commandsModule = ({
       const segReport = commandsManager.runCommand('getSegmentationCSVReport', {
         segmentations
       });
-      const tlg = await actions.getTotalLesionGlycolysis({
-        segmentations
-      });
+      let total_tlg = 0;
+      for (const segmentationId in segReport) {
+        const report = segReport[segmentationId];
+        const tlg = report['namedStats_lesionGlycolysis'];
+        total_tlg += tlg.value;
+      }
       const additionalReportRows = [{
         key: 'Total Lesion Glycolysis',
         value: {
-          tlg: tlg.toFixed(4)
+          tlg: total_tlg.toFixed(4)
         }
       }, {
         key: 'Threshold Configuration',
@@ -1438,35 +1273,7 @@ const commandsModule = ({
           }
         });
       }
-      (0,_utils_createAndDownloadTMTVReport__WEBPACK_IMPORTED_MODULE_4__["default"])(segReport, additionalReportRows, options);
-    },
-    getTotalLesionGlycolysis: async ({
-      segmentations
-    }) => {
-      const labelmapProps = segmentations.map(segmentation => {
-        const labelmap = getLabelmapVolumeFromSegmentation(segmentation);
-        return {
-          dimensions: labelmap.dimensions,
-          spacing: labelmap.spacing,
-          scalarData: labelmap.voxelManager.getCompleteScalarDataArray(),
-          origin: labelmap.origin,
-          direction: labelmap.direction
-        };
-      });
-      const {
-        referencedVolume: ptVolume
-      } = getVolumesFromSegmentation(segmentations[0].segmentationId);
-      const ptVolumeProps = {
-        dimensions: ptVolume.dimensions,
-        spacing: ptVolume.spacing,
-        scalarData: ptVolume.voxelManager.getCompleteScalarDataArray(),
-        origin: ptVolume.origin,
-        direction: ptVolume.direction
-      };
-      return await workerManager.executeTask('suv-peak-worker', 'getTotalLesionGlycolysis', {
-        labelmapProps,
-        referenceVolumeProps: ptVolumeProps
-      });
+      (0,_utils_createAndDownloadTMTVReport__WEBPACK_IMPORTED_MODULE_5__["default"])(segReport, additionalReportRows, options);
     },
     setStartSliceForROIThresholdTool: () => {
       const {
@@ -1559,8 +1366,7 @@ const commandsModule = ({
           report[id] = segReport;
           continue;
         }
-        const referencedVolumeId = labelmapVolume.referencedVolumeId;
-        const referencedVolume = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_1__.cache.getVolume(referencedVolumeId);
+        const referencedVolume = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.utilities.segmentation.getReferenceVolumeForSegmentationVolume(segmentationId);
         if (!referencedVolume) {
           report[id] = segReport;
           continue;
@@ -1578,7 +1384,7 @@ const commandsModule = ({
         report[id] = {
           ...segReport,
           PatientID: instance.PatientID ?? '000000',
-          PatientName: instance.PatientName.Alphabetic,
+          PatientName: formatPN(instance.PatientName),
           StudyInstanceUID: instance.StudyInstanceUID,
           SeriesInstanceUID: instance.SeriesInstanceUID,
           StudyDate: instance.StudyDate
@@ -1589,7 +1395,7 @@ const commandsModule = ({
     exportRTReportForAnnotations: ({
       annotations
     }) => {
-      (0,_utils_dicomRTAnnotationExport_RTStructureSet__WEBPACK_IMPORTED_MODULE_5__["default"])(annotations);
+      (0,_utils_dicomRTAnnotationExport_RTStructureSet__WEBPACK_IMPORTED_MODULE_6__["default"])(annotations);
     },
     setFusionPTColormap: ({
       toolGroupId,
@@ -1644,15 +1450,6 @@ const commandsModule = ({
     thresholdSegmentationByRectangleROITool: {
       commandFn: actions.thresholdSegmentationByRectangleROITool
     },
-    getTotalLesionGlycolysis: {
-      commandFn: actions.getTotalLesionGlycolysis
-    },
-    calculateSuvPeak: {
-      commandFn: actions.calculateSuvPeak
-    },
-    getLesionStats: {
-      commandFn: actions.getLesionStats
-    },
     calculateTMTV: {
       commandFn: actions.calculateTMTV
     },
@@ -1686,7 +1483,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1701,7 +1514,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************!*\
   !*** ../../../extensions/tmtv/src/getHangingProtocolModule.ts ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2002,7 +1815,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2017,7 +1846,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************!*\
   !*** ../../../extensions/tmtv/src/getPanelModule.tsx ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2026,7 +1855,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Panels__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Panels */ "../../../extensions/tmtv/src/Panels/index.tsx");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
 /* harmony import */ var _Panels_PanelTMTV__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Panels/PanelTMTV */ "../../../extensions/tmtv/src/Panels/PanelTMTV.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
@@ -2040,39 +1869,26 @@ function getPanelModule({
   extensionManager,
   servicesManager
 }) {
+  const {
+    toolbarService
+  } = servicesManager.services;
   const wrappedPanelPetSuv = () => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Panels__WEBPACK_IMPORTED_MODULE_1__.PanelPetSUV, {
-      commandsManager: commandsManager,
-      servicesManager: servicesManager,
-      extensionManager: extensionManager
-    });
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Panels__WEBPACK_IMPORTED_MODULE_1__.PanelPetSUV, null);
   };
   const wrappedROIThresholdToolbox = () => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Toolbox, {
-      commandsManager: commandsManager,
-      servicesManager: servicesManager,
-      extensionManager: extensionManager,
-      buttonSectionId: "ROIThresholdToolbox",
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_default__WEBPACK_IMPORTED_MODULE_2__.Toolbox, {
+      buttonSectionId: toolbarService.sections.roiThresholdToolbox,
       title: "Threshold Tools"
     });
   };
   const wrappedROIThresholdExport = () => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Panels__WEBPACK_IMPORTED_MODULE_1__.PanelROIThresholdExport, {
-      commandsManager: commandsManager,
-      servicesManager: servicesManager
-    });
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Panels__WEBPACK_IMPORTED_MODULE_1__.PanelROIThresholdExport, null);
   };
   const wrappedPanelTMTV = () => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Toolbox, {
-      commandsManager: commandsManager,
-      servicesManager: servicesManager,
-      extensionManager: extensionManager,
-      buttonSectionId: "ROIThresholdToolbox",
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_default__WEBPACK_IMPORTED_MODULE_2__.Toolbox, {
+      buttonSectionId: toolbarService.sections.roiThresholdToolbox,
       title: "Threshold Tools"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Panels_PanelTMTV__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      commandsManager: commandsManager,
-      servicesManager: servicesManager
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Panels__WEBPACK_IMPORTED_MODULE_1__.PanelROIThresholdExport, {
       commandsManager: commandsManager,
       servicesManager: servicesManager
     }));
@@ -2110,7 +1926,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2125,7 +1957,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************!*\
   !*** ../../../extensions/tmtv/src/getToolbarModule.tsx ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2136,16 +1968,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
-function getToolbarModule({
-  commandsManager,
-  servicesManager
-}) {
+function getToolbarModule() {
   return [{
     name: 'tmtv.RectangleROIThresholdOptions',
-    defaultComponent: () => (0,_Panels_RectangleROIOptions__WEBPACK_IMPORTED_MODULE_0__["default"])({
-      commandsManager,
-      servicesManager
-    })
+    defaultComponent: _Panels_RectangleROIOptions__WEBPACK_IMPORTED_MODULE_0__["default"]
   }];
 }
 
@@ -2155,7 +1981,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2170,7 +2012,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************!*\
   !*** ../../../extensions/tmtv/src/id.js ***!
   \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2190,7 +2032,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2205,7 +2063,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************!*\
   !*** ../../../extensions/tmtv/src/index.tsx ***!
   \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2271,7 +2129,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2286,7 +2160,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************!*\
   !*** ../../../extensions/tmtv/src/init.js ***!
   \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2337,7 +2211,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2352,7 +2242,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/createAndDownloadTMTVReport.js ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2407,7 +2297,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2422,7 +2328,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/dicomRTAnnotationExport/RTStructureSet/dicomRTAnnotationExport.js ***!
   \************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2456,7 +2362,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2471,7 +2393,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/dicomRTAnnotationExport/RTStructureSet/index.js ***!
   \******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -2490,7 +2412,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2505,23 +2443,33 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/getThresholdValue.ts ***!
   \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
-function getRoiStats(referencedVolume, annotations) {
-  // roiStats
+
+function getRoiStats(displaySet, annotations) {
   const {
-    imageData
-  } = referencedVolume;
-  const values = imageData.getPointData().getScalars().getData();
+    imageIds
+  } = displaySet;
+  const ptVolumeInfo = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.cache.getVolumeContainingImageId(imageIds[0]);
+  if (!ptVolumeInfo) {
+    throw new Error('No volume found for display set');
+  }
+  const {
+    volume
+  } = ptVolumeInfo;
+  const {
+    voxelManager
+  } = volume;
 
   // Todo: add support for other strategies
   const {
@@ -2529,19 +2477,19 @@ function getRoiStats(referencedVolume, annotations) {
     baseValue
   } = _getStrategyFn('max');
   let value = baseValue;
-  const boundsIJK = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.utilities.rectangleROITool.getBoundsIJKFromRectangleAnnotations(annotations, referencedVolume);
-  const [[iMin, iMax], [jMin, jMax], [kMin, kMax]] = boundsIJK;
-  for (let i = iMin; i <= iMax; i++) {
-    for (let j = jMin; j <= jMax; j++) {
-      for (let k = kMin; k <= kMax; k++) {
-        const offset = imageData.computeOffsetIndex([i, j, k]);
-        value = fn(values[offset], value);
-      }
-    }
-  }
+  const boundsIJK = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_1__.utilities.rectangleROITool.getBoundsIJKFromRectangleAnnotations(annotations, volume);
+
+  // Use the voxelManager's forEach method to iterate over the bounds
+  voxelManager.forEach(({
+    value: voxelValue
+  }) => {
+    value = fn(voxelValue, value);
+  }, {
+    boundsIJK
+  });
   return value;
 }
-function getThresholdValues(annotationUIDs, referencedVolumes, config) {
+function getThresholdValues(annotationUIDs, ptDisplaySet, config) {
   if (config.strategy === 'range') {
     return {
       ptLower: Number(config.ptLower),
@@ -2553,8 +2501,8 @@ function getThresholdValues(annotationUIDs, referencedVolumes, config) {
   const {
     weight
   } = config;
-  const annotations = annotationUIDs.map(annotationUID => _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_0__.annotation.state.getAnnotation(annotationUID));
-  const ptValue = getRoiStats(referencedVolumes[0], annotations);
+  const annotations = annotationUIDs.map(annotationUID => _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_1__.annotation.state.getAnnotation(annotationUID));
+  const ptValue = getRoiStats(ptDisplaySet, annotations);
   return {
     ctLower: -Infinity,
     ctUpper: +Infinity,
@@ -2583,7 +2531,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2598,72 +2562,22 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/handleROIThresholding.ts ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   handleROIThresholding: () => (/* binding */ handleROIThresholding)
 /* harmony export */ });
-/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-
 const handleROIThresholding = async ({
-  segmentationId,
   commandsManager,
   segmentationService
 }) => {
-  const segmentation = segmentationService.getSegmentation(segmentationId);
-  (0,_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.triggerEvent)(_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.eventTarget, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.Enums.Events.WEB_WORKER_PROGRESS, {
-    progress: 0,
-    type: 'Calculate Lesion Stats',
-    id: segmentationId
-  });
-
-  // re-calculating the cached stats for the active segmentation
-  const updatedPerSegmentCachedStats = {};
-  for (const [segmentIndex, segment] of Object.entries(segmentation.segments)) {
-    if (!segment) {
-      continue;
-    }
-    const numericSegmentIndex = Number(segmentIndex);
-    const lesionStats = await commandsManager.run('getLesionStats', {
-      segmentationId,
-      segmentIndex: numericSegmentIndex
-    });
-    const suvPeak = await commandsManager.run('calculateSuvPeak', {
-      segmentationId,
-      segmentIndex: numericSegmentIndex
-    });
-    const lesionGlyoclysisStats = lesionStats.volume * lesionStats.meanValue;
-
-    // update segDetails with the suv peak for the active segmentation
-    const cachedStats = {
-      lesionStats,
-      suvPeak,
-      lesionGlyoclysisStats
-    };
-    const updatedSegment = {
-      ...segment,
-      cachedStats: {
-        ...segment.cachedStats,
-        ...cachedStats
-      }
-    };
-    updatedPerSegmentCachedStats[numericSegmentIndex] = cachedStats;
-    segmentation.segments[segmentIndex] = updatedSegment;
-  }
-
-  // all available segmentations
   const segmentations = segmentationService.getSegmentations();
   const tmtv = await commandsManager.run('calculateTMTV', {
     segmentations
-  });
-  (0,_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.triggerEvent)(_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.eventTarget, _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__.Enums.Events.WEB_WORKER_PROGRESS, {
-    progress: 100,
-    type: 'Calculate Lesion Stats',
-    id: segmentationId
   });
 
   // add the tmtv to all the segment cachedStats, although it is a global
@@ -2674,23 +2588,7 @@ const handleROIThresholding = async ({
       ...segmentation.cachedStats,
       tmtv
     };
-
-    // Update each segment within the segmentation
-    Object.keys(segmentation.segments).forEach(segmentIndex => {
-      segmentation.segments[segmentIndex].cachedStats = {
-        ...segmentation.segments[segmentIndex].cachedStats,
-        tmtv
-      };
-    });
-
-    // Update the segmentation object
-    const updatedSegmentation = {
-      ...segmentation,
-      segments: {
-        ...segmentation.segments
-      }
-    };
-    segmentationService.addOrUpdateSegmentation(updatedSegmentation);
+    segmentationService.addOrUpdateSegmentation(segmentation);
   });
 };
 
@@ -2700,7 +2598,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2715,7 +2629,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/hpViewports.ts ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3153,7 +3067,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3168,7 +3098,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/measurementServiceMappings/CircleROIStartEndThreshold.js ***!
   \***************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3252,7 +3182,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3267,7 +3213,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/measurementServiceMappings/RectangleROIStartEndThreshold.js ***!
   \******************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3346,7 +3292,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3361,7 +3323,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/measurementServiceMappings/constants/supportedTools.js ***!
   \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3370,7 +3332,7 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (['RectangleROIStartEndThreshold']);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (['RectangleROIStartEndThreshold', 'CircleROIStartEndThreshold']);
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -3378,7 +3340,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3393,7 +3371,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************************************************!*\
   !*** ../../../extensions/tmtv/src/utils/measurementServiceMappings/measurementServiceMappingsFactory.js ***!
   \**********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -3432,7 +3410,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3449,7 +3443,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \*********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-tmtv","version":"3.9.1","description":"OHIF extension for Total Metabolic Tumor Volume","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-tmtv.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist","README.md"],"publishConfig":{"access":"public"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/ui":"3.9.1","dcmjs":"*","dicom-parser":"^1.8.9","hammerjs":"^2.0.8","prop-types":"^15.6.2","react":"^18.3.1"},"dependencies":{"@babel/runtime":"^7.20.13","classnames":"^2.3.2"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-tmtv","version":"3.11.0-beta.37","description":"OHIF extension for Total Metabolic Tumor Volume","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-tmtv.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist","README.md"],"publishConfig":{"access":"public"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/ui":"3.11.0-beta.37","dcmjs":"*","dicom-parser":"^1.8.9","hammerjs":"^2.0.8","prop-types":"^15.6.2","react":"^18.3.1"},"dependencies":{"@babel/runtime":"^7.20.13","classnames":"^2.3.2"}}');
 
 /***/ })
 

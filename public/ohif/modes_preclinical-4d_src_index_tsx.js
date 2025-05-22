@@ -5,7 +5,7 @@
 /*!****************************************************************!*\
   !*** ../../../modes/preclinical-4d/src/getWorkflowSettings.ts ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -23,10 +23,31 @@ const cornerstone = {
   segmentation: '@ohif/extension-cornerstone.panelModule.panelSegmentationNoHeader',
   activeViewportWindowLevel: '@ohif/extension-cornerstone.panelModule.activeViewportWindowLevel'
 };
-const defaultButtons = {
-  buttonSection: 'primary',
-  buttons: ['MeasurementTools', 'Zoom', 'WindowLevel', 'Crosshairs', 'Pan']
-};
+function getDefaultButtons({
+  toolbarService
+}) {
+  return [{
+    buttonSection: toolbarService.sections.primary,
+    buttons: ['MeasurementTools', 'Zoom', 'WindowLevel', 'Crosshairs', 'Pan']
+  }, {
+    buttonSection: 'MeasurementTools',
+    buttons: ['Length', 'Bidirectional', 'ArrowAnnotate', 'EllipticalROI']
+  }];
+}
+function getROIThresholdToolbox({
+  toolbarService
+}) {
+  return [{
+    buttonSection: toolbarService.sections.dynamicToolbox,
+    buttons: ['SegmentationTools']
+  }, {
+    buttonSection: 'SegmentationTools',
+    buttons: ['BrushTools', 'RectangleROIStartEndThreshold']
+  }, {
+    buttonSection: 'BrushTools',
+    buttons: ['Brush', 'Eraser', 'Threshold']
+  }];
+}
 const defaultLeftPanel = [[dynamicVolume.leftPanel, cornerstone.activeViewportWindowLevel]];
 const defaultLayout = {
   panels: {
@@ -37,6 +58,15 @@ const defaultLayout = {
 function getWorkflowSettings({
   servicesManager
 }) {
+  const {
+    toolbarService
+  } = servicesManager.services;
+  const defaultButtons = getDefaultButtons({
+    toolbarService
+  });
+  const ROIThresholdToolbox = getROIThresholdToolbox({
+    toolbarService
+  });
   return {
     steps: [{
       id: 'dataPreparation',
@@ -75,10 +105,7 @@ function getWorkflowSettings({
           rightPanelClosed: false
         }
       },
-      toolbarButtons: [defaultButtons, {
-        buttonSection: 'dynamic-toolbox',
-        buttons: ['BrushTools', 'RectangleROIStartEndThreshold']
-      }],
+      toolbarButtons: [...defaultButtons, ...ROIThresholdToolbox],
       hangingProtocol: {
         protocolId: 'default4D',
         stageId: 'roiQuantification'
@@ -111,7 +138,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -126,7 +169,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************!*\
   !*** ../../../modes/preclinical-4d/src/id.js ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -146,7 +189,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -161,22 +220,18 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************!*\
   !*** ../../../modes/preclinical-4d/src/index.tsx ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./id */ "../../../modes/preclinical-4d/src/id.js");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _initWorkflowSteps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./initWorkflowSteps */ "../../../modes/preclinical-4d/src/initWorkflowSteps.ts");
-/* harmony import */ var _initToolGroups__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./initToolGroups */ "../../../modes/preclinical-4d/src/initToolGroups.tsx");
-/* harmony import */ var _toolbarButtons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./toolbarButtons */ "../../../modes/preclinical-4d/src/toolbarButtons.tsx");
-/* harmony import */ var _segmentationButtons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./segmentationButtons */ "../../../modes/preclinical-4d/src/segmentationButtons.ts");
+/* harmony import */ var _initWorkflowSteps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./initWorkflowSteps */ "../../../modes/preclinical-4d/src/initWorkflowSteps.ts");
+/* harmony import */ var _initToolGroups__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./initToolGroups */ "../../../modes/preclinical-4d/src/initToolGroups.tsx");
+/* harmony import */ var _toolbarButtons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./toolbarButtons */ "../../../modes/preclinical-4d/src/toolbarButtons.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
 
 
 
@@ -195,7 +250,6 @@ const ohif = {
   chartSopClassHandler: '@ohif/extension-default.sopClassHandlerModule.chart',
   hangingProtocol: '@ohif/extension-default.hangingProtocolModule.default',
   leftPanel: '@ohif/extension-default.panelModule.seriesList',
-  rightPanel: '@ohif/extension-default.panelModule.measure',
   chartViewport: '@ohif/extension-default.viewportModule.chartViewport'
 };
 const dynamicVolume = {
@@ -232,43 +286,37 @@ function modeFactory({
         Enums
       } = utilityModule.exports;
       measurementService.clearMeasurements();
-      (0,_initToolGroups__WEBPACK_IMPORTED_MODULE_3__["default"])({
+      (0,_initToolGroups__WEBPACK_IMPORTED_MODULE_2__["default"])({
         toolNames,
         Enums,
         toolGroupService,
         commandsManager,
         servicesManager
       });
-      toolbarService.addButtons([..._toolbarButtons__WEBPACK_IMPORTED_MODULE_4__["default"], ..._segmentationButtons__WEBPACK_IMPORTED_MODULE_5__["default"]]);
-      toolbarService.createButtonSection('secondary', ['ProgressDropdown']);
+      toolbarService.register(_toolbarButtons__WEBPACK_IMPORTED_MODULE_3__["default"]);
+      toolbarService.updateSection(toolbarService.sections.secondary, ['ProgressDropdown']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topLeft, ['orientationMenu', 'dataOverlayMenu']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topLeft, ['orientationMenu', 'dataOverlayMenu']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomMiddle, ['AdvancedRenderingControls']);
+      toolbarService.updateSection('AdvancedRenderingControls', ['windowLevelMenuEmbedded', 'voiManualControlMenu', 'Colorbar', 'opacityMenu', 'thresholdMenu']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topRight, ['modalityLoadBadge', 'trackingStatus', 'navigationComponent']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomLeft, ['windowLevelMenu']);
 
       // the primary button section is created in the workflow steps
       // specific to the step
-      customizationService.addModeCustomizations([{
-        id: 'PanelSegmentation.tableMode',
-        mode: 'expanded'
-      }, {
-        id: 'PanelSegmentation.onSegmentationAdd',
-        onSegmentationAdd: () => {
-          commandsManager.run('createNewLabelMapForDynamicVolume');
+      customizationService.setCustomizations({
+        'panelSegmentation.tableMode': {
+          $set: 'expanded'
+        },
+        'panelSegmentation.onSegmentationAdd': {
+          $set: () => {
+            commandsManager.run('createNewLabelMapForDynamicVolume');
+          }
+        },
+        'panelSegmentation.showAddSegment': {
+          $set: false
         }
-      }, {
-        id: 'PanelSegmentation.showAddSegment',
-        showAddSegment: false
-      }, {
-        id: 'PanelSegmentation.readableText',
-        // remove following if you are not interested in that stats
-        readableText: {
-          lesionStats: 'Lesion Statistics',
-          minValue: 'Minimum Value',
-          maxValue: 'Maximum Value',
-          meanValue: 'Mean Value (ml)',
-          volume: 'Volume',
-          suvPeak: 'SUV Peak',
-          suvMax: 'Maximum SUV',
-          suvMaxIJK: 'SUV Max IJK'
-        }
-      }]);
+      });
 
       // Auto play the clip initially when the volumes are loaded
       const {
@@ -289,7 +337,7 @@ function modeFactory({
     }) => {
       // This needs to run after hanging protocol matching process because
       // it may change the protocol/stage based on workflow stage settings
-      (0,_initWorkflowSteps__WEBPACK_IMPORTED_MODULE_2__["default"])({
+      (0,_initWorkflowSteps__WEBPACK_IMPORTED_MODULE_1__["default"])({
         servicesManager
       });
     },
@@ -345,7 +393,9 @@ function modeFactory({
           id: ohif.layout,
           props: {
             leftPanels: [[dynamicVolume.leftPanel, cornerstone.activeViewportWindowLevel]],
+            leftPanelResizable: true,
             rightPanels: [],
+            rightPanelResizable: true,
             rightPanelClosed: true,
             viewports: [{
               namespace: cornerstone.viewport,
@@ -365,8 +415,7 @@ function modeFactory({
     // the same sop class under different situations.  In that case, the more
     // general handler needs to come last.  For this case, the dicomvideo must
     // come first to remove video transfer syntax before ohif uses images
-    sopClassHandlers: [ohif.chartSopClassHandler, ohif.defaultSopClassHandler],
-    hotkeys: [..._ohif_core__WEBPACK_IMPORTED_MODULE_1__.hotkeys.defaults.hotkeyBindings]
+    sopClassHandlers: [ohif.chartSopClassHandler, ohif.defaultSopClassHandler]
   };
 }
 const mode = {
@@ -382,7 +431,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -397,7 +462,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************!*\
   !*** ../../../modes/preclinical-4d/src/initToolGroups.tsx ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -451,6 +516,8 @@ function _initToolGroups(toolNames, Enums, toolGroupService, commandsManager, se
     }],
     passive: [{
       toolName: toolNames.Length
+    }, {
+      toolName: toolNames.SegmentBidirectional
     }, {
       toolName: toolNames.ArrowAnnotate
     }, {
@@ -589,7 +656,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -604,7 +687,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**************************************************************!*\
   !*** ../../../modes/preclinical-4d/src/initWorkflowSteps.ts ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -634,7 +717,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -645,151 +744,364 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../modes/preclinical-4d/src/segmentationButtons.ts":
-/*!****************************************************************!*\
-  !*** ../../../modes/preclinical-4d/src/segmentationButtons.ts ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../modes/preclinical-4d/src/toolbarButtons.tsx":
+/*!************************************************************!*\
+  !*** ../../../modes/preclinical-4d/src/toolbarButtons.tsx ***!
+  \************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _initToolGroups__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./initToolGroups */ "../../../modes/preclinical-4d/src/initToolGroups.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
+
+const setToolActiveToolbar = {
+  commandName: 'setToolActiveToolbar',
+  commandOptions: {
+    toolGroupIds: [_initToolGroups__WEBPACK_IMPORTED_MODULE_0__.toolGroupIds.PT, _initToolGroups__WEBPACK_IMPORTED_MODULE_0__.toolGroupIds.CT, _initToolGroups__WEBPACK_IMPORTED_MODULE_0__.toolGroupIds.Fusion, _initToolGroups__WEBPACK_IMPORTED_MODULE_0__.toolGroupIds.default]
+  }
+};
+const callbacks = toolName => [{
+  commandName: 'setViewportForToolConfiguration',
+  commandOptions: {
+    toolName
+  }
+}];
 const toolbarButtons = [{
-  id: 'BrushTools',
-  uiType: 'ohif.buttonGroup',
+  id: 'MeasurementTools',
+  uiType: 'ohif.toolButtonList',
   props: {
-    groupId: 'BrushTools',
-    items: [{
-      id: 'Brush',
-      icon: 'icon-tool-brush',
-      label: 'Brush',
-      evaluate: {
-        name: 'evaluate.cornerstone.segmentation',
-        toolNames: ['CircularBrush', 'SphereBrush']
-      },
-      options: [{
-        name: 'Size (mm)',
-        id: 'brush-radius',
-        type: 'range',
-        min: 0.5,
-        max: 99.5,
-        step: 0.5,
-        value: 7,
-        commands: {
-          commandName: 'setBrushSize',
-          commandOptions: {
-            toolNames: ['CircularBrush', 'SphereBrush']
-          }
+    buttonSection: true
+  }
+}, {
+  id: 'BrushTools',
+  uiType: 'ohif.toolBoxButtonGroup',
+  props: {
+    buttonSection: true
+  }
+}, {
+  id: 'SegmentationTools',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    buttonSection: true
+  }
+}, {
+  id: 'AdvancedRenderingControls',
+  uiType: 'ohif.advancedRenderingControls',
+  props: {
+    buttonSection: true
+  }
+}, {
+  id: 'modalityLoadBadge',
+  uiType: 'ohif.modalityLoadBadge',
+  props: {
+    icon: 'Status',
+    label: 'Status',
+    tooltip: 'Status',
+    evaluate: {
+      name: 'evaluate.modalityLoadBadge',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'navigationComponent',
+  uiType: 'ohif.navigationComponent',
+  props: {
+    icon: 'Navigation',
+    label: 'Navigation',
+    tooltip: 'Navigate between segments/measurements and manage their visibility',
+    evaluate: {
+      name: 'evaluate.navigationComponent',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'windowLevelMenuEmbedded',
+  uiType: 'ohif.windowLevelMenuEmbedded',
+  props: {
+    icon: 'WindowLevel',
+    label: 'Window Level',
+    tooltip: 'Adjust window/level presets and customize image contrast settings',
+    evaluate: {
+      name: 'evaluate.windowLevelMenuEmbedded',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'trackingStatus',
+  uiType: 'ohif.trackingStatus',
+  props: {
+    icon: 'TrackingStatus',
+    label: 'Tracking Status',
+    tooltip: 'View and manage tracking status of measurements and annotations',
+    evaluate: {
+      name: 'evaluate.trackingStatus',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'Length',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-length',
+    label: 'Length',
+    tooltip: 'Length Tool',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'Bidirectional',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-bidirectional',
+    label: 'Bidirectional',
+    tooltip: 'Bidirectional Tool',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'ArrowAnnotate',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-annotate',
+    label: 'Annotation',
+    tooltip: 'Arrow Annotate',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'EllipticalROI',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-ellipse',
+    label: 'Ellipse',
+    tooltip: 'Ellipse ROI',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'Zoom',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-zoom',
+    label: 'Zoom',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'WindowLevel',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-window-level',
+    label: 'Window Level',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'Pan',
+  uiType: 'ohif.toolButton',
+  props: {
+    type: 'tool',
+    icon: 'tool-move',
+    label: 'Pan',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'TrackballRotate',
+  uiType: 'ohif.toolButton',
+  props: {
+    type: 'tool',
+    icon: 'tool-3d-rotate',
+    label: '3D Rotate',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'Capture',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-capture',
+    label: 'Capture',
+    commands: 'showDownloadViewportModal',
+    evaluate: ['evaluate.action', {
+      name: 'evaluate.viewport.supported',
+      unsupportedViewportTypes: ['video', 'wholeSlide']
+    }]
+  }
+}, {
+  id: 'Layout',
+  uiType: 'ohif.layoutSelector',
+  props: {
+    rows: 3,
+    columns: 4,
+    evaluate: 'evaluate.action',
+    commands: 'setViewportGridLayout'
+  }
+}, {
+  id: 'Crosshairs',
+  uiType: 'ohif.toolButton',
+  props: {
+    type: 'tool',
+    icon: 'tool-crosshair',
+    label: 'Crosshairs',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'ProgressDropdown',
+  uiType: 'ohif.progressDropdown'
+}, {
+  id: 'RectangleROIStartEndThreshold',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'tool-create-threshold',
+    label: 'Rectangle ROI Threshold',
+    commands: setToolActiveToolbar,
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['RectangleROIStartEndThreshold']
+    },
+    options: 'tmtv.RectangleROIThresholdOptions'
+  }
+}, {
+  id: 'Brush',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'icon-tool-brush',
+    label: 'Brush',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['CircularBrush', 'SphereBrush']
+    },
+    options: [{
+      name: 'Size (mm)',
+      id: 'brush-radius',
+      type: 'range',
+      min: 0.5,
+      max: 99.5,
+      step: 0.5,
+      value: 7,
+      commands: {
+        commandName: 'setBrushSize',
+        commandOptions: {
+          toolNames: ['CircularBrush', 'SphereBrush']
         }
-      }, {
-        name: 'Shape',
-        type: 'radio',
-        id: 'brush-mode',
+      }
+    }, {
+      name: 'Shape',
+      type: 'radio',
+      id: 'brush-mode',
+      value: 'CircularBrush',
+      values: [{
         value: 'CircularBrush',
-        values: [{
-          value: 'CircularBrush',
-          label: 'Circle'
-        }, {
-          value: 'SphereBrush',
-          label: 'Sphere'
-        }],
-        commands: 'setToolActiveToolbar'
-      }]
-    }, {
-      id: 'Eraser',
-      icon: 'icon-tool-eraser',
-      label: 'Eraser',
-      evaluate: {
-        name: 'evaluate.cornerstone.segmentation',
-        toolNames: ['CircularEraser', 'SphereEraser']
-      },
-      options: [{
-        name: 'Radius (mm)',
-        id: 'eraser-radius',
-        type: 'range',
-        min: 0.5,
-        max: 99.5,
-        step: 0.5,
-        value: 7,
-        commands: {
-          commandName: 'setBrushSize',
-          commandOptions: {
-            toolNames: ['CircularEraser', 'SphereEraser']
-          }
-        }
+        label: 'Circle'
       }, {
-        name: 'Shape',
-        type: 'radio',
-        id: 'eraser-mode',
+        value: 'SphereBrush',
+        label: 'Sphere'
+      }],
+      commands: 'setToolActiveToolbar'
+    }]
+  }
+}, {
+  id: 'Eraser',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'icon-tool-eraser',
+    label: 'Eraser',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['CircularEraser', 'SphereEraser']
+    },
+    options: [{
+      name: 'Radius (mm)',
+      id: 'eraser-radius',
+      type: 'range',
+      min: 0.5,
+      max: 99.5,
+      step: 0.5,
+      value: 7,
+      commands: {
+        commandName: 'setBrushSize',
+        commandOptions: {
+          toolNames: ['CircularEraser', 'SphereEraser']
+        }
+      }
+    }, {
+      name: 'Shape',
+      type: 'radio',
+      id: 'eraser-mode',
+      value: 'CircularEraser',
+      values: [{
         value: 'CircularEraser',
-        values: [{
-          value: 'CircularEraser',
-          label: 'Circle'
-        }, {
-          value: 'SphereEraser',
-          label: 'Sphere'
-        }],
-        commands: 'setToolActiveToolbar'
-      }]
+        label: 'Circle'
+      }, {
+        value: 'SphereEraser',
+        label: 'Sphere'
+      }],
+      commands: 'setToolActiveToolbar'
+    }]
+  }
+}, {
+  id: 'Threshold',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'icon-tool-threshold',
+    label: 'Threshold',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
+    },
+    options: [{
+      name: 'Radius (mm)',
+      id: 'threshold-radius',
+      type: 'range',
+      min: 0.5,
+      max: 99.5,
+      step: 0.5,
+      value: 7,
+      commands: {
+        commandName: 'setBrushSize',
+        commandOptions: {
+          toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
+        }
+      }
     }, {
-      id: 'Threshold',
-      icon: 'icon-tool-threshold',
-      label: 'Eraser',
-      evaluate: {
-        name: 'evaluate.cornerstone.segmentation',
-        toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
-      },
-      options: [{
-        name: 'Radius (mm)',
-        id: 'threshold-radius',
-        type: 'range',
-        min: 0.5,
-        max: 99.5,
-        step: 0.5,
-        value: 7,
-        commands: {
-          commandName: 'setBrushSize',
-          commandOptions: {
-            toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
-          }
-        }
-      }, {
-        name: 'Shape',
-        type: 'radio',
-        id: 'eraser-mode',
+      name: 'Shape',
+      type: 'radio',
+      id: 'eraser-mode',
+      value: 'ThresholdCircularBrush',
+      values: [{
         value: 'ThresholdCircularBrush',
-        values: [{
-          value: 'ThresholdCircularBrush',
-          label: 'Circle'
-        }, {
-          value: 'ThresholdSphereBrush',
-          label: 'Sphere'
-        }],
-        commands: 'setToolActiveToolbar'
+        label: 'Circle'
       }, {
-        name: 'ThresholdRange',
-        type: 'double-range',
-        id: 'threshold-range',
-        min: 0,
-        max: 100,
-        step: 0.5,
-        value: [2, 50],
-        commands: {
-          commandName: 'setThresholdRange',
-          commandOptions: {
-            toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
-          }
+        value: 'ThresholdSphereBrush',
+        label: 'Sphere'
+      }],
+      commands: 'setToolActiveToolbar'
+    }, {
+      name: 'ThresholdRange',
+      type: 'double-range',
+      id: 'threshold-range',
+      min: 0,
+      max: 100,
+      step: 0.5,
+      value: [2, 50],
+      commands: {
+        commandName: 'setThresholdRange',
+        commandOptions: {
+          toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
         }
-      }]
+      }
     }]
   }
 }, {
   id: 'Shapes',
-  uiType: 'ohif.radioGroup',
+  uiType: 'ohif.toolBoxButton',
   props: {
     label: 'Shapes',
     evaluate: {
@@ -815,183 +1127,75 @@ const toolbarButtons = [{
       commands: 'setToolActiveToolbar'
     }]
   }
-}];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (toolbarButtons);
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../modes/preclinical-4d/src/toolbarButtons.tsx":
-/*!************************************************************!*\
-  !*** ../../../modes/preclinical-4d/src/toolbarButtons.tsx ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _initToolGroups__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./initToolGroups */ "../../../modes/preclinical-4d/src/initToolGroups.tsx");
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
-
-const {
-  createButton
-} = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService;
-const setToolActiveToolbar = {
-  commandName: 'setToolActiveToolbar',
-  commandOptions: {
-    toolGroupIds: [_initToolGroups__WEBPACK_IMPORTED_MODULE_1__.toolGroupIds.PT, _initToolGroups__WEBPACK_IMPORTED_MODULE_1__.toolGroupIds.CT, _initToolGroups__WEBPACK_IMPORTED_MODULE_1__.toolGroupIds.Fusion, _initToolGroups__WEBPACK_IMPORTED_MODULE_1__.toolGroupIds.default]
-  }
-};
-const toolbarButtons = [{
-  id: 'MeasurementTools',
-  uiType: 'ohif.splitButton',
+}, {
+  id: 'dataOverlayMenu',
+  uiType: 'ohif.dataOverlayMenu',
   props: {
-    groupId: 'MeasurementTools',
-    evaluate: 'evaluate.group.promoteToPrimaryIfCornerstoneToolNotActiveInTheList',
-    primary: createButton({
-      id: 'Length',
-      icon: 'tool-length',
-      label: 'Length',
-      tooltip: 'Length Tool',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }),
-    secondary: {
-      icon: 'chevron-down',
-      tooltip: 'More Measure Tools'
-    },
-    items: [{
-      id: 'Length',
-      icon: 'tool-length',
-      label: 'Length',
-      tooltip: 'Length Tool',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }, {
-      id: 'Bidirectional',
-      icon: 'tool-bidirectional',
-      label: 'Bidirectional',
-      tooltip: 'Bidirectional Tool',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }, {
-      id: 'ArrowAnnotate',
-      icon: 'tool-annotate',
-      label: 'Annotation',
-      tooltip: 'Arrow Annotate',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }, {
-      id: 'EllipticalROI',
-      icon: 'tool-ellipse',
-      label: 'Ellipse',
-      tooltip: 'Ellipse ROI',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }]
+    icon: 'ViewportViews',
+    label: 'Data Overlay',
+    tooltip: 'Configure data overlay options and manage foreground/background display sets',
+    evaluate: 'evaluate.dataOverlayMenu'
   }
 }, {
-  id: 'Zoom',
-  uiType: 'ohif.radioGroup',
+  id: 'orientationMenu',
+  uiType: 'ohif.orientationMenu',
   props: {
-    icon: 'tool-zoom',
-    label: 'Zoom',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'WindowLevel',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-window-level',
-    label: 'Window Level',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'Pan',
-  uiType: 'ohif.radioGroup',
-  props: {
-    type: 'tool',
-    icon: 'tool-move',
-    label: 'Pan',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'TrackballRotate',
-  uiType: 'ohif.radioGroup',
-  props: {
-    type: 'tool',
-    icon: 'tool-3d-rotate',
-    label: '3D Rotate',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'Capture',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-capture',
-    label: 'Capture',
-    commands: 'showDownloadViewportModal',
-    evaluate: ['evaluate.action', {
-      name: 'evaluate.viewport.supported',
-      unsupportedViewportTypes: ['video', 'wholeSlide']
-    }]
-  }
-}, {
-  id: 'Layout',
-  uiType: 'ohif.layoutSelector',
-  props: {
-    rows: 3,
-    columns: 4,
-    evaluate: 'evaluate.action'
-  }
-}, {
-  id: 'Crosshairs',
-  uiType: 'ohif.radioGroup',
-  props: {
-    type: 'tool',
-    icon: 'tool-crosshair',
-    label: 'Crosshairs',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'ProgressDropdown',
-  uiType: 'ohif.progressDropdown'
-}, {
-  id: 'RectangleROIStartEndThreshold',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-create-threshold',
-    label: 'Rectangle ROI Threshold',
-    commands: setToolActiveToolbar,
+    icon: 'OrientationSwitch',
+    label: 'Orientation',
+    tooltip: 'Change viewport orientation between axial, sagittal, coronal and acquisition planes',
     evaluate: {
-      name: 'evaluate.cornerstone.segmentation',
-      toolNames: ['RectangleROIStartEndThreshold']
-    },
-    options: 'tmtv.RectangleROIThresholdOptions'
+      name: 'evaluate.orientationMenu'
+      // hideWhenDisabled: true,
+    }
+  }
+}, {
+  id: 'windowLevelMenu',
+  uiType: 'ohif.windowLevelMenu',
+  props: {
+    icon: 'WindowLevel',
+    label: 'Window Level',
+    tooltip: 'Adjust window/level presets and customize image contrast settings',
+    evaluate: 'evaluate.windowLevelMenu'
+  }
+}, {
+  id: 'voiManualControlMenu',
+  uiType: 'ohif.voiManualControlMenu',
+  props: {
+    icon: 'WindowLevelAdvanced',
+    label: 'Advanced Window Level',
+    tooltip: 'Advanced window/level settings with manual controls and presets',
+    evaluate: 'evaluate.voiManualControlMenu'
+  }
+}, {
+  id: 'thresholdMenu',
+  uiType: 'ohif.thresholdMenu',
+  props: {
+    icon: 'Threshold',
+    label: 'Threshold',
+    tooltip: 'Image threshold settings',
+    evaluate: {
+      name: 'evaluate.thresholdMenu',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'opacityMenu',
+  uiType: 'ohif.opacityMenu',
+  props: {
+    icon: 'Opacity',
+    label: 'Opacity',
+    tooltip: 'Image opacity settings',
+    evaluate: {
+      name: 'evaluate.opacityMenu',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'Colorbar',
+  uiType: 'ohif.colorbar',
+  props: {
+    type: 'tool',
+    label: 'Colorbar'
   }
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (toolbarButtons);
@@ -1002,7 +1206,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1019,7 +1239,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \**************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/mode-preclinical-4d","version":"3.9.1","description":"4D Workflow","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/index.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist/**","public/**","README.md"],"keywords":["ohif-mode"],"scripts":{"dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --debug --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-cornerstone":"3.9.1","@ohif/extension-cornerstone-dicom-seg":"3.9.1","@ohif/extension-cornerstone-dynamic-volume":"3.9.1","@ohif/extension-default":"3.9.1","@ohif/extension-tmtv":"3.9.1"},"dependencies":{"@babel/runtime":"^7.20.13"},"devDependencies":{"webpack":"5.94.0","webpack-merge":"^5.7.3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/mode-preclinical-4d","version":"3.11.0-beta.37","description":"4D Workflow","author":"OHIF","license":"MIT","repository":"OHIF/Viewers","main":"dist/index.umd.js","module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.16.0"},"files":["dist/**","public/**","README.md"],"publishConfig":{"access":"public"},"keywords":["ohif-mode"],"scripts":{"dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --debug --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-cornerstone":"3.11.0-beta.37","@ohif/extension-cornerstone-dicom-seg":"3.11.0-beta.37","@ohif/extension-cornerstone-dynamic-volume":"3.11.0-beta.37","@ohif/extension-default":"3.11.0-beta.37","@ohif/extension-tmtv":"3.11.0-beta.37"},"dependencies":{"@babel/runtime":"^7.20.13"},"devDependencies":{"webpack":"5.94.0","webpack-merge":"^5.7.3"}}');
 
 /***/ })
 

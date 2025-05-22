@@ -4,7 +4,7 @@
 /*!****************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/DicomMicroscopyViewport.tsx ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13,18 +13,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
-/* harmony import */ var _DicomMicroscopyViewport_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DicomMicroscopyViewport.css */ "../../../extensions/dicom-microscopy/src/DicomMicroscopyViewport.css");
-/* harmony import */ var _DicomMicroscopyViewport_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_DicomMicroscopyViewport_css__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _components_ViewportOverlay__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/ViewportOverlay */ "../../../extensions/dicom-microscopy/src/components/ViewportOverlay/index.tsx");
-/* harmony import */ var _utils_dicomWebClient__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/dicomWebClient */ "../../../extensions/dicom-microscopy/src/utils/dicomWebClient.ts");
-/* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
+/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
+/* harmony import */ var _DicomMicroscopyViewport_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DicomMicroscopyViewport.css */ "../../../extensions/dicom-microscopy/src/DicomMicroscopyViewport.css");
+/* harmony import */ var _DicomMicroscopyViewport_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_DicomMicroscopyViewport_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_ViewportOverlay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/ViewportOverlay */ "../../../extensions/dicom-microscopy/src/components/ViewportOverlay/index.tsx");
+/* harmony import */ var _utils_dicomWebClient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/dicomWebClient */ "../../../extensions/dicom-microscopy/src/utils/dicomWebClient.ts");
+/* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
+var _s = __webpack_require__.$Refresh$.signature();
 
 
 
@@ -32,73 +31,43 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
-
-class DicomMicroscopyViewport extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      isLoaded: false
-    };
-    this.microscopyService = void 0;
-    this.viewer = null;
-    // dicom-microscopy-viewer instance
-    this.managedViewer = null;
-    // managed wrapper of microscopy-dicom extension
-    this.container = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
-    this.overlayElement = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
-    this.setViewportActiveHandler = () => {
-      const {
-        setViewportActive,
-        viewportId,
-        activeViewportId
-      } = this.props;
-      if (viewportId !== activeViewportId) {
-        setViewportActive(viewportId);
-      }
-    };
-    const {
-      microscopyService
-    } = this.props.servicesManager.services;
-    this.microscopyService = microscopyService;
-  }
-  /**
-   * Get the nearest ROI from the mouse click point
-   *
-   * @param event
-   * @param autoselect
-   * @returns
-   */
-  getNearbyROI(event, autoselect = true) {
-    const symbols = Object.getOwnPropertySymbols(this.viewer);
-    const _drawingSource = symbols.find(p => p.description === 'drawingSource');
-    const _pyramid = symbols.find(p => p.description === 'pyramid');
-    const _map = symbols.find(p => p.description === 'map');
-    const _affine = symbols.find(p => p.description === 'affine');
-    const feature = this.viewer[_drawingSource].getClosestFeatureToCoordinate(this.viewer[_map].getEventCoordinate(event));
-    if (!feature) {
-      return null;
-    }
-    const roiAnnotation = this.viewer._getROIFromFeature(feature, this.viewer[_pyramid].metadata, this.viewer[_affine]);
-    if (roiAnnotation && autoselect) {
-      this.microscopyService.selectAnnotation(roiAnnotation);
-    }
-    return roiAnnotation;
-  }
+function DicomMicroscopyViewport({
+  activeViewportId,
+  setViewportActive,
+  displaySets,
+  viewportId,
+  dataSource,
+  resizeRef
+}) {
+  _s();
+  const {
+    servicesManager,
+    extensionManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_6__.useSystem)();
+  const [isLoaded, setIsLoaded] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [viewer, setViewer] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [managedViewer, setManagedViewer] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const overlayElement = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  const container = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  const {
+    microscopyService,
+    customizationService
+  } = servicesManager.services;
+  const overlayData = customizationService.getCustomization('microscopyViewport.overlay');
 
   // install the microscopy renderer into the web page.
   // you should only do this once.
-  async installOpenLayersRenderer(container, displaySet) {
+  const installOpenLayersRenderer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(async (container, displaySet) => {
     const loadViewer = async metadata => {
-      const dicomMicroscopyModule = await this.microscopyService.importDicomMicroscopyViewer();
+      const dicomMicroscopyModule = await microscopyService.importDicomMicroscopyViewer();
       const {
         viewer: DicomMicroscopyViewer,
         metadata: metadataUtils
       } = dicomMicroscopyModule;
       const microscopyViewer = DicomMicroscopyViewer.VolumeImageViewer;
-      const client = (0,_utils_dicomWebClient__WEBPACK_IMPORTED_MODULE_6__["default"])({
-        extensionManager: this.props.extensionManager,
-        servicesManager: this.props.servicesManager
+      const client = (0,_utils_dicomWebClient__WEBPACK_IMPORTED_MODULE_4__["default"])({
+        extensionManager,
+        servicesManager
       });
 
       // Parse, format, and filter metadata
@@ -149,10 +118,10 @@ class DicomMicroscopyViewport extends react__WEBPACK_IMPORTED_MODULE_0__.Compone
         // NOTE: depending on different data source, image.ImageType sometimes
         //    is a string, not a string array.
         m.ImageType = typeof m.ImageType === 'string' ? m.ImageType.split('\\') : m.ImageType;
-        const inst = (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_3__.cleanDenaturalizedDataset)(dcmjs__WEBPACK_IMPORTED_MODULE_7__["default"].data.DicomMetaDictionary.denaturalizeDataset(m), {
+        const inst = (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_1__.cleanDenaturalizedDataset)(dcmjs__WEBPACK_IMPORTED_MODULE_5__["default"].data.DicomMetaDictionary.denaturalizeDataset(m), {
           StudyInstanceUID: m.StudyInstanceUID,
           SeriesInstanceUID: m.SeriesInstanceUID,
-          dataSourceConfig: this.props.dataSource.getConfig()
+          dataSourceConfig: dataSource.getConfig()
         });
         if (!inst['00480105']) {
           // Optical Path Sequence, no OpticalPathIdentifier?
@@ -183,30 +152,32 @@ class DicomMicroscopyViewport extends react__WEBPACK_IMPORTED_MODULE_0__.Compone
         retrieveRendered: false,
         controls: ['overview', 'position']
       };
-      this.viewer = new microscopyViewer(options);
-      if (this.overlayElement && this.overlayElement.current && this.viewer.addViewportOverlay) {
-        this.viewer.addViewportOverlay({
-          element: this.overlayElement.current,
+      const viewer = new microscopyViewer(options);
+      if (overlayElement && overlayElement.current && viewer.addViewportOverlay) {
+        viewer.addViewportOverlay({
+          element: overlayElement.current,
           coordinates: [0, 0],
           // TODO: dicom-microscopy-viewer documentation says this can be false to be automatically, but it is not.
           navigate: true,
           className: 'OpenLayersOverlay'
         });
       }
-      this.viewer.render({
+      viewer.render({
         container
       });
       const {
         StudyInstanceUID,
         SeriesInstanceUID
       } = displaySet;
-      this.managedViewer = this.microscopyService.addViewer(this.viewer, this.props.viewportId, container, StudyInstanceUID, SeriesInstanceUID);
-      this.managedViewer.addContextMenuCallback(event => {
+      const managedViewer = microscopyService.addViewer(viewer, viewportId, container, StudyInstanceUID, SeriesInstanceUID);
+      managedViewer.addContextMenuCallback(event => {
         // TODO: refactor this after Bill's changes on ContextMenu feature get merged
         // const roiAnnotationNearBy = this.getNearbyROI(event);
       });
+      setViewer(viewer);
+      setManagedViewer(managedViewer);
     };
-    this.microscopyService.clearAnnotations();
+    microscopyService.clearAnnotations();
     let smDisplaySet = displaySet;
     if (displaySet.Modality === 'SR') {
       // for SR displaySet, let's load the actual image displaySet
@@ -217,100 +188,81 @@ class DicomMicroscopyViewport extends react__WEBPACK_IMPORTED_MODULE_0__.Compone
     if (displaySet.Modality === 'SR') {
       displaySet.load(smDisplaySet);
     }
-  }
-  componentDidMount() {
-    const {
-      displaySets,
-      viewportOptions
-    } = this.props;
-    // Todo-rename: this is always getting the 0
+  }, [dataSource, extensionManager, microscopyService, servicesManager, viewportId]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     const displaySet = displaySets[0];
-    this.installOpenLayersRenderer(this.container.current, displaySet).then(() => {
-      this.setState({
-        isLoaded: true
-      });
+    installOpenLayersRenderer(container.current, displaySet).then(() => {
+      setIsLoaded(true);
     });
-  }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.managedViewer && prevProps.displaySets !== this.props.displaySets) {
-      const {
-        displaySets
-      } = this.props;
-      const displaySet = displaySets[0];
-      this.microscopyService.clearAnnotations();
+    return () => {
+      if (viewer) {
+        microscopyService.removeViewer(viewer);
+      }
+    };
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const displaySet = displaySets[0];
+    microscopyService.clearAnnotations();
 
-      // loading SR
-      if (displaySet.Modality === 'SR') {
-        const referencedDisplaySet = displaySet.getSourceDisplaySet();
-        displaySet.load(referencedDisplaySet);
+    // loading SR
+    if (displaySet.Modality === 'SR') {
+      const referencedDisplaySet = displaySet.getSourceDisplaySet();
+      displaySet.load(referencedDisplaySet);
+    }
+  }, [managedViewer, displaySets, microscopyService]);
+  const style = {
+    width: '100%',
+    height: '100%'
+  };
+  const displaySet = displaySets[0];
+  const firstInstance = displaySet.firstInstance || displaySet.instance;
+  const LoadingIndicatorProgress = customizationService.getCustomization('ui.loadingIndicatorProgress');
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: 'DicomMicroscopyViewer',
+    style: style,
+    onClick: () => {
+      if (viewportId !== activeViewportId) {
+        setViewportActive(viewportId);
       }
     }
-  }
-  componentWillUnmount() {
-    this.microscopyService.removeViewer(this.viewer);
-  }
-  render() {
-    const style = {
-      width: '100%',
-      height: '100%'
-    };
-    const displaySet = this.props.displaySets[0];
-    const firstInstance = displaySet.firstInstance || displaySet.instance;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: 'DicomMicroscopyViewer',
-      style: style,
-      onClick: this.setViewportActiveHandler
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        ...style,
-        display: 'none'
-      }
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        ...style
-      },
-      ref: this.overlayElement
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        position: 'relative',
-        height: '100%',
-        width: '100%'
-      }
-    }, displaySet && firstInstance.imageId && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ViewportOverlay__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      displaySet: displaySet,
-      instance: displaySet.instance,
-      metadata: displaySet.metadata
-    })))), this.state.error ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, JSON.stringify(this.state.error)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: style,
-      ref: ref => {
-        this.container.current = ref;
-        this.props.resizeRef.current = ref;
-      }
-    }), this.state.isLoaded ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.LoadingIndicatorProgress, {
-      className: 'h-full w-full bg-black'
-    }));
-  }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      ...style,
+      display: 'none'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      ...style
+    },
+    ref: overlayElement
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      position: 'relative',
+      height: '100%',
+      width: '100%'
+    }
+  }, displaySet && firstInstance.imageId && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ViewportOverlay__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    overlayData: overlayData,
+    displaySet: displaySet,
+    instance: displaySet.instance,
+    metadata: displaySet.metadata
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: style,
+    ref: ref => {
+      container.current = ref;
+      resizeRef.current = ref;
+    }
+  }), isLoaded ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingIndicatorProgress, {
+    className: 'h-full w-full bg-black'
+  }));
 }
-DicomMicroscopyViewport.propTypes = {
-  viewportData: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
-  activeViewportId: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
-  setViewportActive: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func),
-  // props from OHIF Viewport Grid
-  displaySets: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().array),
-  viewportId: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
-  viewportLabel: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
-  dataSource: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
-  viewportOptions: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
-  displaySetOptions: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().array),
-  // other props from wrapping component
-  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
-  extensionManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
-  commandsManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
-  resizeRef: prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOfType([(prop_types__WEBPACK_IMPORTED_MODULE_1___default().func), prop_types__WEBPACK_IMPORTED_MODULE_1___default().shape({
-    current: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().any)
-  })])
-};
+_s(DicomMicroscopyViewport, "hpxayOJizhXndjS5pWFZaN+is68=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_6__.useSystem];
+});
+_c = DicomMicroscopyViewport;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DicomMicroscopyViewport);
+var _c;
+__webpack_require__.$Refresh$.register(_c, "DicomMicroscopyViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -318,7 +270,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -333,7 +301,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/components/ViewportOverlay/index.tsx ***!
   \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -349,6 +317,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ViewportOverlay_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ViewportOverlay.css */ "../../../extensions/dicom-microscopy/src/components/ViewportOverlay/ViewportOverlay.css");
 /* harmony import */ var _ViewportOverlay_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_ViewportOverlay_css__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils */ "../../../extensions/dicom-microscopy/src/components/ViewportOverlay/utils.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -357,6 +326,10 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
+
+const {
+  formatPN
+} = _ohif_core__WEBPACK_IMPORTED_MODULE_5__.utils;
 /**
  *
  * @param {*} config is a configuration object that defines four lists of elements,
@@ -365,48 +338,50 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
  * @returns
  */
 const generateFromConfig = ({
-  topLeft = [],
-  topRight = [],
-  bottomLeft = [],
-  bottomRight = [],
-  itemGenerator = () => {}
+  config,
+  overlayData,
+  ...props
 }) => {
-  return props => {
-    const topLeftClass = 'top-viewport left-viewport text-primary-light';
-    const topRightClass = 'top-viewport right-viewport-scrollbar text-primary-light';
-    const bottomRightClass = 'bottom-viewport right-viewport-scrollbar text-primary-light';
-    const bottomLeftClass = 'bottom-viewport left-viewport text-primary-light';
-    const overlay = 'absolute pointer-events-none microscopy-viewport-overlay';
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, topLeft && topLeft.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      "data-cy": 'viewport-overlay-top-left',
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, topLeftClass)
-    }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
-      ...props,
-      list: topLeft,
-      itemGenerator
-    })), topRight && topRight.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      "data-cy": 'viewport-overlay-top-right',
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, topRightClass)
-    }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
-      ...props,
-      list: topRight,
-      itemGenerator
-    })), bottomRight && bottomRight.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      "data-cy": 'viewport-overlay-bottom-right',
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, bottomRightClass)
-    }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
-      ...props,
-      list: bottomRight,
-      itemGenerator
-    })), bottomLeft && bottomLeft.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      "data-cy": 'viewport-overlay-bottom-left',
-      className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, bottomLeftClass)
-    }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
-      ...props,
-      list: bottomLeft,
-      itemGenerator
-    })));
-  };
+  const {
+    topLeft = [],
+    topRight = [],
+    bottomLeft = [],
+    bottomRight = []
+  } = overlayData ?? {};
+  const topLeftClass = 'top-viewport left-viewport text-primary-light';
+  const topRightClass = 'top-viewport right-viewport-scrollbar text-primary-light';
+  const bottomRightClass = 'bottom-viewport right-viewport-scrollbar text-primary-light';
+  const bottomLeftClass = 'bottom-viewport left-viewport text-primary-light';
+  const overlay = 'absolute pointer-events-none microscopy-viewport-overlay';
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, topLeft && topLeft.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": 'viewport-overlay-top-left',
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, topLeftClass)
+  }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    ...props,
+    list: topLeft,
+    itemGenerator
+  })), topRight && topRight.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": 'viewport-overlay-top-right',
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, topRightClass)
+  }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    ...props,
+    list: topRight,
+    itemGenerator
+  })), bottomRight && bottomRight.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": 'viewport-overlay-bottom-right',
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, bottomRightClass)
+  }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    ...props,
+    list: bottomRight,
+    itemGenerator
+  })), bottomLeft && bottomLeft.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": 'viewport-overlay-bottom-left',
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(overlay, bottomLeftClass)
+  }, (0,_listComponentGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    ...props,
+    list: bottomLeft,
+    itemGenerator
+  })));
 };
 const itemGenerator = props => {
   const {
@@ -424,7 +399,7 @@ const itemGenerator = props => {
   };
   props.formatDate = _utils__WEBPACK_IMPORTED_MODULE_4__.formatDICOMDate;
   props.formatTime = _utils__WEBPACK_IMPORTED_MODULE_4__.formatDICOMTime;
-  props.formatPN = _utils__WEBPACK_IMPORTED_MODULE_4__.formatPN;
+  props.formatPN = formatPN;
   props.formatNumberPrecision = _utils__WEBPACK_IMPORTED_MODULE_4__.formatNumberPrecision;
   if (condition && !condition(props)) {
     return null;
@@ -448,7 +423,7 @@ const itemGenerator = props => {
     className: content.className
   }, content.value)));
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateFromConfig({}));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateFromConfig);
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -456,7 +431,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -471,7 +462,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/components/ViewportOverlay/listComponentGenerator.tsx ***!
   \******************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -511,7 +502,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -526,7 +533,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/components/ViewportOverlay/utils.ts ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -534,7 +541,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   formatDICOMDate: () => (/* binding */ formatDICOMDate),
 /* harmony export */   formatDICOMTime: () => (/* binding */ formatDICOMTime),
 /* harmony export */   formatNumberPrecision: () => (/* binding */ formatNumberPrecision),
-/* harmony export */   formatPN: () => (/* binding */ formatPN),
 /* harmony export */   getCompression: () => (/* binding */ getCompression),
 /* harmony export */   isValidNumber: () => (/* binding */ isValidNumber)
 /* harmony export */ });
@@ -599,28 +605,6 @@ function formatDICOMTime(time, strFormat = 'HH:mm:ss') {
 }
 
 /**
- * Formats a patient name for display purposes
- *
- * @param {string} name
- * @returns {string} formatted name.
- */
-function formatPN(name) {
-  if (!name) {
-    return;
-  }
-
-  // Convert the first ^ to a ', '. String.replace() only affects
-  // the first appearance of the character.
-  const commaBetweenFirstAndLast = name.replace('^', ', ');
-
-  // Replace any remaining '^' characters with spaces
-  const cleaned = commaBetweenFirstAndLast.replace(/\^/g, ' ');
-
-  // Trim any extraneous whitespace
-  return cleaned.trim();
-}
-
-/**
  * Gets compression type
  *
  * @param {number} imageId
@@ -647,7 +631,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -662,7 +662,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************!*\
   !*** ../../../extensions/dicom-microscopy/src/utils/dicomWebClient.ts ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -689,7 +689,7 @@ function getDicomWebClient({
   extensionManager,
   servicesManager
 }) {
-  const dataSourceConfig = window.config.dataSources.find(ds => ds.sourceName === extensionManager.activeDataSource);
+  const dataSourceConfig = window.config.dataSources.find(ds => ds.sourceName === extensionManager.activeDataSourceName);
   const {
     userAuthenticationService
   } = servicesManager.services;
@@ -707,7 +707,7 @@ function getDicomWebClient({
   };
   const client = new _ohif_extension_default__WEBPACK_IMPORTED_MODULE_1__.StaticWadoClient(wadoConfig);
   client.wadoURL = wadoConfig.url;
-  if (extensionManager.activeDataSource === 'dicomlocal') {
+  if (extensionManager.activeDataSourceName === 'dicomlocal') {
     /**
      * For local data source, override the retrieveInstanceFrames() method of the
      * dicomweb-client to retrieve image data from memory cached metadata.
@@ -751,7 +751,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1330,6 +1346,69 @@ options.singleton = false;
 var update = api(content, options);
 
 
+if (true) {
+  if (!content.locals || module.hot.invalidate) {
+    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
+  if (!a && b || a && !b) {
+    return false;
+  }
+
+  var p;
+
+  for (p in a) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (a[p] !== b[p]) {
+      return false;
+    }
+  }
+
+  for (p in b) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (!a[p]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+    var oldLocals = content.locals;
+
+    module.hot.accept(
+      /*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./DicomMicroscopyViewport.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/dicom-microscopy/src/DicomMicroscopyViewport.css",
+      function () {
+        content = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./DicomMicroscopyViewport.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/dicom-microscopy/src/DicomMicroscopyViewport.css");
+
+              content = content.__esModule ? content.default : content;
+
+              if (typeof content === 'string') {
+                content = [[module.id, content, '']];
+              }
+
+              if (!isEqualLocals(oldLocals, content.locals)) {
+                module.hot.invalidate();
+
+                return;
+              }
+
+              oldLocals = content.locals;
+
+              update(content);
+      }
+    )
+  }
+
+  module.hot.dispose(function() {
+    update();
+  });
+}
 
 module.exports = content.locals || {};
 
@@ -1358,6 +1437,69 @@ options.singleton = false;
 var update = api(content, options);
 
 
+if (true) {
+  if (!content.locals || module.hot.invalidate) {
+    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
+  if (!a && b || a && !b) {
+    return false;
+  }
+
+  var p;
+
+  for (p in a) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (a[p] !== b[p]) {
+      return false;
+    }
+  }
+
+  for (p in b) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (!a[p]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+    var oldLocals = content.locals;
+
+    module.hot.accept(
+      /*! !!../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./ViewportOverlay.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/dicom-microscopy/src/components/ViewportOverlay/ViewportOverlay.css",
+      function () {
+        content = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./ViewportOverlay.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/dicom-microscopy/src/components/ViewportOverlay/ViewportOverlay.css");
+
+              content = content.__esModule ? content.default : content;
+
+              if (typeof content === 'string') {
+                content = [[module.id, content, '']];
+              }
+
+              if (!isEqualLocals(oldLocals, content.locals)) {
+                module.hot.invalidate();
+
+                return;
+              }
+
+              oldLocals = content.locals;
+
+              update(content);
+      }
+    )
+  }
+
+  module.hot.dispose(function() {
+    update();
+  });
+}
 
 module.exports = content.locals || {};
 

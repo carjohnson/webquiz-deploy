@@ -5,7 +5,7 @@
 /*!*********************************************!*\
   !*** ../../../modes/segmentation/src/id.js ***!
   \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -25,7 +25,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -40,21 +56,17 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************!*\
   !*** ../../../modes/segmentation/src/index.tsx ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./id */ "../../../modes/segmentation/src/id.js");
-/* harmony import */ var _toolbarButtons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./toolbarButtons */ "../../../modes/segmentation/src/toolbarButtons.ts");
-/* harmony import */ var _segmentationButtons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./segmentationButtons */ "../../../modes/segmentation/src/segmentationButtons.ts");
-/* harmony import */ var _initToolGroups__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./initToolGroups */ "../../../modes/segmentation/src/initToolGroups.ts");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./id */ "../../../modes/segmentation/src/id.js");
+/* harmony import */ var _toolbarButtons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toolbarButtons */ "../../../modes/segmentation/src/toolbarButtons.ts");
+/* harmony import */ var _initToolGroups__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./initToolGroups */ "../../../modes/segmentation/src/initToolGroups.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
 
 
 
@@ -63,18 +75,21 @@ const ohif = {
   layout: '@ohif/extension-default.layoutTemplateModule.viewerLayout',
   sopClassHandler: '@ohif/extension-default.sopClassHandlerModule.stack',
   hangingProtocol: '@ohif/extension-default.hangingProtocolModule.default',
-  leftPanel: '@ohif/extension-default.panelModule.seriesList',
-  rightPanel: '@ohif/extension-default.panelModule.measure'
+  leftPanel: '@ohif/extension-default.panelModule.seriesList'
 };
 const cornerstone = {
   viewport: '@ohif/extension-cornerstone.viewportModule.cornerstone',
-  panelTool: '@ohif/extension-cornerstone.panelModule.panelSegmentationWithTools'
+  panelTool: '@ohif/extension-cornerstone.panelModule.panelSegmentationWithTools',
+  measurements: '@ohif/extension-cornerstone.panelModule.panelMeasurement'
 };
 const segmentation = {
   sopClassHandler: '@ohif/extension-cornerstone-dicom-seg.sopClassHandlerModule.dicom-seg',
   viewport: '@ohif/extension-cornerstone-dicom-seg.viewportModule.dicom-seg'
 };
-
+const dicomRT = {
+  viewport: '@ohif/extension-cornerstone-dicom-rt.viewportModule.dicom-rt',
+  sopClassHandler: '@ohif/extension-cornerstone-dicom-rt.sopClassHandlerModule.dicom-rt'
+};
 /**
  * Just two dependencies to be able to render a viewport with panels in order
  * to make sure that the mode is working.
@@ -82,7 +97,8 @@ const segmentation = {
 const extensionDependencies = {
   '@ohif/extension-default': '^3.0.0',
   '@ohif/extension-cornerstone': '^3.0.0',
-  '@ohif/extension-cornerstone-dicom-seg': '^3.0.0'
+  '@ohif/extension-cornerstone-dicom-seg': '^3.0.0',
+  '@ohif/extension-cornerstone-dicom-rt': '^3.0.0'
 };
 function modeFactory({
   modeConfiguration
@@ -92,7 +108,7 @@ function modeFactory({
      * Mode ID, which should be unique among modes used by the viewer. This ID
      * is used to identify the mode in the viewer's state.
      */
-    id: _id__WEBPACK_IMPORTED_MODULE_1__.id,
+    id: _id__WEBPACK_IMPORTED_MODULE_0__.id,
     routeName: 'segmentation',
     /**
      * Mode name, which is displayed in the viewer's UI in the workList, for the
@@ -111,16 +127,25 @@ function modeFactory({
       const {
         measurementService,
         toolbarService,
-        toolGroupService
+        toolGroupService,
+        customizationService
       } = servicesManager.services;
       measurementService.clearMeasurements();
 
       // Init Default and SR ToolGroups
-      (0,_initToolGroups__WEBPACK_IMPORTED_MODULE_4__["default"])(extensionManager, toolGroupService, commandsManager);
-      toolbarService.addButtons(_toolbarButtons__WEBPACK_IMPORTED_MODULE_2__["default"]);
-      toolbarService.addButtons(_segmentationButtons__WEBPACK_IMPORTED_MODULE_3__["default"]);
-      toolbarService.createButtonSection('primary', ['WindowLevel', 'Pan', 'Zoom', 'TrackballRotate', 'Capture', 'Layout', 'Crosshairs', 'MoreTools']);
-      toolbarService.createButtonSection('segmentationToolbox', ['BrushTools', 'Shapes']);
+      (0,_initToolGroups__WEBPACK_IMPORTED_MODULE_2__["default"])(extensionManager, toolGroupService, commandsManager);
+      toolbarService.register(_toolbarButtons__WEBPACK_IMPORTED_MODULE_1__["default"]);
+      toolbarService.updateSection(toolbarService.sections.primary, ['WindowLevel', 'Pan', 'Zoom', 'TrackballRotate', 'Capture', 'Layout', 'Crosshairs', 'MoreTools']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topLeft, ['orientationMenu', 'dataOverlayMenu']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomMiddle, ['AdvancedRenderingControls']);
+      toolbarService.updateSection('AdvancedRenderingControls', ['windowLevelMenuEmbedded', 'voiManualControlMenu', 'Colorbar', 'opacityMenu', 'thresholdMenu']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topRight, ['modalityLoadBadge', 'trackingStatus', 'navigationComponent']);
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomLeft, ['windowLevelMenu']);
+      toolbarService.updateSection('MoreTools', ['Reset', 'rotate-right', 'flipHorizontal', 'ReferenceLines', 'ImageOverlayViewer', 'StackScroll', 'invert', 'Cine', 'Magnify', 'TagBrowser']);
+      toolbarService.updateSection(toolbarService.sections.segmentationToolbox, ['SegmentationUtilities', 'SegmentationTools']);
+      toolbarService.updateSection('SegmentationUtilities', ['LabelmapSlicePropagation', 'InterpolateLabelmap', 'SegmentBidirectional']);
+      toolbarService.updateSection('SegmentationTools', ['BrushTools', 'MarkerLabelmap', 'RegionSegmentPlus', 'Shapes']);
+      toolbarService.updateSection('BrushTools', ['Brush', 'Eraser', 'Threshold']);
     },
     onModeExit: ({
       servicesManager
@@ -133,7 +158,7 @@ function modeFactory({
         uiDialogService,
         uiModalService
       } = servicesManager.services;
-      uiDialogService.dismissAll();
+      uiDialogService.hideAll();
       uiModalService.hide();
       toolGroupService.destroy();
       syncGroupService.destroy();
@@ -183,7 +208,9 @@ function modeFactory({
           id: ohif.layout,
           props: {
             leftPanels: [ohif.leftPanel],
+            leftPanelResizable: true,
             rightPanels: [cornerstone.panelTool],
+            rightPanelResizable: true,
             // leftPanelClosed: true,
             viewports: [{
               namespace: cornerstone.viewport,
@@ -191,6 +218,9 @@ function modeFactory({
             }, {
               namespace: segmentation.viewport,
               displaySetsToDisplay: [segmentation.sopClassHandler]
+            }, {
+              namespace: dicomRT.viewport,
+              displaySetsToDisplay: [dicomRT.sopClassHandler]
             }]
           }
         };
@@ -201,15 +231,13 @@ function modeFactory({
     /** HangingProtocol used by the mode */
     // Commented out to just use the most applicable registered hanging protocol
     // The example is used for a grid layout to specify that as a preferred layout
-    // hangingProtocol: ['@ohif/mnGrid'],
+    hangingProtocol: ['@ohif/mnGrid'],
     /** SopClassHandlers used by the mode */
-    sopClassHandlers: [ohif.sopClassHandler, segmentation.sopClassHandler],
-    /** hotkeys for mode */
-    hotkeys: [..._ohif_core__WEBPACK_IMPORTED_MODULE_0__.hotkeys.defaults.hotkeyBindings]
+    sopClassHandlers: [ohif.sopClassHandler, segmentation.sopClassHandler, dicomRT.sopClassHandler]
   };
 }
 const mode = {
-  id: _id__WEBPACK_IMPORTED_MODULE_1__.id,
+  id: _id__WEBPACK_IMPORTED_MODULE_0__.id,
   modeFactory,
   extensionDependencies
 };
@@ -221,7 +249,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -236,7 +280,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************!*\
   !*** ../../../modes/segmentation/src/initToolGroups.ts ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -289,6 +333,12 @@ function createTools(utilityModule) {
         activeStrategy: 'FILL_INSIDE_CIRCLE'
       }
     }, {
+      toolName: toolNames.LabelmapSlicePropagation
+    }, {
+      toolName: toolNames.MarkerLabelmap
+    }, {
+      toolName: toolNames.RegionSegmentPlus
+    }, {
       toolName: 'CircularEraser',
       parentTool: 'Brush',
       configuration: {
@@ -323,17 +373,23 @@ function createTools(utilityModule) {
       parentTool: 'Brush',
       configuration: {
         activeStrategy: 'THRESHOLD_INSIDE_CIRCLE',
-        // preview: {
-        //   enabled: true,
-        // },
-        strategySpecificConfiguration: {
-          // to use the use the center segment index to determine
-          // if inside -> same segment, if outside -> eraser
-          // useCenterSegmentIndex: true,
-          THRESHOLD: {
-            isDynamic: true,
-            dynamicRadius: 3
-          }
+        threshold: {
+          isDynamic: true,
+          dynamicRadius: 3
+        }
+      }
+    }, {
+      toolName: toolNames.SegmentBidirectional
+    }, {
+      toolName: toolNames.SegmentSelect
+    }, {
+      toolName: 'ThresholdSphereBrushDynamic',
+      parentTool: 'Brush',
+      configuration: {
+        activeStrategy: 'THRESHOLD_INSIDE_SPHERE',
+        threshold: {
+          isDynamic: true,
+          dynamicRadius: 3
         }
       }
     }, {
@@ -439,7 +495,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -450,195 +522,670 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../modes/segmentation/src/segmentationButtons.ts":
-/*!**************************************************************!*\
-  !*** ../../../modes/segmentation/src/segmentationButtons.ts ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../modes/segmentation/src/toolbarButtons.ts":
+/*!*********************************************************!*\
+  !*** ../../../modes/segmentation/src/toolbarButtons.ts ***!
+  \*********************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-const toolbarButtons = [{
-  id: 'BrushTools',
-  uiType: 'ohif.buttonGroup',
-  props: {
-    groupId: 'BrushTools',
-    items: [{
-      id: 'Brush',
-      icon: 'icon-tool-brush',
-      label: 'Brush',
-      evaluate: {
-        name: 'evaluate.cornerstone.segmentation',
-        toolNames: ['CircularBrush', 'SphereBrush'],
-        disabledText: 'Create new segmentation to enable this tool.'
-      },
-      options: [{
-        name: 'Radius (mm)',
-        id: 'brush-radius',
-        type: 'range',
-        min: 0.5,
-        max: 99.5,
-        step: 0.5,
-        value: 25,
-        commands: {
-          commandName: 'setBrushSize',
-          commandOptions: {
-            toolNames: ['CircularBrush', 'SphereBrush']
-          }
-        }
-      }, {
-        name: 'Shape',
-        type: 'radio',
-        id: 'brush-mode',
-        value: 'CircularBrush',
-        values: [{
-          value: 'CircularBrush',
-          label: 'Circle'
-        }, {
-          value: 'SphereBrush',
-          label: 'Sphere'
-        }],
-        commands: 'setToolActiveToolbar'
-      }]
-    }, {
-      id: 'Eraser',
-      icon: 'icon-tool-eraser',
-      label: 'Eraser',
-      evaluate: {
-        name: 'evaluate.cornerstone.segmentation',
-        toolNames: ['CircularEraser', 'SphereEraser']
-      },
-      options: [{
-        name: 'Radius (mm)',
-        id: 'eraser-radius',
-        type: 'range',
-        min: 0.5,
-        max: 99.5,
-        step: 0.5,
-        value: 25,
-        commands: {
-          commandName: 'setBrushSize',
-          commandOptions: {
-            toolNames: ['CircularEraser', 'SphereEraser']
-          }
-        }
-      }, {
-        name: 'Shape',
-        type: 'radio',
-        id: 'eraser-mode',
-        value: 'CircularEraser',
-        values: [{
-          value: 'CircularEraser',
-          label: 'Circle'
-        }, {
-          value: 'SphereEraser',
-          label: 'Sphere'
-        }],
-        commands: 'setToolActiveToolbar'
-      }]
-    }, {
-      id: 'Threshold',
-      icon: 'icon-tool-threshold',
-      label: 'Threshold Tool',
-      evaluate: {
-        name: 'evaluate.cornerstone.segmentation',
-        toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
-      },
-      options: [{
-        name: 'Radius (mm)',
-        id: 'threshold-radius',
-        type: 'range',
-        min: 0.5,
-        max: 99.5,
-        step: 0.5,
-        value: 25,
-        commands: {
-          commandName: 'setBrushSize',
-          commandOptions: {
-            toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush', 'ThresholdCircularBrushDynamic']
-          }
-        }
-      }, {
-        name: 'Threshold',
-        type: 'radio',
-        id: 'dynamic-mode',
-        value: 'ThresholdRange',
-        values: [{
-          value: 'ThresholdDynamic',
-          label: 'Dynamic'
-        }, {
-          value: 'ThresholdRange',
-          label: 'Range'
-        }],
-        commands: ({
-          value,
-          commandsManager,
-          options
-        }) => {
-          if (value === 'ThresholdDynamic') {
-            commandsManager.run('setToolActive', {
-              toolName: 'ThresholdCircularBrushDynamic'
-            });
-            return;
-          }
 
-          // check the condition of the threshold-range option
-          const thresholdRangeOption = options.find(option => option.id === 'threshold-shape');
+const setToolActiveToolbar = {
+  commandName: 'setToolActiveToolbar',
+  commandOptions: {
+    toolGroupIds: ['default', 'mpr', 'SRToolGroup', 'volume3d']
+  }
+};
+const callbacks = toolName => [{
+  commandName: 'setViewportForToolConfiguration',
+  commandOptions: {
+    toolName
+  }
+}];
+const toolbarButtons = [{
+  id: 'AdvancedRenderingControls',
+  uiType: 'ohif.advancedRenderingControls',
+  props: {
+    buttonSection: true
+  }
+}, {
+  id: 'modalityLoadBadge',
+  uiType: 'ohif.modalityLoadBadge',
+  props: {
+    icon: 'Status',
+    label: 'Status',
+    tooltip: 'Status',
+    evaluate: {
+      name: 'evaluate.modalityLoadBadge',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'navigationComponent',
+  uiType: 'ohif.navigationComponent',
+  props: {
+    icon: 'Navigation',
+    label: 'Navigation',
+    tooltip: 'Navigate between segments/measurements and manage their visibility',
+    evaluate: {
+      name: 'evaluate.navigationComponent',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'trackingStatus',
+  uiType: 'ohif.trackingStatus',
+  props: {
+    icon: 'TrackingStatus',
+    label: 'Tracking Status',
+    tooltip: 'View and manage tracking status of measurements and annotations',
+    evaluate: {
+      name: 'evaluate.trackingStatus',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'dataOverlayMenu',
+  uiType: 'ohif.dataOverlayMenu',
+  props: {
+    icon: 'ViewportViews',
+    label: 'Data Overlay',
+    tooltip: 'Configure data overlay options and manage foreground/background display sets',
+    evaluate: 'evaluate.dataOverlayMenu'
+  }
+}, {
+  id: 'orientationMenu',
+  uiType: 'ohif.orientationMenu',
+  props: {
+    icon: 'OrientationSwitch',
+    label: 'Orientation',
+    tooltip: 'Change viewport orientation between axial, sagittal, coronal and acquisition planes',
+    evaluate: {
+      name: 'evaluate.orientationMenu'
+      // hideWhenDisabled: true,
+    }
+  }
+}, {
+  id: 'windowLevelMenuEmbedded',
+  uiType: 'ohif.windowLevelMenuEmbedded',
+  props: {
+    icon: 'WindowLevel',
+    label: 'Window Level',
+    tooltip: 'Adjust window/level presets and customize image contrast settings',
+    evaluate: {
+      name: 'evaluate.windowLevelMenuEmbedded',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'windowLevelMenu',
+  uiType: 'ohif.windowLevelMenu',
+  props: {
+    icon: 'WindowLevel',
+    label: 'Window Level',
+    tooltip: 'Adjust window/level presets and customize image contrast settings',
+    evaluate: 'evaluate.windowLevelMenu'
+  }
+}, {
+  id: 'voiManualControlMenu',
+  uiType: 'ohif.voiManualControlMenu',
+  props: {
+    icon: 'WindowLevelAdvanced',
+    label: 'Advanced Window Level',
+    tooltip: 'Advanced window/level settings with manual controls and presets',
+    evaluate: 'evaluate.voiManualControlMenu'
+  }
+}, {
+  id: 'thresholdMenu',
+  uiType: 'ohif.thresholdMenu',
+  props: {
+    icon: 'Threshold',
+    label: 'Threshold',
+    tooltip: 'Image threshold settings',
+    evaluate: {
+      name: 'evaluate.thresholdMenu',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'opacityMenu',
+  uiType: 'ohif.opacityMenu',
+  props: {
+    icon: 'Opacity',
+    label: 'Opacity',
+    tooltip: 'Image opacity settings',
+    evaluate: {
+      name: 'evaluate.opacityMenu',
+      hideWhenDisabled: true
+    }
+  }
+}, {
+  id: 'Colorbar',
+  uiType: 'ohif.colorbar',
+  props: {
+    type: 'tool',
+    label: 'Colorbar'
+  }
+},
+// sections
+{
+  id: 'MoreTools',
+  uiType: 'ohif.toolButtonList',
+  props: {
+    buttonSection: true
+  }
+}, {
+  id: 'BrushTools',
+  uiType: 'ohif.toolBoxButtonGroup',
+  props: {
+    buttonSection: true
+  }
+},
+// Section containers for the nested toolbox
+{
+  id: 'SegmentationUtilities',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    buttonSection: true
+  }
+}, {
+  id: 'SegmentationTools',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    buttonSection: true
+  }
+},
+// tool defs
+{
+  id: 'Zoom',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-zoom',
+    label: 'Zoom',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'WindowLevel',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-window-level',
+    label: 'Window Level',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'Pan',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-move',
+    label: 'Pan',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'TrackballRotate',
+  uiType: 'ohif.toolButton',
+  props: {
+    type: 'tool',
+    icon: 'tool-3d-rotate',
+    label: '3D Rotate',
+    commands: setToolActiveToolbar,
+    evaluate: {
+      name: 'evaluate.cornerstoneTool',
+      disabledText: 'Select a 3D viewport to enable this tool'
+    }
+  }
+}, {
+  id: 'Capture',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-capture',
+    label: 'Capture',
+    commands: 'showDownloadViewportModal',
+    evaluate: ['evaluate.action', {
+      name: 'evaluate.viewport.supported',
+      unsupportedViewportTypes: ['video', 'wholeSlide']
+    }]
+  }
+}, {
+  id: 'Layout',
+  uiType: 'ohif.layoutSelector',
+  props: {
+    rows: 3,
+    columns: 4,
+    evaluate: 'evaluate.action',
+    commands: 'setViewportGridLayout'
+  }
+}, {
+  id: 'Crosshairs',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-crosshair',
+    label: 'Crosshairs',
+    commands: {
+      commandName: 'setToolActiveToolbar',
+      commandOptions: {
+        toolGroupIds: ['mpr']
+      }
+    },
+    evaluate: {
+      name: 'evaluate.cornerstoneTool',
+      disabledText: 'Select an MPR viewport to enable this tool'
+    }
+  }
+}, {
+  id: 'Reset',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-reset',
+    label: 'Reset View',
+    tooltip: 'Reset View',
+    commands: 'resetViewport',
+    evaluate: 'evaluate.action'
+  }
+}, {
+  id: 'rotate-right',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-rotate-right',
+    label: 'Rotate Right',
+    tooltip: 'Rotate +90',
+    commands: 'rotateViewportCW',
+    evaluate: 'evaluate.action'
+  }
+}, {
+  id: 'flipHorizontal',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-flip-horizontal',
+    label: 'Flip Horizontal',
+    tooltip: 'Flip Horizontally',
+    commands: 'flipViewportHorizontal',
+    evaluate: ['evaluate.viewportProperties.toggle', {
+      name: 'evaluate.viewport.supported',
+      unsupportedViewportTypes: ['volume3d']
+    }]
+  }
+}, {
+  id: 'ReferenceLines',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-referenceLines',
+    label: 'Reference Lines',
+    tooltip: 'Show Reference Lines',
+    commands: 'toggleEnabledDisabledToolbar',
+    evaluate: 'evaluate.cornerstoneTool.toggle'
+  }
+}, {
+  id: 'ImageOverlayViewer',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'toggle-dicom-overlay',
+    label: 'Image Overlay',
+    tooltip: 'Toggle Image Overlay',
+    commands: 'toggleEnabledDisabledToolbar',
+    evaluate: 'evaluate.cornerstoneTool.toggle'
+  }
+}, {
+  id: 'StackScroll',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-stack-scroll',
+    label: 'Stack Scroll',
+    tooltip: 'Stack Scroll',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'invert',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-invert',
+    label: 'Invert',
+    tooltip: 'Invert Colors',
+    commands: 'invertViewport',
+    evaluate: 'evaluate.viewportProperties.toggle'
+  }
+}, {
+  id: 'Cine',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-cine',
+    label: 'Cine',
+    tooltip: 'Cine',
+    commands: 'toggleCine',
+    evaluate: ['evaluate.cine', {
+      name: 'evaluate.viewport.supported',
+      unsupportedViewportTypes: ['volume3d']
+    }]
+  }
+}, {
+  id: 'Magnify',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'tool-magnify',
+    label: 'Zoom-in',
+    tooltip: 'Zoom-in',
+    commands: setToolActiveToolbar,
+    evaluate: 'evaluate.cornerstoneTool'
+  }
+}, {
+  id: 'TagBrowser',
+  uiType: 'ohif.toolButton',
+  props: {
+    icon: 'dicom-tag-browser',
+    label: 'Dicom Tag Browser',
+    tooltip: 'Dicom Tag Browser',
+    commands: 'openDICOMTagViewer'
+  }
+}, {
+  id: 'Brush',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-tool-brush',
+    label: 'Brush',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['CircularBrush', 'SphereBrush'],
+      disabledText: 'Create new segmentation to enable this tool.'
+    },
+    options: [{
+      name: 'Radius (mm)',
+      id: 'brush-radius',
+      type: 'range',
+      min: 0.5,
+      max: 99.5,
+      step: 0.5,
+      value: 25,
+      commands: {
+        commandName: 'setBrushSize',
+        commandOptions: {
+          toolNames: ['CircularBrush', 'SphereBrush']
+        }
+      }
+    }, {
+      name: 'Shape',
+      type: 'radio',
+      id: 'brush-mode',
+      value: 'CircularBrush',
+      values: [{
+        value: 'CircularBrush',
+        label: 'Circle'
+      }, {
+        value: 'SphereBrush',
+        label: 'Sphere'
+      }],
+      commands: 'setToolActiveToolbar'
+    }]
+  }
+}, {
+  id: 'InterpolateLabelmap',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-tool-interpolation',
+    label: 'Interpolate Labelmap',
+    tooltip: 'Automatically fill in missing slices between drawn segments. Use brush or threshold tools on at least two slices, then click to interpolate across slices. Works in any direction. Volume must be reconstructable.',
+    evaluate: ['evaluate.cornerstone.segmentation', {
+      name: 'evaluate.displaySetIsReconstructable',
+      disabledText: 'The current viewport cannot handle interpolation.'
+    }],
+    commands: 'interpolateLabelmap'
+  }
+}, {
+  id: 'SegmentBidirectional',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-tool-bidirectional-segment',
+    label: 'Segment Bidirectional',
+    tooltip: 'Automatically detects the largest length and width across slices for the selected segment and displays a bidirectional measurement.',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      disabledText: 'Create new segmentation to enable this tool.'
+    },
+    commands: 'runSegmentBidirectional'
+  }
+}, {
+  id: 'RegionSegmentPlus',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-tool-click-segment',
+    label: 'One Click Segment',
+    tooltip: 'Detects segmentable regions with one click. Hover for visual feedback—click when a plus sign appears to auto-segment the lesion.',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['RegionSegmentPlus'],
+      disabledText: 'Create new segmentation to enable this tool.'
+    },
+    commands: 'setToolActiveToolbar'
+  }
+}, {
+  id: 'LabelmapSlicePropagation',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-labelmap-slice-propagation',
+    label: 'Labelmap Assist',
+    tooltip: 'Toggle AI assistance for segmenting nearby slices. After drawing on a slice, scroll to preview predictions. Press Enter to accept or Esc to skip.',
+    evaluate: ['evaluate.cornerstoneTool.toggle', {
+      name: 'evaluate.cornerstone.hasSegmentation'
+    }],
+    listeners: {
+      [_ohif_core__WEBPACK_IMPORTED_MODULE_0__.ViewportGridService.EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: callbacks('LabelmapSlicePropagation'),
+      [_ohif_core__WEBPACK_IMPORTED_MODULE_0__.ViewportGridService.EVENTS.VIEWPORTS_READY]: callbacks('LabelmapSlicePropagation')
+    },
+    commands: 'toggleEnabledDisabledToolbar'
+  }
+}, {
+  id: 'MarkerLabelmap',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-marker-labelmap',
+    label: 'Marker Guided Labelmap',
+    tooltip: 'Use include/exclude markers to guide AI (SAM) segmentation. Click to place markers, Enter to accept results, Esc to reject, and N to go to the next slice while keeping markers.',
+    evaluate: [{
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['MarkerLabelmap', 'MarkerInclude', 'MarkerExclude']
+    }],
+    commands: 'setToolActiveToolbar',
+    listeners: {
+      [_ohif_core__WEBPACK_IMPORTED_MODULE_0__.ViewportGridService.EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: callbacks('MarkerLabelmap'),
+      [_ohif_core__WEBPACK_IMPORTED_MODULE_0__.ViewportGridService.EVENTS.VIEWPORTS_READY]: callbacks('MarkerLabelmap')
+    },
+    options: [{
+      name: 'Marker Mode',
+      type: 'radio',
+      id: 'marker-mode',
+      value: 'markerInclude',
+      values: [{
+        value: 'markerInclude',
+        label: 'Include'
+      }, {
+        value: 'markerExclude',
+        label: 'Exclude'
+      }],
+      commands: ({
+        commandsManager,
+        options
+      }) => {
+        const markerModeOption = options.find(option => option.id === 'marker-mode');
+        if (markerModeOption.value === 'markerInclude') {
+          commandsManager.run('setToolActive', {
+            toolName: 'MarkerInclude'
+          });
+        } else {
+          commandsManager.run('setToolActive', {
+            toolName: 'MarkerExclude'
+          });
+        }
+      }
+    }, {
+      name: 'Clear Markers',
+      type: 'button',
+      id: 'clear-markers',
+      commands: 'clearMarkersForMarkerLabelmap'
+    }]
+  }
+}, {
+  id: 'Eraser',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-tool-eraser',
+    label: 'Eraser',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['CircularEraser', 'SphereEraser']
+    },
+    options: [{
+      name: 'Radius (mm)',
+      id: 'eraser-radius',
+      type: 'range',
+      min: 0.5,
+      max: 99.5,
+      step: 0.5,
+      value: 25,
+      commands: {
+        commandName: 'setBrushSize',
+        commandOptions: {
+          toolNames: ['CircularEraser', 'SphereEraser']
+        }
+      }
+    }, {
+      name: 'Shape',
+      type: 'radio',
+      id: 'eraser-mode',
+      value: 'CircularEraser',
+      values: [{
+        value: 'CircularEraser',
+        label: 'Circle'
+      }, {
+        value: 'SphereEraser',
+        label: 'Sphere'
+      }],
+      commands: 'setToolActiveToolbar'
+    }]
+  }
+}, {
+  id: 'Threshold',
+  uiType: 'ohif.toolBoxButton',
+  props: {
+    icon: 'icon-tool-threshold',
+    label: 'Threshold Tool',
+    evaluate: {
+      name: 'evaluate.cornerstone.segmentation',
+      toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush', 'ThresholdCircularBrushDynamic', 'ThresholdSphereBrushDynamic']
+    },
+    options: [{
+      name: 'Radius (mm)',
+      id: 'threshold-radius',
+      type: 'range',
+      min: 0.5,
+      max: 99.5,
+      step: 0.5,
+      value: 25,
+      commands: {
+        commandName: 'setBrushSize',
+        commandOptions: {
+          toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush', 'ThresholdCircularBrushDynamic', 'ThresholdSphereBrushDynamic']
+        }
+      }
+    }, {
+      name: 'Shape',
+      type: 'radio',
+      id: 'threshold-shape',
+      value: 'ThresholdCircularBrush',
+      values: [{
+        value: 'ThresholdCircularBrush',
+        label: 'Circle'
+      }, {
+        value: 'ThresholdSphereBrush',
+        label: 'Sphere'
+      }],
+      commands: ({
+        value,
+        commandsManager,
+        options
+      }) => {
+        const optionsDynamic = options.find(option => option.id === 'dynamic-mode');
+        if (optionsDynamic.value === 'ThresholdDynamic') {
+          commandsManager.run('setToolActive', {
+            toolName: value === 'ThresholdCircularBrush' ? 'ThresholdCircularBrushDynamic' : 'ThresholdSphereBrushDynamic'
+          });
+        } else {
+          commandsManager.run('setToolActive', {
+            toolName: value
+          });
+        }
+      }
+    }, {
+      name: 'Threshold',
+      type: 'radio',
+      id: 'dynamic-mode',
+      value: 'ThresholdDynamic',
+      values: [{
+        value: 'ThresholdDynamic',
+        label: 'Dynamic'
+      }, {
+        value: 'ThresholdRange',
+        label: 'Range'
+      }],
+      commands: ({
+        value,
+        commandsManager,
+        options
+      }) => {
+        const thresholdRangeOption = options.find(option => option.id === 'threshold-shape');
+        if (value === 'ThresholdDynamic') {
+          commandsManager.run('setToolActiveToolbar', {
+            toolName: thresholdRangeOption.value === 'ThresholdCircularBrush' ? 'ThresholdCircularBrushDynamic' : 'ThresholdSphereBrushDynamic'
+          });
+        } else {
           commandsManager.run('setToolActiveToolbar', {
             toolName: thresholdRangeOption.value
           });
+          const thresholdRangeValue = options.find(option => option.id === 'threshold-range').value;
+          commandsManager.run('setThresholdRange', {
+            toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush'],
+            value: thresholdRangeValue
+          });
         }
-      }, {
-        name: 'Shape',
-        type: 'radio',
-        id: 'threshold-shape',
-        value: 'ThresholdCircularBrush',
-        values: [{
-          value: 'ThresholdCircularBrush',
-          label: 'Circle'
-        }, {
-          value: 'ThresholdSphereBrush',
-          label: 'Sphere'
-        }],
-        condition: ({
-          options
-        }) => options.find(option => option.id === 'dynamic-mode').value === 'ThresholdRange',
-        commands: 'setToolActiveToolbar'
-      }, {
-        name: 'ThresholdRange',
-        type: 'double-range',
-        id: 'threshold-range',
-        min: -1000,
-        max: 1000,
-        step: 1,
-        value: [100, 600],
-        condition: ({
-          options
-        }) => options.find(option => option.id === 'dynamic-mode').value === 'ThresholdRange',
-        commands: {
-          commandName: 'setThresholdRange',
-          commandOptions: {
-            toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
-          }
+      }
+    }, {
+      name: 'ThresholdRange',
+      type: 'double-range',
+      id: 'threshold-range',
+      min: -1000,
+      max: 1000,
+      step: 1,
+      value: [50, 600],
+      condition: ({
+        options
+      }) => options.find(option => option.id === 'dynamic-mode').value === 'ThresholdRange',
+      commands: {
+        commandName: 'setThresholdRange',
+        commandOptions: {
+          toolNames: ['ThresholdCircularBrush', 'ThresholdSphereBrush']
         }
-      }]
+      }
     }]
   }
 }, {
   id: 'Shapes',
-  uiType: 'ohif.radioGroup',
+  uiType: 'ohif.toolBoxButton',
   props: {
+    icon: 'icon-tool-shape',
     label: 'Shapes',
     evaluate: {
       name: 'evaluate.cornerstone.segmentation',
-      toolNames: ['CircleScissor', 'SphereScissor', 'RectangleScissor']
+      toolNames: ['CircleScissor', 'SphereScissor', 'RectangleScissor'],
+      disabledText: 'Create new segmentation to enable shapes tool.'
     },
-    icon: 'icon-tool-shape',
     options: [{
       name: 'Shape',
       type: 'radio',
@@ -666,286 +1213,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../modes/segmentation/src/toolbarButtons.ts":
-/*!*********************************************************!*\
-  !*** ../../../modes/segmentation/src/toolbarButtons.ts ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   setToolActiveToolbar: () => (/* binding */ setToolActiveToolbar)
-/* harmony export */ });
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
-const {
-  createButton
-} = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.ToolbarService;
-const ReferenceLinesListeners = [{
-  commandName: 'setSourceViewportForReferenceLinesTool',
-  context: 'CORNERSTONE'
-}];
-const setToolActiveToolbar = {
-  commandName: 'setToolActiveToolbar',
-  commandOptions: {
-    toolGroupIds: ['default', 'mpr', 'SRToolGroup', 'volume3d']
-  }
-};
-const toolbarButtons = [{
-  id: 'Zoom',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-zoom',
-    label: 'Zoom',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'WindowLevel',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-window-level',
-    label: 'Window Level',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'Pan',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-move',
-    label: 'Pan',
-    commands: setToolActiveToolbar,
-    evaluate: 'evaluate.cornerstoneTool'
-  }
-}, {
-  id: 'TrackballRotate',
-  uiType: 'ohif.radioGroup',
-  props: {
-    type: 'tool',
-    icon: 'tool-3d-rotate',
-    label: '3D Rotate',
-    commands: setToolActiveToolbar,
-    evaluate: {
-      name: 'evaluate.cornerstoneTool',
-      disabledText: 'Select a 3D viewport to enable this tool'
-    }
-  }
-}, {
-  id: 'Capture',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-capture',
-    label: 'Capture',
-    commands: 'showDownloadViewportModal',
-    evaluate: ['evaluate.action', {
-      name: 'evaluate.viewport.supported',
-      unsupportedViewportTypes: ['video', 'wholeSlide']
-    }]
-  }
-}, {
-  id: 'Layout',
-  uiType: 'ohif.layoutSelector',
-  props: {
-    rows: 3,
-    columns: 4,
-    evaluate: 'evaluate.action',
-    commands: 'setViewportGridLayout'
-  }
-}, {
-  id: 'Crosshairs',
-  uiType: 'ohif.radioGroup',
-  props: {
-    icon: 'tool-crosshair',
-    label: 'Crosshairs',
-    commands: {
-      commandName: 'setToolActiveToolbar',
-      commandOptions: {
-        toolGroupIds: ['mpr']
-      }
-    },
-    evaluate: {
-      name: 'evaluate.cornerstoneTool',
-      disabledText: 'Select an MPR viewport to enable this tool'
-    }
-  }
-}, {
-  id: 'MoreTools',
-  uiType: 'ohif.splitButton',
-  props: {
-    groupId: 'MoreTools',
-    evaluate: 'evaluate.group.promoteToPrimaryIfCornerstoneToolNotActiveInTheList',
-    primary: createButton({
-      id: 'Reset',
-      icon: 'tool-reset',
-      tooltip: 'Reset View',
-      label: 'Reset',
-      commands: 'resetViewport',
-      evaluate: 'evaluate.action'
-    }),
-    secondary: {
-      icon: 'chevron-down',
-      label: '',
-      tooltip: 'More Tools'
-    },
-    items: [createButton({
-      id: 'Reset',
-      icon: 'tool-reset',
-      label: 'Reset View',
-      tooltip: 'Reset View',
-      commands: 'resetViewport',
-      evaluate: 'evaluate.action'
-    }), createButton({
-      id: 'rotate-right',
-      icon: 'tool-rotate-right',
-      label: 'Rotate Right',
-      tooltip: 'Rotate +90',
-      commands: 'rotateViewportCW',
-      evaluate: 'evaluate.action'
-    }), createButton({
-      id: 'flipHorizontal',
-      icon: 'tool-flip-horizontal',
-      label: 'Flip Horizontal',
-      tooltip: 'Flip Horizontally',
-      commands: 'flipViewportHorizontal',
-      evaluate: ['evaluate.viewportProperties.toggle', {
-        name: 'evaluate.viewport.supported',
-        unsupportedViewportTypes: ['volume3d']
-      }]
-    }), createButton({
-      id: 'ReferenceLines',
-      icon: 'tool-referenceLines',
-      label: 'Reference Lines',
-      tooltip: 'Show Reference Lines',
-      commands: 'toggleEnabledDisabledToolbar',
-      listeners: {
-        [_ohif_core__WEBPACK_IMPORTED_MODULE_0__.ViewportGridService.EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesListeners,
-        [_ohif_core__WEBPACK_IMPORTED_MODULE_0__.ViewportGridService.EVENTS.VIEWPORTS_READY]: ReferenceLinesListeners
-      },
-      evaluate: 'evaluate.cornerstoneTool.toggle'
-    }), createButton({
-      id: 'ImageOverlayViewer',
-      icon: 'toggle-dicom-overlay',
-      label: 'Image Overlay',
-      tooltip: 'Toggle Image Overlay',
-      commands: 'toggleEnabledDisabledToolbar',
-      evaluate: 'evaluate.cornerstoneTool.toggle'
-    }), createButton({
-      id: 'StackScroll',
-      icon: 'tool-stack-scroll',
-      label: 'Stack Scroll',
-      tooltip: 'Stack Scroll',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }), createButton({
-      id: 'invert',
-      icon: 'tool-invert',
-      label: 'Invert',
-      tooltip: 'Invert Colors',
-      commands: 'invertViewport',
-      evaluate: 'evaluate.viewportProperties.toggle'
-    }), createButton({
-      id: 'Probe',
-      icon: 'tool-probe',
-      label: 'Probe',
-      tooltip: 'Probe',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }), createButton({
-      id: 'Cine',
-      icon: 'tool-cine',
-      label: 'Cine',
-      tooltip: 'Cine',
-      commands: 'toggleCine',
-      evaluate: ['evaluate.cine', {
-        name: 'evaluate.viewport.supported',
-        unsupportedViewportTypes: ['volume3d']
-      }]
-    }), createButton({
-      id: 'Angle',
-      icon: 'tool-angle',
-      label: 'Angle',
-      tooltip: 'Angle',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }), createButton({
-      id: 'Magnify',
-      icon: 'tool-magnify',
-      label: 'Zoom-in',
-      tooltip: 'Zoom-in',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }), createButton({
-      id: 'RectangleROI',
-      icon: 'tool-rectangle',
-      label: 'Rectangle',
-      tooltip: 'Rectangle',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }), createButton({
-      id: 'CalibrationLine',
-      icon: 'tool-calibration',
-      label: 'Calibration',
-      tooltip: 'Calibration Line',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    }), createButton({
-      id: 'TagBrowser',
-      icon: 'dicom-tag-browser',
-      label: 'Dicom Tag Browser',
-      tooltip: 'Dicom Tag Browser',
-      commands: 'openDICOMTagViewer'
-    }), createButton({
-      id: 'AdvancedMagnify',
-      icon: 'icon-tool-loupe',
-      label: 'Magnify Probe',
-      tooltip: 'Magnify Probe',
-      commands: 'toggleActiveDisabledToolbar',
-      evaluate: 'evaluate.cornerstoneTool.toggle.ifStrictlyDisabled'
-    }), createButton({
-      id: 'UltrasoundDirectionalTool',
-      icon: 'icon-tool-ultrasound-bidirectional',
-      label: 'Ultrasound Directional',
-      tooltip: 'Ultrasound Directional',
-      commands: setToolActiveToolbar,
-      evaluate: ['evaluate.cornerstoneTool', {
-        name: 'evaluate.modality.supported',
-        supportedModalities: ['US']
-      }]
-    }), createButton({
-      id: 'WindowLevelRegion',
-      icon: 'icon-tool-window-region',
-      label: 'Window Level Region',
-      tooltip: 'Window Level Region',
-      commands: setToolActiveToolbar,
-      evaluate: 'evaluate.cornerstoneTool'
-    })]
-  }
-}];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (toolbarButtons);
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -962,7 +1246,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \************************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/mode-segmentation","version":"3.9.1","description":"OHIF segmentation mode which enables labelmap segmentation read/edit/export","author":"@ohif","license":"MIT","main":"dist/umd/@ohif/mode-segmentation/index.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-mode"],"publishConfig":{"access":"public"},"module":"src/index.tsx","engines":{"node":">=14","npm":">=7","yarn":">=1.16.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/extension-cornerstone":"3.9.1","@ohif/extension-cornerstone-dicom-rt":"3.9.1","@ohif/extension-cornerstone-dicom-seg":"3.9.1","@ohif/extension-cornerstone-dicom-sr":"3.9.1","@ohif/extension-default":"3.9.1","@ohif/extension-dicom-pdf":"3.9.1","@ohif/extension-dicom-video":"3.9.1"},"dependencies":{"@babel/runtime":"^7.20.13","i18next":"^17.0.3"},"devDependencies":{"@babel/core":"7.24.7","@babel/plugin-proposal-class-properties":"^7.16.7","@babel/plugin-proposal-object-rest-spread":"^7.17.3","@babel/plugin-proposal-private-methods":"^7.18.6","@babel/plugin-syntax-dynamic-import":"^7.8.3","@babel/plugin-transform-arrow-functions":"^7.16.7","@babel/plugin-transform-regenerator":"^7.16.7","@babel/plugin-transform-runtime":"7.24.7","@babel/plugin-transform-typescript":"^7.13.0","@babel/preset-env":"7.23.2","@babel/preset-react":"^7.16.7","@babel/preset-typescript":"^7.13.0","@svgr/webpack":"^8.1.0","babel-eslint":"^10.1.0","babel-loader":"^8.0.0-beta.4","clean-webpack-plugin":"^4.0.0","copy-webpack-plugin":"^10.2.0","cross-env":"^7.0.3","dotenv":"^14.1.0","eslint":"^8.39.0","eslint-loader":"^2.0.0","webpack":"5.94.0","webpack-cli":"^4.7.2","webpack-merge":"^5.7.3"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/mode-segmentation","version":"3.11.0-beta.37","description":"OHIF segmentation mode which enables labelmap segmentation read/edit/export","author":"@ohif","license":"MIT","main":"dist/umd/@ohif/mode-segmentation/index.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-mode"],"publishConfig":{"access":"public"},"module":"src/index.tsx","engines":{"node":">=14","npm":">=7","yarn":">=1.16.0"},"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:cornerstone":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev","test:unit":"jest --watchAll","test:unit:ci":"jest --ci --runInBand --collectCoverage --passWithNoTests"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/extension-cornerstone":"3.11.0-beta.37","@ohif/extension-cornerstone-dicom-rt":"3.11.0-beta.37","@ohif/extension-cornerstone-dicom-seg":"3.11.0-beta.37","@ohif/extension-cornerstone-dicom-sr":"3.11.0-beta.37","@ohif/extension-default":"3.11.0-beta.37","@ohif/extension-dicom-pdf":"3.11.0-beta.37","@ohif/extension-dicom-video":"3.11.0-beta.37"},"dependencies":{"@babel/runtime":"^7.20.13","i18next":"^17.0.3"},"devDependencies":{"@babel/core":"7.24.7","@babel/plugin-proposal-class-properties":"^7.16.7","@babel/plugin-proposal-object-rest-spread":"^7.17.3","@babel/plugin-proposal-private-methods":"^7.18.6","@babel/plugin-syntax-dynamic-import":"^7.8.3","@babel/plugin-transform-arrow-functions":"^7.16.7","@babel/plugin-transform-regenerator":"^7.16.7","@babel/plugin-transform-runtime":"7.24.7","@babel/plugin-transform-typescript":"^7.13.0","@babel/preset-env":"7.23.2","@babel/preset-react":"^7.16.7","@babel/preset-typescript":"^7.13.0","@svgr/webpack":"^8.1.0","babel-eslint":"^10.1.0","babel-loader":"^8.0.0-beta.4","clean-webpack-plugin":"^4.0.0","copy-webpack-plugin":"^10.2.0","cross-env":"^7.0.3","dotenv":"^14.1.0","eslint":"^8.39.0","eslint-loader":"^2.0.0","webpack":"5.94.0","webpack-cli":"^4.7.2","webpack-merge":"^5.7.3"}}');
 
 /***/ })
 

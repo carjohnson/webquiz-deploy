@@ -5,7 +5,7 @@
 /*!*****************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/utils/initRTToolGroup.ts ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -15,9 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 function createRTToolGroupAndAddTools(ToolGroupService, customizationService, toolGroupId) {
-  const {
-    tools
-  } = customizationService.get('cornerstone.overlayViewportTools') ?? {};
+  const tools = customizationService.getCustomization('cornerstone.overlayViewportTools');
   return ToolGroupService.createToolGroupAndAddTools(toolGroupId, tools);
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createRTToolGroupAndAddTools);
@@ -28,7 +26,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -43,22 +57,17 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/utils/promptHydrateRT.ts ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
-const RESPONSE = {
-  NO_NEVER: -1,
-  CANCEL: 0,
-  HYDRATE_SEG: 5
-};
 function promptHydrateRT({
   servicesManager,
   rtDisplaySet,
@@ -66,61 +75,13 @@ function promptHydrateRT({
   preHydrateCallbacks,
   hydrateRTDisplaySet
 }) {
-  const {
-    uiViewportDialogService
-  } = servicesManager.services;
-  const extensionManager = servicesManager._extensionManager;
-  const appConfig = extensionManager._appConfig;
-  return new Promise(async function (resolve, reject) {
-    const promptResult = appConfig?.disableConfirmationPrompts ? RESPONSE.HYDRATE_SEG : await _askHydrate(uiViewportDialogService, viewportId);
-    if (promptResult === RESPONSE.HYDRATE_SEG) {
-      preHydrateCallbacks?.forEach(callback => {
-        callback();
-      });
-      const isHydrated = await hydrateRTDisplaySet({
-        rtDisplaySet,
-        viewportId,
-        servicesManager
-      });
-      resolve(isHydrated);
-    }
-  });
-}
-function _askHydrate(uiViewportDialogService, viewportId) {
-  return new Promise(function (resolve, reject) {
-    const message = 'Do you want to open this Segmentation?';
-    const actions = [{
-      id: 'no-hydrate',
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.secondary,
-      text: 'No',
-      value: RESPONSE.CANCEL
-    }, {
-      id: 'yes-hydrate',
-      type: _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonEnums.type.primary,
-      text: 'Yes',
-      value: RESPONSE.HYDRATE_SEG
-    }];
-    const onSubmit = result => {
-      uiViewportDialogService.hide();
-      resolve(result);
-    };
-    uiViewportDialogService.show({
-      id: 'promptHydrateRT',
-      viewportId,
-      type: 'info',
-      message,
-      actions,
-      onSubmit,
-      onOutsideClick: () => {
-        uiViewportDialogService.hide();
-        resolve(RESPONSE.CANCEL);
-      },
-      onKeyPress: event => {
-        if (event.key === 'Enter') {
-          onSubmit(RESPONSE.HYDRATE_SEG);
-        }
-      }
-    });
+  return _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_0__.utils.promptHydrationDialog({
+    servicesManager,
+    viewportId,
+    displaySet: rtDisplaySet,
+    preHydrateCallbacks,
+    hydrateCallback: hydrateRTDisplaySet,
+    type: 'RTSTRUCT'
   });
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (promptHydrateRT);
@@ -131,7 +92,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -146,7 +123,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************************!*\
   !*** ../../../extensions/cornerstone-dicom-rt/src/viewports/OHIFCornerstoneRTViewport.tsx ***!
   \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -156,14 +133,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _utils_promptHydrateRT__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/promptHydrateRT */ "../../../extensions/cornerstone-dicom-rt/src/utils/promptHydrateRT.ts");
-/* harmony import */ var _getStatusComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./_getStatusComponent */ "../../../extensions/cornerstone-dicom-rt/src/viewports/_getStatusComponent.tsx");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/extension-cornerstone */ "../../../extensions/cornerstone/src/index.tsx");
+/* harmony import */ var _utils_promptHydrateRT__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/promptHydrateRT */ "../../../extensions/cornerstone-dicom-rt/src/utils/promptHydrateRT.ts");
 /* harmony import */ var _utils_initRTToolGroup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/initRTToolGroup */ "../../../extensions/cornerstone-dicom-rt/src/utils/initRTToolGroup.ts");
+/* harmony import */ var _ohif_core_src__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/core/src */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {
@@ -180,25 +157,24 @@ function _extends() {
 
 
 
+
 const RT_TOOLGROUP_BASE_NAME = 'RTToolGroup';
 function OHIFCornerstoneRTViewport(props) {
-  _s2();
   _s();
+  const {
+    servicesManager,
+    commandsManager
+  } = (0,_ohif_core_src__WEBPACK_IMPORTED_MODULE_6__.useSystem)();
   const {
     children,
     displaySets,
-    viewportOptions,
-    servicesManager,
-    extensionManager,
-    commandsManager
+    viewportOptions
   } = props;
   const {
     displaySetService,
     toolGroupService,
     segmentationService,
-    uiNotificationService,
-    customizationService,
-    viewportActionCornersService
+    customizationService
   } = servicesManager.services;
   const viewportId = viewportOptions.viewportId;
   const toolGroupId = `${RT_TOOLGROUP_BASE_NAME}-${viewportId}`;
@@ -207,32 +183,24 @@ function OHIFCornerstoneRTViewport(props) {
   if (displaySets.length > 1) {
     throw new Error('RT viewport should only have a single display set');
   }
+  const LoadingIndicatorTotalPercent = customizationService.getCustomization('ui.loadingIndicatorTotalPercent');
   const rtDisplaySet = displaySets[0];
-  const [viewportGrid, viewportGridService] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid)();
+  const [{
+    viewports,
+    activeViewportId
+  }, viewportGridService] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid)();
 
   // States
-  const [isToolGroupCreated, setToolGroupCreated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [selectedSegment, setSelectedSegment] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
-
-  // Hydration means that the RT is opened and segments are loaded into the
-  // segmentation panel, and RT is also rendered on any viewport that is in the
-  // same frameOfReferenceUID as the referencedSeriesUID of the RT. However,
-  // loading basically means RT loading over network and bit unpacking of the
-  // RT data.
-  const [isHydrated, setIsHydrated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(rtDisplaySet.isHydrated);
+  const selectedSegmentObjectIndex = 0;
+  const {
+    setPositionPresentation
+  } = (0,_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.usePositionPresentationStore)();
   const [rtIsLoading, setRtIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(!rtDisplaySet.isLoaded);
-  const [element, setElement] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [processingProgress, setProcessingProgress] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     percentComplete: null,
     totalSegments: null
   });
-
-  // refs
   const referencedDisplaySetRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  const {
-    viewports,
-    activeViewportId
-  } = viewportGrid;
   const referencedDisplaySetInstanceUID = rtDisplaySet.referencedDisplaySetInstanceUID;
   const referencedDisplaySet = displaySetService.getDisplaySetByUID(referencedDisplaySetInstanceUID);
   const referencedDisplaySetMetadata = _getReferencedDisplaySetMetadata(referencedDisplaySet);
@@ -240,108 +208,47 @@ function OHIFCornerstoneRTViewport(props) {
     displaySet: referencedDisplaySet,
     metadata: referencedDisplaySetMetadata
   };
-  /**
-   * OnElementEnabled callback which is called after the cornerstoneExtension
-   * has enabled the element. Note: we delegate all the image rendering to
-   * cornerstoneExtension, so we don't need to do anything here regarding
-   * the image rendering, element enabling etc.
-   */
-  const onElementEnabled = evt => {
-    setElement(evt.detail.element);
-  };
-  const onElementDisabled = () => {
-    setElement(null);
-  };
-  const storePresentationState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
-    viewportGrid?.viewports.forEach(({
-      viewportId
-    }) => {
-      commandsManager.runCommand('storePresentation', {
-        viewportId
-      });
-    });
-  }, [viewportGrid]);
-  const hydrateRTDisplaySet = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(({
-    rtDisplaySet,
-    viewportId
-  }) => {
-    commandsManager.runCommand('hydrateRTSDisplaySet', {
-      displaySet: rtDisplaySet,
-      viewportId
-    });
-  }, [commandsManager]);
-  const getCornerstoneViewport = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
-    const {
-      component: Component
-    } = extensionManager.getModuleEntry('@ohif/extension-cornerstone.viewportModule.cornerstone');
-    const {
-      displaySet: referencedDisplaySet
-    } = referencedDisplaySetRef.current;
-
-    // Todo: jump to the center of the first segment
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, _extends({}, props, {
-      displaySets: [referencedDisplaySet, rtDisplaySet],
-      viewportOptions: {
-        viewportType: 'stack',
-        toolGroupId: toolGroupId,
-        orientation: viewportOptions.orientation,
-        viewportId: viewportOptions.viewportId
-      },
-      onElementEnabled: evt => {
-        props.onElementEnabled?.(evt);
-        onElementEnabled(evt);
-      },
-      onElementDisabled: onElementDisabled
-    }));
-  }, [viewportId, rtDisplaySet, toolGroupId]);
-  const onSegmentChange = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(direction => {
-    const segmentationId = rtDisplaySet.displaySetInstanceUID;
-    const segmentation = segmentationService.getSegmentation(segmentationId);
-    const {
-      segments
-    } = segmentation;
-    const numberOfSegments = Object.keys(segments).length;
-    let newSelectedSegmentIndex = selectedSegment + direction;
-
-    // Segment 0 is always background
-    if (newSelectedSegmentIndex >= numberOfSegments - 1) {
-      newSelectedSegmentIndex = 1;
-    } else if (newSelectedSegmentIndex === 0) {
-      newSelectedSegmentIndex = numberOfSegments - 1;
-    }
-    segmentationService.jumpToSegmentCenter(segmentationId, newSelectedSegmentIndex, viewportId);
-    setSelectedSegment(newSelectedSegmentIndex);
-  }, [selectedSegment, segmentationService]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (rtIsLoading) {
       return;
     }
-    (0,_utils_promptHydrateRT__WEBPACK_IMPORTED_MODULE_3__["default"])({
+
+    // if not active viewport, return
+    if (viewportId !== activeViewportId) {
+      return;
+    }
+    (0,_utils_promptHydrateRT__WEBPACK_IMPORTED_MODULE_4__["default"])({
       servicesManager,
       viewportId,
       rtDisplaySet,
-      preHydrateCallbacks: [storePresentationState],
-      hydrateRTDisplaySet
-    }).then(isHydrated => {
-      if (isHydrated) {
-        setIsHydrated(true);
+      hydrateRTDisplaySet: async () => {
+        return commandsManager.runCommand('hydrateSecondaryDisplaySet', {
+          displaySet: rtDisplaySet,
+          viewportId
+        });
       }
     });
-  }, [servicesManager, viewportId, rtDisplaySet, rtIsLoading]);
+  }, [servicesManager, viewportId, rtDisplaySet, rtIsLoading, commandsManager, activeViewportId]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // I'm not sure what is this, since in RT we support Overlapping segments
-    // via contours
     const {
       unsubscribe
     } = segmentationService.subscribe(segmentationService.EVENTS.SEGMENTATION_LOADING_COMPLETE, evt => {
       if (evt.rtDisplaySet.displaySetInstanceUID === rtDisplaySet.displaySetInstanceUID) {
         setRtIsLoading(false);
       }
-      if (evt.overlappingSegments) {
-        uiNotificationService.show({
-          title: 'Overlapping Segments',
-          message: 'Overlapping segments detected which is not currently supported',
-          type: 'warning'
+      if (rtDisplaySet?.firstSegmentedSliceImageId && viewportOptions?.presentationIds) {
+        const {
+          firstSegmentedSliceImageId
+        } = rtDisplaySet;
+        const {
+          presentationIds
+        } = viewportOptions;
+        setPositionPresentation(presentationIds.positionPresentationId, {
+          viewportType: 'stack',
+          viewReference: {
+            referencedImageId: firstSegmentedSliceImageId
+          },
+          viewPresentation: {}
         });
       }
     });
@@ -350,9 +257,7 @@ function OHIFCornerstoneRTViewport(props) {
     };
   }, [rtDisplaySet]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const {
-      unsubscribe
-    } = segmentationService.subscribe(segmentationService.EVENTS.SEGMENT_LOADING_COMPLETE, ({
+    const segmentLoadingSubscription = segmentationService.subscribe(segmentationService.EVENTS.SEGMENT_LOADING_COMPLETE, ({
       percentComplete,
       numSegments
     }) => {
@@ -361,16 +266,7 @@ function OHIFCornerstoneRTViewport(props) {
         totalSegments: numSegments
       });
     });
-    return () => {
-      unsubscribe();
-    };
-  }, [rtDisplaySet]);
-
-  /**
-   Cleanup the SEG viewport when the viewport is destroyed
-   */
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const onDisplaySetsRemovedSubscription = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_REMOVED, ({
+    const displaySetsRemovedSubscription = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_REMOVED, ({
       displaySetInstanceUIDs
     }) => {
       const activeViewport = viewports.get(activeViewportId);
@@ -382,46 +278,43 @@ function OHIFCornerstoneRTViewport(props) {
       }
     });
     return () => {
-      onDisplaySetsRemovedSubscription.unsubscribe();
+      segmentLoadingSubscription.unsubscribe();
+      displaySetsRemovedSubscription.unsubscribe();
     };
-  }, []);
+  }, [rtDisplaySet, displaySetService, viewports, activeViewportId, viewportGridService]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     let toolGroup = toolGroupService.getToolGroup(toolGroupId);
     if (toolGroup) {
       return;
     }
     toolGroup = (0,_utils_initRTToolGroup__WEBPACK_IMPORTED_MODULE_5__["default"])(toolGroupService, customizationService, toolGroupId);
-    setToolGroupCreated(true);
-    return () => {
-      // remove the segmentation representations if seg displayset changed
-      segmentationService.removeSegmentationRepresentations(viewportId);
-      toolGroupService.destroyToolGroup(toolGroupId);
-    };
-  }, []);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    setIsHydrated(rtDisplaySet.isHydrated);
     return () => {
       // remove the segmentation representations if seg displayset changed
       segmentationService.removeSegmentationRepresentations(viewportId);
       referencedDisplaySetRef.current = null;
+      toolGroupService.destroyToolGroup(toolGroupId);
     };
-  }, [rtDisplaySet]);
-  const onStatusClick = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(async () => {
-    // Before hydrating a RT and make it added to all viewports in the grid
-    // that share the same frameOfReferenceUID, we need to store the viewport grid
-    // presentation state, so that we can restore it after hydrating the RT. This is
-    // required if the user has changed the viewport (other viewport than RT viewport)
-    // presentation state (w/l and invert) and then opens the RT. If we don't store
-    // the presentation state, the viewport will be reset to the default presentation
-    storePresentationState();
-    const isHydrated = await hydrateRTDisplaySet({
-      rtDisplaySet,
-      viewportId
-    });
-    setIsHydrated(isHydrated);
-  }, [hydrateRTDisplaySet, rtDisplaySet, storePresentationState, viewportId]);
+  }, []);
+  const getCornerstoneViewport = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    const {
+      displaySet: referencedDisplaySet
+    } = referencedDisplaySetRef.current;
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Todo: jump to the center of the first segment
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.OHIFCornerstoneViewport, _extends({}, props, {
+      displaySets: [referencedDisplaySet, rtDisplaySet],
+      viewportOptions: {
+        viewportType: 'stack',
+        toolGroupId: toolGroupId,
+        orientation: viewportOptions.orientation,
+        viewportId: viewportOptions.viewportId,
+        presentationIds: viewportOptions.presentationIds
+      },
+      onElementEnabled: evt => {
+        props.onElementEnabled?.(evt);
+      }
+    }));
+  }, [viewportId, rtDisplaySet, toolGroupId]);
   let childrenWithProps = null;
   if (!referencedDisplaySetRef.current || referencedDisplaySet.displaySetInstanceUID !== referencedDisplaySetRef.current.displaySet.displaySetInstanceUID) {
     return null;
@@ -434,43 +327,17 @@ function OHIFCornerstoneRTViewport(props) {
       });
     });
   }
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    viewportActionCornersService.addComponents([{
-      viewportId,
-      id: 'viewportStatusComponent',
-      component: (0,_getStatusComponent__WEBPACK_IMPORTED_MODULE_4__["default"])({
-        isHydrated,
-        onStatusClick
-      }),
-      indexPriority: -100,
-      location: viewportActionCornersService.LOCATIONS.topLeft
-    }, {
-      viewportId,
-      id: 'viewportActionArrowsComponent',
-      component: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.ViewportActionArrows, {
-        key: "actionArrows",
-        onArrowsClick: onSegmentChange,
-        className: viewportId === activeViewportId ? 'visible' : 'invisible group-hover/pane:visible'
-      }),
-      indexPriority: 0,
-      location: viewportActionCornersService.LOCATIONS.topRight
-    }]);
-  }, [activeViewportId, isHydrated, onSegmentChange, onStatusClick, viewportActionCornersService, viewportId]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "relative flex h-full w-full flex-row overflow-hidden"
-  }, rtIsLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.LoadingIndicatorTotalPercent, {
+  }, rtIsLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingIndicatorTotalPercent, {
     className: "h-full w-full",
     totalNumbers: processingProgress.totalSegments,
     percentComplete: processingProgress.percentComplete,
     loadingText: "Loading RTSTRUCT..."
   }), getCornerstoneViewport(), childrenWithProps));
 }
-_s2(OHIFCornerstoneRTViewport, "Fa7v5zAggAqDdsfujyob64P5gUk=", false, function () {
-  return [_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid];
-});
-_c2 = OHIFCornerstoneRTViewport;
-_s(OHIFCornerstoneRTViewport, "U1p3IMK6OXoWvGAXAGChnDXf+xE=", false, function () {
-  return [_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid];
+_s(OHIFCornerstoneRTViewport, "zYhF9akmAgdDMmRtsKloRVlJLug=", false, function () {
+  return [_ohif_core_src__WEBPACK_IMPORTED_MODULE_6__.useSystem, _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useViewportGrid, _ohif_extension_cornerstone__WEBPACK_IMPORTED_MODULE_3__.usePositionPresentationStore];
 });
 _c = OHIFCornerstoneRTViewport;
 OHIFCornerstoneRTViewport.propTypes = {
@@ -499,8 +366,6 @@ function _getReferencedDisplaySetMetadata(referencedDisplaySet) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OHIFCornerstoneRTViewport);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "OHIFCornerstoneRTViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "OHIFCornerstoneRTViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -508,99 +373,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/cornerstone-dicom-rt/src/viewports/_getStatusComponent.tsx":
-/*!**************************************************************************************!*\
-  !*** ../../../extensions/cornerstone-dicom-rt/src/viewports/_getStatusComponent.tsx ***!
-  \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _getStatusComponent)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
-
-
-function _getStatusComponent({
-  isHydrated,
-  onStatusClick
-}) {
-  var _s2 = __webpack_require__.$Refresh$.signature();
-  var _s = __webpack_require__.$Refresh$.signature();
-  let ToolTipMessage = null;
-  let StatusIcon = null;
-  switch (isHydrated) {
-    case true:
-      StatusIcon = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-        name: "status-alert"
-      });
-      ToolTipMessage = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "This Segmentation is loaded in the segmentation panel");
-      break;
-    case false:
-      StatusIcon = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-        className: "text-aqua-pale",
-        name: "status-untracked"
-      });
-      ToolTipMessage = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Click LOAD to load RTSTRUCT.");
-  }
-  const StatusArea = () => {
-    _s2();
-    _s();
-    const {
-      t
-    } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_1__.useTranslation)('Common');
-    const loadStr = t('LOAD');
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex h-6 cursor-default text-sm leading-6 text-white"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "bg-customgray-100 flex min-w-[45px] items-center rounded-l-xl rounded-r p-1"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(StatusIcon, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "ml-1"
-    }, "RTSTRUCT")), !isHydrated && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "bg-primary-main hover:bg-primary-light ml-1 cursor-pointer rounded px-1.5 hover:text-black"
-      // Using onMouseUp here because onClick is not working when the viewport is not active and is styled with pointer-events:none
-      ,
-
-      onMouseUp: onStatusClick
-    }, loadStr));
-  };
-  _s2(StatusArea, "EHitWn2MOpZJ3EHE1EThwmMZIjo=", false, function () {
-    return [react_i18next__WEBPACK_IMPORTED_MODULE_1__.useTranslation];
-  });
-  _s(StatusArea, "zlIdU9EjM2llFt74AbE2KsUJXyM=", false, function () {
-    return [react_i18next__WEBPACK_IMPORTED_MODULE_1__.useTranslation];
-  });
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, ToolTipMessage && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Tooltip, {
-    content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ToolTipMessage, null),
-    position: "bottom-left"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(StatusArea, null)), !ToolTipMessage && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(StatusArea, null));
-}
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {

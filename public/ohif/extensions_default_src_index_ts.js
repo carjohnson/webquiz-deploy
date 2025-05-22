@@ -4,19 +4,16 @@
 /*!*********************************************************************!*\
   !*** ../../../extensions/default/src/Actions/createReportAsync.tsx ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
 
 
 
@@ -34,20 +31,16 @@ async function createReportAsync({
     uiNotificationService,
     uiDialogService
   } = servicesManager.services;
-  const loadingDialogId = uiDialogService.create({
-    showOverlay: true,
-    isDraggable: false,
-    centralize: true,
-    content: Loading
-  });
   try {
     const naturalizedReport = await getReport();
-    if (!naturalizedReport) return;
+    if (!naturalizedReport) {
+      return;
+    }
 
     // The "Mode" route listens for DicomMetadataStore changes
     // When a new instance is added, it listens and
     // automatically calls makeDisplaySets
-    _ohif_core__WEBPACK_IMPORTED_MODULE_1__.DicomMetadataStore.addInstances([naturalizedReport], true);
+    _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.addInstances([naturalizedReport], true);
     const displaySet = displaySetService.getMostRecentDisplaySet();
     const displaySetInstanceUID = displaySet.displaySetInstanceUID;
     uiNotificationService.show({
@@ -64,23 +57,10 @@ async function createReportAsync({
     });
     throw new Error(`Failed to store ${reportType}. Error: ${error.message || 'Unknown error'}`);
   } finally {
-    uiDialogService.dismiss({
-      id: loadingDialogId
-    });
+    uiDialogService.hide('loading-dialog');
   }
 }
-function Loading() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-primary-active"
-  }, "Loading...");
-}
-_c2 = Loading;
-_c = Loading;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createReportAsync);
-var _c;
-__webpack_require__.$Refresh$.register(_c, "Loading");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "Loading");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -88,7 +68,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -103,7 +99,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************!*\
   !*** ../../../extensions/default/src/Components/DataSourceConfigurationComponent.tsx ***!
   \***************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -113,12 +109,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var _DataSourceConfigurationModalComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DataSourceConfigurationModalComponent */ "../../../extensions/default/src/Components/DataSourceConfigurationModalComponent.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -128,7 +123,6 @@ function DataSourceConfigurationComponent({
   servicesManager,
   extensionManager
 }) {
-  _s2();
   _s();
   const {
     t
@@ -136,7 +130,7 @@ function DataSourceConfigurationComponent({
   const {
     show,
     hide
-  } = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useModal)();
+  } = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useModal)();
   const {
     customizationService
   } = servicesManager.services;
@@ -146,12 +140,14 @@ function DataSourceConfigurationComponent({
     let shouldUpdate = true;
     const dataSourceChangedCallback = async () => {
       const activeDataSourceDef = extensionManager.getActiveDataSourceDefinition();
-      if (!activeDataSourceDef.configuration.configurationAPI) {
+      if (!activeDataSourceDef?.configuration?.configurationAPI) {
         return;
       }
       const {
         factory: configurationAPIFactory
-      } = customizationService.get(activeDataSourceDef.configuration.configurationAPI) ?? {};
+      } = customizationService.getCustomization(activeDataSourceDef.configuration.configurationAPI) ?? {
+        factory: () => null
+      };
       if (!configurationAPIFactory) {
         return;
       }
@@ -195,8 +191,7 @@ function DataSourceConfigurationComponent({
   }, [configurationAPI, configuredItems, showConfigurationModal]);
   return configuredItems ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-aqua-pale flex items-center overflow-hidden"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-    name: "settings",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Icons.Settings, {
     className: "mr-2.5 h-3.5 w-3.5 shrink-0 cursor-pointer",
     onClick: showConfigurationModal
   }), configuredItems.map((item, itemIndex) => {
@@ -211,19 +206,13 @@ function DataSourceConfigurationComponent({
     }, "|"));
   })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null);
 }
-_s2(DataSourceConfigurationComponent, "bBg3JxcyiXWOlzlRoI7Z61H/OZk=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_1__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useModal];
-});
-_c2 = DataSourceConfigurationComponent;
-_s(DataSourceConfigurationComponent, "z/s21Nt7xhJxcAKLYZbmvTdjuqs=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_1__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.useModal];
+_s(DataSourceConfigurationComponent, "bBg3JxcyiXWOlzlRoI7Z61H/OZk=", false, function () {
+  return [react_i18next__WEBPACK_IMPORTED_MODULE_1__.useTranslation, _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.useModal];
 });
 _c = DataSourceConfigurationComponent;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DataSourceConfigurationComponent);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "DataSourceConfigurationComponent");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "DataSourceConfigurationComponent");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -231,7 +220,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -246,7 +251,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************************!*\
   !*** ../../../extensions/default/src/Components/DataSourceConfigurationModalComponent.tsx ***!
   \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -258,12 +263,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var _ItemListComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ItemListComponent */ "../../../extensions/default/src/Components/ItemListComponent.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -276,7 +280,6 @@ function DataSourceConfigurationModalComponent({
   configuredItems,
   onHide
 }) {
-  _s2();
   _s();
   const {
     t
@@ -331,7 +334,7 @@ function DataSourceConfigurationModalComponent({
   const getSelectedItemCursorClasses = itemIndex => itemIndex !== itemLabels.length - 1 && itemIndex < selectedItems.length ? 'cursor-pointer' : 'cursor-auto';
   const getSelectedItemBackgroundClasses = itemIndex => itemIndex < selectedItems.length ? classnames__WEBPACK_IMPORTED_MODULE_0___default()('bg-black/[.4]', itemIndex !== itemLabels.length - 1 ? 'hover:bg-transparent active:bg-secondary-dark' : '') : 'bg-transparent';
   const getSelectedItemBorderClasses = itemIndex => itemIndex === currentSelectedItemIndex + 1 ? classnames__WEBPACK_IMPORTED_MODULE_0___default()('border-2', 'border-solid', 'border-primary-light') : itemIndex < selectedItems.length ? 'border border-solid border-primary-active hover:border-primary-light active:border-white' : 'border border-dashed border-secondary-light';
-  const getSelectedItemTextClasses = itemIndex => itemIndex <= selectedItems.length ? 'text-primary-light' : 'text-primary-active';
+  const getSelectedItemTextClasses = itemIndex => itemIndex <= selectedItems.length ? 'text-primary-light' : 'text-primary';
   const getErrorComponent = () => {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "flex min-h-[1px] grow flex-col gap-4"
@@ -354,9 +357,9 @@ function DataSourceConfigurationModalComponent({
         } : undefined
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
         className: "text- flex items-center gap-2"
-      }, itemLabelIndex < selectedItems.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_3__.Icon, {
+      }, itemLabelIndex < selectedItems.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons.ByName, {
         name: "status-tracked"
-      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_3__.Icon, {
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons.ByName, {
         name: "status-untracked"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
         className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(NO_WRAP_ELLIPSIS_CLASS_NAMES)
@@ -378,19 +381,13 @@ function DataSourceConfigurationModalComponent({
     }
   }));
 }
-_s2(DataSourceConfigurationModalComponent, "4U1nWu0JHjOrcSK6xCxSs7RNCkQ=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
-});
-_c2 = DataSourceConfigurationModalComponent;
-_s(DataSourceConfigurationModalComponent, "7VJrzno7BwV8C5KB6URPAzyaOAY=", false, function () {
+_s(DataSourceConfigurationModalComponent, "4U1nWu0JHjOrcSK6xCxSs7RNCkQ=", false, function () {
   return [react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
 });
 _c = DataSourceConfigurationModalComponent;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DataSourceConfigurationModalComponent);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "DataSourceConfigurationModalComponent");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "DataSourceConfigurationModalComponent");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -398,7 +395,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -413,7 +426,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************!*\
   !*** ../../../extensions/default/src/Components/ItemListComponent.tsx ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -425,12 +438,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
+
+
 
 
 
@@ -440,8 +456,10 @@ function ItemListComponent({
   itemList,
   onItemClicked
 }) {
-  _s2();
   _s();
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem)();
   const {
     t
   } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation)('DataSourceConfiguration');
@@ -449,25 +467,25 @@ function ItemListComponent({
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     setFilterValue('');
   }, [itemList]);
+  const LoadingIndicatorProgress = servicesManager.services.customizationService.getCustomization('ui.loadingIndicatorProgress');
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "flex min-h-[1px] grow flex-col gap-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "flex items-center justify-between"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "text-primary-light text-[20px]"
-  }, t(`Select ${itemLabel}`)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_3__.InputFilterText, {
+  }, t(`Select ${itemLabel}`)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.InputFilterText, {
     className: "max-w-[40%] grow",
     value: filterValue,
     onDebounceChange: setFilterValue,
     placeholder: t(`Search ${itemLabel} list`)
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "relative flex min-h-[1px] grow flex-col bg-black text-[14px]"
-  }, itemList == null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_3__.LoadingIndicatorProgress, {
+  }, itemList == null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(LoadingIndicatorProgress, {
     className: 'h-full w-full'
   }) : itemList.length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "text-primary-light flex h-full flex-col items-center justify-center px-6 py-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_3__.Icon, {
-    name: "magnifier",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.Icons.ToolMagnify, {
     className: "mb-4"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, t(`No ${itemLabel} available`))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "bg-secondary-dark px-3 py-1.5 text-white"
@@ -478,28 +496,22 @@ function ItemListComponent({
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: classnames__WEBPACK_IMPORTED_MODULE_0___default()('hover:text-primary-light hover:bg-primary-dark group mx-2 flex items-center justify-between px-6 py-2', border),
       key: item.id
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_3__.Button, {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.Button, {
       onClick: () => onItemClicked(item),
       className: "invisible group-hover:visible",
-      endIcon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_3__.Icon, {
+      endIcon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.Icons.ByName, {
         name: "arrow-left"
       })
     }, t('Select')));
   })))));
 }
-_s2(ItemListComponent, "ReeOvurdrGYU6IabnDSBH9JQZ0o=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
-});
-_c2 = ItemListComponent;
-_s(ItemListComponent, "rR5I8PISI1wRZUp/QMr48ilhIFM=", false, function () {
-  return [react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
+_s(ItemListComponent, "XggkBGR6VbNvbpnWolf/Ybec/lI=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation];
 });
 _c = ItemListComponent;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ItemListComponent);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "ItemListComponent");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ItemListComponent");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -507,7 +519,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -522,7 +550,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************************!*\
   !*** ../../../extensions/default/src/Components/LineChartViewport/LineChartViewport.tsx ***!
   \******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -531,7 +559,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -545,7 +573,7 @@ const LineChartViewport = ({
     axis: chartAxis,
     series: chartSeries
   } = displaySet.instance.chartData;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.LineChart, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.LineChart, {
     showLegend: true,
     legendWidth: 150,
     axis: {
@@ -566,13 +594,10 @@ const LineChartViewport = ({
     series: chartSeries
   });
 };
-_c2 = LineChartViewport;
 _c = LineChartViewport;
 
 var _c;
 __webpack_require__.$Refresh$.register(_c, "LineChartViewport");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "LineChartViewport");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -580,7 +605,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -595,7 +636,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************!*\
   !*** ../../../extensions/default/src/Components/LineChartViewport/index.ts ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -614,7 +655,195 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/Components/MoreDropdownMenu.tsx":
+/*!***********************************************************************!*\
+  !*** ../../../extensions/default/src/Components/MoreDropdownMenu.tsx ***!
+  \***********************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MoreDropdownMenu)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature(),
+  _s2 = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+
+
+/**
+ * The default sub-menu appearance and setup is defined here, but this can be
+ * replaced by
+ */
+const getMenuItemsDefault = ({
+  commandsManager,
+  items,
+  ...props
+}) => {
+  _s();
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
+  const {
+    customizationService
+  } = servicesManager.services;
+
+  // This allows replacing the default child item for menus, whereas the entire
+  // getMenuItems can also be replaced by providing it to the MoreDropdownMenu
+  const menuContent = customizationService.getCustomization('ohif.menuContent');
+
+  // Default menu item component if none is provided through customization
+
+  const DefaultMenuItem = ({
+    item
+  }) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuItem, {
+    onClick: () => item.onClick({
+      commandsManager,
+      servicesManager,
+      ...props
+    })
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2"
+  }, item.iconName && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.ByName, {
+    name: item.iconName
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, item.label)));
+  const MenuItemComponent = menuContent?.content || DefaultMenuItem;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuContent, {
+    hideWhenDetached: true,
+    align: "start",
+    onClick: e => {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  }, items?.map((item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(MenuItemComponent, _extends({
+    key: item.id || `menu-item-${index}`,
+    item: item,
+    commandsManager: commandsManager,
+    servicesManager: servicesManager
+  }, props))));
+};
+
+/**
+ * The component provides a ... sub-menu for various components which appears
+ * on hover over the main component.
+ *
+ * @param bindProps - properties to define the sub-menu
+ * @returns Component bound to the bindProps
+ */
+_s(getMenuItemsDefault, "9im43WjHHpYAdxqRAjz29gyfNeo=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem];
+});
+function MoreDropdownMenu(bindProps) {
+  _s2();
+  const {
+    menuItemsKey,
+    getMenuItems = getMenuItemsDefault,
+    commandsManager
+  } = bindProps;
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
+  const {
+    customizationService
+  } = servicesManager.services;
+  const items = customizationService.getCustomization(menuItemsKey);
+  if (!items?.length) {
+    return null;
+  }
+  function BoundMoreDropdownMenu(props) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenu, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuTrigger, {
+      asChild: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+      variant: "ghost",
+      size: "icon",
+      className: "hidden group-hover:inline-flex data-[state=open]:inline-flex",
+      onClick: e => {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.More, null))), getMenuItems({
+      ...props,
+      commandsManager: commandsManager,
+      servicesManager: servicesManager,
+      items
+    }));
+  }
+  return BoundMoreDropdownMenu;
+}
+_s2(MoreDropdownMenu, "9im43WjHHpYAdxqRAjz29gyfNeo=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem];
+});
+_c = MoreDropdownMenu;
+var _c;
+__webpack_require__.$Refresh$.register(_c, "MoreDropdownMenu");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -629,7 +858,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************************!*\
   !*** ../../../extensions/default/src/Components/ProgressDropdownWithService.tsx ***!
   \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -638,12 +867,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
+
 
 
 const workflowStepsToDropdownOptions = (steps = []) => steps.map(step => ({
@@ -653,11 +883,11 @@ const workflowStepsToDropdownOptions = (steps = []) => steps.map(step => ({
   activated: false,
   completed: false
 }));
-function ProgressDropdownWithService({
-  servicesManager
-}) {
-  _s2();
+function ProgressDropdownWithService() {
   _s();
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
   const {
     workflowStepsService
   } = servicesManager.services;
@@ -720,20 +950,18 @@ function ProgressDropdownWithService({
       unsubActiveStepChanged();
     };
   }, [servicesManager, workflowStepsService]);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.ProgressDropdown, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ProgressDropdown, {
     options: dropdownOptions,
     value: activeStepId,
     onChange: handleDropdownChange
   });
 }
-_s2(ProgressDropdownWithService, "ZbOTG1EasY9xNRYzmUyrwececqo=");
-_c2 = ProgressDropdownWithService;
-_s(ProgressDropdownWithService, "ZbOTG1EasY9xNRYzmUyrwececqo=");
+_s(ProgressDropdownWithService, "BzlacjvdYvSknXZFEz/eHbTOBfE=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem];
+});
 _c = ProgressDropdownWithService;
 var _c;
 __webpack_require__.$Refresh$.register(_c, "ProgressDropdownWithService");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ProgressDropdownWithService");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -741,7 +969,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -756,7 +1000,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************************!*\
   !*** ../../../extensions/default/src/Components/SidePanelWithServices.tsx ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -769,7 +1013,6 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {
@@ -786,40 +1029,42 @@ const SidePanelWithServices = ({
   servicesManager,
   side,
   activeTabIndex: activeTabIndexProp,
+  isExpanded,
   tabs: tabsProp,
-  expandedWidth,
+  onOpen,
+  onClose,
   ...props
 }) => {
-  _s2();
   _s();
   const panelService = servicesManager?.services?.panelService;
 
   // Tracks whether this SidePanel has been opened at least once since this SidePanel was inserted into the DOM.
   // Thus going to the Study List page and back to the viewer resets this flag for a SidePanel.
-  const [sidePanelOpen, setSidePanelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(activeTabIndexProp !== null);
-  const [activeTabIndex, setActiveTabIndex] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(activeTabIndexProp);
+  const [sidePanelExpanded, setSidePanelExpanded] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(isExpanded);
+  const [activeTabIndex, setActiveTabIndex] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(activeTabIndexProp ?? 0);
+  const [closedManually, setClosedManually] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [tabs, setTabs] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(tabsProp ?? panelService.getPanels(side));
   const handleActiveTabIndexChange = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(({
     activeTabIndex
   }) => {
     setActiveTabIndex(activeTabIndex);
-    setSidePanelOpen(activeTabIndex !== null);
   }, []);
   const handleOpen = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
-    setSidePanelOpen(true);
-    // If panel is being opened but no tab is active, set first tab as active
-    if (activeTabIndex === null && tabs.length > 0) {
-      setActiveTabIndex(0);
-    }
-  }, [activeTabIndex, tabs]);
+    setSidePanelExpanded(true);
+    onOpen?.();
+  }, [onOpen]);
   const handleClose = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
-    setSidePanelOpen(false);
-    setActiveTabIndex(null);
-  }, []);
+    setSidePanelExpanded(false);
+    setClosedManually(true);
+    onClose?.();
+  }, [onClose]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setSidePanelExpanded(isExpanded);
+  }, [isExpanded]);
 
   /** update the active tab index from outside */
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    setActiveTabIndex(activeTabIndexProp);
+    setActiveTabIndex(activeTabIndexProp ?? 0);
   }, [activeTabIndexProp]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     const {
@@ -836,9 +1081,12 @@ const SidePanelWithServices = ({
   }, [panelService, side]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     const activatePanelSubscription = panelService.subscribe(panelService.EVENTS.ACTIVATE_PANEL, activatePanelEvent => {
-      if (sidePanelOpen || activatePanelEvent.forceActive) {
+      if (sidePanelExpanded || activatePanelEvent.forceActive) {
         const tabIndex = tabs.findIndex(tab => tab.id === activatePanelEvent.panelId);
         if (tabIndex !== -1) {
+          if (!closedManually) {
+            setSidePanelExpanded(true);
+          }
           setActiveTabIndex(tabIndex);
         }
       }
@@ -846,26 +1094,22 @@ const SidePanelWithServices = ({
     return () => {
       activatePanelSubscription.unsubscribe();
     };
-  }, [tabs, sidePanelOpen, panelService]);
+  }, [tabs, sidePanelExpanded, panelService, closedManually]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SidePanel, _extends({}, props, {
     side: side,
     tabs: tabs,
     activeTabIndex: activeTabIndex,
+    isExpanded: sidePanelExpanded,
     onOpen: handleOpen,
     onClose: handleClose,
-    onActiveTabIndexChange: handleActiveTabIndexChange,
-    expandedWidth: expandedWidth
+    onActiveTabIndexChange: handleActiveTabIndexChange
   }));
 };
-_s2(SidePanelWithServices, "GdtgtA/NtyMR+BVavm+FaL9ySRI=");
-_c2 = SidePanelWithServices;
-_s(SidePanelWithServices, "GdtgtA/NtyMR+BVavm+FaL9ySRI=");
+_s(SidePanelWithServices, "nUlMQMp7BVbp6i/5g2z/tV+ryz0=");
 _c = SidePanelWithServices;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SidePanelWithServices);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "SidePanelWithServices");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "SidePanelWithServices");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -873,7 +1117,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -888,7 +1148,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************************!*\
   !*** ../../../extensions/default/src/CustomizableContextMenu/ContextMenuController.tsx ***!
   \*****************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -896,13 +1156,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ ContextMenuController)
 /* harmony export */ });
 /* harmony import */ var _ContextMenuItemsBuilder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ContextMenuItemsBuilder */ "../../../extensions/default/src/CustomizableContextMenu/ContextMenuItemsBuilder.ts");
-/* harmony import */ var _platform_ui_src_components_ContextMenu_ContextMenu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../platform/ui/src/components/ContextMenu/ContextMenu */ "../../ui/src/components/ContextMenu/ContextMenu.tsx");
-/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 var _ContextMenuController;
-
 
 
 /**
@@ -925,9 +1183,7 @@ class ContextMenuController {
     this.commandsManager = commandsManager;
   }
   closeContextMenu() {
-    this.services.uiDialogService.dismiss({
-      id: 'context-menu'
-    });
+    this.services.uiDialogService.hide('context-menu');
   }
 
   /**
@@ -949,44 +1205,45 @@ class ContextMenuController {
       menus,
       selectorProps
     } = contextMenuProps;
-    const annotationManager = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.annotation.state.getAnnotationManager();
-    const {
-      locking
-    } = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.annotation;
-    const targetAnnotationId = selectorProps?.nearbyToolData?.annotationUID;
-    const isLocked = locking.isAnnotationLocked(annotationManager.getAnnotation(targetAnnotationId));
-    if (isLocked) {
-      console.warn('Annotation is locked.');
+    if (!menus) {
+      console.warn('No menus found for', menuId);
       return;
     }
+    const {
+      locking,
+      visibility
+    } = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_1__.annotation;
+    const targetAnnotationId = selectorProps?.nearbyToolData?.annotationUID;
+    if (targetAnnotationId) {
+      const isLocked = locking.isAnnotationLocked(targetAnnotationId);
+      const isVisible = visibility.isAnnotationVisible(targetAnnotationId);
+      if (isLocked || !isVisible) {
+        console.warn(`Annotation is ${isLocked ? 'locked' : 'not visible'}.`);
+        return;
+      }
+    }
     const items = _ContextMenuItemsBuilder__WEBPACK_IMPORTED_MODULE_0__.getMenuItems(selectorProps || contextMenuProps, event, menus, menuId);
-    this.services.uiDialogService.dismiss({
-      id: 'context-menu'
-    });
-    this.services.uiDialogService.create({
+    if (!items) {
+      return;
+    }
+    const ContextMenu = this.services.customizationService.getCustomization('ui.contextMenu');
+    this.services.uiDialogService.hide('context-menu');
+    this.services.uiDialogService.show({
       id: 'context-menu',
-      isDraggable: false,
-      preservePosition: false,
-      preventCutOf: true,
-      defaultPosition: ContextMenuController._getDefaultPosition(defaultPointsPosition, event?.detail, viewportElement),
-      event,
-      content: _platform_ui_src_components_ContextMenu_ContextMenu__WEBPACK_IMPORTED_MODULE_1__["default"],
-      // This naming is part of the uiDialogService convention
-      // Clicking outside simply closes the dialog box.
-      onClickOutside: () => this.services.uiDialogService.dismiss({
-        id: 'context-menu'
-      }),
+      defaultPosition: ContextMenuController._getDefaultPosition(defaultPointsPosition, event?.detail || event, viewportElement),
+      content: ContextMenu,
+      shouldCloseOnEsc: true,
+      shouldCloseOnOverlayClick: true,
+      unstyled: true,
       contentProps: {
         items,
         selectorProps,
         menus,
         event,
         subMenu,
-        eventData: event?.detail,
+        eventData: event?.detail || event,
         onClose: () => {
-          this.services.uiDialogService.dismiss({
-            id: 'context-menu'
-          });
+          this.services.uiDialogService.hide('context-menu');
         },
         /**
          * Displays a sub-menu, removing this menu
@@ -1024,8 +1281,8 @@ ContextMenuController.getDefaultPosition = () => {
   };
 };
 ContextMenuController._getEventDefaultPosition = eventDetail => ({
-  x: eventDetail && eventDetail.currentPoints.client[0],
-  y: eventDetail && eventDetail.currentPoints.client[1]
+  x: eventDetail?.currentPoints?.client[0] ?? eventDetail?.pageX,
+  y: eventDetail?.currentPoints?.client[1] ?? eventDetail?.pageY
 });
 ContextMenuController._getElementDefaultPosition = element => {
   if (element) {
@@ -1087,7 +1344,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1102,7 +1375,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************************!*\
   !*** ../../../extensions/default/src/CustomizableContextMenu/ContextMenuItemsBuilder.ts ***!
   \******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1257,7 +1530,7 @@ function adaptItem(item, subProps) {
     value: subProps.selectorProps?.value
   };
   if (item.actionType === 'ShowSubMenu' && !newItem.iconRight) {
-    newItem.iconRight = 'chevron-menu';
+    newItem.iconRight = 'chevron-down';
   }
   if (!item.action) {
     newItem.action = (itemRef, componentProps) => {
@@ -1286,66 +1559,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/default/src/CustomizableContextMenu/defaultContextMenu.ts":
-/*!*************************************************************************************!*\
-  !*** ../../../extensions/default/src/CustomizableContextMenu/defaultContextMenu.ts ***!
-  \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-const defaultContextMenu = {
-  id: 'measurementsContextMenu',
-  customizationType: 'ohif.contextMenu',
-  menus: [
-  // Get the items from the UI Customization for the menu name (and have a custom name)
-  {
-    id: 'forExistingMeasurement',
-    selector: ({
-      nearbyToolData
-    }) => !!nearbyToolData,
-    items: [{
-      label: 'Delete measurement',
-      commands: [{
-        commandName: 'deleteMeasurement',
-        // we only have support for cornerstoneTools context menu since
-        // they are svg based
-        context: 'CORNERSTONE'
-      }]
-    }, {
-      label: 'Add Label',
-      commands: [{
-        commandName: 'setMeasurementLabel'
-      }]
-    }]
-  }]
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (defaultContextMenu);
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1360,23 +1590,20 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************!*\
   !*** ../../../extensions/default/src/CustomizableContextMenu/index.ts ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ContextMenuController: () => (/* reexport safe */ _ContextMenuController__WEBPACK_IMPORTED_MODULE_0__["default"]),
 /* harmony export */   ContextMenuItemsBuilder: () => (/* reexport module object */ _ContextMenuItemsBuilder__WEBPACK_IMPORTED_MODULE_1__),
-/* harmony export */   CustomizableContextMenuTypes: () => (/* reexport module object */ _types__WEBPACK_IMPORTED_MODULE_3__),
-/* harmony export */   defaultContextMenu: () => (/* reexport safe */ _defaultContextMenu__WEBPACK_IMPORTED_MODULE_2__["default"])
+/* harmony export */   CustomizableContextMenuTypes: () => (/* reexport module object */ _types__WEBPACK_IMPORTED_MODULE_2__)
 /* harmony export */ });
 /* harmony import */ var _ContextMenuController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ContextMenuController */ "../../../extensions/default/src/CustomizableContextMenu/ContextMenuController.tsx");
 /* harmony import */ var _ContextMenuItemsBuilder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ContextMenuItemsBuilder */ "../../../extensions/default/src/CustomizableContextMenu/ContextMenuItemsBuilder.ts");
-/* harmony import */ var _defaultContextMenu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./defaultContextMenu */ "../../../extensions/default/src/CustomizableContextMenu/defaultContextMenu.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./types */ "../../../extensions/default/src/CustomizableContextMenu/types.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "../../../extensions/default/src/CustomizableContextMenu/types.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
 
 
 
@@ -1389,7 +1616,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1404,7 +1647,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************!*\
   !*** ../../../extensions/default/src/CustomizableContextMenu/types.ts ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1420,7 +1663,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1435,7 +1694,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************************************!*\
   !*** ../../../extensions/default/src/DataSourceConfigurationAPI/GoogleCloudDataSourceConfigurationAPI.ts ***!
   \***********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1616,7 +1875,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1631,7 +1906,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************!*\
   !*** ../../../extensions/default/src/DicomJSONDataSource/index.js ***!
   \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1953,7 +2228,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -1968,7 +2259,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************!*\
   !*** ../../../extensions/default/src/DicomLocalDataSource/index.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2126,7 +2417,8 @@ function createDicomLocalApi(dicomLocalConfig) {
             const {
               SeriesInstanceUID
             } = aSeries;
-            aSeries.instances.forEach(instance => {
+            const isMultiframe = aSeries.instances[0].NumberOfFrames > 1;
+            aSeries.instances.forEach((instance, index) => {
               const {
                 url: imageId,
                 StudyInstanceUID,
@@ -2134,22 +2426,14 @@ function createDicomLocalApi(dicomLocalConfig) {
                 SOPInstanceUID
               } = instance;
               instance.imageId = imageId;
-              const numberOfFrames = instance.NumberOfFrames || 1;
-              // Process all frames consistently, whether single or multiframe
-              for (let i = 0; i < numberOfFrames; i++) {
-                const frameNumber = i + 1;
-                const frameImageId = implementation.getImageIdsForInstance({
-                  instance,
-                  frame: frameNumber
-                });
-                // Add imageId specific mapping to this data as the URL isn't necessarily WADO-URI.
-                metadataProvider.addImageIdToUIDs(frameImageId, {
-                  StudyInstanceUID,
-                  SeriesInstanceUID,
-                  SOPInstanceUID,
-                  frameNumber: numberOfFrames > 1 ? frameNumber : undefined
-                });
-              }
+
+              // Add imageId specific mapping to this data as the URL isn't necessarily WADO-URI.
+              metadataProvider.addImageIdToUIDs(imageId, {
+                StudyInstanceUID,
+                SeriesInstanceUID,
+                SOPInstanceUID,
+                frameIndex: isMultiframe ? index : 1
+              });
             });
             _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore._broadcastEvent(EVENTS.INSTANCES_ADDED, {
               StudyInstanceUID,
@@ -2207,9 +2491,9 @@ function createDicomLocalApi(dicomLocalConfig) {
 
       const {
         StudyInstanceUID,
-        SeriesInstanceUID,
-        SOPInstanceUID
+        SeriesInstanceUID
       } = instance;
+      const SOPInstanceUID = instance.SOPInstanceUID || instance.SopInstanceUID;
       const storedInstance = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.getInstance(StudyInstanceUID, SeriesInstanceUID, SOPInstanceUID);
       let imageId = storedInstance.url;
       if (frame !== undefined) {
@@ -2253,7 +2537,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2268,7 +2568,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************!*\
   !*** ../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.tsx ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2281,17 +2581,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash.debounce */ "../../../node_modules/lodash.debounce/index.js");
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
-/* harmony import */ var _DicomTagTable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DicomTagTable */ "../../../extensions/default/src/DicomTagBrowser/DicomTagTable.tsx");
-/* harmony import */ var _DicomTagBrowser_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DicomTagBrowser.css */ "../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css");
-/* harmony import */ var _DicomTagBrowser_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_DicomTagBrowser_css__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _DicomTagTable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DicomTagTable */ "../../../extensions/default/src/DicomTagBrowser/DicomTagTable.tsx");
+/* harmony import */ var _DicomTagBrowser_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DicomTagBrowser.css */ "../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css");
+/* harmony import */ var _DicomTagBrowser_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_DicomTagBrowser_css__WEBPACK_IMPORTED_MODULE_6__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -2301,7 +2597,8 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 
-
+let rowCounter = 0;
+const generateRowId = () => `row_${++rowCounter}`;
 const {
   ImageSet
 } = _ohif_core__WEBPACK_IMPORTED_MODULE_3__.classes;
@@ -2315,25 +2612,16 @@ const DicomTagBrowser = ({
   displaySets,
   displaySetInstanceUID
 }) => {
-  _s2();
   _s();
-  // The column indices that are to be excluded during a filter of the table.
-  // At present the column indices are:
-  // 0: DICOM tag
-  // 1: VR
-  // 2: Keyword
-  // 3: Value
-  const excludedColumnIndicesForFilter = new Set([1]);
   const [selectedDisplaySetInstanceUID, setSelectedDisplaySetInstanceUID] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(displaySetInstanceUID);
   const [instanceNumber, setInstanceNumber] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(1);
+  const [shouldShowInstanceList, setShouldShowInstanceList] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false);
   const [filterValue, setFilterValue] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)('');
   const onSelectChange = value => {
     setSelectedDisplaySetInstanceUID(value.value);
     setInstanceNumber(1);
   };
   const activeDisplaySet = displaySets.find(ds => ds.displaySetInstanceUID === selectedDisplaySetInstanceUID);
-  const isImageStack = _isImageStack(activeDisplaySet);
-  const showInstanceList = isImageStack && activeDisplaySet.images.length > 1;
   const displaySetList = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
     displaySets.sort((a, b) => a.SeriesNumber - b.SeriesNumber);
     return displaySets.map(displaySet => {
@@ -2357,42 +2645,41 @@ const DicomTagBrowser = ({
       };
     });
   }, [displaySets]);
-  const rows = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
-    let metadata;
+  const getMetadata = (0,react__WEBPACK_IMPORTED_MODULE_2__.useCallback)(isImageStack => {
     if (isImageStack) {
-      metadata = activeDisplaySet.images[instanceNumber - 1];
-    } else {
-      metadata = activeDisplaySet.instance || activeDisplaySet;
+      return activeDisplaySet.images[instanceNumber - 1];
     }
+    return activeDisplaySet.instance || activeDisplaySet;
+  }, [activeDisplaySet, instanceNumber]);
+  const rows = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
+    const isImageStack = activeDisplaySet instanceof ImageSet;
+    const metadata = getMetadata(isImageStack);
+    setShouldShowInstanceList(isImageStack && activeDisplaySet.images.length > 1);
     const tags = getSortedTags(metadata);
-    return getFormattedRowsFromTags(tags, metadata);
-  }, [instanceNumber, selectedDisplaySetInstanceUID]);
+    const rows = getFormattedRowsFromTags({
+      tags,
+      metadata
+    });
+    return rows;
+  }, [getMetadata, activeDisplaySet]);
   const filteredRows = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
     if (!filterValue) {
       return rows;
     }
-    const filterValueLowerCase = filterValue.toLowerCase();
-    return rows.filter(row => {
-      return row.reduce((keepRow, col, colIndex) => {
-        if (keepRow) {
-          // We are already keeping the row, why do more work so return now.
-          return keepRow;
-        }
-        if (excludedColumnIndicesForFilter.has(colIndex)) {
-          return keepRow;
-        }
-        return keepRow || col.toLowerCase().includes(filterValueLowerCase);
-      }, false);
-    });
-  }, [rows, filterValue]);
-  const debouncedSetFilterValue = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(() => {
-    return lodash_debounce__WEBPACK_IMPORTED_MODULE_5___default()(setFilterValue, 200);
-  }, []);
-  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
-    return () => {
-      debouncedSetFilterValue?.cancel();
+    const matchedRowIds = new Set();
+    const propertiesToCheck = ['tag', 'valueRepresentation', 'keyword', 'value'];
+    const setIsMatched = row => {
+      const isDirectMatch = propertiesToCheck.some(propertyName => row[propertyName]?.toLowerCase().includes(filterValueLowerCase));
+      if (!isDirectMatch) {
+        return;
+      }
+      matchedRowIds.add(row.uid);
+      [...(row.parents ?? []), ...(row.children ?? [])].forEach(uid => matchedRowIds.add(uid));
     };
-  }, []);
+    const filterValueLowerCase = filterValue.toLowerCase();
+    rows.forEach(setIsMatched);
+    return rows.filter(row => matchedRowIds.has(row.uid));
+  }, [rows, filterValue]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
     className: "dicom-tag-browser-content bg-muted"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
@@ -2402,73 +2689,159 @@ const DicomTagBrowser = ({
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
     className: "flex w-1/3 flex-col"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
-    className: "text-muted-foreground flex h-6 items-center text-xs"
-  }, "Series"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__.Select, {
+    className: "text-muted-foreground flex h-6 items-center pb-2 text-base"
+  }, "Series"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.Select, {
     value: selectedDisplaySetInstanceUID,
     onValueChange: value => onSelectChange({
       value
     })
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__.SelectTrigger, null, displaySetList.find(ds => ds.value === selectedDisplaySetInstanceUID)?.label || 'Select Series'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__.SelectContent, null, displaySetList.map(item => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__.SelectItem, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.SelectTrigger, null, displaySetList.find(ds => ds.value === selectedDisplaySetInstanceUID)?.label || 'Select Series'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.SelectContent, null, displaySetList.map(item => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.SelectItem, {
       key: item.value,
       value: item.value
     }, item.label, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
       className: "text-muted-foreground ml-1 text-xs"
     }, item.description));
-  })))), showInstanceList && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
-    className: "mx-auto flex w-1/5 flex-col"
+  })))), shouldShowInstanceList && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
+    className: "mx-auto mt-0.5 flex w-1/4 flex-col"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
-    className: "text-muted-foreground flex h-6 items-center text-xs"
-  }, "Instance Number (", instanceNumber, " of ", activeDisplaySet.images.length, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_6__.Slider, {
+    className: "text-muted-foreground flex h-6 items-center pb-2 text-base"
+  }, "Instance Number (", instanceNumber, " of ", activeDisplaySet?.images?.length, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.Slider, {
     value: [instanceNumber],
     onValueChange: ([value]) => {
       setInstanceNumber(value);
     },
     min: 1,
-    max: activeDisplaySet.images.length,
+    max: activeDisplaySet?.images?.length,
     step: 1,
     className: "pt-4"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
-    className: "ml-auto flex w-1/3 flex-col"
+    className: "ml-auto mr-1 flex w-1/3 flex-col"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
-    className: "text-muted-foreground flex h-6 items-center text-xs"
-  }, "Search metadata"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.InputFilterText, {
-    placeholder: "Search metadata...",
-    onDebounceChange: setFilterValue
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_DicomTagTable__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    className: "text-muted-foreground flex h-6 items-center pb-2 text-base"
+  }, "Search metadata"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.InputFilter, {
+    className: "text-muted-foreground",
+    onChange: setFilterValue
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.InputFilter.SearchIcon, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.InputFilter.Input, {
+    placeholder: "Search metadata",
+    className: "pl-9 pr-9"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.InputFilter.ClearButton, {
+    className: "text-primary mr-0.5 p-0.5"
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_DicomTagTable__WEBPACK_IMPORTED_MODULE_5__["default"], {
     rows: filteredRows
   }));
 };
-_s2(DicomTagBrowser, "MgA+XglviBbpB+L6Hi6dbkEzCsc=");
-_c2 = DicomTagBrowser;
-_s(DicomTagBrowser, "MgA+XglviBbpB+L6Hi6dbkEzCsc=");
+_s(DicomTagBrowser, "qxprW3iOUY3atv04sWS4QqkrpIY=");
 _c = DicomTagBrowser;
-function getFormattedRowsFromTags(tags, metadata) {
+function getFormattedRowsFromTags({
+  tags,
+  metadata
+}) {
   const rows = [];
-  tags.forEach(tagInfo => {
-    if (tagInfo.vr === 'SQ') {
-      rows.push([`${tagInfo.tagIndent}${tagInfo.tag}`, tagInfo.vr, tagInfo.keyword, '']);
-      const {
-        values
-      } = tagInfo;
-      values.forEach((item, index) => {
-        const formatedRowsFromTags = getFormattedRowsFromTags(item, metadata);
-        rows.push([`${item[0].tagIndent}(FFFE,E000)`, '', `Item #${index}`, '']);
-        rows.push(...formatedRowsFromTags);
-      });
-    } else {
-      if (tagInfo.vr === 'xs') {
-        try {
-          const tag = dcmjs__WEBPACK_IMPORTED_MODULE_0__["default"].data.Tag.fromPString(tagInfo.tag).toCleanString();
-          const originalTagInfo = metadata[tag];
-          tagInfo.vr = originalTagInfo.vr;
-        } catch (error) {
-          console.error(`Failed to parse value representation for tag '${tagInfo.keyword}'`);
+  const stack = [{
+    tags,
+    depth: 0,
+    parents: null,
+    index: 0,
+    children: []
+  }];
+  const parentChildMap = new Map();
+  while (stack.length > 0) {
+    const current = stack.pop();
+    const {
+      tags,
+      depth,
+      parents,
+      index,
+      children
+    } = current;
+    for (let i = index; i < tags.length; i++) {
+      const tagInfo = tags[i];
+      const uid = tagInfo.uid ?? generateRowId();
+      if (parents?.length > 0) {
+        parents.forEach(parent => {
+          parentChildMap.get(parent).push(uid);
+        });
+      }
+      if (tagInfo.vr === 'SQ') {
+        const row = {
+          uid,
+          tag: tagInfo.tag,
+          valueRepresentation: tagInfo.vr,
+          keyword: tagInfo.keyword,
+          value: '',
+          depth,
+          isVisible: true,
+          areChildrenVisible: true,
+          children: [],
+          parents
+        };
+        rows.push(row);
+        parentChildMap.set(uid, row.children);
+        const newParents = parents ? [...parents, uid] : [uid];
+        if (tagInfo.values.length > 0) {
+          stack.push({
+            tags,
+            depth,
+            parents,
+            index: i + 1,
+            children
+          });
+          for (let j = tagInfo.values.length - 1, values = tagInfo.values[j]; j >= 0; values = tagInfo.values[--j]) {
+            const itemUid = generateRowId();
+            stack.push({
+              tags: values,
+              depth: depth + 2,
+              parents: [...newParents, itemUid],
+              index: 0,
+              children: []
+            });
+            const itemTagInfo = {
+              tags: [{
+                tag: '(FFFE,E000)',
+                vr: '',
+                keyword: `Item #${j}`,
+                value: '',
+                uid: itemUid
+              }],
+              depth: depth + 1,
+              parents: newParents,
+              index: 0,
+              children: []
+            };
+            stack.push(itemTagInfo);
+            parentChildMap.set(itemUid, itemTagInfo.children);
+          }
+          break;
+        }
+      } else {
+        if (tagInfo.vr === 'xs') {
+          try {
+            const tag = dcmjs__WEBPACK_IMPORTED_MODULE_0__["default"].data.Tag.fromPString(tagInfo.tag).toCleanString();
+            const originalTagInfo = metadata[tag];
+            tagInfo.vr = originalTagInfo.vr;
+          } catch (error) {
+            console.warn(`Failed to parse value representation for tag '${tagInfo.keyword}'`);
+          }
+        }
+        const row = {
+          uid,
+          tag: tagInfo.tag,
+          valueRepresentation: tagInfo.vr,
+          keyword: tagInfo.keyword,
+          value: tagInfo.value,
+          depth,
+          isVisible: true,
+          parents
+        };
+        rows.push(row);
+        if (row.tag === '(FFFE,E000)') {
+          row.areChildrenVisible = true;
+          row.children = [];
         }
       }
-      rows.push([`${tagInfo.tagIndent}${tagInfo.tag}`, tagInfo.vr, tagInfo.keyword, tagInfo.value]);
     }
-  });
+  }
   return rows;
 }
 function getSortedTags(metadata) {
@@ -2482,13 +2855,6 @@ function getRows(metadata, depth = 0) {
   // Tag, Type, Value, Keyword
 
   const keywords = Object.keys(metadata);
-  let tagIndent = '';
-  for (let i = 0; i < depth; i++) {
-    tagIndent += '>';
-  }
-  if (depth > 0) {
-    tagIndent += ' '; // If indented, add a space after the indents.
-  }
   const rows = [];
   for (let i = 0; i < keywords.length; i++) {
     let keyword = keywords[i];
@@ -2504,7 +2870,6 @@ function getRows(metadata, depth = 0) {
 
       const sequence = {
         tag: tagInfo.tag,
-        tagIndent,
         vr: tagInfo.vr,
         keyword,
         values: []
@@ -2562,7 +2927,6 @@ function getRows(metadata, depth = 0) {
     if (tagInfo) {
       rows.push({
         tag: tagInfo.tag,
-        tagIndent,
         vr: tagInfo.vr,
         keyword,
         value
@@ -2574,7 +2938,6 @@ function getRows(metadata, depth = 0) {
         const tag = `(${keyword.substring(0, 4)},${keyword.substring(4, 8)})`;
         rows.push({
           tag,
-          tagIndent,
           vr: '',
           keyword: 'Private Tag',
           value
@@ -2583,9 +2946,6 @@ function getRows(metadata, depth = 0) {
     }
   }
   return rows;
-}
-function _isImageStack(displaySet) {
-  return displaySet instanceof ImageSet;
 }
 function toArray(objectOrArray) {
   return Array.isArray(objectOrArray) ? objectOrArray : [objectOrArray];
@@ -2601,8 +2961,6 @@ function _sortTagList(tagList) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DicomTagBrowser);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "DicomTagBrowser");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "DicomTagBrowser");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -2610,7 +2968,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2625,7 +2999,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************!*\
   !*** ../../../extensions/default/src/DicomTagBrowser/DicomTagTable.tsx ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2639,11 +3013,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash.debounce */ "../../../node_modules/lodash.debounce/index.js");
 /* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
-var _s = __webpack_require__.$Refresh$.signature();
+var _s = __webpack_require__.$Refresh$.signature(),
+  _s3 = __webpack_require__.$Refresh$.signature();
+
 
 
 
@@ -2659,6 +3035,50 @@ const rowStyle = {
   borderBottomWidth: `${rowBottomBorderPx}px`,
   ...rowVerticalPaddingStyle
 };
+const indentationPadding = 8;
+const RowComponent = ({
+  row,
+  style,
+  keyPrefix,
+  onToggle
+}) => {
+  _s();
+  const handleToggle = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    onToggle(!row.areChildrenVisible);
+  }, [row.areChildrenVisible, onToggle]);
+  const hasChildren = row.children && row.children.length > 0;
+  const isChildOrParent = hasChildren || row.depth > 0;
+  const padding = indentationPadding * (1 + 2 * row.depth);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      ...style,
+      ...rowStyle
+    },
+    className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('hover:bg-secondary-main border-secondary-light text-foreground flex w-full flex-row items-center break-all bg-black text-base transition duration-300', lineHeightClassName),
+    key: keyPrefix
+  }, isChildOrParent && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      paddingLeft: `${padding}px`,
+      opacity: onToggle ? 1 : 0
+    }
+  }, row.areChildrenVisible ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "cursor-pointer p-1",
+    onClick: handleToggle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.Icons.ChevronDown, null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "cursor-pointer p-1",
+    onClick: handleToggle
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_4__.Icons.ChevronRight, null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-4/24 px-3"
+  }, row.tag), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-2/24 px-3"
+  }, row.valueRepresentation), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-6/24 px-3"
+  }, row.keyword), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-5/24 grow px-3"
+  }, row.value));
+};
+_s(RowComponent, "ZlkaYGR3P75MlG1Y6zRKbNQ3VWg=");
+_c = RowComponent;
 function ColumnHeaders({
   tagRef,
   vrRef,
@@ -2698,19 +3118,18 @@ function ColumnHeaders({
     className: "flex flex-row items-center focus:outline-none"
   }, "Value"))));
 }
-_c3 = ColumnHeaders;
-_c = ColumnHeaders;
+_c2 = ColumnHeaders;
 function DicomTagTable({
   rows
 }) {
-  _s2();
-  _s();
+  _s3();
   const listRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const canvasRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const [tagHeaderElem, setTagHeaderElem] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [vrHeaderElem, setVrHeaderElem] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [keywordHeaderElem, setKeywordHeaderElem] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [valueHeaderElem, setValueHeaderElem] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [internalRows, setInternalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(rows);
 
   // Here the refs are inturn stored in state to trigger a render of the table.
   // This virtualized table does NOT render until the header is rendered because the header column widths are used to determine the row heights in the table.
@@ -2735,6 +3154,12 @@ function DicomTagTable({
       setValueHeaderElem(elem);
     }
   };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setInternalRows(rows);
+  }, [rows]);
+  const visibleRows = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return internalRows.filter(row => row.isVisible);
+  }, [internalRows]);
 
   /**
    * When new rows are set, scroll to the top and reset the virtualization.
@@ -2758,50 +3183,77 @@ function DicomTagTable({
       window.removeEventListener('resize', debouncedResize);
     };
   }, []);
-  const Row = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(({
-    index,
-    style
-  }) => {
-    const row = rows[index];
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        ...style,
-        ...rowStyle
-      },
-      className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('hover:bg-secondary-main border-secondary-light flex w-full flex-row items-center break-all bg-black text-base transition duration-300', lineHeightClassName),
-      key: `DICOMTagRow-${index}`
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "w-4/24 px-3"
-    }, row[0]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "w-2/24 px-3"
-    }, row[1]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "w-6/24 px-3"
-    }, row[2]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "w-5/24 grow px-3"
-    }, row[3]));
-  }, [rows]);
-
-  /**
-   * Whenever any one of the column headers is set, then the header is rendered.
-   * Here we chose the tag header.
-   */
-  const isHeaderRendered = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => tagHeaderElem !== null, [tagHeaderElem]);
+  const getOneRowHeight = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(row => {
+    const headerWidths = [tagHeaderElem.offsetWidth, vrHeaderElem.offsetWidth, keywordHeaderElem.offsetWidth, valueHeaderElem.offsetWidth];
+    const context = canvasRef.current.getContext('2d');
+    context.font = getComputedStyle(canvasRef.current).font;
+    const propertiesToCheck = ['tag', 'valueRepresentation', 'keyword', 'value'];
+    return Object.entries(row).filter(([key]) => propertiesToCheck.includes(key)).map(([, colText], index) => {
+      const colOneLineWidth = context.measureText(colText).width;
+      const numLines = Math.ceil(colOneLineWidth / headerWidths[index]);
+      return numLines * lineHeightPx + 2 * rowVerticalPaddingPx + rowBottomBorderPx;
+    }).reduce((maxHeight, colHeight) => Math.max(maxHeight, colHeight), 0);
+  }, [keywordHeaderElem, tagHeaderElem, valueHeaderElem, vrHeaderElem]);
 
   /**
    * Get the item/row size. We use the header column widths to calculate the various row heights.
    * @param index the row index
    * @returns the row height
    */
-  const getItemSize = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(index => {
-    const headerWidths = [tagHeaderElem.offsetWidth, vrHeaderElem.offsetWidth, keywordHeaderElem.offsetWidth, valueHeaderElem.offsetWidth];
-    const context = canvasRef.current.getContext('2d');
-    context.font = getComputedStyle(canvasRef.current).font;
-    return rows[index].map((colText, index) => {
-      const colOneLineWidth = context.measureText(colText).width;
-      const numLines = Math.ceil(colOneLineWidth / headerWidths[index]);
-      return numLines * lineHeightPx + 2 * rowVerticalPaddingPx + rowBottomBorderPx;
-    }).reduce((maxHeight, colHeight) => Math.max(maxHeight, colHeight));
-  }, [rows, keywordHeaderElem, tagHeaderElem, valueHeaderElem, vrHeaderElem]);
+  const getItemSize = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(rows => index => {
+    const row = rows[index];
+    const height = getOneRowHeight(row);
+    return height;
+  }, [getOneRowHeight]);
+  const onToggle = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(sourceRow => {
+    if (!sourceRow.children) {
+      return undefined;
+    }
+    return areChildrenVisible => {
+      const newInternalRows = internalRows.map(internalRow => {
+        if (sourceRow.uid === internalRow.uid) {
+          return {
+            ...internalRow,
+            areChildrenVisible
+          };
+        }
+        if (sourceRow.children.includes(internalRow.uid)) {
+          return {
+            ...internalRow,
+            isVisible: areChildrenVisible,
+            areChildrenVisible
+          };
+        }
+        return internalRow;
+      });
+      setInternalRows(newInternalRows);
+      listRef?.current?.resetAfterIndex(0);
+    };
+  }, [internalRows, listRef]);
+  const getRowComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(({
+    rows
+  }) => {
+    var _s2 = __webpack_require__.$Refresh$.signature();
+    return _s2(function RowList({
+      index,
+      style
+    }) {
+      _s2();
+      const row = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => rows[index], [index]);
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(RowComponent, {
+        style: style,
+        row: row,
+        keyPrefix: `DICOMTagRow-${index}`,
+        onToggle: onToggle(row)
+      });
+    }, "M0k6ONFHO+ufYwPxQo4/XQCy3KU=");
+  }, [onToggle]);
+
+  /**
+   * Whenever any one of the column headers is set, then the header is rendered.
+   * Here we chose the tag header.
+   */
+  const isHeaderRendered = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => tagHeaderElem !== null, [tagHeaderElem]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("canvas", {
     style: {
       visibility: 'hidden',
@@ -2822,23 +3274,22 @@ function DicomTagTable({
   }, isHeaderRendered() && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_window__WEBPACK_IMPORTED_MODULE_1__.VariableSizeList, {
     ref: listRef,
     height: 500,
-    itemCount: rows.length,
-    itemSize: getItemSize,
+    itemCount: visibleRows.length,
+    itemSize: getItemSize(visibleRows),
     width: '100%',
-    className: "ohif-scrollbar"
-  }, Row)));
+    className: "ohif-scrollbar text-foreground"
+  }, getRowComponent({
+    rows: visibleRows
+  }))));
 }
-_s2(DicomTagTable, "ytVxf3pVkicvFQAq/lr97TftPAE=");
-_c4 = DicomTagTable;
-_s(DicomTagTable, "ytVxf3pVkicvFQAq/lr97TftPAE=");
-_c2 = DicomTagTable;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DicomTagTable);
-var _c, _c2;
-__webpack_require__.$Refresh$.register(_c, "ColumnHeaders");
-__webpack_require__.$Refresh$.register(_c2, "DicomTagTable");
-var _c3, _c4;
-__webpack_require__.$Refresh$.register(_c3, "ColumnHeaders");
-__webpack_require__.$Refresh$.register(_c4, "DicomTagTable");
+_s3(DicomTagTable, "TTfamYspc+jS4GzlVZuScJgdlHw=");
+_c3 = DicomTagTable;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/_c4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().memo(DicomTagTable));
+var _c, _c2, _c3, _c4;
+__webpack_require__.$Refresh$.register(_c, "RowComponent");
+__webpack_require__.$Refresh$.register(_c2, "ColumnHeaders");
+__webpack_require__.$Refresh$.register(_c3, "DicomTagTable");
+__webpack_require__.$Refresh$.register(_c4, "%default%");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -2846,7 +3297,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2861,7 +3328,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/dcm4cheeReject.js ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2871,7 +3338,7 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(wadoRoot) {
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(wadoRoot, getAuthrorizationHeader) {
   return {
     series: (StudyInstanceUID, SeriesInstanceUID) => {
       return new Promise((resolve, reject) => {
@@ -2880,6 +3347,10 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
         const url = `${wadoRoot}/studies/${StudyInstanceUID}/series/${SeriesInstanceUID}/reject/${CodeValueAndCodeSchemeDesignator}`;
         const xhr = new XMLHttpRequest();
         xhr.open('POST', url, true);
+        const headers = getAuthrorizationHeader();
+        for (const key in headers) {
+          xhr.setRequestHeader(key, headers[key]);
+        }
 
         //Send the proper header information along with the request
         // TODO -> Auth when we re-add authorization.
@@ -2909,7 +3380,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -2920,11 +3407,11 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/default/src/DicomWebDataSource/index.js":
+/***/ "../../../extensions/default/src/DicomWebDataSource/index.ts":
 /*!*******************************************************************!*\
-  !*** ../../../extensions/default/src/DicomWebDataSource/index.js ***!
+  !*** ../../../extensions/default/src/DicomWebDataSource/index.ts ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2966,44 +3453,22 @@ const ImplementationClassUID = '2.25.270695996825855179949881587723571202391.2.0
 const ImplementationVersionName = 'OHIF-VIEWER-2.0.0';
 const EXPLICIT_VR_LITTLE_ENDIAN = '1.2.840.10008.1.2.1';
 const metadataProvider = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.classes.MetadataProvider;
-
 /**
  * Creates a DICOM Web API based on the provided configuration.
  *
- * @param {object} dicomWebConfig - Configuration for the DICOM Web API
- * @param {string} dicomWebConfig.name - Data source name
- * @param {string} dicomWebConfig.wadoUriRoot - Legacy? (potentially unused/replaced)
- * @param {string} dicomWebConfig.qidoRoot - Base URL to use for QIDO requests
- * @param {string} dicomWebConfig.wadoRoot - Base URL to use for WADO requests
- * @param {string} dicomWebConfig.wadoUri - Base URL to use for WADO URI requests
- * @param {boolean} dicomWebConfig.qidoSupportsIncludeField - Whether QIDO supports the "Include" option to request additional fields in response
- * @param {string} dicomWebConfig.imageRendering - wadors | ? (unsure of where/how this is used)
- * @param {string} dicomWebConfig.thumbnailRendering - wadors | ? (unsure of where/how this is used)
- * @param {boolean} dicomWebConfig.supportsReject - Whether the server supports reject calls (i.e. DCM4CHEE)
- * @param {boolean} dicomWebConfig.lazyLoadStudy - "enableStudyLazyLoad"; Request series meta async instead of blocking
- * @param {string|boolean} dicomWebConfig.singlepart - indicates if the retrieves can fetch singlepart. Options are bulkdata, video, image, or boolean true
- * @param {string} dicomWebConfig.requestTransferSyntaxUID - Transfer syntax to request from the server
- * @param {object} dicomWebConfig.acceptHeader - Accept header to use for requests
- * @param {boolean} dicomWebConfig.omitQuotationForMultipartRequest - Whether to omit quotation marks for multipart requests
- * @param {boolean} dicomWebConfig.supportsFuzzyMatching - Whether the server supports fuzzy matching
- * @param {boolean} dicomWebConfig.supportsWildcard - Whether the server supports wildcard matching
- * @param {boolean} dicomWebConfig.supportsNativeDICOMModel - Whether the server supports the native DICOM model
- * @param {boolean} dicomWebConfig.enableStudyLazyLoad - Whether to enable study lazy loading
- * @param {boolean} dicomWebConfig.enableRequestTag - Whether to enable request tag
- * @param {boolean} dicomWebConfig.enableStudyLazyLoad - Whether to enable study lazy loading
- * @param {boolean} dicomWebConfig.bulkDataURI - Whether to enable bulkDataURI
- * @param {function} dicomWebConfig.onConfiguration - Function that is called after the configuration is initialized
- * @param {boolean} dicomWebConfig.staticWado - Whether to use the static WADO client
- * @param {object} userAuthenticationService - User authentication service
- * @param {object} userAuthenticationService.getAuthorizationHeader - Function that returns the authorization header
- * @returns {object} - DICOM Web API object
+ * @param dicomWebConfig - Configuration for the DICOM Web API
+ * @returns DICOM Web API object
  */
 function createDicomWebApi(dicomWebConfig, servicesManager) {
   const {
-    userAuthenticationService,
-    customizationService
+    userAuthenticationService
   } = servicesManager.services;
-  let dicomWebConfigCopy, qidoConfig, wadoConfig, qidoDicomWebClient, wadoDicomWebClient, getAuthrorizationHeader, generateWadoHeader;
+  let dicomWebConfigCopy, qidoConfig, wadoConfig, qidoDicomWebClient, wadoDicomWebClient, getAuthorizationHeader, generateWadoHeader;
+  // Default to enabling bulk data retrieves, with no other customization as
+  // this is part of hte base standard.
+  dicomWebConfig.bulkDataURI ||= {
+    enabled: true
+  };
   const implementation = {
     initialize: ({
       params,
@@ -3016,7 +3481,7 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
         });
       }
       dicomWebConfigCopy = JSON.parse(JSON.stringify(dicomWebConfig));
-      getAuthrorizationHeader = () => {
+      getAuthorizationHeader = () => {
         const xhrRequestHeaders = {};
         const authHeaders = userAuthenticationService.getAuthorizationHeader();
         if (authHeaders && authHeaders.Authorization) {
@@ -3025,7 +3490,7 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
         return xhrRequestHeaders;
       };
       generateWadoHeader = () => {
-        const authorizationHeader = getAuthrorizationHeader();
+        const authorizationHeader = getAuthorizationHeader();
         //Generate accept header depending on config params
         const formattedAcceptHeader = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.utils.generateAcceptHeader(dicomWebConfig.acceptHeader, dicomWebConfig.requestTransferSyntaxUID, dicomWebConfig.omitQuotationForMultipartRequest);
         return {
@@ -3038,14 +3503,16 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
         staticWado: dicomWebConfig.staticWado,
         singlepart: dicomWebConfig.singlepart,
         headers: userAuthenticationService.getAuthorizationHeader(),
-        errorInterceptor: _ohif_core__WEBPACK_IMPORTED_MODULE_1__.errorHandler.getHTTPErrorHandler()
+        errorInterceptor: _ohif_core__WEBPACK_IMPORTED_MODULE_1__.errorHandler.getHTTPErrorHandler(),
+        supportsFuzzyMatching: dicomWebConfig.supportsFuzzyMatching
       };
       wadoConfig = {
         url: dicomWebConfig.wadoRoot,
         staticWado: dicomWebConfig.staticWado,
         singlepart: dicomWebConfig.singlepart,
         headers: userAuthenticationService.getAuthorizationHeader(),
-        errorInterceptor: _ohif_core__WEBPACK_IMPORTED_MODULE_1__.errorHandler.getHTTPErrorHandler()
+        errorInterceptor: _ohif_core__WEBPACK_IMPORTED_MODULE_1__.errorHandler.getHTTPErrorHandler(),
+        supportsFuzzyMatching: dicomWebConfig.supportsFuzzyMatching
       };
 
       // TODO -> Two clients sucks, but its better than 1000.
@@ -3057,7 +3524,7 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
       studies: {
         mapParams: _qido_js__WEBPACK_IMPORTED_MODULE_2__.mapParams.bind(),
         search: async function (origParams) {
-          qidoDicomWebClient.headers = getAuthrorizationHeader();
+          qidoDicomWebClient.headers = getAuthorizationHeader();
           const {
             studyInstanceUid,
             seriesInstanceUid,
@@ -3074,7 +3541,7 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
       series: {
         // mapParams: mapParams.bind(),
         search: async function (studyInstanceUid) {
-          qidoDicomWebClient.headers = getAuthrorizationHeader();
+          qidoDicomWebClient.headers = getAuthorizationHeader();
           const results = await (0,_qido_js__WEBPACK_IMPORTED_MODULE_2__.seriesInStudy)(qidoDicomWebClient, studyInstanceUid);
           return (0,_qido_js__WEBPACK_IMPORTED_MODULE_2__.processSeriesResults)(results);
         }
@@ -3082,7 +3549,7 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
       },
       instances: {
         search: (studyInstanceUid, queryParameters) => {
-          qidoDicomWebClient.headers = getAuthrorizationHeader();
+          qidoDicomWebClient.headers = getAuthorizationHeader();
           return _qido_js__WEBPACK_IMPORTED_MODULE_2__.search.call(undefined, qidoDicomWebClient, studyInstanceUid, null, queryParameters);
         }
       }
@@ -3099,6 +3566,67 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
        * @returns an absolute URL to the resource, if the absolute URL can be retrieved as singlepart,
        *    or is already retrieved, or a promise to a URL for such use if a BulkDataURI
        */
+
+      getGetThumbnailSrc: function (instance, imageId) {
+        if (dicomWebConfig.thumbnailRendering === 'wadors') {
+          return function getThumbnailSrc(options) {
+            if (!imageId) {
+              return null;
+            }
+            if (!options?.getImageSrc) {
+              return null;
+            }
+            return options.getImageSrc(imageId);
+          };
+        }
+        if (dicomWebConfig.thumbnailRendering === 'thumbnailDirect') {
+          return function getThumbnailSrc() {
+            return this.directURL({
+              instance: instance,
+              defaultPath: '/thumbnail',
+              defaultType: 'image/jpeg',
+              singlepart: true,
+              tag: 'Absent'
+            });
+          }.bind(this);
+        }
+        if (dicomWebConfig.thumbnailRendering === 'thumbnail') {
+          return async function getThumbnailSrc() {
+            const {
+              StudyInstanceUID,
+              SeriesInstanceUID,
+              SOPInstanceUID
+            } = instance;
+            const bulkDataURI = `${dicomWebConfig.wadoRoot}/studies/${StudyInstanceUID}/series/${SeriesInstanceUID}/instances/${SOPInstanceUID}/thumbnail?accept=image/jpeg`;
+            return URL.createObjectURL(new Blob([await this.bulkDataURI({
+              BulkDataURI: bulkDataURI.replace('wadors:', ''),
+              defaultType: 'image/jpeg',
+              mediaTypes: ['image/jpeg'],
+              thumbnail: true
+            })], {
+              type: 'image/jpeg'
+            }));
+          }.bind(this);
+        }
+        if (dicomWebConfig.thumbnailRendering === 'rendered') {
+          return async function getThumbnailSrc() {
+            const {
+              StudyInstanceUID,
+              SeriesInstanceUID,
+              SOPInstanceUID
+            } = instance;
+            const bulkDataURI = `${dicomWebConfig.wadoRoot}/studies/${StudyInstanceUID}/series/${SeriesInstanceUID}/instances/${SOPInstanceUID}/rendered?accept=image/jpeg`;
+            return URL.createObjectURL(new Blob([await this.bulkDataURI({
+              BulkDataURI: bulkDataURI.replace('wadors:', ''),
+              defaultType: 'image/jpeg',
+              mediaTypes: ['image/jpeg'],
+              thumbnail: true
+            })], {
+              type: 'image/jpeg'
+            }));
+          }.bind(this);
+        }
+      },
       directURL: params => {
         return (0,_utils_getDirectURL__WEBPACK_IMPORTED_MODULE_8__["default"])({
           wadoRoot: dicomWebConfig.wadoRoot,
@@ -3117,7 +3645,7 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
         StudyInstanceUID,
         BulkDataURI
       }) => {
-        qidoDicomWebClient.headers = getAuthrorizationHeader();
+        qidoDicomWebClient.headers = getAuthorizationHeader();
         const options = {
           multipart: false,
           BulkDataURI,
@@ -3149,7 +3677,7 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
     },
     store: {
       dicom: async (dataset, request, dicomDict) => {
-        wadoDicomWebClient.headers = getAuthrorizationHeader();
+        wadoDicomWebClient.headers = getAuthorizationHeader();
         if (dataset instanceof ArrayBuffer) {
           const options = {
             datasets: [dataset],
@@ -3242,11 +3770,15 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
        * This is done recursively, for sub-sequences.
        */
       const addRetrieveBulkDataNaturalized = (naturalized, instance = naturalized) => {
+        if (!naturalized) {
+          return naturalized;
+        }
         for (const key of Object.keys(naturalized)) {
           const value = naturalized[key];
           if (Array.isArray(value) && typeof value[0] === 'object') {
             // Fix recursive values
-            value.forEach(child => addRetrieveBulkDataNaturalized(child, instance));
+            const validValues = value.filter(Boolean);
+            validValues.forEach(child => addRetrieveBulkDataNaturalized(child, instance));
             continue;
           }
 
@@ -3393,17 +3925,15 @@ function createDicomWebApi(dicomWebConfig, servicesManager) {
       params,
       query
     }) {
-      const {
-        StudyInstanceUIDs: paramsStudyInstanceUIDs
-      } = params;
-      const queryStudyInstanceUIDs = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.utils.splitComma(query.getAll('StudyInstanceUIDs'));
+      const paramsStudyInstanceUIDs = params.StudyInstanceUIDs || params.studyInstanceUIDs;
+      const queryStudyInstanceUIDs = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.utils.splitComma(query.getAll('StudyInstanceUIDs').concat(query.getAll('studyInstanceUIDs')));
       const StudyInstanceUIDs = queryStudyInstanceUIDs.length && queryStudyInstanceUIDs || paramsStudyInstanceUIDs;
       const StudyInstanceUIDsAsArray = StudyInstanceUIDs && Array.isArray(StudyInstanceUIDs) ? StudyInstanceUIDs : [StudyInstanceUIDs];
       return StudyInstanceUIDsAsArray;
     }
   };
   if (dicomWebConfig.supportsReject) {
-    implementation.reject = (0,_dcm4cheeReject_js__WEBPACK_IMPORTED_MODULE_3__["default"])(dicomWebConfig.wadoRoot);
+    implementation.reject = (0,_dcm4cheeReject_js__WEBPACK_IMPORTED_MODULE_3__["default"])(dicomWebConfig.wadoRoot, getAuthorizationHeader);
   }
   return _ohif_core__WEBPACK_IMPORTED_MODULE_1__.IWebApiDataSource.create(implementation);
 }
@@ -3450,7 +3980,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3465,7 +4011,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/qido.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -3694,7 +4240,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3709,7 +4271,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/retrieveStudyMetadata.js ***!
   \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -3793,7 +4355,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -3808,7 +4386,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/StaticWadoClient.ts ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -3956,17 +4534,32 @@ class StaticWadoClient extends dicomweb_client__WEBPACK_IMPORTED_MODULE_0__.api.
    *
    * @param {*} desired
    * @param {*} actual
+   * @param {*} options - fuzzyMatching: if true, then do a sub-string match
    * @returns true if the values match
    */
-  compareValues(desired, actual) {
+  compareValues(desired, actual, options) {
+    const {
+      fuzzyMatching
+    } = options;
     if (Array.isArray(desired)) {
-      return desired.find(item => this.compareValues(item, actual));
+      return desired.find(item => this.compareValues(item, actual, options));
     }
     if (Array.isArray(actual)) {
-      return actual.find(actualItem => this.compareValues(desired, actualItem));
+      return actual.find(actualItem => this.compareValues(desired, actualItem, options));
     }
     if (actual?.Alphabetic) {
       actual = actual.Alphabetic;
+    }
+    if (fuzzyMatching && typeof actual === 'string' && typeof desired === 'string') {
+      const normalizeValue = str => {
+        return str.toLowerCase();
+      };
+      const normalizedDesired = normalizeValue(desired);
+      const normalizedActual = normalizeValue(actual);
+      const tokenizeAndNormalize = str => str.split(/[\s^]+/).filter(Boolean);
+      const desiredTokens = tokenizeAndNormalize(normalizedDesired);
+      const actualTokens = tokenizeAndNormalize(normalizedActual);
+      return desiredTokens.every(desiredToken => actualTokens.some(actualToken => actualToken.startsWith(desiredToken)));
     }
     if (typeof actual == 'string') {
       if (actual.length === 0) {
@@ -3994,7 +4587,7 @@ class StaticWadoClient extends dicomweb_client__WEBPACK_IMPORTED_MODULE_0__.api.
     }
     const dash = range.indexOf('-');
     if (dash === -1) {
-      return this.compareValues(range, value);
+      return this.compareValues(range, value, {});
     }
     const start = range.substring(0, dash);
     const end = range.substring(dash + 1);
@@ -4011,6 +4604,13 @@ class StaticWadoClient extends dicomweb_client__WEBPACK_IMPORTED_MODULE_0__.api.
    * @returns
    */
   filterItem(key, queryParams, study, sourceFilterMap) {
+    const isName = key => key.indexOf('name') !== -1;
+    const {
+      supportsFuzzyMatching = false
+    } = this.config;
+    const options = {
+      fuzzyMatching: isName(key) && supportsFuzzyMatching
+    };
     const altKey = sourceFilterMap[key] || key;
     if (!queryParams) {
       return true;
@@ -4027,7 +4627,7 @@ class StaticWadoClient extends dicomweb_client__WEBPACK_IMPORTED_MODULE_0__.api.
       return this.compareDateRange(testValue, valueElem.Value[0]);
     }
     const value = valueElem.Value;
-    return this.compareValues(testValue, value);
+    return this.compareValues(testValue, value, options);
   }
 
   /** Converts the query parameters to lower case query parameters */
@@ -4060,7 +4660,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4075,7 +4691,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/cleanDenaturalizedDataset.ts ***!
   \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4147,7 +4763,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4162,7 +4794,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/findIndexOfString.ts ***!
   \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4212,7 +4844,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4227,7 +4875,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/fixBulkDataURI.ts ***!
   \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4314,7 +4962,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4329,7 +4993,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/fixMultiValueKeys.ts ***!
   \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4358,7 +5022,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4373,7 +5053,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/fixMultipart.ts ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4456,7 +5136,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4471,7 +5167,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/getImageId.js ***!
   \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4542,7 +5238,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4557,7 +5269,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/getWADORSImageId.js ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4624,7 +5336,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4639,7 +5367,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/index.ts ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4666,7 +5394,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4681,7 +5425,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/utils/retrieveMetadataFiltered.js ***!
   \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4748,7 +5492,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4763,7 +5523,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/wado/retrieveMetadata.js ***!
   \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4798,13 +5558,10 @@ async function RetrieveMetadata(dicomWebClient, StudyInstanceUID, enableStudyLaz
   const data = await retrieveMetadataLoader.execLoad();
   return data;
 }
-_c2 = RetrieveMetadata;
 _c = RetrieveMetadata;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RetrieveMetadata);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "RetrieveMetadata");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "RetrieveMetadata");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -4812,7 +5569,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4827,7 +5600,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/wado/retrieveMetadataLoader.js ***!
   \*****************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -4899,7 +5672,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -4914,7 +5703,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/wado/retrieveMetadataLoaderAsync.js ***!
   \**********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -5102,7 +5891,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -5117,7 +5922,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebDataSource/wado/retrieveMetadataLoaderSync.js ***!
   \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -5130,7 +5935,6 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 // import { api } from 'dicomweb-client';
 // import DICOMWeb from '../../../DICOMWeb/';
-
 
 
 /**
@@ -5197,7 +6001,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -5212,7 +6032,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************!*\
   !*** ../../../extensions/default/src/DicomWebProxyDataSource/index.ts ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -5220,7 +6040,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   createDicomWebProxyApi: () => (/* binding */ createDicomWebProxyApi)
 /* harmony export */ });
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _DicomWebDataSource_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DicomWebDataSource/index */ "../../../extensions/default/src/DicomWebDataSource/index.js");
+/* harmony import */ var _DicomWebDataSource_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DicomWebDataSource/index */ "../../../extensions/default/src/DicomWebDataSource/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -5279,7 +6099,7 @@ function createDicomWebProxyApi(dicomWebProxyConfig, servicesManager) {
       }
     },
     store: {
-      dicom: (...args) => dicomWebDelegate.store(...args)
+      dicom: (...args) => dicomWebDelegate.store.dicom(...args)
     },
     deleteStudyMetadataPromise: (...args) => dicomWebDelegate.deleteStudyMetadataPromise(...args),
     getImageIdsForDisplaySet: (...args) => dicomWebDelegate.getImageIdsForDisplaySet(...args),
@@ -5309,7 +6129,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -5324,7 +6160,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************!*\
   !*** ../../../extensions/default/src/MergeDataSource/index.ts ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -5337,10 +6173,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   mergeMap: () => (/* binding */ mergeMap)
 /* harmony export */ });
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "../../../node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash_get__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash.get */ "../../../node_modules/lodash.get/index.js");
+/* harmony import */ var lodash_get__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_get__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash_uniqby__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash.uniqby */ "../../../node_modules/lodash.uniqby/index.js");
+/* harmony import */ var lodash_uniqby__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_uniqby__WEBPACK_IMPORTED_MODULE_2__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -5402,7 +6241,7 @@ const callForAllDataSourcesAsync = async ({
     } = dataSourceDef;
     if (!!configuration && dataSourceNames.includes(sourceName)) {
       const [dataSource] = extensionManager.getDataSources(sourceName);
-      const func = (0,lodash__WEBPACK_IMPORTED_MODULE_1__.get)(dataSource, path);
+      const func = lodash_get__WEBPACK_IMPORTED_MODULE_1___default()(dataSource, path);
       const promise = func.apply(dataSource, args);
       promises.push(promise);
       sourceNames.push(sourceName);
@@ -5412,7 +6251,7 @@ const callForAllDataSourcesAsync = async ({
   const mergedData = data.map((data, i) => tagFunc(data.value, sourceNames[i]));
   let results = [];
   if (mergeKey) {
-    results = (0,lodash__WEBPACK_IMPORTED_MODULE_1__.uniqBy)(mergedData.flat(), obj => (0,lodash__WEBPACK_IMPORTED_MODULE_1__.get)(obj, mergeKey));
+    results = lodash_uniqby__WEBPACK_IMPORTED_MODULE_2___default()(mergedData.flat(), obj => lodash_get__WEBPACK_IMPORTED_MODULE_1___default()(obj, mergeKey));
   } else {
     results = mergedData.flat();
   }
@@ -5451,7 +6290,7 @@ const callForAllDataSources = ({
     } = dataSourceDef;
     if (!!configuration && dataSourceNames.includes(sourceName)) {
       const [dataSource] = extensionManager.getDataSources(sourceName);
-      const func = (0,lodash__WEBPACK_IMPORTED_MODULE_1__.get)(dataSource, path);
+      const func = lodash_get__WEBPACK_IMPORTED_MODULE_1___default()(dataSource, path);
       const data = func.apply(dataSource, args);
       mergedData.push(data);
     }
@@ -5475,7 +6314,7 @@ const callForDefaultDataSource = ({
   extensionManager
 }) => {
   const [dataSource] = extensionManager.getDataSources(defaultDataSourceName);
-  const func = (0,lodash__WEBPACK_IMPORTED_MODULE_1__.get)(dataSource, path);
+  const func = lodash_get__WEBPACK_IMPORTED_MODULE_1___default()(dataSource, path);
   return func.apply(dataSource, args);
 };
 
@@ -5617,7 +6456,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -5632,7 +6487,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************!*\
   !*** ../../../extensions/default/src/Panels/DataSourceSelector.tsx ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -5643,13 +6498,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "../../../node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "../../../node_modules/react-router-dom/dist/index.js");
 /* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @state */ "./state/index.js");
 /* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -5657,7 +6511,6 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 function DataSourceSelector() {
-  _s2();
   _s();
   const [appConfig] = (0,_state__WEBPACK_IMPORTED_MODULE_3__.useAppConfig)();
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate)();
@@ -5671,7 +6524,7 @@ function DataSourceSelector() {
       height: '100%'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex h-screen w-screen items-center justify-center "
+    className: "flex h-screen w-screen items-center justify-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "bg-secondary-dark mx-auto space-y-2 rounded-lg py-8 px-8 drop-shadow-md"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
@@ -5695,10 +6548,6 @@ function DataSourceSelector() {
     }
   }, ds.sourceName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null)))))));
 }
-_s2(DataSourceSelector, "vWWYUHztbe5Wm6NOy7wIPD3E4Q4=", false, function () {
-  return [_state__WEBPACK_IMPORTED_MODULE_3__.useAppConfig, react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate];
-});
-_c2 = DataSourceSelector;
 _s(DataSourceSelector, "vWWYUHztbe5Wm6NOy7wIPD3E4Q4=", false, function () {
   return [_state__WEBPACK_IMPORTED_MODULE_3__.useAppConfig, react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate];
 });
@@ -5706,8 +6555,6 @@ _c = DataSourceSelector;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DataSourceSelector);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "DataSourceSelector");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "DataSourceSelector");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -5715,7 +6562,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -5730,7 +6593,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowser.tsx ***!
   \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -5739,16 +6602,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router-dom/dist/index.js");
-/* harmony import */ var _PanelStudyBrowserHeader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./PanelStudyBrowserHeader */ "../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowserHeader.tsx");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./constants */ "../../../extensions/default/src/Panels/StudyBrowser/constants/index.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "../../../node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var _PanelStudyBrowserHeader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./PanelStudyBrowserHeader */ "../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowserHeader.tsx");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./constants */ "../../../extensions/default/src/Panels/StudyBrowser/constants/index.ts");
+/* harmony import */ var _Components_MoreDropdownMenu__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Components/MoreDropdownMenu */ "../../../extensions/default/src/Components/MoreDropdownMenu.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -5762,49 +6624,51 @@ const {
   sortStudyInstances,
   formatDate,
   createStudyBrowserTabs
-} = _ohif_core__WEBPACK_IMPORTED_MODULE_3__.utils;
+} = _ohif_core__WEBPACK_IMPORTED_MODULE_2__.utils;
+const thumbnailNoImageModalities = ['SR', 'SEG', 'RTSTRUCT', 'RTPLAN', 'RTDOSE', 'DOC', 'PMAP'];
 
 /**
- *
- * @param {*} param0
+ * Study Browser component that displays and manages studies and their display sets
  */
 function PanelStudyBrowser({
-  servicesManager,
   getImageSrc,
   getStudiesForPatientByMRN,
   requestDisplaySetCreationForStudy,
   dataSource,
-  commandsManager
+  customMapDisplaySets,
+  onClickUntrack,
+  onDoubleClickThumbnailHandlerCallBack
 }) {
-  _s2();
   _s();
   const {
-    hangingProtocolService,
+    servicesManager,
+    commandsManager,
+    extensionManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
+  const {
     displaySetService,
-    uiNotificationService,
     customizationService
   } = servicesManager.services;
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
-
-  // Normally you nest the components so the tree isn't so deep, and the data
-  // doesn't have to have such an intense shape. This works well enough for now.
-  // Tabs --> Studies --> DisplaySets --> Thumbnails
-  const {
-    StudyInstanceUIDs
-  } = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useImageViewer)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
+  const studyMode = customizationService.getCustomization('studyBrowser.studyMode') || 'all';
+  const internalImageViewer = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useImageViewer)();
+  const StudyInstanceUIDs = internalImageViewer.StudyInstanceUIDs;
+  const fetchedStudiesRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(new Set());
   const [{
     activeViewportId,
     viewports,
     isHangingProtocolLayout
-  }, viewportGridService] = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid)();
-  const [activeTabName, setActiveTabName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('all');
+  }] = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid)();
+  const [activeTabName, setActiveTabName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(studyMode);
   const [expandedStudyInstanceUIDs, setExpandedStudyInstanceUIDs] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([...StudyInstanceUIDs]);
   const [hasLoadedViewports, setHasLoadedViewports] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [studyDisplayList, setStudyDisplayList] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [displaySets, setDisplaySets] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [displaySetsLoadingState, setDisplaySetsLoadingState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
   const [thumbnailImageSrcMap, setThumbnailImageSrcMap] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
-  const [viewPresets, setViewPresets] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(customizationService.getCustomization('studyBrowser.viewPresets')?.value || _constants__WEBPACK_IMPORTED_MODULE_6__.defaultViewPresets);
-  const [actionIcons, setActionIcons] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_constants__WEBPACK_IMPORTED_MODULE_6__.defaultActionIcons);
+  const [jumpToDisplaySet, setJumpToDisplaySet] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [viewPresets, setViewPresets] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(customizationService.getCustomization('studyBrowser.viewPresets'));
+  const [actionIcons, setActionIcons] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_constants__WEBPACK_IMPORTED_MODULE_5__.defaultActionIcons);
 
   // multiple can be true or false
   const updateActionIconValue = actionIcon => {
@@ -5824,27 +6688,33 @@ function PanelStudyBrowser({
     });
     setViewPresets(newViewPresets);
   };
-  const onDoubleClickThumbnailHandler = displaySetInstanceUID => {
-    let updatedViewports = [];
-    const viewportId = activeViewportId;
-    try {
-      updatedViewports = hangingProtocolService.getViewportsRequireUpdate(viewportId, displaySetInstanceUID, isHangingProtocolLayout);
-    } catch (error) {
-      console.warn(error);
-      uiNotificationService.show({
-        title: 'Thumbnail Double Click',
-        message: 'The selected display sets could not be added to the viewport.',
-        type: 'error',
-        duration: 3000
-      });
+  const mapDisplaySetsWithState = customMapDisplaySets || _mapDisplaySets;
+  const onDoubleClickThumbnailHandler = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(async displaySetInstanceUID => {
+    const customHandler = customizationService.getCustomization('studyBrowser.thumbnailDoubleClickCallback');
+    const setupArgs = {
+      activeViewportId,
+      commandsManager,
+      servicesManager,
+      isHangingProtocolLayout,
+      appConfig: extensionManager._appConfig
+    };
+    const handlers = customHandler?.callbacks.map(callback => callback(setupArgs));
+    for (const handler of handlers) {
+      await handler(displaySetInstanceUID);
     }
-    viewportGridService.setDisplaySetsForViewports(updatedViewports);
-  };
+    onDoubleClickThumbnailHandlerCallBack?.(displaySetInstanceUID);
+  }, [activeViewportId, commandsManager, servicesManager, isHangingProtocolLayout, customizationService]);
 
   // ~~ studyDisplayList
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     // Fetch all studies for the patient in each primary study
     async function fetchStudiesForPatient(StudyInstanceUID) {
+      // Skip fetching if we've already fetched this study
+      if (fetchedStudiesRef.current.has(StudyInstanceUID)) {
+        return;
+      }
+      fetchedStudiesRef.current.add(StudyInstanceUID);
+
       // current study qido
       const qidoForStudyUID = await dataSource.query.studies.search({
         studyInstanceUid: StudyInstanceUID
@@ -5866,10 +6736,10 @@ function PanelStudyBrowser({
       const actuallyMappedStudies = mappedStudies.map(qidoStudy => {
         return {
           studyInstanceUid: qidoStudy.StudyInstanceUID,
-          date: formatDate(qidoStudy.StudyDate),
+          date: formatDate(qidoStudy.StudyDate) || '',
           description: qidoStudy.StudyDescription,
           modalities: qidoStudy.ModalitiesInStudy,
-          numInstances: qidoStudy.NumInstances
+          numInstances: Number(qidoStudy.NumInstances)
         };
       });
       setStudyDisplayList(prevArray => {
@@ -5885,7 +6755,7 @@ function PanelStudyBrowser({
     StudyInstanceUIDs.forEach(sid => fetchStudiesForPatient(sid));
   }, [StudyInstanceUIDs, dataSource, getStudiesForPatientByMRN, navigate]);
 
-  // // ~~ Initial Thumbnails
+  // ~~ Initial Thumbnails
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (!hasLoadedViewports) {
       if (activeViewportId) {
@@ -5893,23 +6763,41 @@ function PanelStudyBrowser({
         // so wait a bit of time to allow the viewports preferential loading
         // which improves user experience of responsiveness significantly on slower
         // systems.
-        window.setTimeout(() => setHasLoadedViewports(true), 250);
+        const delayMs = 250 + displaySetService.getActiveDisplaySets().length * 10;
+        window.setTimeout(() => setHasLoadedViewports(true), delayMs);
       }
       return;
     }
-    const currentDisplaySets = displaySetService.activeDisplaySets;
+    let currentDisplaySets = displaySetService.activeDisplaySets;
+    // filter non based on the list of modalities that are supported by cornerstone
+    currentDisplaySets = currentDisplaySets.filter(ds => !thumbnailNoImageModalities.includes(ds.Modality) || ds.thumbnailSrc === null);
+    if (!currentDisplaySets.length) {
+      return;
+    }
     currentDisplaySets.forEach(async dSet => {
       const newImageSrcEntry = {};
       const displaySet = displaySetService.getDisplaySetByUID(dSet.displaySetInstanceUID);
-      const imageIds = dataSource.getImageIdsForDisplaySet(displaySet);
-      const imageId = imageIds[Math.floor(imageIds.length / 2)];
+      const imageIds = dataSource.getImageIdsForDisplaySet(dSet);
+      const imageId = getImageIdForThumbnail(displaySet, imageIds);
 
       // TODO: Is it okay that imageIds are not returned here for SR displaySets?
-      if (!imageId || displaySet?.unsupported) {
+      if (displaySet?.unsupported) {
         return;
       }
       // When the image arrives, render it and store the result in the thumbnailImgSrcMap
-      newImageSrcEntry[dSet.displaySetInstanceUID] = await getImageSrc(imageId);
+      let {
+        thumbnailSrc
+      } = displaySet;
+      if (!thumbnailSrc && displaySet.getThumbnailSrc) {
+        thumbnailSrc = await displaySet.getThumbnailSrc({
+          getImageSrc
+        });
+      }
+      if (!thumbnailSrc && imageId) {
+        const thumbnailSrc = await getImageSrc(imageId);
+        displaySet.thumbnailSrc = thumbnailSrc;
+      }
+      newImageSrcEntry[dSet.displaySetInstanceUID] = thumbnailSrc;
       setThumbnailImageSrcMap(prevState => {
         return {
           ...prevState,
@@ -5917,43 +6805,64 @@ function PanelStudyBrowser({
         };
       });
     });
-  }, [StudyInstanceUIDs, dataSource, displaySetService, getImageSrc, hasLoadedViewports, activeViewportId]);
+  }, [displaySetService, dataSource, getImageSrc, activeViewportId, hasLoadedViewports]);
 
   // ~~ displaySets
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // TODO: Are we sure `activeDisplaySets` will always be accurate?
     const currentDisplaySets = displaySetService.activeDisplaySets;
-    const mappedDisplaySets = _mapDisplaySets(currentDisplaySets, thumbnailImageSrcMap);
-    sortStudyInstances(mappedDisplaySets);
+    if (!currentDisplaySets.length) {
+      return;
+    }
+    const mappedDisplaySets = mapDisplaySetsWithState(currentDisplaySets, displaySetsLoadingState, thumbnailImageSrcMap, viewports);
+    if (!customMapDisplaySets) {
+      sortStudyInstances(mappedDisplaySets);
+    }
     setDisplaySets(mappedDisplaySets);
-  }, [StudyInstanceUIDs, thumbnailImageSrcMap, displaySetService]);
+  }, [displaySetService.activeDisplaySets, displaySetsLoadingState, viewports, thumbnailImageSrcMap, customMapDisplaySets]);
 
   // ~~ subscriptions --> displaySets
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     // DISPLAY_SETS_ADDED returns an array of DisplaySets that were added
     const SubscriptionDisplaySetsAdded = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_ADDED, data => {
-      // for some reason this breaks thumbnail loading
-      // if (!hasLoadedViewports) {
-      //   return;
-      // }
+      if (!hasLoadedViewports) {
+        return;
+      }
       const {
-        displaySetsAdded
+        displaySetsAdded,
+        options
       } = data;
       displaySetsAdded.forEach(async dSet => {
+        const displaySetInstanceUID = dSet.displaySetInstanceUID;
         const newImageSrcEntry = {};
-        const displaySet = displaySetService.getDisplaySetByUID(dSet.displaySetInstanceUID);
+        const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
         if (displaySet?.unsupported) {
           return;
         }
+        if (options?.madeInClient) {
+          setJumpToDisplaySet(displaySetInstanceUID);
+        }
         const imageIds = dataSource.getImageIdsForDisplaySet(displaySet);
-        const imageId = imageIds[Math.floor(imageIds.length / 2)];
+        const imageId = getImageIdForThumbnail(displaySet, imageIds);
 
         // TODO: Is it okay that imageIds are not returned here for SR displaysets?
         if (!imageId) {
           return;
         }
+
         // When the image arrives, render it and store the result in the thumbnailImgSrcMap
-        newImageSrcEntry[dSet.displaySetInstanceUID] = await getImageSrc(imageId, dSet.initialViewport);
+        let {
+          thumbnailSrc
+        } = displaySet;
+        if (!thumbnailSrc && displaySet.getThumbnailSrc) {
+          thumbnailSrc = await displaySet.getThumbnailSrc({
+            getImageSrc
+          });
+        }
+        if (!thumbnailSrc) {
+          thumbnailSrc = await getImageSrc(imageId);
+          displaySet.thumbnailSrc = thumbnailSrc;
+        }
+        newImageSrcEntry[displaySetInstanceUID] = thumbnailSrc;
         setThumbnailImageSrcMap(prevState => {
           return {
             ...prevState,
@@ -5965,72 +6874,116 @@ function PanelStudyBrowser({
     return () => {
       SubscriptionDisplaySetsAdded.unsubscribe();
     };
-  }, [getImageSrc, dataSource, displaySetService]);
+  }, [displaySetService, dataSource, getImageSrc, hasLoadedViewports]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     // TODO: Will this always hold _all_ the displaySets we care about?
     // DISPLAY_SETS_CHANGED returns `DisplaySerService.activeDisplaySets`
     const SubscriptionDisplaySetsChanged = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_CHANGED, changedDisplaySets => {
-      const mappedDisplaySets = _mapDisplaySets(changedDisplaySets, thumbnailImageSrcMap);
+      const mappedDisplaySets = mapDisplaySetsWithState(changedDisplaySets, displaySetsLoadingState, thumbnailImageSrcMap, viewports);
+      if (!customMapDisplaySets) {
+        sortStudyInstances(mappedDisplaySets);
+      }
       setDisplaySets(mappedDisplaySets);
     });
     const SubscriptionDisplaySetMetaDataInvalidated = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SET_SERIES_METADATA_INVALIDATED, () => {
-      const mappedDisplaySets = _mapDisplaySets(displaySetService.getActiveDisplaySets(), thumbnailImageSrcMap);
+      const mappedDisplaySets = mapDisplaySetsWithState(displaySetService.getActiveDisplaySets(), displaySetsLoadingState, thumbnailImageSrcMap, viewports);
+      if (!customMapDisplaySets) {
+        sortStudyInstances(mappedDisplaySets);
+      }
       setDisplaySets(mappedDisplaySets);
     });
     return () => {
       SubscriptionDisplaySetsChanged.unsubscribe();
       SubscriptionDisplaySetMetaDataInvalidated.unsubscribe();
     };
-  }, [StudyInstanceUIDs, thumbnailImageSrcMap, displaySetService]);
+  }, [displaySetsLoadingState, thumbnailImageSrcMap, viewports, displaySetService, customMapDisplaySets]);
   const tabs = createStudyBrowserTabs(StudyInstanceUIDs, studyDisplayList, displaySets);
 
   // TODO: Should not fire this on "close"
   function _handleStudyClick(StudyInstanceUID) {
     const shouldCollapseStudy = expandedStudyInstanceUIDs.includes(StudyInstanceUID);
-    const updatedExpandedStudyInstanceUIDs = shouldCollapseStudy ?
-    // eslint-disable-next-line prettier/prettier
-    [...expandedStudyInstanceUIDs.filter(stdyUid => stdyUid !== StudyInstanceUID)] : [...expandedStudyInstanceUIDs, StudyInstanceUID];
+    const updatedExpandedStudyInstanceUIDs = shouldCollapseStudy ? [...expandedStudyInstanceUIDs.filter(stdyUid => stdyUid !== StudyInstanceUID)] : [...expandedStudyInstanceUIDs, StudyInstanceUID];
     setExpandedStudyInstanceUIDs(updatedExpandedStudyInstanceUIDs);
     if (!shouldCollapseStudy) {
       const madeInClient = true;
       requestDisplaySetCreationForStudy(displaySetService, StudyInstanceUID, madeInClient);
     }
   }
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (jumpToDisplaySet) {
+      // Get element by displaySetInstanceUID
+      const displaySetInstanceUID = jumpToDisplaySet;
+      const element = document.getElementById(`thumbnail-${displaySetInstanceUID}`);
+      if (element && typeof element.scrollIntoView === 'function') {
+        // TODO: Any way to support IE here?
+        element.scrollIntoView({
+          behavior: 'smooth'
+        });
+        setJumpToDisplaySet(null);
+      }
+    }
+  }, [jumpToDisplaySet, expandedStudyInstanceUIDs, activeTabName]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!jumpToDisplaySet) {
+      return;
+    }
+    const displaySetInstanceUID = jumpToDisplaySet;
+    // Set the activeTabName and expand the study
+    const thumbnailLocation = _findTabAndStudyOfDisplaySet(displaySetInstanceUID, tabs);
+    if (!thumbnailLocation) {
+      console.warn('jumpToThumbnail: displaySet thumbnail not found.');
+      return;
+    }
+    const {
+      tabName,
+      StudyInstanceUID
+    } = thumbnailLocation;
+    setActiveTabName(tabName);
+    const studyExpanded = expandedStudyInstanceUIDs.includes(StudyInstanceUID);
+    if (!studyExpanded) {
+      const updatedExpandedStudyInstanceUIDs = [...expandedStudyInstanceUIDs, StudyInstanceUID];
+      setExpandedStudyInstanceUIDs(updatedExpandedStudyInstanceUIDs);
+    }
+  }, [expandedStudyInstanceUIDs, jumpToDisplaySet, tabs]);
   const activeDisplaySetInstanceUIDs = viewports.get(activeViewportId)?.displaySetInstanceUIDs;
-  const onThumbnailContextMenu = (commandName, options) => {
-    commandsManager.runCommand(commandName, options);
-  };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PanelStudyBrowserHeader__WEBPACK_IMPORTED_MODULE_5__.PanelStudyBrowserHeader, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PanelStudyBrowserHeader__WEBPACK_IMPORTED_MODULE_4__.PanelStudyBrowserHeader, {
     viewPresets: viewPresets,
     updateViewPresetValue: updateViewPresetValue,
     actionIcons: actionIcons,
     updateActionIconValue: updateActionIconValue
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Separator, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Separator, {
     orientation: "horizontal",
     className: "bg-black",
     thickness: "2px"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.StudyBrowser, {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.StudyBrowser, {
     tabs: tabs,
     servicesManager: servicesManager,
     activeTabName: activeTabName,
-    onDoubleClickThumbnail: onDoubleClickThumbnailHandler,
-    activeDisplaySetInstanceUIDs: activeDisplaySetInstanceUIDs,
     expandedStudyInstanceUIDs: expandedStudyInstanceUIDs,
     onClickStudy: _handleStudyClick,
     onClickTab: clickedTabName => {
       setActiveTabName(clickedTabName);
     },
-    showSettings: actionIcons.find(icon => icon.id === 'settings').value,
+    onClickUntrack: onClickUntrack,
+    onClickThumbnail: () => {},
+    onDoubleClickThumbnail: onDoubleClickThumbnailHandler,
+    activeDisplaySetInstanceUIDs: activeDisplaySetInstanceUIDs,
+    showSettings: actionIcons.find(icon => icon.id === 'settings')?.value,
     viewPresets: viewPresets,
-    onThumbnailContextMenu: onThumbnailContextMenu
+    ThumbnailMenuItems: (0,_Components_MoreDropdownMenu__WEBPACK_IMPORTED_MODULE_6__["default"])({
+      commandsManager,
+      servicesManager,
+      menuItemsKey: 'studyBrowser.thumbnailMenuItems'
+    }),
+    StudyMenuItems: (0,_Components_MoreDropdownMenu__WEBPACK_IMPORTED_MODULE_6__["default"])({
+      commandsManager,
+      servicesManager,
+      menuItemsKey: 'studyBrowser.studyMenuItems'
+    })
   }));
 }
-_s2(PanelStudyBrowser, "etmF4qX2Pf0Iotai0oLVlwCj45g=", false, function () {
-  return [react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate, _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useImageViewer, _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid];
-});
-_c2 = PanelStudyBrowser;
-_s(PanelStudyBrowser, "cNMsu3qlFJkwCV2QrWKb4D3RvEU=", false, function () {
-  return [react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate, _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useImageViewer, _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid];
+_s(PanelStudyBrowser, "vuM7nsCiiTKPBNvNAPn616nLifc=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem, react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate, _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useImageViewer, _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useViewportGrid];
 });
 _c = PanelStudyBrowser;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PanelStudyBrowser);
@@ -6056,29 +7009,33 @@ function _mapDataSourceStudies(studies) {
     };
   });
 }
-function _mapDisplaySets(displaySets, thumbnailImageSrcMap) {
+function _mapDisplaySets(displaySets, displaySetLoadingState, thumbnailImageSrcMap, viewports) {
   const thumbnailDisplaySets = [];
   const thumbnailNoImageDisplaySets = [];
   displaySets.filter(ds => !ds.excludeFromThumbnailBrowser).forEach(ds => {
-    const imageSrc = thumbnailImageSrcMap[ds.displaySetInstanceUID];
+    const {
+      thumbnailSrc,
+      displaySetInstanceUID
+    } = ds;
     const componentType = _getComponentType(ds);
     const array = componentType === 'thumbnail' ? thumbnailDisplaySets : thumbnailNoImageDisplaySets;
+    const loadingProgress = displaySetLoadingState?.[displaySetInstanceUID];
     array.push({
-      displaySetInstanceUID: ds.displaySetInstanceUID,
+      displaySetInstanceUID,
       description: ds.SeriesDescription || '',
       seriesNumber: ds.SeriesNumber,
       modality: ds.Modality,
-      seriesDate: ds.SeriesDate,
-      seriesTime: ds.SeriesTime,
+      seriesDate: formatDate(ds.SeriesDate),
       numInstances: ds.numImageFrames,
+      loadingProgress,
       countIcon: ds.countIcon,
-      StudyInstanceUID: ds.StudyInstanceUID,
       messages: ds.messages,
+      StudyInstanceUID: ds.StudyInstanceUID,
       componentType,
-      imageSrc,
+      imageSrc: thumbnailSrc || thumbnailImageSrcMap[displaySetInstanceUID],
       dragData: {
         type: 'displayset',
-        displaySetInstanceUID: ds.displaySetInstanceUID
+        displaySetInstanceUID
         // .. Any other data to pass
       },
       isHydratedForDerivedDisplaySet: ds.isHydrated
@@ -6086,18 +7043,47 @@ function _mapDisplaySets(displaySets, thumbnailImageSrcMap) {
   });
   return [...thumbnailDisplaySets, ...thumbnailNoImageDisplaySets];
 }
-const thumbnailNoImageModalities = ['SR', 'SEG', 'SM', 'RTSTRUCT', 'RTPLAN', 'RTDOSE'];
 function _getComponentType(ds) {
-  if (thumbnailNoImageModalities.includes(ds.Modality) || ds?.unsupported) {
-    // TODO probably others.
+  if (thumbnailNoImageModalities.includes(ds.Modality) || ds?.unsupported || ds.thumbnailSrc === null) {
     return 'thumbnailNoImage';
   }
   return 'thumbnail';
 }
+function getImageIdForThumbnail(displaySet, imageIds) {
+  let imageId;
+  if (displaySet.isDynamicVolume) {
+    const timePoints = displaySet.dynamicVolumeInfo.timePoints;
+    const middleIndex = Math.floor(timePoints.length / 2);
+    const middleTimePointImageIds = timePoints[middleIndex];
+    imageId = middleTimePointImageIds[Math.floor(middleTimePointImageIds.length / 2)];
+  } else {
+    imageId = imageIds[Math.floor(imageIds.length / 2)];
+  }
+  return imageId;
+}
+function _findTabAndStudyOfDisplaySet(displaySetInstanceUID, tabs) {
+  for (let t = 0; t < tabs.length; t++) {
+    const {
+      studies
+    } = tabs[t];
+    for (let s = 0; s < studies.length; s++) {
+      const {
+        displaySets
+      } = studies[s];
+      for (let d = 0; d < displaySets.length; d++) {
+        const displaySet = displaySets[d];
+        if (displaySet.displaySetInstanceUID === displaySetInstanceUID) {
+          return {
+            tabName: tabs[t].name,
+            StudyInstanceUID: studies[s].studyInstanceUid
+          };
+        }
+      }
+    }
+  }
+}
 var _c;
 __webpack_require__.$Refresh$.register(_c, "PanelStudyBrowser");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "PanelStudyBrowser");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -6105,7 +7091,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6120,7 +7122,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowserHeader.tsx ***!
   \***************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6151,7 +7153,7 @@ function PanelStudyBrowserHeader({
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex items-center justify-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-primary-active flex items-center space-x-1"
+    className: "text-primary flex items-center space-x-1"
   }, actionIcons.map((icon, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons[icon.iconName] || _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.MissingIcon, {
     key: index,
     onClick: () => updateActionIconValue(icon),
@@ -6172,13 +7174,10 @@ function PanelStudyBrowserHeader({
     className: "text-actions-primary"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons[viewPreset.iconName] || _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.MissingIcon)))))))));
 }
-_c2 = PanelStudyBrowserHeader;
 _c = PanelStudyBrowserHeader;
 
 var _c;
 __webpack_require__.$Refresh$.register(_c, "PanelStudyBrowserHeader");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "PanelStudyBrowserHeader");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -6186,7 +7185,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6201,7 +7216,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/StudyBrowser/constants/actionIcons.ts ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6224,7 +7239,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6239,7 +7270,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/StudyBrowser/constants/index.ts ***!
   \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6262,7 +7293,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6277,7 +7324,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/StudyBrowser/constants/viewPresets.ts ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6304,7 +7351,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6319,7 +7382,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/WrappedPanelStudyBrowser.tsx ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6328,20 +7391,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _StudyBrowser_PanelStudyBrowser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StudyBrowser/PanelStudyBrowser */ "../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowser.tsx");
-/* harmony import */ var _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getImageSrcFromImageId */ "../../../extensions/default/src/Panels/getImageSrcFromImageId.js");
-/* harmony import */ var _getStudiesForPatientByMRN__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getStudiesForPatientByMRN */ "../../../extensions/default/src/Panels/getStudiesForPatientByMRN.js");
-/* harmony import */ var _requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./requestDisplaySetCreationForStudy */ "../../../extensions/default/src/Panels/requestDisplaySetCreationForStudy.js");
+/* harmony import */ var _StudyBrowser_PanelStudyBrowser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StudyBrowser/PanelStudyBrowser */ "../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowser.tsx");
+/* harmony import */ var _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getImageSrcFromImageId */ "../../../extensions/default/src/Panels/getImageSrcFromImageId.js");
+/* harmony import */ var _getStudiesForPatientByMRN__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getStudiesForPatientByMRN */ "../../../extensions/default/src/Panels/getStudiesForPatientByMRN.js");
+/* harmony import */ var _requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./requestDisplaySetCreationForStudy */ "../../../extensions/default/src/Panels/requestDisplaySetCreationForStudy.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
-
 //
+
 
 
 
@@ -6354,21 +7415,18 @@ var _s = __webpack_require__.$Refresh$.signature();
  * @param {object} commandsManager
  * @param {object} extensionManager
  */
-function WrappedPanelStudyBrowser({
-  commandsManager,
-  extensionManager,
-  servicesManager
-}) {
-  _s2();
+function WrappedPanelStudyBrowser() {
   _s();
+  const {
+    extensionManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_5__.useSystem)();
   // TODO: This should be made available a different way; route should have
   // already determined our datasource
-  const dataSource = extensionManager.getDataSources()[0];
-  const _getStudiesForPatientByMRN = _getStudiesForPatientByMRN__WEBPACK_IMPORTED_MODULE_4__["default"].bind(null, dataSource);
+  const [dataSource] = extensionManager.getActiveDataSource();
+  const _getStudiesForPatientByMRN = _getStudiesForPatientByMRN__WEBPACK_IMPORTED_MODULE_3__["default"].bind(null, dataSource);
   const _getImageSrcFromImageId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(_createGetImageSrcFromImageIdFn(extensionManager), []);
-  const _requestDisplaySetCreationForStudy = _requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_5__["default"].bind(null, dataSource);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_StudyBrowser_PanelStudyBrowser__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    servicesManager: servicesManager,
+  const _requestDisplaySetCreationForStudy = _requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_4__["default"].bind(null, dataSource);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_StudyBrowser_PanelStudyBrowser__WEBPACK_IMPORTED_MODULE_1__["default"], {
     dataSource: dataSource,
     getImageSrc: _getImageSrcFromImageId,
     getStudiesForPatientByMRN: _getStudiesForPatientByMRN,
@@ -6385,9 +7443,9 @@ function WrappedPanelStudyBrowser({
  * @returns {func} getImageSrcFromImageId - A utility function powered by
  * cornerstone
  */
-_s2(WrappedPanelStudyBrowser, "6UNZGNSlqXCQ9xMAv9ueU6g1qw0=");
-_c2 = WrappedPanelStudyBrowser;
-_s(WrappedPanelStudyBrowser, "6UNZGNSlqXCQ9xMAv9ueU6g1qw0=");
+_s(WrappedPanelStudyBrowser, "VBl3w6h1VvKF7U9AVeERoMHQXTM=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_5__.useSystem];
+});
 _c = WrappedPanelStudyBrowser;
 function _createGetImageSrcFromImageIdFn(extensionManager) {
   const utilities = extensionManager.getModuleEntry('@ohif/extension-cornerstone.utilityModule.common');
@@ -6395,21 +7453,14 @@ function _createGetImageSrcFromImageIdFn(extensionManager) {
     const {
       cornerstone
     } = utilities.exports.getCornerstoneLibraries();
-    return _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_3__["default"].bind(null, cornerstone);
+    return _getImageSrcFromImageId__WEBPACK_IMPORTED_MODULE_2__["default"].bind(null, cornerstone);
   } catch (ex) {
     throw new Error('Required command not found');
   }
 }
-WrappedPanelStudyBrowser.propTypes = {
-  commandsManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired,
-  extensionManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired,
-  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired
-};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WrappedPanelStudyBrowser);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "WrappedPanelStudyBrowser");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "WrappedPanelStudyBrowser");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -6417,7 +7468,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6432,167 +7499,65 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/createReportDialogPrompt.tsx ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ CreateReportDialogPrompt)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/_shared/PROMPT_RESPONSES */ "../../../extensions/default/src/utils/_shared/PROMPT_RESPONSES.ts");
+/* harmony import */ var _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/_shared/PROMPT_RESPONSES */ "../../../extensions/default/src/utils/_shared/PROMPT_RESPONSES.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
-
-
-function CreateReportDialogPrompt(uiDialogService, {
-  extensionManager
+function CreateReportDialogPrompt({
+  title = 'Create Report',
+  extensionManager,
+  servicesManager
 }) {
+  const {
+    uiDialogService,
+    customizationService
+  } = servicesManager.services;
+  const dataSources = extensionManager.getDataSourcesForUI();
+  const ReportDialog = customizationService.getCustomization('ohif.createReportDialog');
+  const allowMultipleDataSources = window.config.allowMultiSelectExport;
   return new Promise(function (resolve, reject) {
-    let dialogId = undefined;
-    const _handleClose = () => {
-      // Dismiss dialog
-      uiDialogService.dismiss({
-        id: dialogId
-      });
-      // Notify of cancel action
-      resolve({
-        action: _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_2__["default"].CANCEL,
-        value: undefined,
-        dataSourceName: undefined
-      });
-    };
-
-    /**
-     *
-     * @param {string} param0.action - value of action performed
-     * @param {string} param0.value - value from input field
-     */
-    const _handleFormSubmit = ({
-      action,
-      value
-    }) => {
-      uiDialogService.dismiss({
-        id: dialogId
-      });
-      switch (action.id) {
-        case 'save':
+    uiDialogService.show({
+      id: 'report-dialog',
+      title,
+      content: ReportDialog,
+      contentProps: {
+        dataSources: allowMultipleDataSources ? dataSources : undefined,
+        onSave: async ({
+          reportName,
+          dataSource: selectedDataSource,
+          series
+        }) => {
           resolve({
-            action: _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_2__["default"].CREATE_REPORT,
-            value: value.label,
-            dataSourceName: value.dataSourceName
+            value: reportName,
+            dataSourceName: selectedDataSource,
+            series,
+            action: _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_0__["default"].CREATE_REPORT
           });
-          break;
-        case 'cancel':
+        },
+        onCancel: () => {
           resolve({
-            action: _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_2__["default"].CANCEL,
+            action: _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_0__["default"].CANCEL,
             value: undefined,
+            series: undefined,
             dataSourceName: undefined
           });
-          break;
-      }
-    };
-    const dataSourcesOpts = Object.keys(extensionManager.dataSourceMap).filter(ds => {
-      const configuration = extensionManager.dataSourceDefs[ds]?.configuration;
-      const supportsStow = configuration?.supportsStow ?? configuration?.wadoRoot;
-      return supportsStow;
-    }).map(ds => {
-      return {
-        value: ds,
-        label: ds,
-        placeHolder: ds
-      };
-    });
-    dialogId = uiDialogService.create({
-      centralize: true,
-      isDraggable: false,
-      content: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Dialog,
-      useLastPosition: false,
-      showOverlay: true,
-      contentProps: {
-        title: 'Create Report',
-        value: {
-          label: '',
-          dataSourceName: extensionManager.activeDataSource
         },
-        noCloseButton: true,
-        onClose: _handleClose,
-        actions: [{
-          id: 'cancel',
-          text: 'Cancel',
-          type: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonEnums.type.secondary
-        }, {
-          id: 'save',
-          text: 'Save',
-          type: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonEnums.type.primary
-        }],
-        // TODO: Should be on button press...
-        onSubmit: _handleFormSubmit,
-        body: ({
-          value,
-          setValue
-        }) => {
-          const onChangeHandler = event => {
-            event.persist();
-            setValue(value => ({
-              ...value,
-              label: event.target.value
-            }));
-          };
-          const onKeyPressHandler = event => {
-            if (event.key === 'Enter') {
-              uiDialogService.dismiss({
-                id: dialogId
-              });
-              resolve({
-                action: _utils_shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_2__["default"].CREATE_REPORT,
-                value: value.label
-              });
-            }
-          };
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, dataSourcesOpts.length > 1 && window.config?.allowMultiSelectExport && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-            className: "text-[14px] leading-[1.2] text-white"
-          }, "Data Source"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
-            closeMenuOnSelect: true,
-            className: "border-primary-main mt-2 bg-black",
-            options: dataSourcesOpts,
-            placeholder: dataSourcesOpts.find(option => option.value === value.dataSourceName).placeHolder,
-            value: value.dataSourceName,
-            onChange: evt => {
-              setValue(v => ({
-                ...v,
-                dataSourceName: evt.value
-              }));
-            },
-            isClearable: false
-          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-            className: "mt-3"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
-            autoFocus: true,
-            label: "Enter the report name",
-            labelClassName: "text-white text-[14px] leading-[1.2]",
-            className: "border-primary-main bg-black",
-            type: "text",
-            value: value.label,
-            onChange: onChangeHandler,
-            onKeyPress: onKeyPressHandler,
-            required: true
-          })));
-        }
+        defaultValue: title
       }
     });
   });
 }
-_c2 = CreateReportDialogPrompt;
 _c = CreateReportDialogPrompt;
 var _c;
 __webpack_require__.$Refresh$.register(_c, "CreateReportDialogPrompt");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "CreateReportDialogPrompt");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -6600,7 +7565,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6615,7 +7596,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/getImageSrcFromImageId.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6649,7 +7630,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6664,7 +7661,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/getStudiesForPatientByMRN.js ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6675,14 +7672,19 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 async function getStudiesForPatientByMRN(dataSource, qidoForStudyUID) {
-  if (qidoForStudyUID && qidoForStudyUID.length && qidoForStudyUID[0].mrn) {
-    return dataSource.query.studies.search({
-      patientId: qidoForStudyUID[0].mrn,
-      disableWildcard: true
-    });
+  if (!qidoForStudyUID?.length) {
+    return [];
   }
-  console.log('No mrn found for', qidoForStudyUID);
-  return qidoForStudyUID;
+  const mrn = qidoForStudyUID[0].mrn;
+
+  // if not defined or empty, return the original qidoForStudyUID
+  if (!mrn) {
+    return qidoForStudyUID;
+  }
+  return dataSource.query.studies.search({
+    patientId: mrn,
+    disableWildcard: true
+  });
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getStudiesForPatientByMRN);
 
@@ -6692,7 +7694,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6707,7 +7725,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************!*\
   !*** ../../../extensions/default/src/Panels/index.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6733,7 +7751,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6748,7 +7782,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************!*\
   !*** ../../../extensions/default/src/Panels/requestDisplaySetCreationForStudy.js ***!
   \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6763,7 +7797,7 @@ function requestDisplaySetCreationForStudy(dataSource, displaySetService, StudyI
   if (displaySetService.activeDisplaySets.some(displaySet => displaySet.StudyInstanceUID === StudyInstanceUID)) {
     return;
   }
-  dataSource.retrieve.series.metadata({
+  return dataSource.retrieve.series.metadata({
     StudyInstanceUID,
     madeInClient
   });
@@ -6776,7 +7810,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6791,7 +7841,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************!*\
   !*** ../../../extensions/default/src/SOPClassHandlers/chartSOPClassHandler.ts ***!
   \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6888,7 +7938,479 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/Toolbar/ToolBoxWrapper.tsx":
+/*!******************************************************************!*\
+  !*** ../../../extensions/default/src/Toolbar/ToolBoxWrapper.tsx ***!
+  \******************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ToolBoxButtonGroupWrapper: () => (/* binding */ ToolBoxButtonGroupWrapper),
+/* harmony export */   ToolBoxButtonWrapper: () => (/* binding */ ToolBoxButtonWrapper)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "../../../node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core_src_hooks_useToolbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core/src/hooks/useToolbar */ "../../core/src/hooks/useToolbar.tsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+
+
+
+/**
+ * Wraps the ToolButtonList component to handle the OHIF toolbar button structure
+ * @param props - Component props
+ * @returns Component
+ */
+function ToolBoxButtonGroupWrapper({
+  buttonSection,
+  id
+}) {
+  _s();
+  const {
+    onInteraction,
+    toolbarButtons
+  } = (0,_ohif_core_src_hooks_useToolbar__WEBPACK_IMPORTED_MODULE_3__.useToolbar)({
+    buttonSection
+  });
+  if (!buttonSection) {
+    return null;
+  }
+  const items = toolbarButtons.map(button => button.componentProps);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-popover flex flex-row space-x-1 rounded-md px-0 py-0"
+  }, items.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ToolButton, _extends({}, item, {
+    key: item.id,
+    size: "small",
+    className: item.disabled && 'text-foreground/70',
+    onInteraction: event => {
+      onInteraction?.({
+        event,
+        id,
+        commands: item.commands,
+        itemId: item.id,
+        item
+      });
+    }
+  }))));
+}
+_s(ToolBoxButtonGroupWrapper, "tLjZD2Y0E4+CQ8sAi3+XVB/EaIY=", false, function () {
+  return [_ohif_core_src_hooks_useToolbar__WEBPACK_IMPORTED_MODULE_3__.useToolbar];
+});
+_c = ToolBoxButtonGroupWrapper;
+function ToolBoxButtonWrapper({
+  onInteraction,
+  className,
+  options,
+  ...props
+}) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-popover flex flex-row rounded-md px-0 py-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ToolButton, _extends({}, props, {
+    id: props.id,
+    size: "small",
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()(props.disabled && 'text-foreground/70', className),
+    onInteraction: event => {
+      onInteraction?.({
+        event,
+        itemId: props.id,
+        commands: props.commands,
+        options
+      });
+    }
+  })));
+}
+_c2 = ToolBoxButtonWrapper;
+var _c, _c2;
+__webpack_require__.$Refresh$.register(_c, "ToolBoxButtonGroupWrapper");
+__webpack_require__.$Refresh$.register(_c2, "ToolBoxButtonWrapper");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/Toolbar/ToolButtonListWrapper.tsx":
+/*!*************************************************************************!*\
+  !*** ../../../extensions/default/src/Toolbar/ToolButtonListWrapper.tsx ***!
+  \*************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ToolButtonListWrapper)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core/src */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+
+/**
+ * Wraps the ToolButtonList component to handle the OHIF toolbar button structure
+ * @param props - Component props
+ * @returns Component
+ * // test
+ */
+function ToolButtonListWrapper({
+  buttonSection,
+  id
+}) {
+  _s();
+  const {
+    onInteraction,
+    toolbarButtons
+  } = (0,_ohif_core_src__WEBPACK_IMPORTED_MODULE_2__.useToolbar)({
+    buttonSection
+  });
+  if (!toolbarButtons?.length) {
+    return null;
+  }
+  const primary = toolbarButtons.find(button => button.componentProps.isActive)?.componentProps || toolbarButtons[0].componentProps;
+  const items = toolbarButtons.map(button => button.componentProps);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ToolButtonList, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ToolButtonListDefault, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": `${id}-split-button-primary`,
+    "data-tool": primary.id,
+    "data-active": primary.isActive
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ToolButton, _extends({}, primary, {
+    onInteraction: ({
+      itemId
+    }) => onInteraction?.({
+      id,
+      itemId,
+      commands: primary.commands
+    }),
+    className: primary.className
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ToolButtonListDivider, {
+    className: primary.isActive ? 'opacity-0' : 'opacity-100'
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    "data-cy": `${id}-split-button-secondary`
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ToolButtonListDropDown, null, items.map(item => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ToolButtonListItem, _extends({
+      key: item.id
+    }, item, {
+      "data-cy": item.id,
+      "data-tool": item.id,
+      "data-active": item.isActive,
+      onSelect: () => onInteraction?.({
+        id,
+        itemId: item.id,
+        commands: item.commands
+      })
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "pl-1"
+    }, item.label || item.tooltip || item.id));
+  }))));
+}
+_s(ToolButtonListWrapper, "tLjZD2Y0E4+CQ8sAi3+XVB/EaIY=", false, function () {
+  return [_ohif_core_src__WEBPACK_IMPORTED_MODULE_2__.useToolbar];
+});
+_c = ToolButtonListWrapper;
+var _c;
+__webpack_require__.$Refresh$.register(_c, "ToolButtonListWrapper");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/Toolbar/ToolButtonWrapper.tsx":
+/*!*********************************************************************!*\
+  !*** ../../../extensions/default/src/Toolbar/ToolButtonWrapper.tsx ***!
+  \*********************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ToolButtonWrapper: () => (/* binding */ ToolButtonWrapper),
+/* harmony export */   "default": () => (/* binding */ ToolButtonWrapper)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+function ToolButtonWrapper(props) {
+  _s();
+  const {
+    IconContainer,
+    containerProps
+  } = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useIconPresentation)();
+  const Icon = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.ByName, {
+    name: props.icon
+  });
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, IconContainer ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(IconContainer, _extends({
+    disabled: props.disabled
+  }, props, containerProps), Icon) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "ghost",
+    size: "icon",
+    disabled: props.disabled
+  }, Icon));
+}
+_s(ToolButtonWrapper, "EdmW9abovJfPd/zhVl7Xid0J3hE=", false, function () {
+  return [_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.useIconPresentation];
+});
+_c = ToolButtonWrapper;
+
+var _c;
+__webpack_require__.$Refresh$.register(_c, "ToolButtonWrapper");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/Toolbar/ToolRowWrapper.tsx":
+/*!******************************************************************!*\
+  !*** ../../../extensions/default/src/Toolbar/ToolRowWrapper.tsx ***!
+  \******************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+function ToolRowWrapper({
+  buttonSection,
+  className = '',
+  show = true
+}) {
+  _s();
+  const {
+    onInteraction,
+    toolbarButtons
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useToolbar)({
+    buttonSection
+  });
+
+  // No need for debugger statement
+  if (!toolbarButtons?.length) {
+    return null;
+  }
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: `space-x-1} flex flex-row items-center ${className}`
+  }, toolbarButtons.map((button, index) => {
+    const {
+      id,
+      Component,
+      componentProps
+    } = button;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: id || index,
+      className: "flex-shrink-0"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, _extends({}, componentProps, {
+      onInteraction: onInteraction,
+      location: componentProps.location || buttonSection
+    })));
+  }));
+}
+_s(ToolRowWrapper, "tLjZD2Y0E4+CQ8sAi3+XVB/EaIY=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useToolbar];
+});
+_c = ToolRowWrapper;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ToolRowWrapper);
+var _c;
+__webpack_require__.$Refresh$.register(_c, "ToolRowWrapper");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -6903,7 +8425,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************!*\
   !*** ../../../extensions/default/src/Toolbar/Toolbar.tsx ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -6916,7 +8438,6 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {
@@ -6930,22 +8451,26 @@ function _extends() {
 
 
 function Toolbar({
-  servicesManager,
-  buttonSection = 'primary'
+  buttonSection = 'primary',
+  viewportId,
+  location
 }) {
-  _s2();
   _s();
   const {
     toolbarButtons,
-    onInteraction
+    onInteraction,
+    isItemOpen,
+    isItemLocked,
+    openItem,
+    closeItem,
+    toggleLock
   } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useToolbar)({
-    servicesManager,
     buttonSection
   });
   if (!toolbarButtons.length) {
     return null;
   }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, toolbarButtons.map(toolDef => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, toolbarButtons?.map(toolDef => {
     if (!toolDef) {
       return null;
     }
@@ -6954,29 +8479,40 @@ function Toolbar({
       Component,
       componentProps
     } = toolDef;
+
+    // Enhanced props with state and actions - respecting viewport specificity
+    const enhancedProps = {
+      ...componentProps,
+      isOpen: isItemOpen(id, viewportId),
+      isLocked: isItemLocked(id, viewportId),
+      onOpen: () => openItem(id, viewportId),
+      onClose: () => closeItem(id, viewportId),
+      onToggleLock: () => toggleLock(id, viewportId),
+      viewportId
+    };
     const tool = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, _extends({
       key: id,
       id: id,
-      onInteraction: onInteraction,
-      servicesManager: servicesManager
-    }, componentProps));
+      location: location,
+      onInteraction: args => {
+        onInteraction({
+          ...args,
+          itemId: id,
+          viewportId
+        });
+      }
+    }, enhancedProps));
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: id
     }, tool);
   }));
 }
-_s2(Toolbar, "D0KFsaoXJQxIT0v6bvZscNoeplo=", false, function () {
-  return [_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useToolbar];
-});
-_c2 = Toolbar;
-_s(Toolbar, "G4GyD1VnY7I2CiaMioG1liuUGjU=", false, function () {
+_s(Toolbar, "dqf1Gez2RiHQsKfbgExIlDLylbM=", false, function () {
   return [_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useToolbar];
 });
 _c = Toolbar;
 var _c;
 __webpack_require__.$Refresh$.register(_c, "Toolbar");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "Toolbar");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -6984,134 +8520,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/default/src/Toolbar/ToolbarButtonGroupWithServices.tsx":
-/*!**********************************************************************************!*\
-  !*** ../../../extensions/default/src/Toolbar/ToolbarButtonGroupWithServices.tsx ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-var _s2 = __webpack_require__.$Refresh$.signature();
-var _s = __webpack_require__.$Refresh$.signature();
-
-
-function ToolbarButtonGroupWithServices({
-  groupId,
-  items,
-  onInteraction,
-  size
-}) {
-  _s2();
-  _s();
-  const getSplitButtonItems = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(items => items.map((item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ToolbarButton, {
-    key: item.id,
-    icon: item.icon,
-    label: item.label,
-    disabled: item.disabled,
-    className: item.className,
-    disabledText: item.disabledText,
-    id: item.id,
-    size: size,
-    onClick: () => {
-      onInteraction({
-        groupId,
-        itemId: item.id,
-        commands: item.commands
-      });
-    }
-    // Note: this is necessary since tooltip will add
-    // default styles to the tooltip container which
-    // we don't want for groups
-    ,
-
-    toolTipClassName: ""
-  })), [onInteraction, groupId]);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ButtonGroup, null, getSplitButtonItems(items));
-}
-_s2(ToolbarButtonGroupWithServices, "FSAESCtgZQtOmqxGW3+y3244RJ8=");
-_c2 = ToolbarButtonGroupWithServices;
-_s(ToolbarButtonGroupWithServices, "FSAESCtgZQtOmqxGW3+y3244RJ8=");
-_c = ToolbarButtonGroupWithServices;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ToolbarButtonGroupWithServices);
-var _c;
-__webpack_require__.$Refresh$.register(_c, "ToolbarButtonGroupWithServices");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ToolbarButtonGroupWithServices");
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/default/src/Toolbar/ToolbarDivider.tsx":
-/*!******************************************************************!*\
-  !*** ../../../extensions/default/src/Toolbar/ToolbarDivider.tsx ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ToolbarDivider)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-
-function ToolbarDivider() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: "border-common-dark mx-2 h-8 w-4 self-center border-l"
-  });
-}
-_c2 = ToolbarDivider;
-_c = ToolbarDivider;
-var _c;
-__webpack_require__.$Refresh$.register(_c, "ToolbarDivider");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ToolbarDivider");
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -7126,7 +8551,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************!*\
   !*** ../../../extensions/default/src/Toolbar/ToolbarLayoutSelector.tsx ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -7137,282 +8562,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s3 = __webpack_require__.$Refresh$.signature(),
-  _s4 = __webpack_require__.$Refresh$.signature();
-var _s = __webpack_require__.$Refresh$.signature(),
-  _s2 = __webpack_require__.$Refresh$.signature();
-function _extends() {
-  return _extends = Object.assign ? Object.assign.bind() : function (n) {
-    for (var e = 1; e < arguments.length; e++) {
-      var t = arguments[e];
-      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
-    }
-    return n;
-  }, _extends.apply(null, arguments);
-}
-
-
-
-const defaultCommonPresets = [{
-  icon: 'layout-common-1x1',
-  commandOptions: {
-    numRows: 1,
-    numCols: 1
-  }
-}, {
-  icon: 'layout-common-1x2',
-  commandOptions: {
-    numRows: 1,
-    numCols: 2
-  }
-}, {
-  icon: 'layout-common-2x2',
-  commandOptions: {
-    numRows: 2,
-    numCols: 2
-  }
-}, {
-  icon: 'layout-common-2x3',
-  commandOptions: {
-    numRows: 2,
-    numCols: 3
-  }
-}];
-const _areSelectorsValid = (hp, displaySets, hangingProtocolService) => {
-  if (!hp.displaySetSelectors || Object.values(hp.displaySetSelectors).length === 0) {
-    return true;
-  }
-  return hangingProtocolService.areRequiredSelectorsValid(Object.values(hp.displaySetSelectors), displaySets[0]);
-};
-const generateAdvancedPresets = ({
-  servicesManager
-}) => {
-  const {
-    hangingProtocolService,
-    viewportGridService,
-    displaySetService
-  } = servicesManager.services;
-  const hangingProtocols = Array.from(hangingProtocolService.protocols.values());
-  const viewportId = viewportGridService.getActiveViewportId();
-  if (!viewportId) {
-    return [];
-  }
-  const displaySetInsaneUIDs = viewportGridService.getDisplaySetsUIDsForViewport(viewportId);
-  if (!displaySetInsaneUIDs) {
-    return [];
-  }
-  const displaySets = displaySetInsaneUIDs.map(uid => displaySetService.getDisplaySetByUID(uid));
-  return hangingProtocols.map(hp => {
-    if (!hp.isPreset) {
-      return null;
-    }
-    const areValid = _areSelectorsValid(hp, displaySets, hangingProtocolService);
-    return {
-      icon: hp.icon,
-      title: hp.name,
-      commandOptions: {
-        protocolId: hp.id
-      },
-      disabled: !areValid
-    };
-  }).filter(preset => preset !== null);
-};
-function ToolbarLayoutSelectorWithServices({
-  commandsManager,
-  servicesManager,
-  ...props
-}) {
-  _s3();
-  _s();
-  const [isDisabled, setIsDisabled] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const handleMouseEnter = () => {
-    setIsDisabled(false);
-  };
-  const onSelection = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(props => {
-    commandsManager.run({
-      commandName: 'setViewportGridLayout',
-      commandOptions: {
-        ...props
-      }
-    });
-    setIsDisabled(true);
-  }, []);
-  const onSelectionPreset = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(props => {
-    commandsManager.run({
-      commandName: 'setHangingProtocol',
-      commandOptions: {
-        ...props
-      }
-    });
-    setIsDisabled(true);
-  }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    onMouseEnter: handleMouseEnter
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LayoutSelector, _extends({}, props, {
-    onSelection: onSelection,
-    onSelectionPreset: onSelectionPreset,
-    servicesManager: servicesManager,
-    tooltipDisabled: isDisabled
-  })));
-}
-_s3(ToolbarLayoutSelectorWithServices, "CrHDIzEETGXVbfu61kP+YQPaKEU=");
-_c3 = ToolbarLayoutSelectorWithServices;
-_s(ToolbarLayoutSelectorWithServices, "CrHDIzEETGXVbfu61kP+YQPaKEU=");
-_c = ToolbarLayoutSelectorWithServices;
-function LayoutSelector({
-  rows = 3,
-  columns = 4,
-  onLayoutChange = () => {},
-  className,
-  onSelection,
-  onSelectionPreset,
-  servicesManager,
-  tooltipDisabled,
-  ...rest
-}) {
-  _s4();
-  _s2();
-  const [isOpen, setIsOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const dropdownRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  const {
-    customizationService
-  } = servicesManager.services;
-  const commonPresets = customizationService.get('commonPresets') || defaultCommonPresets;
-  const advancedPresets = customizationService.get('advancedPresets') || generateAdvancedPresets({
-    servicesManager
-  });
-  const closeOnOutsideClick = event => {
-    if (isOpen && dropdownRef.current) {
-      setIsOpen(false);
-    }
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (!isOpen) {
-      return;
-    }
-    setTimeout(() => {
-      window.addEventListener('click', closeOnOutsideClick);
-    }, 0);
-    return () => {
-      window.removeEventListener('click', closeOnOutsideClick);
-      dropdownRef.current = null;
-    };
-  }, [isOpen]);
-  const onInteractionHandler = () => {
-    setIsOpen(!isOpen);
-  };
-  const DropdownContent = isOpen ? _ohif_ui__WEBPACK_IMPORTED_MODULE_2__.LayoutSelector : null;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    id: "Layout",
-    label: "Layout",
-    icon: "tool-layout",
-    onInteraction: onInteractionHandler,
-    className: className,
-    rounded: rest.rounded,
-    disableToolTip: tooltipDisabled,
-    dropdownContent: DropdownContent !== null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex",
-      ref: dropdownRef
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "bg-secondary-dark flex flex-col gap-2.5 p-2"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "text-aqua-pale text-xs"
-    }, "Common"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex gap-4"
-    }, commonPresets.map((preset, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.LayoutPreset, {
-      key: index,
-      classNames: "hover:bg-primary-dark group p-1 cursor-pointer",
-      icon: preset.icon,
-      commandOptions: preset.commandOptions,
-      onSelection: onSelection
-    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "h-[2px] bg-black"
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "text-aqua-pale text-xs"
-    }, "Advanced"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex flex-col gap-2.5"
-    }, advancedPresets.map((preset, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.LayoutPreset, {
-      key: index + commonPresets.length,
-      classNames: "hover:bg-primary-dark group flex gap-2 p-1 cursor-pointer",
-      icon: preset.icon,
-      title: preset.title,
-      disabled: preset.disabled,
-      commandOptions: preset.commandOptions,
-      onSelection: onSelectionPreset
-    })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "bg-primary-dark flex flex-col gap-2.5 border-l-2 border-solid border-black  p-2"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "text-aqua-pale text-xs"
-    }, "Custom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(DropdownContent, {
-      rows: rows,
-      columns: columns,
-      onSelection: onSelection
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      className: "text-aqua-pale text-xs leading-tight"
-    }, "Hover to select ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), "rows and columns ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), " Click to apply"))),
-    isActive: isOpen,
-    type: "toggle"
-  });
-}
-_s4(LayoutSelector, "uhOyve9TWk+bvhPJTPlaMsUEQAY=");
-_c4 = LayoutSelector;
-_s2(LayoutSelector, "uhOyve9TWk+bvhPJTPlaMsUEQAY=");
-_c2 = LayoutSelector;
-LayoutSelector.propTypes = {
-  rows: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().number),
-  columns: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().number),
-  onLayoutChange: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func),
-  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object).isRequired
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ToolbarLayoutSelectorWithServices);
-var _c, _c2;
-__webpack_require__.$Refresh$.register(_c, "ToolbarLayoutSelectorWithServices");
-__webpack_require__.$Refresh$.register(_c2, "LayoutSelector");
-var _c3, _c4;
-__webpack_require__.$Refresh$.register(_c3, "ToolbarLayoutSelectorWithServices");
-__webpack_require__.$Refresh$.register(_c4, "LayoutSelector");
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "../../../extensions/default/src/Toolbar/ToolbarSplitButtonWithServices.tsx":
-/*!**********************************************************************************!*\
-  !*** ../../../extensions/default/src/Toolbar/ToolbarSplitButtonWithServices.tsx ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {
@@ -7423,89 +8577,161 @@ function _extends() {
     return n;
   }, _extends.apply(null, arguments);
 }
+// Updated ToolbarLayoutSelector.tsx
 
 
 
-function ToolbarSplitButtonWithServices({
-  groupId,
-  primary,
-  secondary,
-  items,
-  renderer,
-  onInteraction,
-  servicesManager
+
+function ToolbarLayoutSelectorWithServices({
+  commandsManager,
+  servicesManager,
+  rows = 3,
+  columns = 4,
+  ...props
 }) {
-  _s2();
   _s();
   const {
-    toolbarService
-  } = servicesManager?.services;
+    customizationService
+  } = servicesManager.services;
 
-  /* Bubbles up individual item clicks */
-  const getSplitButtonItems = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(items => items.map((item, index) => ({
-    ...item,
-    index,
-    onClick: () => {
-      onInteraction({
-        groupId,
-        itemId: item.id,
-        commands: item.commands
+  // Get the presets from the customization service
+  const commonPresets = customizationService?.getCustomization('layoutSelector.commonPresets') || [{
+    icon: 'layout-single',
+    commandOptions: {
+      numRows: 1,
+      numCols: 1
+    }
+  }, {
+    icon: 'layout-side-by-side',
+    commandOptions: {
+      numRows: 1,
+      numCols: 2
+    }
+  }, {
+    icon: 'layout-four-up',
+    commandOptions: {
+      numRows: 2,
+      numCols: 2
+    }
+  }, {
+    icon: 'layout-three-row',
+    commandOptions: {
+      numRows: 3,
+      numCols: 1
+    }
+  }];
+
+  // Get the advanced presets generator from the customization service
+  const advancedPresetsGenerator = customizationService?.getCustomization('layoutSelector.advancedPresetGenerator');
+
+  // Generate the advanced presets
+  const advancedPresets = advancedPresetsGenerator ? advancedPresetsGenerator({
+    servicesManager
+  }) : [{
+    title: 'MPR',
+    icon: 'layout-three-col',
+    commandOptions: {
+      protocolId: 'mpr'
+    }
+  }, {
+    title: '3D four up',
+    icon: 'layout-four-up',
+    commandOptions: {
+      protocolId: '3d-four-up'
+    }
+  }, {
+    title: '3D main',
+    icon: 'layout-three-row',
+    commandOptions: {
+      protocolId: '3d-main'
+    }
+  }, {
+    title: 'Axial Primary',
+    icon: 'layout-side-by-side',
+    commandOptions: {
+      protocolId: 'axial-primary'
+    }
+  }, {
+    title: '3D only',
+    icon: 'layout-single',
+    commandOptions: {
+      protocolId: '3d-only'
+    }
+  }, {
+    title: '3D primary',
+    icon: 'layout-side-by-side',
+    commandOptions: {
+      protocolId: '3d-primary'
+    }
+  }, {
+    title: 'Frame View',
+    icon: 'icon-stack',
+    commandOptions: {
+      protocolId: 'frame-view'
+    }
+  }];
+
+  // Unified selection handler that dispatches to the appropriate command
+  const handleSelectionChange = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((commandOptions, isPreset) => {
+    if (isPreset) {
+      // Advanced preset selection
+      commandsManager.run({
+        commandName: 'setHangingProtocol',
+        commandOptions
+      });
+    } else {
+      // Common preset or custom grid selection
+      commandsManager.run({
+        commandName: 'setViewportGridLayout',
+        commandOptions
       });
     }
-  })), [groupId, onInteraction]);
-  const PrimaryButtonComponent = toolbarService?.getButtonComponentForUIType(primary.uiType) ?? _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ToolbarButton;
-  const listItemRenderer = renderer;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_0__.SplitButton, {
-    primary: primary,
-    secondary: secondary,
-    items: getSplitButtonItems(items),
-    groupId: groupId,
-    renderer: listItemRenderer,
-    onInteraction: onInteraction,
-    Component: props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(PrimaryButtonComponent, _extends({}, props, {
-      servicesManager: servicesManager
-    }))
-  });
+  }, [commandsManager]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    id: "Layout",
+    "data-cy": "Layout"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector, _extends({
+    onSelectionChange: handleSelectionChange
+  }, props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.Trigger, {
+    tooltip: "Change layout"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.Content, null, (commonPresets.length > 0 || advancedPresets.length > 0) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-popover flex flex-col gap-2.5 rounded-lg p-2"
+  }, commonPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.PresetSection, {
+    title: "Common"
+  }, commonPresets.map((preset, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.Preset, {
+    key: `common-preset-${index}`,
+    icon: preset.icon,
+    commandOptions: preset.commandOptions,
+    isPreset: false
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.Divider, null)), advancedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.PresetSection, {
+    title: "Advanced"
+  }, advancedPresets.map((preset, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.Preset, {
+    key: `advanced-preset-${index}`,
+    title: preset.title,
+    icon: preset.icon,
+    commandOptions: preset.commandOptions,
+    disabled: preset.disabled,
+    isPreset: true
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-muted flex flex-col gap-2.5 border-l-2 border-solid border-black p-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "text-muted-foreground text-xs"
+  }, "Custom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.GridSelector, {
+    rows: rows,
+    columns: columns
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LayoutSelector.HelpText, null, "Hover to select ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), "rows and columns ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), " Click to apply")))));
 }
-_s2(ToolbarSplitButtonWithServices, "FSAESCtgZQtOmqxGW3+y3244RJ8=");
-_c2 = ToolbarSplitButtonWithServices;
-_s(ToolbarSplitButtonWithServices, "FSAESCtgZQtOmqxGW3+y3244RJ8=");
-_c = ToolbarSplitButtonWithServices;
-ToolbarSplitButtonWithServices.propTypes = {
-  groupId: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  primary: prop_types__WEBPACK_IMPORTED_MODULE_2___default().shape({
-    id: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-    uiType: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string)
-  }),
-  secondary: prop_types__WEBPACK_IMPORTED_MODULE_2___default().shape({
-    id: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-    icon: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-    label: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-    tooltip: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-    disabled: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
-    className: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string)
-  }),
-  items: prop_types__WEBPACK_IMPORTED_MODULE_2___default().arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default().shape({
-    id: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-    icon: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-    label: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-    tooltip: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-    disabled: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
-    className: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string)
-  })),
-  renderer: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
-  onInteraction: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func).isRequired,
-  servicesManager: prop_types__WEBPACK_IMPORTED_MODULE_2___default().shape({
-    services: prop_types__WEBPACK_IMPORTED_MODULE_2___default().shape({
-      toolbarService: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().object)
-    })
-  })
+_s(ToolbarLayoutSelectorWithServices, "muvwvtwNdX7ju60cthy8YyzO7aA=");
+_c = ToolbarLayoutSelectorWithServices;
+ToolbarLayoutSelectorWithServices.propTypes = {
+  commandsManager: prop_types__WEBPACK_IMPORTED_MODULE_1___default().instanceOf(_ohif_core__WEBPACK_IMPORTED_MODULE_2__.CommandsManager),
+  servicesManager: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
+  rows: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().number),
+  columns: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().number)
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ToolbarSplitButtonWithServices);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ToolbarLayoutSelectorWithServices);
 var _c;
-__webpack_require__.$Refresh$.register(_c, "ToolbarSplitButtonWithServices");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ToolbarSplitButtonWithServices");
+__webpack_require__.$Refresh$.register(_c, "ToolbarLayoutSelectorWithServices");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -7513,7 +8739,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -7528,7 +8770,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************************************!*\
   !*** ../../../extensions/default/src/ViewerLayout/HeaderPatientInfo/HeaderPatientInfo.tsx ***!
   \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -7543,7 +8785,6 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -7565,7 +8806,6 @@ function HeaderPatientInfo({
   servicesManager,
   appConfig
 }) {
-  _s2();
   _s();
   const initialExpandedState = appConfig.showPatientInfo === PatientInfoVisibility.VISIBLE || appConfig.showPatientInfo === PatientInfoVisibility.VISIBLE_READONLY;
   const [expanded, setExpanded] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(initialExpandedState);
@@ -7589,9 +8829,9 @@ function HeaderPatientInfo({
     className: "hover:bg-primary-dark flex cursor-pointer items-center justify-center gap-1 rounded-lg",
     onClick: handleOnClick
   }, isMixedPatients ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Icons.MultiplePatients, {
-    className: "text-primary-active"
+    className: "text-primary"
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Icons.Patient, {
-    className: "text-primary-active"
+    className: "text-primary"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col justify-center"
   }, expanded ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -7599,24 +8839,18 @@ function HeaderPatientInfo({
   }, formattedPatientName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-aqua-pale flex gap-2 text-[11px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, formattedPatientID), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, patientInfo.PatientSex), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, patientInfo.PatientDOB))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-primary-active self-center text-[13px]"
-  }, isMixedPatients ? 'Multiple Patients' : 'Patient')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Icons.ChevronPatient, {
-    className: `text-primary-active ${expanded ? 'rotate-180' : ''}`
+    className: "text-primary self-center text-[13px]"
+  }, isMixedPatients ? 'Multiple Patients' : 'Patient')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Icons.ArrowLeft, {
+    className: `text-primary ${expanded ? 'rotate-180' : ''}`
   }));
 }
-_s2(HeaderPatientInfo, "aekHMZyRCCytEVeE8BYjXA1ED04=", false, function () {
-  return [_hooks_usePatientInfo__WEBPACK_IMPORTED_MODULE_1__["default"]];
-});
-_c2 = HeaderPatientInfo;
-_s(HeaderPatientInfo, "irJxFXETJxLHzq4YF+0FCJDLKm0=", false, function () {
+_s(HeaderPatientInfo, "aekHMZyRCCytEVeE8BYjXA1ED04=", false, function () {
   return [_hooks_usePatientInfo__WEBPACK_IMPORTED_MODULE_1__["default"]];
 });
 _c = HeaderPatientInfo;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HeaderPatientInfo);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "HeaderPatientInfo");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "HeaderPatientInfo");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -7624,7 +8858,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -7639,7 +8889,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************!*\
   !*** ../../../extensions/default/src/ViewerLayout/HeaderPatientInfo/index.js ***!
   \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -7659,7 +8909,331 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/ViewerLayout/ResizablePanelsHook.tsx":
+/*!****************************************************************************!*\
+  !*** ../../../extensions/default/src/ViewerLayout/ResizablePanelsHook.tsx ***!
+  \****************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_resizable_panels__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-resizable-panels */ "../../../node_modules/react-resizable-panels/dist/react-resizable-panels.browser.development.esm.js");
+/* harmony import */ var _constants_panels__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants/panels */ "../../../extensions/default/src/ViewerLayout/constants/panels.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+
+
+
+
+/**
+ * Set the minimum and maximum css style width attributes for the given element.
+ * The two style attributes are cleared whenever the width
+ * argument is undefined.
+ * <p>
+ * This utility is used as part of a HACK throughout the ViewerLayout component as
+ * the means of restricting the side panel widths during the resizing of the
+ * browser window. In general, the widths are always set unless the resize
+ * handle for either side panel is being dragged (i.e. a side panel is being resized).
+ *
+ * @param elem the element
+ * @param width the max and min width to set on the element
+ */
+const setMinMaxWidth = (elem, width) => {
+  if (!elem) {
+    return;
+  }
+  elem.style.minWidth = width === undefined ? '' : `${width}px`;
+  elem.style.maxWidth = elem.style.minWidth;
+};
+const useResizablePanels = (leftPanelClosed, setLeftPanelClosed, rightPanelClosed, setRightPanelClosed, hasLeftPanels, hasRightPanels) => {
+  _s();
+  const [leftPanelExpandedWidth, setLeftPanelExpandedWidth] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.initialExpandedWidth);
+  const [rightPanelExpandedWidth, setRightPanelExpandedWidth] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.initialExpandedWidth);
+  const [leftResizablePanelMinimumSize, setLeftResizablePanelMinimumSize] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  const [rightResizablePanelMinimumSize, setRightResizablePanelMinimumSize] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  const [leftResizablePanelCollapsedSize, setLeftResizePanelCollapsedSize] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  const [rightResizePanelCollapsedSize, setRightResizePanelCollapsedSize] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  const resizablePanelGroupElemRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const resizableLeftPanelElemRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const resizableRightPanelElemRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const resizableLeftPanelAPIRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const resizableRightPanelAPIRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const isResizableHandleDraggingRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+
+  // The total width of both handles.
+  const resizableHandlesWidth = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+
+  // This useLayoutEffect is used to...
+  // - Grab a reference to the various resizable panel elements needed for
+  //   converting between percentages and pixels in various callbacks.
+  // - Expand those panels that are initially expanded.
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect)(() => {
+    const panelGroupElem = (0,react_resizable_panels__WEBPACK_IMPORTED_MODULE_1__.getPanelGroupElement)(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.groupId);
+    resizablePanelGroupElemRef.current = panelGroupElem;
+    const leftPanelElem = (0,react_resizable_panels__WEBPACK_IMPORTED_MODULE_1__.getPanelElement)(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.panelId);
+    resizableLeftPanelElemRef.current = leftPanelElem;
+    const rightPanelElem = (0,react_resizable_panels__WEBPACK_IMPORTED_MODULE_1__.getPanelElement)(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.panelId);
+    resizableRightPanelElemRef.current = rightPanelElem;
+
+    // Calculate and set the width of both handles combined.
+    const resizeHandles = document.querySelectorAll('[data-panel-resize-handle-id]');
+    resizableHandlesWidth.current = 0;
+    resizeHandles.forEach(resizeHandle => {
+      resizableHandlesWidth.current += resizeHandle.offsetWidth;
+    });
+
+    // Since both resizable panels are collapsed by default (i.e. their default size is zero),
+    // on the very first render check if either/both side panels should be expanded.
+    // we use the initialExpandedOffsetWidth on the first render incase the panel has min width but we want the initial state to be larger than that
+
+    if (!leftPanelClosed) {
+      const leftResizablePanelExpandedSize = getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.initialExpandedOffsetWidth);
+      resizableLeftPanelAPIRef?.current?.expand(leftResizablePanelExpandedSize);
+      setMinMaxWidth(leftPanelElem, _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.initialExpandedOffsetWidth);
+    }
+    if (!rightPanelClosed) {
+      const rightResizablePanelExpandedSize = getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.initialExpandedOffsetWidth);
+      resizableRightPanelAPIRef?.current?.expand(rightResizablePanelExpandedSize);
+      setMinMaxWidth(rightPanelElem, _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.initialExpandedOffsetWidth);
+    }
+  }, []); // no dependencies because this useLayoutEffect is only needed on the very first render
+
+  // This useLayoutEffect follows the pattern prescribed by the react-resizable-panels
+  // readme for converting between pixel values and percentages. An example of
+  // the pattern can be found here:
+  // https://github.com/bvaughn/react-resizable-panels/issues/46#issuecomment-1368108416
+  // This useLayoutEffect is used to...
+  // - Ensure that the percentage size is up-to-date with the pixel sizes
+  // - Add a resize observer to the resizable panel group to reset various state
+  //   values whenever the resizable panel group is resized (e.g. whenever the
+  //   browser window is resized).
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect)(() => {
+    // Ensure the side panels' percentage size is in synch with the pixel width of the
+    // expanded side panels. In general the two get out-of-sync during a browser
+    // window resize. Note that this code is here and NOT in the ResizeObserver
+    // because it has to be done AFTER the minimum percentage size for a panel is
+    // updated which occurs only AFTER the render following a browser window resize.
+    // And by virtue of the dependency on the minimum size state variables, this code
+    // is executed on the render following an update of the minimum percentage sizes
+    // for a panel.
+    if (!resizableLeftPanelAPIRef.current?.isCollapsed()) {
+      const leftSize = getPercentageSize(leftPanelExpandedWidth + _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.expandedInsideBorderSize);
+      resizableLeftPanelAPIRef.current?.resize(leftSize);
+    }
+    if (!resizableRightPanelAPIRef?.current?.isCollapsed()) {
+      const rightSize = getPercentageSize(rightPanelExpandedWidth + _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.expandedInsideBorderSize);
+      resizableRightPanelAPIRef?.current?.resize(rightSize);
+    }
+
+    // This observer kicks in when the ViewportLayout resizable panel group
+    // component is resized. This typically occurs when the browser window resizes.
+    const observer = new ResizeObserver(() => {
+      const minimumLeftSize = getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.minimumExpandedOffsetWidth);
+      const minimumRightSize = getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.minimumExpandedOffsetWidth);
+
+      // Set the new minimum and collapsed resizable panel sizes.
+      setLeftResizablePanelMinimumSize(minimumLeftSize);
+      setRightResizablePanelMinimumSize(minimumRightSize);
+      setLeftResizePanelCollapsedSize(getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.collapsedOffsetWidth));
+      setRightResizePanelCollapsedSize(getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.collapsedOffsetWidth));
+    });
+    observer.observe(resizablePanelGroupElemRef.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, [leftPanelExpandedWidth, rightPanelExpandedWidth, leftResizablePanelMinimumSize, rightResizablePanelMinimumSize, hasLeftPanels, hasRightPanels]);
+
+  /**
+   * Handles dragging of either side panel resize handle.
+   */
+  const onHandleDragging = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(isStartDrag => {
+    if (isStartDrag) {
+      isResizableHandleDraggingRef.current = true;
+      setMinMaxWidth(resizableLeftPanelElemRef.current);
+      setMinMaxWidth(resizableRightPanelElemRef.current);
+    } else {
+      isResizableHandleDraggingRef.current = false;
+      if (resizableLeftPanelAPIRef?.current?.isExpanded()) {
+        setMinMaxWidth(resizableLeftPanelElemRef.current, leftPanelExpandedWidth + _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.expandedInsideBorderSize);
+      }
+      if (resizableRightPanelAPIRef?.current?.isExpanded()) {
+        setMinMaxWidth(resizableRightPanelElemRef.current, rightPanelExpandedWidth + _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.expandedInsideBorderSize);
+      }
+    }
+  }, [leftPanelExpandedWidth, rightPanelExpandedWidth]);
+  const onLeftPanelClose = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    setLeftPanelClosed(true);
+    setMinMaxWidth(resizableLeftPanelElemRef.current);
+    resizableLeftPanelAPIRef?.current?.collapse();
+  }, [setLeftPanelClosed]);
+  const onLeftPanelOpen = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    resizableLeftPanelAPIRef?.current?.expand(getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.initialExpandedOffsetWidth));
+    setLeftPanelClosed(false);
+  }, [setLeftPanelClosed]);
+  const onLeftPanelResize = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(size => {
+    if (!resizablePanelGroupElemRef?.current || resizableLeftPanelAPIRef.current?.isCollapsed()) {
+      return;
+    }
+    const newExpandedWidth = getExpandedPixelWidth(size);
+    setLeftPanelExpandedWidth(newExpandedWidth);
+    if (!isResizableHandleDraggingRef.current) {
+      // This typically gets executed when the left panel is expanded via one of the UI
+      // buttons. It is done here instead of in the onLeftPanelOpen method
+      // because here we know the size of the expanded panel.
+      setMinMaxWidth(resizableLeftPanelElemRef.current, newExpandedWidth);
+    }
+  }, []);
+  const onRightPanelClose = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    setRightPanelClosed(true);
+    setMinMaxWidth(resizableRightPanelElemRef.current);
+    resizableRightPanelAPIRef?.current?.collapse();
+  }, [setRightPanelClosed]);
+  const onRightPanelOpen = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    resizableRightPanelAPIRef?.current?.expand(getPercentageSize(_constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.initialExpandedOffsetWidth));
+    setRightPanelClosed(false);
+  }, [setRightPanelClosed]);
+  const onRightPanelResize = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(size => {
+    if (!resizablePanelGroupElemRef?.current || resizableRightPanelAPIRef?.current?.isCollapsed()) {
+      return;
+    }
+    const newExpandedWidth = getExpandedPixelWidth(size);
+    setRightPanelExpandedWidth(newExpandedWidth);
+    if (!isResizableHandleDraggingRef.current) {
+      // This typically gets executed when the right panel is expanded via one of the UI
+      // buttons. It is done here instead of in the onRightPanelOpen method
+      // because here we know the size of the expanded panel.
+      setMinMaxWidth(resizableRightPanelElemRef.current, newExpandedWidth);
+    }
+  }, []);
+
+  /**
+   * Gets the percentage size corresponding to the given pixel size.
+   * Note that the width attributed to the handles must be taken into account.
+   */
+  const getPercentageSize = pixelSize => {
+    const {
+      width: panelGroupWidth
+    } = resizablePanelGroupElemRef.current?.getBoundingClientRect();
+    return pixelSize / (panelGroupWidth - resizableHandlesWidth.current) * 100;
+  };
+
+  /**
+   * Gets the width in pixels for an expanded panel given its percentage size/width.
+   * Note that the width attributed to the handles must be taken into account.
+   */
+  const getExpandedPixelWidth = percentageSize => {
+    const {
+      width: panelGroupWidth
+    } = resizablePanelGroupElemRef.current?.getBoundingClientRect();
+    const expandedWidth = percentageSize / 100 * (panelGroupWidth - resizableHandlesWidth.current) - _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.expandedInsideBorderSize;
+    return expandedWidth;
+  };
+  return [{
+    expandedWidth: leftPanelExpandedWidth,
+    collapsedWidth: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.collapsedWidth,
+    collapsedInsideBorderSize: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.collapsedInsideBorderSize,
+    collapsedOutsideBorderSize: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.collapsedOutsideBorderSize,
+    expandedInsideBorderSize: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.expandedInsideBorderSize,
+    onClose: onLeftPanelClose,
+    onOpen: onLeftPanelOpen
+  }, {
+    expandedWidth: rightPanelExpandedWidth,
+    collapsedWidth: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.collapsedWidth,
+    collapsedInsideBorderSize: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.collapsedInsideBorderSize,
+    collapsedOutsideBorderSize: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.collapsedOutsideBorderSize,
+    expandedInsideBorderSize: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.shared.expandedInsideBorderSize,
+    onClose: onRightPanelClose,
+    onOpen: onRightPanelOpen
+  }, {
+    direction: 'horizontal',
+    id: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.groupId
+  }, {
+    defaultSize: leftResizablePanelMinimumSize,
+    minSize: leftResizablePanelMinimumSize,
+    onResize: onLeftPanelResize,
+    collapsible: true,
+    collapsedSize: leftResizablePanelCollapsedSize,
+    onCollapse: () => setLeftPanelClosed(true),
+    onExpand: () => setLeftPanelClosed(false),
+    ref: resizableLeftPanelAPIRef,
+    order: 0,
+    id: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.left.panelId
+  }, {
+    order: 1,
+    id: 'viewerLayoutResizableViewportGridPanel'
+  }, {
+    defaultSize: rightResizablePanelMinimumSize,
+    minSize: rightResizablePanelMinimumSize,
+    onResize: onRightPanelResize,
+    collapsible: true,
+    collapsedSize: rightResizePanelCollapsedSize,
+    onCollapse: () => setRightPanelClosed(true),
+    onExpand: () => setRightPanelClosed(false),
+    ref: resizableRightPanelAPIRef,
+    order: 2,
+    id: _constants_panels__WEBPACK_IMPORTED_MODULE_2__.panelGroupDefinition.right.panelId
+  }, onHandleDragging];
+};
+_s(useResizablePanels, "JY9U/MdCIA690gJzTQFqaT6lB/E=");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useResizablePanels);
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -7674,7 +9248,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************!*\
   !*** ../../../extensions/default/src/ViewerLayout/ViewerHeader.tsx ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -7683,20 +9257,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "../node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "../../../node_modules/react-router-dom/dist/index.js");
 /* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router */ "../node_modules/react-router/dist/index.js");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
-/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _Toolbar_Toolbar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Toolbar/Toolbar */ "../../../extensions/default/src/Toolbar/Toolbar.tsx");
-/* harmony import */ var _HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./HeaderPatientInfo */ "../../../extensions/default/src/ViewerLayout/HeaderPatientInfo/index.js");
-/* harmony import */ var _HeaderPatientInfo_HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./HeaderPatientInfo/HeaderPatientInfo */ "../../../extensions/default/src/ViewerLayout/HeaderPatientInfo/HeaderPatientInfo.tsx");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _Toolbar_Toolbar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Toolbar/Toolbar */ "../../../extensions/default/src/Toolbar/Toolbar.tsx");
+/* harmony import */ var _HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./HeaderPatientInfo */ "../../../extensions/default/src/ViewerLayout/HeaderPatientInfo/index.js");
+/* harmony import */ var _HeaderPatientInfo_HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./HeaderPatientInfo/HeaderPatientInfo */ "../../../extensions/default/src/ViewerLayout/HeaderPatientInfo/HeaderPatientInfo.tsx");
+/* harmony import */ var _ohif_app__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ohif/app */ "./index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -7707,39 +9278,32 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 
-
-
-const {
-  availableLanguages,
-  defaultLanguage,
-  currentLanguage
-} = _ohif_i18n__WEBPACK_IMPORTED_MODULE_6__["default"];
 function ViewerHeader({
-  hotkeysManager,
-  extensionManager,
-  servicesManager,
   appConfig
 }) {
-  _s2();
   _s();
+  const {
+    servicesManager,
+    extensionManager,
+    commandsManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_4__.useSystem)();
+  const {
+    customizationService
+  } = servicesManager.services;
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
-  const location = (0,react_router__WEBPACK_IMPORTED_MODULE_3__.useLocation)();
+  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation)();
   const onClickReturnButton = () => {
     const {
       pathname
     } = location;
     const dataSourceIdx = pathname.indexOf('/', 1);
-    const query = new URLSearchParams(window.location.search);
-    const configUrl = query.get('configUrl');
     const dataSourceName = pathname.substring(dataSourceIdx + 1);
     const existingDataSource = extensionManager.getDataSources(dataSourceName);
     const searchQuery = new URLSearchParams();
     if (dataSourceIdx !== -1 && existingDataSource) {
       searchQuery.append('datasources', pathname.substring(dataSourceIdx + 1));
     }
-    if (configUrl) {
-      searchQuery.append('configUrl', configUrl);
-    }
+    (0,_ohif_app__WEBPACK_IMPORTED_MODULE_8__.preserveQueryParameters)(searchQuery);
     navigate({
       pathname: '/',
       search: decodeURIComponent(searchQuery.toString())
@@ -7749,58 +9313,25 @@ function ViewerHeader({
     t
   } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation)();
   const {
-    show,
-    hide
-  } = (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useModal)();
-  const {
-    hotkeyDefinitions,
-    hotkeyDefaults
-  } = hotkeysManager;
-  const versionNumber = "3.9.1";
-  const commitHash = "610faa5a2738da5eabc40e57e338c359f481e852";
+    show
+  } = (0,_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.useModal)();
+  const AboutModal = customizationService.getCustomization('ohif.aboutModal');
+  const UserPreferencesModal = customizationService.getCustomization('ohif.userPreferencesModal');
   const menuOptions = [{
-    title: t('Header:About'),
+    title: AboutModal?.menuTitle ?? t('Header:About'),
     icon: 'info',
     onClick: () => show({
-      content: _ohif_ui__WEBPACK_IMPORTED_MODULE_4__.AboutModal,
-      title: t('AboutModal:About OHIF Viewer'),
-      contentProps: {
-        versionNumber,
-        commitHash
-      },
-      containerDimensions: 'max-w-4xl max-h-4xl'
+      content: AboutModal,
+      title: AboutModal?.title ?? t('AboutModal:About OHIF Viewer'),
+      containerClassName: AboutModal?.containerClassName ?? 'max-w-md'
     })
   }, {
-    title: t('Header:Preferences'),
+    title: UserPreferencesModal.menuTitle ?? t('Header:Preferences'),
     icon: 'settings',
     onClick: () => show({
-      title: t('UserPreferencesModal:User preferences'),
-      content: _ohif_ui__WEBPACK_IMPORTED_MODULE_4__.UserPreferences,
-      containerDimensions: 'w-[70%] max-w-[900px]',
-      contentProps: {
-        hotkeyDefaults: hotkeysManager.getValidHotkeyDefinitions(hotkeyDefaults),
-        hotkeyDefinitions,
-        currentLanguage: currentLanguage(),
-        availableLanguages,
-        defaultLanguage,
-        onCancel: () => {
-          _ohif_core__WEBPACK_IMPORTED_MODULE_7__.hotkeys.stopRecord();
-          _ohif_core__WEBPACK_IMPORTED_MODULE_7__.hotkeys.unpause();
-          hide();
-        },
-        onSubmit: ({
-          hotkeyDefinitions,
-          language
-        }) => {
-          if (language.value !== currentLanguage().value) {
-            _ohif_i18n__WEBPACK_IMPORTED_MODULE_6__["default"].changeLanguage(language.value);
-          }
-          hotkeysManager.setHotkeys(hotkeyDefinitions);
-          hide();
-        },
-        onReset: () => hotkeysManager.restoreDefaultBindings(),
-        hotkeysModule: _ohif_core__WEBPACK_IMPORTED_MODULE_7__.hotkeys
-      }
+      content: UserPreferencesModal,
+      title: UserPreferencesModal.title ?? t('UserPreferencesModal:User preferences'),
+      containerClassName: UserPreferencesModal?.containerClassName ?? 'flex max-w-4xl p-6 flex-col'
     })
   }];
   if (appConfig.oidc) {
@@ -7812,38 +9343,50 @@ function ViewerHeader({
       }
     });
   }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_5__.Header, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Header, {
     menuOptions: menuOptions,
     isReturnEnabled: !!appConfig.showStudyList,
     onClickReturnButton: onClickReturnButton,
     WhiteLabeling: appConfig.whiteLabeling,
-    Secondary: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Toolbar_Toolbar__WEBPACK_IMPORTED_MODULE_8__.Toolbar, {
-      servicesManager: servicesManager,
+    Secondary: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Toolbar_Toolbar__WEBPACK_IMPORTED_MODULE_5__.Toolbar, {
       buttonSection: "secondary"
     }),
-    PatientInfo: appConfig.showPatientInfo !== _HeaderPatientInfo_HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_10__.PatientInfoVisibility.DISABLED && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    PatientInfo: appConfig.showPatientInfo !== _HeaderPatientInfo_HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_7__.PatientInfoVisibility.DISABLED && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_HeaderPatientInfo__WEBPACK_IMPORTED_MODULE_6__["default"], {
       servicesManager: servicesManager,
       appConfig: appConfig
-    })
+    }),
+    UndoRedo: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "text-primary flex cursor-pointer items-center"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      variant: "ghost",
+      className: "hover:bg-primary-dark",
+      onClick: () => {
+        commandsManager.run('undo');
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons.Undo, {
+      className: ""
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      variant: "ghost",
+      className: "hover:bg-primary-dark",
+      onClick: () => {
+        commandsManager.run('redo');
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons.Redo, {
+      className: ""
+    })))
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "relative flex justify-center gap-[4px]"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Toolbar_Toolbar__WEBPACK_IMPORTED_MODULE_8__.Toolbar, {
-    servicesManager: servicesManager
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Toolbar_Toolbar__WEBPACK_IMPORTED_MODULE_5__.Toolbar, {
+    buttonSection: "primary"
   })));
 }
-_s2(ViewerHeader, "L3rFyuSFoZRoN3cphVy0aBKNJYI=", false, function () {
-  return [react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate, react_router__WEBPACK_IMPORTED_MODULE_3__.useLocation, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useModal];
-});
-_c2 = ViewerHeader;
-_s(ViewerHeader, "hwuC5dpAQvT9VJ5uq2LuGqE6fiI=", false, function () {
-  return [react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate, react_router__WEBPACK_IMPORTED_MODULE_3__.useLocation, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation, _ohif_ui__WEBPACK_IMPORTED_MODULE_4__.useModal];
+_s(ViewerHeader, "QmhJg7t2wmtqmyBtKqPAuWYaFFs=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_4__.useSystem, react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate, react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation, react_i18next__WEBPACK_IMPORTED_MODULE_2__.useTranslation, _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.useModal];
 });
 _c = ViewerHeader;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ViewerHeader);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "ViewerHeader");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ViewerHeader");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -7851,7 +9394,106 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/ViewerLayout/constants/panels.ts":
+/*!************************************************************************!*\
+  !*** ../../../extensions/default/src/ViewerLayout/constants/panels.ts ***!
+  \************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   panelGroupDefinition: () => (/* binding */ panelGroupDefinition)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+const expandedInsideBorderSize = 0;
+const collapsedInsideBorderSize = 4;
+const collapsedOutsideBorderSize = 4;
+const collapsedWidth = 25;
+const rightPanelInitialExpandedWidth = 280;
+const leftPanelInitialExpandedWidth = 282;
+const panelGroupDefinition = {
+  groupId: 'viewerLayoutResizablePanelGroup',
+  shared: {
+    expandedInsideBorderSize,
+    collapsedInsideBorderSize,
+    collapsedOutsideBorderSize,
+    collapsedWidth
+  },
+  left: {
+    // id
+    panelId: 'viewerLayoutResizableLeftPanel',
+    // expanded width
+    initialExpandedWidth: leftPanelInitialExpandedWidth,
+    // expanded width + expanded inside border
+    minimumExpandedOffsetWidth: 145 + expandedInsideBorderSize,
+    // initial expanded width
+    initialExpandedOffsetWidth: leftPanelInitialExpandedWidth + expandedInsideBorderSize,
+    // collapsed width + collapsed inside border + collapsed outside border
+    collapsedOffsetWidth: collapsedWidth + collapsedInsideBorderSize + collapsedOutsideBorderSize
+  },
+  right: {
+    panelId: 'viewerLayoutResizableRightPanel',
+    initialExpandedWidth: rightPanelInitialExpandedWidth,
+    minimumExpandedOffsetWidth: rightPanelInitialExpandedWidth + expandedInsideBorderSize,
+    initialExpandedOffsetWidth: rightPanelInitialExpandedWidth + expandedInsideBorderSize,
+    collapsedOffsetWidth: collapsedWidth + collapsedInsideBorderSize + collapsedOutsideBorderSize
+  }
+};
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -7866,7 +9508,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**************************************************************!*\
   !*** ../../../extensions/default/src/ViewerLayout/index.tsx ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -7877,17 +9519,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
 /* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @state */ "./state/index.js");
 /* harmony import */ var _ViewerHeader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ViewerHeader */ "../../../extensions/default/src/ViewerLayout/ViewerHeader.tsx");
 /* harmony import */ var _Components_SidePanelWithServices__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Components/SidePanelWithServices */ "../../../extensions/default/src/Components/SidePanelWithServices.tsx");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ResizablePanelsHook__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ResizablePanelsHook */ "../../../extensions/default/src/ViewerLayout/ResizablePanelsHook.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
 
 
 
@@ -7896,6 +9546,8 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 
+
+const resizableHandleClassName = 'mt-[1px] bg-black';
 function ViewerLayout({
   // From Extension Module Params
   extensionManager,
@@ -7906,14 +9558,16 @@ function ViewerLayout({
   viewports,
   ViewportGridComp,
   leftPanelClosed = false,
-  rightPanelClosed = false
+  rightPanelClosed = false,
+  leftPanelResizable = false,
+  rightPanelResizable = false
 }) {
-  _s2();
   _s();
   const [appConfig] = (0,_state__WEBPACK_IMPORTED_MODULE_4__.useAppConfig)();
   const {
     panelService,
-    hangingProtocolService
+    hangingProtocolService,
+    customizationService
   } = servicesManager.services;
   const [showLoadingIndicator, setShowLoadingIndicator] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(appConfig.showLoadingIndicator);
   const hasPanels = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(side => !!panelService.getPanels(side).length, [panelService]);
@@ -7921,6 +9575,11 @@ function ViewerLayout({
   const [hasLeftPanels, setHasLeftPanels] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(hasPanels('left'));
   const [leftPanelClosedState, setLeftPanelClosed] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(leftPanelClosed);
   const [rightPanelClosedState, setRightPanelClosed] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(rightPanelClosed);
+  const [leftPanelProps, rightPanelProps, resizablePanelGroupProps, resizableLeftPanelProps, resizableViewportGridPanelProps, resizableRightPanelProps, onHandleDragging] = (0,_ResizablePanelsHook__WEBPACK_IMPORTED_MODULE_7__["default"])(leftPanelClosed, setLeftPanelClosed, rightPanelClosed, setRightPanelClosed, hasLeftPanels, hasRightPanels);
+  const handleMouseEnter = () => {
+    document.activeElement?.blur();
+  };
+  const LoadingIndicatorProgress = customizationService.getCustomization('ui.loadingIndicatorProgress');
 
   /**
    * Set body classes (tailwindcss) that don't allow vertical
@@ -7941,8 +9600,7 @@ function ViewerLayout({
       throw new Error(`${id} is not valid for an extension module or no component found from extension ${id}. Please verify your configuration or ensure that the extension is properly registered. It's also possible that your mode is utilizing a module from an extension that hasn't been included in its dependencies (add the extension to the "extensionDependencies" array in your mode's index.js file). Check the reference string to the extension in your Mode configuration`);
     }
     return {
-      entry,
-      content: entry.component
+      entry
     };
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -7965,6 +9623,7 @@ function ViewerLayout({
     } = getComponent(viewportComponent.namespace);
     return {
       component: entry.component,
+      isReferenceViewable: entry.isReferenceViewable,
       displaySetsToDisplay: viewportComponent.displaySetsToDisplay
     };
   };
@@ -7998,34 +9657,41 @@ function ViewerLayout({
     style: {
       height: 'calc(100vh - 52px'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, showLoadingIndicator && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.LoadingIndicatorProgress, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, showLoadingIndicator && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(LoadingIndicatorProgress, {
     className: "h-full w-full bg-black"
-  }), hasLeftPanels ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_SidePanelWithServices__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ResizablePanelGroup, resizablePanelGroupProps, hasLeftPanels ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ResizablePanel, resizableLeftPanelProps, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_SidePanelWithServices__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({
     side: "left",
-    activeTabIndex: leftPanelClosedState ? null : 0,
+    isExpanded: !leftPanelClosedState,
     servicesManager: servicesManager
-  }) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, leftPanelProps))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ResizableHandle, {
+    onDragging: onHandleDragging,
+    disabled: !leftPanelResizable,
+    className: resizableHandleClassName
+  })) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ResizablePanel, resizableViewportGridPanelProps, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex h-full flex-1 flex-col"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "relative flex h-full flex-1 items-center justify-center overflow-hidden bg-black"
+    className: "relative flex h-full flex-1 items-center justify-center overflow-hidden bg-black",
+    onMouseEnter: handleMouseEnter
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ViewportGridComp, {
     servicesManager: servicesManager,
     viewportComponents: viewportComponents,
     commandsManager: commandsManager
-  }))), hasRightPanels ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_SidePanelWithServices__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  })))), hasRightPanels ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ResizableHandle, {
+    onDragging: onHandleDragging,
+    disabled: !rightPanelResizable,
+    className: resizableHandleClassName
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.ResizablePanel, resizableRightPanelProps, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_SidePanelWithServices__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({
     side: "right",
-    activeTabIndex: rightPanelClosedState ? null : 0,
+    isExpanded: !rightPanelClosedState,
     servicesManager: servicesManager
-  }) : null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_7__.Onboarding, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_2__.InvestigationalUseDialog, {
+  }, rightPanelProps)))) : null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Onboarding, {
+    tours: customizationService.getCustomization('ohif.tours')
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.InvestigationalUseDialog, {
     dialogConfiguration: appConfig?.investigationalUseDialog
   }));
 }
-_s2(ViewerLayout, "XLWPmkiy3/X1/BFJs9nHGfqp43k=", false, function () {
-  return [_state__WEBPACK_IMPORTED_MODULE_4__.useAppConfig];
-});
-_c2 = ViewerLayout;
-_s(ViewerLayout, "XLWPmkiy3/X1/BFJs9nHGfqp43k=", false, function () {
-  return [_state__WEBPACK_IMPORTED_MODULE_4__.useAppConfig];
+_s(ViewerLayout, "QjHTp+RhtxxTZS6GYyEn4ZlQ2t0=", false, function () {
+  return [_state__WEBPACK_IMPORTED_MODULE_4__.useAppConfig, _ResizablePanelsHook__WEBPACK_IMPORTED_MODULE_7__["default"]];
 });
 _c = ViewerLayout;
 ViewerLayout.propTypes = {
@@ -8047,8 +9713,6 @@ ViewerLayout.propTypes = {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ViewerLayout);
 var _c;
 __webpack_require__.$Refresh$.register(_c, "ViewerLayout");
-var _c2;
-__webpack_require__.$Refresh$.register(_c2, "ViewerLayout");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -8056,7 +9720,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -8071,24 +9751,28 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************!*\
   !*** ../../../extensions/default/src/commandsModule.ts ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CustomizableContextMenu */ "../../../extensions/default/src/CustomizableContextMenu/index.ts");
-/* harmony import */ var _DicomTagBrowser_DicomTagBrowser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DicomTagBrowser/DicomTagBrowser */ "../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.tsx");
-/* harmony import */ var _utils_reuseCachedLayouts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/reuseCachedLayouts */ "../../../extensions/default/src/utils/reuseCachedLayouts.ts");
-/* harmony import */ var _findViewportsByPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./findViewportsByPosition */ "../../../extensions/default/src/findViewportsByPosition.ts");
-/* harmony import */ var _ohif_app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/app */ "./index.js");
-/* harmony import */ var _stores_useViewportGridStore__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stores/useViewportGridStore */ "../../../extensions/default/src/stores/useViewportGridStore.ts");
-/* harmony import */ var _stores_useDisplaySetSelectorStore__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stores/useDisplaySetSelectorStore */ "../../../extensions/default/src/stores/useDisplaySetSelectorStore.ts");
-/* harmony import */ var _stores_useHangingProtocolStageIndexStore__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stores/useHangingProtocolStageIndexStore */ "../../../extensions/default/src/stores/useHangingProtocolStageIndexStore.ts");
-/* harmony import */ var _stores_useToggleHangingProtocolStore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stores/useToggleHangingProtocolStore */ "../../../extensions/default/src/stores/useToggleHangingProtocolStore.ts");
-/* harmony import */ var _stores_useViewportsByPositionStore__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stores/useViewportsByPositionStore */ "../../../extensions/default/src/stores/useViewportsByPositionStore.ts");
-/* harmony import */ var _stores_useToggleOneUpViewportGridStore__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./stores/useToggleOneUpViewportGridStore */ "../../../extensions/default/src/stores/useToggleOneUpViewportGridStore.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CustomizableContextMenu */ "../../../extensions/default/src/CustomizableContextMenu/index.ts");
+/* harmony import */ var _DicomTagBrowser_DicomTagBrowser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DicomTagBrowser/DicomTagBrowser */ "../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.tsx");
+/* harmony import */ var _utils_reuseCachedLayouts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/reuseCachedLayouts */ "../../../extensions/default/src/utils/reuseCachedLayouts.ts");
+/* harmony import */ var _utils_layerConfigurationUtils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/layerConfigurationUtils */ "../../../extensions/default/src/utils/layerConfigurationUtils.ts");
+/* harmony import */ var _findViewportsByPosition__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./findViewportsByPosition */ "../../../extensions/default/src/findViewportsByPosition.ts");
+/* harmony import */ var _ohif_app__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ohif/app */ "./index.js");
+/* harmony import */ var _stores_useViewportGridStore__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stores/useViewportGridStore */ "../../../extensions/default/src/stores/useViewportGridStore.ts");
+/* harmony import */ var _stores_useDisplaySetSelectorStore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stores/useDisplaySetSelectorStore */ "../../../extensions/default/src/stores/useDisplaySetSelectorStore.ts");
+/* harmony import */ var _stores_useHangingProtocolStageIndexStore__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stores/useHangingProtocolStageIndexStore */ "../../../extensions/default/src/stores/useHangingProtocolStageIndexStore.ts");
+/* harmony import */ var _stores_useToggleHangingProtocolStore__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./stores/useToggleHangingProtocolStore */ "../../../extensions/default/src/stores/useToggleHangingProtocolStore.ts");
+/* harmony import */ var _stores_useViewportsByPositionStore__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./stores/useViewportsByPositionStore */ "../../../extensions/default/src/stores/useViewportsByPositionStore.ts");
+/* harmony import */ var _stores_useToggleOneUpViewportGridStore__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./stores/useToggleOneUpViewportGridStore */ "../../../extensions/default/src/stores/useToggleOneUpViewportGridStore.ts");
+/* harmony import */ var _Panels_requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./Panels/requestDisplaySetCreationForStudy */ "../../../extensions/default/src/Panels/requestDisplaySetCreationForStudy.js");
+/* harmony import */ var _utils_promptSaveReport__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./utils/promptSaveReport */ "../../../extensions/default/src/utils/promptSaveReport.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -8103,9 +9787,14 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
+
+
+
+
 const commandsModule = ({
   servicesManager,
-  commandsManager
+  commandsManager,
+  extensionManager
 }) => {
   const {
     customizationService,
@@ -8113,12 +9802,200 @@ const commandsModule = ({
     hangingProtocolService,
     uiNotificationService,
     viewportGridService,
-    displaySetService
+    displaySetService,
+    multiMonitorService
   } = servicesManager.services;
 
   // Define a context menu controller for use with any context menus
-  const contextMenuController = new _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_0__.ContextMenuController(servicesManager, commandsManager);
+  const contextMenuController = new _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_1__.ContextMenuController(servicesManager, commandsManager);
   const actions = {
+    /**
+     * Adds a display set as a layer to the specified viewport
+     *
+     * @param options.viewportId - The ID of the viewport to add the layer to
+     * @param options.displaySetInstanceUID - The UID of the display set to add as a layer
+     * @param options.removeFirst - Optional flag to remove the display set first if it's already added
+     */
+    addDisplaySetAsLayer: ({
+      viewportId,
+      displaySetInstanceUID,
+      removeFirst = false
+    }) => {
+      if (!viewportId || !displaySetInstanceUID) {
+        console.warn('Missing required parameters for addDisplaySetAsLayer command');
+        return;
+      }
+      const {
+        displaySetService,
+        viewportGridService,
+        hangingProtocolService
+      } = servicesManager.services;
+
+      // Get the display set
+      const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
+      if (!displaySet) {
+        return;
+      }
+
+      // Get current display sets for the viewport
+      const currentDisplaySetUIDs = viewportGridService.getDisplaySetsUIDsForViewport(viewportId);
+
+      // Check if we can add this display set to the viewport
+      const canAdd = (0,_utils_layerConfigurationUtils__WEBPACK_IMPORTED_MODULE_4__.canAddDisplaySetToViewport)({
+        viewportId,
+        displaySetInstanceUID,
+        servicesManager
+      });
+      if (!canAdd) {
+        return;
+      }
+
+      // Add the display set to the viewport
+      const updatedViewports = hangingProtocolService.getViewportsRequireUpdate(viewportId, displaySetInstanceUID);
+
+      // Configure each viewport for layer addition
+      updatedViewports.forEach(viewport => {
+        (0,_utils_layerConfigurationUtils__WEBPACK_IMPORTED_MODULE_4__.configureViewportForLayerAddition)({
+          viewport,
+          displaySetInstanceUID,
+          currentDisplaySetUIDs,
+          servicesManager
+        });
+      });
+
+      // Update position presentation
+      commandsManager.runCommand('updateStoredPositionPresentation', {
+        viewportId,
+        displaySetInstanceUIDs: updatedViewports[0].displaySetInstanceUIDs
+      });
+
+      // Run command to update viewports
+      commandsManager.run('setDisplaySetsForViewports', {
+        viewportsToUpdate: updatedViewports
+      });
+    },
+    /**
+     * Removes a display set layer from the specified viewport
+     *
+     * @param options.viewportId - The ID of the viewport to remove the layer from
+     * @param options.displaySetInstanceUID - The UID of the display set to remove
+     */
+    removeDisplaySetLayer: ({
+      viewportId,
+      displaySetInstanceUID
+    }) => {
+      if (!viewportId || !displaySetInstanceUID) {
+        console.warn('Missing required parameters for removeDisplaySetLayer command');
+        return;
+      }
+      const {
+        displaySetService,
+        viewportGridService,
+        hangingProtocolService,
+        segmentationService
+      } = servicesManager.services;
+
+      // Get the display set
+      const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
+      if (!displaySet) {
+        return;
+      }
+
+      // Get current display sets for the viewport
+      const currentDisplaySetUIDs = viewportGridService.getDisplaySetsUIDsForViewport(viewportId);
+
+      // If the display set is not in the viewport, no need to remove it
+      if (!currentDisplaySetUIDs.includes(displaySetInstanceUID)) {
+        return;
+      }
+
+      // Check if it's a segmentation and handle accordingly
+      const isSegmentation = _utils_layerConfigurationUtils__WEBPACK_IMPORTED_MODULE_4__.DERIVED_OVERLAY_MODALITIES.includes(displaySet.Modality);
+      if (isSegmentation) {
+        segmentationService.removeSegmentationRepresentations(viewportId, {
+          segmentationId: displaySetInstanceUID
+        });
+      }
+      const updatedViewports = hangingProtocolService.getViewportsRequireUpdate(viewportId, displaySetInstanceUID);
+
+      // Configure each viewport for layer removal
+      updatedViewports.forEach(viewport => {
+        (0,_utils_layerConfigurationUtils__WEBPACK_IMPORTED_MODULE_4__.configureViewportForLayerRemoval)({
+          viewport,
+          displaySetInstanceUID,
+          currentDisplaySetUIDs,
+          servicesManager
+        });
+      });
+
+      // Update position presentation
+      commandsManager.runCommand('updateStoredPositionPresentation', {
+        viewportId,
+        displaySetInstanceUIDs: updatedViewports[0].displaySetInstanceUIDs
+      });
+
+      // Update the viewports
+      commandsManager.run('setDisplaySetsForViewports', {
+        viewportsToUpdate: updatedViewports
+      });
+    },
+    /**
+     * Runs a command in multi-monitor mode.  No-op if not multi-monitor.
+     */
+    multimonitor: async options => {
+      const {
+        screenDelta,
+        StudyInstanceUID,
+        commands,
+        hashParams
+      } = options;
+      if (multiMonitorService.numberOfScreens < 2) {
+        return options.fallback?.(options);
+      }
+      const newWindow = await multiMonitorService.launchWindow(StudyInstanceUID, screenDelta, hashParams);
+
+      // Only run commands if we successfully got a window with a commands manager
+      if (newWindow && commands) {
+        // Todo: fix this properly, but it takes time for the new window to load
+        // and then the commandsManager is available for it
+        setTimeout(() => {
+          multiMonitorService.run(screenDelta, commands, options);
+        }, 1000);
+      }
+    },
+    /** Displays a prompt and then save the report if relevant */
+    promptSaveReport: props => {
+      const {
+        StudyInstanceUID
+      } = props;
+      (0,_utils_promptSaveReport__WEBPACK_IMPORTED_MODULE_14__["default"])({
+        servicesManager,
+        commandsManager,
+        extensionManager
+      }, props, {
+        data: {
+          StudyInstanceUID
+        }
+      });
+    },
+    /**
+     * Ensures that the specified study is available for display
+     * Then, if commands is specified, runs the given commands list/instance
+     */
+    loadStudy: async options => {
+      const {
+        StudyInstanceUID
+      } = options;
+      const displaySets = displaySetService.getActiveDisplaySets();
+      const isActive = displaySets.find(ds => ds.StudyInstanceUID === StudyInstanceUID);
+      if (isActive) {
+        return;
+      }
+      const [dataSource] = extensionManager.getActiveDataSource();
+      await (0,_Panels_requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_13__["default"])(dataSource, displaySetService, StudyInstanceUID);
+      const study = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.getStudy(StudyInstanceUID);
+      hangingProtocolService.addStudy(study);
+    },
     /**
      * Show the context menu.
      * @param options.menuId defines the menu name to lookup, from customizationService
@@ -8139,7 +10016,7 @@ const commandsModule = ({
         ...options
       };
       if (menuCustomizationId) {
-        Object.assign(optionsToUse, customizationService.get(menuCustomizationId, _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_0__.defaultContextMenu));
+        Object.assign(optionsToUse, customizationService.getCustomization(menuCustomizationId));
       }
 
       // TODO - make the selectorProps richer by including the study metadata and display set.
@@ -8170,8 +10047,8 @@ const commandsModule = ({
         type: type
       });
     },
-    clearMeasurements: () => {
-      measurementService.clear();
+    clearMeasurements: options => {
+      measurementService.clearMeasurements(options.measurementFilter);
     },
     /**
      *  Sets the specified protocol
@@ -8196,27 +10073,37 @@ const commandsModule = ({
      * @param options.stageId - the stageId to apply
      * @param options.stageIndex - the index of the stage to go to.
      * @param options.reset - flag to indicate if the HP should be reset to its original and not restored to a previous state
+     *
+     * commandsManager.run('setHangingProtocol', {
+     *   activeStudyUID: '1.2.3',
+     *   protocolId: 'myProtocol',
+     *   stageId: 'myStage',
+     *   stageIndex: 0,
+     *   reset: false,
+     * });
      */
     setHangingProtocol: ({
       activeStudyUID = '',
+      StudyInstanceUID = '',
       protocolId,
       stageId,
       stageIndex,
       reset = false
     }) => {
+      const toUseStudyInstanceUID = activeStudyUID || StudyInstanceUID;
       try {
         // Stores in the state the display set selector id to displaySetUID mapping
         // Pass in viewportId for the active viewport.  This item will get set as
         // the activeViewportId
         const state = viewportGridService.getState();
         const hpInfo = hangingProtocolService.getState();
-        (0,_utils_reuseCachedLayouts__WEBPACK_IMPORTED_MODULE_2__["default"])(state, hangingProtocolService);
+        (0,_utils_reuseCachedLayouts__WEBPACK_IMPORTED_MODULE_3__["default"])(state, hangingProtocolService);
         const {
           hangingProtocolStageIndexMap
-        } = _stores_useHangingProtocolStageIndexStore__WEBPACK_IMPORTED_MODULE_7__.useHangingProtocolStageIndexStore.getState();
+        } = _stores_useHangingProtocolStageIndexStore__WEBPACK_IMPORTED_MODULE_9__.useHangingProtocolStageIndexStore.getState();
         const {
           displaySetSelectorMap
-        } = _stores_useDisplaySetSelectorStore__WEBPACK_IMPORTED_MODULE_6__.useDisplaySetSelectorStore.getState();
+        } = _stores_useDisplaySetSelectorStore__WEBPACK_IMPORTED_MODULE_8__.useDisplaySetSelectorStore.getState();
         if (!protocolId) {
           // Reuse the previous protocol id, and optionally stage
           protocolId = hpInfo.protocolId;
@@ -8225,22 +10112,30 @@ const commandsModule = ({
           }
         } else if (stageIndex === undefined && stageId === undefined) {
           // Re-set the same stage as was previously used
-          const hangingId = `${activeStudyUID || hpInfo.activeStudyUID}:${protocolId}`;
+          const hangingId = `${toUseStudyInstanceUID || hpInfo.activeStudyUID}:${protocolId}`;
           stageIndex = hangingProtocolStageIndexMap[hangingId]?.stageIndex;
         }
         const useStageIdx = stageIndex ?? hangingProtocolService.getStageIndex(protocolId, {
           stageId,
           stageIndex
         });
-        if (activeStudyUID) {
-          hangingProtocolService.setActiveStudyUID(activeStudyUID);
-        }
-        const storedHanging = `${hangingProtocolService.getState().activeStudyUID}:${protocolId}:${useStageIdx || 0}`;
+        const activeStudyChanged = hangingProtocolService.setActiveStudyUID(toUseStudyInstanceUID);
+        const storedHanging = `${toUseStudyInstanceUID || hangingProtocolService.getState().activeStudyUID}:${protocolId}:${useStageIdx || 0}`;
         const {
           viewportGridState
-        } = _stores_useViewportGridStore__WEBPACK_IMPORTED_MODULE_5__.useViewportGridStore.getState();
+        } = _stores_useViewportGridStore__WEBPACK_IMPORTED_MODULE_7__.useViewportGridStore.getState();
         const restoreProtocol = !reset && viewportGridState[storedHanging];
-        if (protocolId === hpInfo.protocolId && useStageIdx === hpInfo.stageIndex && !activeStudyUID) {
+        if (reset || activeStudyChanged && !viewportGridState[storedHanging] && stageIndex === undefined && stageId === undefined) {
+          // Run the hanging protocol fresh, re-using the existing study data
+          // This is done on reset or when the study changes and we haven't yet
+          // applied it, and don't specify exact stage to use.
+          const displaySets = displaySetService.getActiveDisplaySets();
+          const activeStudy = {
+            StudyInstanceUID: toUseStudyInstanceUID,
+            displaySets
+          };
+          hangingProtocolService.run(activeStudy, protocolId);
+        } else if (protocolId === hpInfo.protocolId && useStageIdx === hpInfo.stageIndex && !toUseStudyInstanceUID) {
           // Clear the HP setting to reset them
           hangingProtocolService.setProtocol(protocolId, {
             stageId,
@@ -8260,8 +10155,8 @@ const commandsModule = ({
         // Do this after successfully applying the update
         const {
           setDisplaySetSelector
-        } = _stores_useDisplaySetSelectorStore__WEBPACK_IMPORTED_MODULE_6__.useDisplaySetSelectorStore.getState();
-        setDisplaySetSelector(`${activeStudyUID || hpInfo.activeStudyUID}:activeDisplaySet:0`, null);
+        } = _stores_useDisplaySetSelectorStore__WEBPACK_IMPORTED_MODULE_8__.useDisplaySetSelectorStore.getState();
+        setDisplaySetSelector(`${toUseStudyInstanceUID || hpInfo.activeStudyUID}:activeDisplaySet:0`, null);
         return true;
       } catch (e) {
         console.error(e);
@@ -8286,7 +10181,7 @@ const commandsModule = ({
       const {
         toggleHangingProtocol,
         setToggleHangingProtocol
-      } = _stores_useToggleHangingProtocolStore__WEBPACK_IMPORTED_MODULE_8__.useToggleHangingProtocolStore.getState();
+      } = _stores_useToggleHangingProtocolStore__WEBPACK_IMPORTED_MODULE_10__.useToggleHangingProtocolStore.getState();
       const storedHanging = `${activeStudy.StudyInstanceUID}:${protocolId}:${stageIndex | 0}`;
       if (protocol.id === protocolId && (stageIndex === undefined || stageIndex === desiredStageIndex)) {
         // Toggling off - restore to previous state
@@ -8347,21 +10242,20 @@ const commandsModule = ({
         numRows,
         numCols
       }) === false) {
-        console.log('setViewportGridLayout running', onLayoutChange, numRows, numCols);
         // Don't apply the layout if the run command returns false
         return;
       }
       const completeLayout = () => {
         const state = viewportGridService.getState();
-        (0,_findViewportsByPosition__WEBPACK_IMPORTED_MODULE_3__["default"])(state, {
+        (0,_findViewportsByPosition__WEBPACK_IMPORTED_MODULE_5__["default"])(state, {
           numRows,
           numCols
         });
         const {
           viewportsByPosition,
           initialInDisplay
-        } = _stores_useViewportsByPositionStore__WEBPACK_IMPORTED_MODULE_9__.useViewportsByPositionStore.getState();
-        const findOrCreateViewport = _findViewportsByPosition__WEBPACK_IMPORTED_MODULE_3__.findOrCreateViewport.bind(null, hangingProtocolService, isHangingProtocolLayout, {
+        } = _stores_useViewportsByPositionStore__WEBPACK_IMPORTED_MODULE_11__.useViewportsByPositionStore.getState();
+        const findOrCreateViewport = _findViewportsByPosition__WEBPACK_IMPORTED_MODULE_5__.findOrCreateViewport.bind(null, hangingProtocolService, isHangingProtocolLayout, {
           ...viewportsByPosition,
           initialInDisplay
         });
@@ -8392,7 +10286,7 @@ const commandsModule = ({
         // The viewer is in one-up. Check if there is a state to restore/toggle back to.
         const {
           toggleOneUpViewportGridStore
-        } = _stores_useToggleOneUpViewportGridStore__WEBPACK_IMPORTED_MODULE_10__.useToggleOneUpViewportGridStore.getState();
+        } = _stores_useToggleOneUpViewportGridStore__WEBPACK_IMPORTED_MODULE_12__.useToggleOneUpViewportGridStore.getState();
         if (!toggleOneUpViewportGridStore) {
           return;
         }
@@ -8448,7 +10342,7 @@ const commandsModule = ({
         // Store the current viewport grid state so we can toggle it back later.
         const {
           setToggleOneUpViewportGridStore
-        } = _stores_useToggleOneUpViewportGridStore__WEBPACK_IMPORTED_MODULE_10__.useToggleOneUpViewportGridStore.getState();
+        } = _stores_useToggleOneUpViewportGridStore__WEBPACK_IMPORTED_MODULE_12__.useToggleOneUpViewportGridStore.getState();
         setToggleOneUpViewportGridStore(viewportGridState);
 
         // one being toggled to one up.
@@ -8488,7 +10382,7 @@ const commandsModule = ({
      *                      for `replace` is false
      */
     navigateHistory(historyArgs) {
-      _ohif_app__WEBPACK_IMPORTED_MODULE_4__.history.navigate(historyArgs.to, historyArgs.options);
+      _ohif_app__WEBPACK_IMPORTED_MODULE_6__.history.navigate(historyArgs.to, historyArgs.options);
     },
     openDICOMTagViewer({
       displaySetInstanceUID
@@ -8507,14 +10401,13 @@ const commandsModule = ({
       } = servicesManager.services;
       const defaultDisplaySetInstanceUID = displaySetInstanceUID || displaySetInstanceUIDs[0];
       UIModalService.show({
-        content: _DicomTagBrowser_DicomTagBrowser__WEBPACK_IMPORTED_MODULE_1__["default"],
+        content: _DicomTagBrowser_DicomTagBrowser__WEBPACK_IMPORTED_MODULE_2__["default"],
         contentProps: {
           displaySets,
-          displaySetInstanceUID: defaultDisplaySetInstanceUID,
-          onClose: UIModalService.hide
+          displaySetInstanceUID: defaultDisplaySetInstanceUID
         },
-        containerDimensions: 'w-[70%] max-w-[900px]',
-        title: 'DICOM Tag Browser'
+        title: 'DICOM Tag Browser',
+        containerClassName: 'max-w-3xl'
       });
     },
     /**
@@ -8534,20 +10427,16 @@ const commandsModule = ({
         viewports
       } = viewportGridService.getState();
       const activeViewport = viewports.get(activeViewportId);
-      const activeDisplaySetInstanceUID = activeViewport.displaySetInstanceUIDs[0];
+      const activeDisplaySetInstanceUID = activeViewport?.displaySetInstanceUIDs?.[0];
+      if (!activeDisplaySetInstanceUID) {
+        return;
+      }
       const thumbnailList = document.querySelector('#ohif-thumbnail-list');
       if (!thumbnailList) {
         return;
       }
-      const thumbnailListBounds = thumbnailList.getBoundingClientRect();
       const thumbnail = document.querySelector(`#thumbnail-${activeDisplaySetInstanceUID}`);
       if (!thumbnail) {
-        return;
-      }
-      const thumbnailBounds = thumbnail.getBoundingClientRect();
-
-      // This only handles a vertical thumbnail list.
-      if (thumbnailBounds.top >= thumbnailListBounds.top && thumbnailBounds.top <= thumbnailListBounds.bottom) {
         return;
       }
       thumbnail.scrollIntoView({
@@ -8593,32 +10482,23 @@ const commandsModule = ({
           duration: 3000
         });
       }
-      viewportGridService.setDisplaySetsForViewports(updatedViewports);
+      commandsManager.run('setDisplaySetsForViewports', {
+        viewportsToUpdate: updatedViewports
+      });
       setTimeout(() => actions.scrollActiveThumbnailIntoView(), 0);
     }
   };
   const definitions = {
-    showContextMenu: {
-      commandFn: actions.showContextMenu
-    },
-    closeContextMenu: {
-      commandFn: actions.closeContextMenu
-    },
-    clearMeasurements: {
-      commandFn: actions.clearMeasurements
-    },
-    displayNotification: {
-      commandFn: actions.displayNotification
-    },
-    setHangingProtocol: {
-      commandFn: actions.setHangingProtocol
-    },
-    toggleHangingProtocol: {
-      commandFn: actions.toggleHangingProtocol
-    },
-    navigateHistory: {
-      commandFn: actions.navigateHistory
-    },
+    multimonitor: actions.multimonitor,
+    promptSaveReport: actions.promptSaveReport,
+    loadStudy: actions.loadStudy,
+    showContextMenu: actions.showContextMenu,
+    closeContextMenu: actions.closeContextMenu,
+    clearMeasurements: actions.clearMeasurements,
+    displayNotification: actions.displayNotification,
+    setHangingProtocol: actions.setHangingProtocol,
+    toggleHangingProtocol: actions.toggleHangingProtocol,
+    navigateHistory: actions.navigateHistory,
     nextStage: {
       commandFn: actions.deltaStage,
       options: {
@@ -8631,18 +10511,13 @@ const commandsModule = ({
         direction: -1
       }
     },
-    setViewportGridLayout: {
-      commandFn: actions.setViewportGridLayout
-    },
-    toggleOneUp: {
-      commandFn: actions.toggleOneUp
-    },
-    openDICOMTagViewer: {
-      commandFn: actions.openDICOMTagViewer
-    },
-    updateViewportDisplaySet: {
-      commandFn: actions.updateViewportDisplaySet
-    }
+    setViewportGridLayout: actions.setViewportGridLayout,
+    toggleOneUp: actions.toggleOneUp,
+    openDICOMTagViewer: actions.openDICOMTagViewer,
+    updateViewportDisplaySet: actions.updateViewportDisplaySet,
+    scrollActiveThumbnailIntoView: actions.scrollActiveThumbnailIntoView,
+    addDisplaySetAsLayer: actions.addDisplaySetAsLayer,
+    removeDisplaySetLayer: actions.removeDisplaySetLayer
   };
   return {
     actions,
@@ -8658,7 +10533,2053 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/aboutModalCustomization.tsx":
+/*!**********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/aboutModalCustomization.tsx ***!
+  \**********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var browser_detect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! browser-detect */ "../../../node_modules/browser-detect/dist/browser-detect.es5.js");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+
+function AboutModalDefault() {
+  const {
+    os,
+    version,
+    name
+  } = (0,browser_detect__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  const browser = `${name[0].toUpperCase()}${name.substr(1)} ${version}`;
+  const versionNumber = "3.11.0-beta.37";
+  const commitHash = "dcde8418390f7070d6830ebf6257dc08969e8136";
+  const [main, beta] = versionNumber.split('-');
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal, {
+    className: "w-[400px]"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal.ProductName, null, "OHIF Viewer"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal.ProductVersion, null, main), beta && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal.ProductBeta, null, beta), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal.Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal.DetailItem, {
+    label: "Commit Hash",
+    value: commitHash
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal.DetailItem, {
+    label: "Current Browser & OS",
+    value: `${browser}, ${os}`
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.AboutModal.SocialItem, {
+    icon: "SocialGithub",
+    url: "OHIF/Viewers",
+    text: "github.com/OHIF/Viewers"
+  })));
+}
+_c = AboutModalDefault;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.aboutModal': AboutModalDefault
+});
+var _c;
+__webpack_require__.$Refresh$.register(_c, "AboutModalDefault");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/contextMenuCustomization.ts":
+/*!**********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/contextMenuCustomization.ts ***!
+  \**********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.contextMenu': {
+    $transform: function (customizationService) {
+      /**
+       * Applies the inheritsFrom to all the menu items.
+       * This function clones the object and child objects to prevent
+       * changes to the original customization object.
+       */
+      // Don't modify the children, as those are copied by reference
+      const clonedObject = {
+        ...this
+      };
+      clonedObject.menus = this.menus.map(menu => ({
+        ...menu
+      }));
+      for (const menu of clonedObject.menus) {
+        const {
+          items: originalItems
+        } = menu;
+        menu.items = [];
+        for (const item of originalItems) {
+          menu.items.push(customizationService.transform(item));
+        }
+      }
+      return clonedObject;
+    }
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/contextMenuUICustomization.ts":
+/*!************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/contextMenuUICustomization.ts ***!
+  \************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ui.contextMenu': _ohif_ui__WEBPACK_IMPORTED_MODULE_0__.ContextMenu
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/customRoutesCustomization.ts":
+/*!***********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/customRoutesCustomization.ts ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'routes.customRoutes': {
+    routes: [],
+    notFoundRoute: null
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/dataSourceConfigurationCustomization.ts":
+/*!**********************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/dataSourceConfigurationCustomization.ts ***!
+  \**********************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getDataSourceConfigurationCustomization)
+/* harmony export */ });
+/* harmony import */ var _Components_DataSourceConfigurationComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Components/DataSourceConfigurationComponent */ "../../../extensions/default/src/Components/DataSourceConfigurationComponent.tsx");
+/* harmony import */ var _DataSourceConfigurationAPI_GoogleCloudDataSourceConfigurationAPI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DataSourceConfigurationAPI/GoogleCloudDataSourceConfigurationAPI */ "../../../extensions/default/src/DataSourceConfigurationAPI/GoogleCloudDataSourceConfigurationAPI.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+function getDataSourceConfigurationCustomization({
+  servicesManager,
+  extensionManager
+}) {
+  return {
+    // the generic GUI component to configure a data source using an instance of a BaseDataSourceConfigurationAPI
+    'ohif.dataSourceConfigurationComponent': _Components_DataSourceConfigurationComponent__WEBPACK_IMPORTED_MODULE_0__["default"].bind(null, {
+      servicesManager,
+      extensionManager
+    }),
+    // The factory for creating an instance of a BaseDataSourceConfigurationAPI for Google Cloud Healthcare
+    'ohif.dataSourceConfigurationAPI.google': dataSourceName => new _DataSourceConfigurationAPI_GoogleCloudDataSourceConfigurationAPI__WEBPACK_IMPORTED_MODULE_1__.GoogleCloudDataSourceConfigurationAPI(dataSourceName, servicesManager, extensionManager)
+  };
+}
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/datasourcesCustomization.tsx":
+/*!***********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/datasourcesCustomization.tsx ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Panels_DataSourceSelector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Panels/DataSourceSelector */ "../../../extensions/default/src/Panels/DataSourceSelector.tsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'routes.customRoutes': {
+    routes: {
+      $push: [{
+        path: '/datasources',
+        children: _Panels_DataSourceSelector__WEBPACK_IMPORTED_MODULE_0__["default"]
+      }]
+    }
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/defaultContextMenuCustomization.ts":
+/*!*****************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/defaultContextMenuCustomization.ts ***!
+  \*****************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  measurementsContextMenu: {
+    inheritsFrom: 'ohif.contextMenu',
+    menus: [
+    // Get the items from the UI Customization for the menu name (and have a custom name)
+    {
+      id: 'forExistingMeasurement',
+      selector: ({
+        nearbyToolData
+      }) => !!nearbyToolData,
+      items: [{
+        label: 'Delete measurement',
+        commands: 'removeMeasurement'
+      }, {
+        label: 'Add Label',
+        commands: 'setMeasurementLabel'
+      }]
+    }]
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/helloPageCustomization.tsx":
+/*!*********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/helloPageCustomization.tsx ***!
+  \*********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'routes.customRoutes': {
+    routes: {
+      $push: [{
+        path: '/custom',
+        children: () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
+          style: {
+            color: 'white'
+          }
+        }, "Hello Custom Route")
+      }]
+    }
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/hotkeyBindingsCustomization.ts":
+/*!*************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/hotkeyBindingsCustomization.ts ***!
+  \*************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.hotkeyBindings': _ohif_core__WEBPACK_IMPORTED_MODULE_0__.defaults.hotkeyBindings
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/labellingFlowCustomization.tsx":
+/*!*************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/labellingFlowCustomization.tsx ***!
+  \*************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ui.labellingComponent': _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__.LabellingFlow
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/loadingIndicatorProgressCustomization.tsx":
+/*!************************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/loadingIndicatorProgressCustomization.tsx ***!
+  \************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ui.loadingIndicatorProgress': _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__.LoadingIndicatorProgress
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/loadingIndicatorTotalPercentCustomization.tsx":
+/*!****************************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/loadingIndicatorTotalPercentCustomization.tsx ***!
+  \****************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ui.loadingIndicatorTotalPercent': _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__.LoadingIndicatorTotalPercent
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/menuContentCustomization.tsx":
+/*!***********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/menuContentCustomization.tsx ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.menuContent': function (props) {
+    const {
+      item: topLevelItem,
+      commandsManager,
+      servicesManager,
+      ...rest
+    } = props;
+    const content = function (subProps) {
+      const {
+        item: subItem
+      } = subProps;
+
+      // Regular menu item
+      const isDisabled = subItem.selector && !subItem.selector({
+        servicesManager
+      });
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuItem, {
+        disabled: isDisabled,
+        onSelect: () => {
+          commandsManager.runAsync(subItem.commands, {
+            ...subItem.commandOptions,
+            ...rest
+          });
+        },
+        className: "gap-[6px]"
+      }, subItem.iconName && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.ByName, {
+        name: subItem.iconName,
+        className: "-ml-1"
+      }), subItem.label);
+    };
+
+    // If item has sub-items, render a submenu
+    if (topLevelItem.items) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuSub, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuSubTrigger, {
+        className: "gap-[6px]"
+      }, topLevelItem.iconName && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.ByName, {
+        name: topLevelItem.iconName,
+        className: "-ml-1"
+      }), topLevelItem.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuPortal, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.DropdownMenuSubContent, null, topLevelItem.items.map(subItem => content({
+        ...props,
+        item: subItem
+      })))));
+    }
+    return content({
+      ...props,
+      item: topLevelItem
+    });
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/multimonitorCustomization.ts":
+/*!***********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/multimonitorCustomization.ts ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'studyBrowser.studyMenuItems': {
+    $push: [{
+      id: 'applyHangingProtocol',
+      label: 'Apply Hanging Protocol',
+      iconName: 'ViewportViews',
+      items: [{
+        id: 'applyDefaultProtocol',
+        label: 'Default',
+        commands: ['loadStudy', {
+          commandName: 'setHangingProtocol',
+          commandOptions: {
+            protocolId: 'default'
+          }
+        }]
+      }, {
+        id: 'applyMPRProtocol',
+        label: '2x2 Grid',
+        commands: ['loadStudy', {
+          commandName: 'setHangingProtocol',
+          commandOptions: {
+            protocolId: '@ohif/mnGrid'
+          }
+        }]
+      }]
+    }, {
+      id: 'showInOtherMonitor',
+      label: 'Launch On Second Monitor',
+      iconName: 'DicomTagBrowser',
+      selector: ({
+        servicesManager
+      }) => {
+        const {
+          multiMonitorService
+        } = servicesManager.services;
+        return multiMonitorService.isMultimonitor;
+      },
+      commands: {
+        commandName: 'multimonitor',
+        commandOptions: {
+          hashParams: '&hangingProtocolId=@ohif/mnGrid8',
+          commands: ['loadStudy', {
+            commandName: 'setHangingProtocol',
+            commandOptions: {
+              protocolId: '@ohif/mnGrid8'
+            }
+          }]
+        }
+      }
+    }]
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/notificationCustomization.ts":
+/*!***********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/notificationCustomization.ts ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+const beginTrackingMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('MeasurementTable:Track measurements for this series?');
+const trackNewSeriesMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('Do you want to add this measurement to the existing report?');
+const discardSeriesMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('You have existing tracked measurements. What would you like to do with your existing tracked measurements?');
+const trackNewStudyMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('MeasurementTable:Track measurements for this series?');
+const discardStudyMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('Measurements cannot span across multiple studies. Do you want to save your tracked measurements?');
+const hydrateSRMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('Do you want to continue tracking measurements for this study?');
+const hydrateRTMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('Do you want to open this Segmentation?');
+const hydrateSEGMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('Do you want to open this Segmentation?');
+const discardDirtyMessage = _ohif_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].t('There are unsaved measurements. Do you want to save it?');
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ui.notificationComponent': _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ViewportDialog,
+  'viewportNotification.beginTrackingMessage': beginTrackingMessage,
+  'viewportNotification.trackNewSeriesMessage': trackNewSeriesMessage,
+  'viewportNotification.discardSeriesMessage': discardSeriesMessage,
+  'viewportNotification.trackNewStudyMessage': trackNewStudyMessage,
+  'viewportNotification.discardStudyMessage': discardStudyMessage,
+  'viewportNotification.hydrateSRMessage': hydrateSRMessage,
+  'viewportNotification.hydrateRTMessage': hydrateRTMessage,
+  'viewportNotification.hydrateSEGMessage': hydrateSEGMessage,
+  'viewportNotification.discardDirtyMessage': discardDirtyMessage
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/onDropHandlerCustomization.ts":
+/*!************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/onDropHandlerCustomization.ts ***!
+  \************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  customOnDropHandler: () => {
+    return Promise.resolve({
+      handled: false
+    });
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/onboardingCustomization.ts":
+/*!*********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/onboardingCustomization.ts ***!
+  \*********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+function waitForElement(selector, maxAttempts = 20, interval = 25) {
+  return new Promise(resolve => {
+    let attempts = 0;
+    const checkForElement = setInterval(() => {
+      const element = document.querySelector(selector);
+      if (element || attempts >= maxAttempts) {
+        clearInterval(checkForElement);
+        resolve();
+      }
+      attempts++;
+    }, interval);
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.tours': [{
+    id: 'basicViewerTour',
+    route: '/viewer',
+    steps: [{
+      id: 'scroll',
+      title: 'Scrolling Through Images',
+      text: 'You can scroll through the images using the mouse wheel or scrollbar.',
+      attachTo: {
+        element: '.viewport-element',
+        on: 'top'
+      },
+      advanceOn: {
+        selector: '.cornerstone-viewport-element',
+        event: 'CORNERSTONE_TOOLS_MOUSE_WHEEL'
+      },
+      beforeShowPromise: () => waitForElement('.viewport-element')
+    }, {
+      id: 'zoom',
+      title: 'Zooming In and Out',
+      text: 'You can zoom the images using the right click.',
+      attachTo: {
+        element: '.viewport-element',
+        on: 'left'
+      },
+      advanceOn: {
+        selector: '.cornerstone-viewport-element',
+        event: 'CORNERSTONE_TOOLS_MOUSE_UP'
+      },
+      beforeShowPromise: () => waitForElement('.viewport-element')
+    }, {
+      id: 'pan',
+      title: 'Panning the Image',
+      text: 'You can pan the images using the middle click.',
+      attachTo: {
+        element: '.viewport-element',
+        on: 'top'
+      },
+      advanceOn: {
+        selector: '.cornerstone-viewport-element',
+        event: 'CORNERSTONE_TOOLS_MOUSE_UP'
+      },
+      beforeShowPromise: () => waitForElement('.viewport-element')
+    }, {
+      id: 'windowing',
+      title: 'Adjusting Window Level',
+      text: 'You can modify the window level using the left click.',
+      attachTo: {
+        element: '.viewport-element',
+        on: 'left'
+      },
+      advanceOn: {
+        selector: '.cornerstone-viewport-element',
+        event: 'CORNERSTONE_TOOLS_MOUSE_UP'
+      },
+      beforeShowPromise: () => waitForElement('.viewport-element')
+    }, {
+      id: 'length',
+      title: 'Using the Measurement Tools',
+      text: 'You can measure the length of a region using the Length tool.',
+      attachTo: {
+        element: '[data-cy="MeasurementTools-split-button-primary"]',
+        on: 'bottom'
+      },
+      advanceOn: {
+        selector: '[data-cy="MeasurementTools-split-button-primary"]',
+        event: 'click'
+      },
+      beforeShowPromise: () => waitForElement('[data-cy="MeasurementTools-split-button-primary]')
+    }, {
+      id: 'drawAnnotation',
+      title: 'Drawing Length Annotations',
+      text: 'Use the length tool on the viewport to measure the length of a region.',
+      attachTo: {
+        element: '.viewport-element',
+        on: 'right'
+      },
+      advanceOn: {
+        selector: 'body',
+        event: 'event::measurement_added'
+      },
+      beforeShowPromise: () => waitForElement('.viewport-element')
+    }, {
+      id: 'trackMeasurement',
+      title: 'Tracking Measurements in the Panel',
+      text: 'Click yes to track the measurements in the measurement panel.',
+      attachTo: {
+        element: '[data-cy="prompt-begin-tracking-yes-btn"]',
+        on: 'bottom'
+      },
+      advanceOn: {
+        selector: '[data-cy="prompt-begin-tracking-yes-btn"]',
+        event: 'click'
+      },
+      beforeShowPromise: () => waitForElement('[data-cy="prompt-begin-tracking-yes-btn"]')
+    }, {
+      id: 'openMeasurementPanel',
+      title: 'Opening the Measurements Panel',
+      text: 'Click the measurements button to open the measurements panel.',
+      attachTo: {
+        element: '#trackedMeasurements-btn',
+        on: 'left-start'
+      },
+      advanceOn: {
+        selector: '#trackedMeasurements-btn',
+        event: 'click'
+      },
+      beforeShowPromise: () => waitForElement('#trackedMeasurements-btn')
+    }, {
+      id: 'scrollAwayFromMeasurement',
+      title: 'Scrolling Away from a Measurement',
+      text: 'Scroll the images using the mouse wheel away from the measurement.',
+      attachTo: {
+        element: '.viewport-element',
+        on: 'left'
+      },
+      advanceOn: {
+        selector: '.cornerstone-viewport-element',
+        event: 'CORNERSTONE_TOOLS_MOUSE_WHEEL'
+      },
+      beforeShowPromise: () => waitForElement('.viewport-element')
+    }, {
+      id: 'jumpToMeasurement',
+      title: 'Jumping to Measurements in the Panel',
+      text: 'Click the measurement in the measurement panel to jump to it.',
+      attachTo: {
+        element: '[data-cy="data-row"]',
+        on: 'left-start'
+      },
+      advanceOn: {
+        selector: '[data-cy="data-row"]',
+        event: 'click'
+      },
+      beforeShowPromise: () => waitForElement('[data-cy="data-row"]')
+    }, {
+      id: 'changeLayout',
+      title: 'Changing Layout',
+      text: 'You can change the layout of the viewer using the layout button.',
+      attachTo: {
+        element: '[data-cy="Layout"]',
+        on: 'bottom'
+      },
+      advanceOn: {
+        selector: '[data-cy="Layout"]',
+        event: 'click'
+      },
+      beforeShowPromise: () => waitForElement('[data-cy="Layout"]')
+    }, {
+      id: 'selectLayout',
+      title: 'Selecting the MPR Layout',
+      text: 'Select the MPR layout to view the images in MPR mode.',
+      attachTo: {
+        element: '[data-cy="MPR"]',
+        on: 'left-start'
+      },
+      advanceOn: {
+        selector: '[data-cy="MPR"]',
+        event: 'click'
+      },
+      beforeShowPromise: () => waitForElement('[data-cy="MPR"]')
+    }],
+    tourOptions: {
+      useModalOverlay: true,
+      defaultStepOptions: {
+        buttons: [{
+          text: 'Skip all',
+          action() {
+            this.complete();
+          },
+          secondary: true
+        }]
+      }
+    }
+  }]
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/overlayItemCustomization.tsx":
+/*!***********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/overlayItemCustomization.tsx ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.overlayItem': function (props) {
+    if (this.condition && !this.condition(props)) {
+      return null;
+    }
+    const {
+      instance
+    } = props;
+    const value = instance && this.attribute ? instance[this.attribute] : this.contentF && typeof this.contentF === 'function' ? this.contentF(props) : null;
+    if (!value) {
+      return null;
+    }
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "overlay-item flex flex-row",
+      style: {
+        color: this.color || undefined
+      },
+      title: this.title || ''
+    }, this.label && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "mr-1 shrink-0"
+    }, this.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "font-light"
+    }, value));
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/progressDropdownCustomization.ts":
+/*!***************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/progressDropdownCustomization.ts ***!
+  \***************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Components/ProgressDropdownWithService */ "../../../extensions/default/src/Components/ProgressDropdownWithService.tsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  progressDropdownWithServiceComponent: _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_0__.ProgressDropdownWithService
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/progressLoadingBarCustomization.tsx":
+/*!******************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/progressLoadingBarCustomization.tsx ***!
+  \******************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ui.progressLoadingBar': _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__.ProgressLoadingBar
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/reportDialogCustomization.tsx":
+/*!************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/reportDialogCustomization.tsx ***!
+  \************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ReportDialog: () => (/* binding */ ReportDialog),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+
+
+
+
+function ReportDialog({
+  dataSources,
+  hide,
+  onSave,
+  onCancel
+}) {
+  _s();
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
+  const [selectedDataSource, setSelectedDataSource] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(dataSources?.[0]?.value ?? null);
+  const [selectedSeries, setSelectedSeries] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [reportName, setReportName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const {
+    displaySetService
+  } = servicesManager.services;
+  const seriesOptions = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    const displaySetsMap = displaySetService.getDisplaySetCache();
+    const displaySets = Array.from(displaySetsMap.values());
+    const options = displaySets.filter(ds => ds.Modality === 'SR').map(ds => ({
+      value: ds.SeriesInstanceUID,
+      description: ds.SeriesDescription,
+      label: `${ds.SeriesDescription} ${ds.SeriesDate}/${ds.SeriesTime} ${ds.SeriesNumber}`
+    }));
+    return [{
+      value: null,
+      description: null,
+      label: 'Create new series'
+    }, ...options];
+  }, [displaySetService]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const seriesOption = seriesOptions.find(s => s.value === selectedSeries);
+    const newReportName = selectedSeries && seriesOption?.description ? seriesOption.description : '';
+    setReportName(newReportName);
+  }, [selectedSeries, seriesOptions]);
+  const handleSave = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    onSave({
+      reportName,
+      dataSource: selectedDataSource,
+      series: selectedSeries
+    });
+    hide();
+  }, [selectedDataSource, selectedSeries, reportName, hide, onSave]);
+  const handleCancel = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    onCancel();
+    hide();
+  }, [onCancel, hide]);
+  const showDataSourceSelect = dataSources?.length > 1;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "text-foreground flex min-w-[400px] max-w-md flex-col"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex gap-4"
+  }, showDataSourceSelect && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mt-1 w-1/2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mb-1 pl-1 text-base"
+  }, "Data source"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Select, {
+    value: selectedDataSource,
+    onValueChange: setSelectedDataSource
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
+    placeholder: "Select a data source"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, dataSources.map(source => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
+    key: source.value,
+    value: source.value
+  }, source.label))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: showDataSourceSelect ? 'mt-1 w-1/2' : 'mt-1 w-full'
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mb-1 pl-1 text-base"
+  }, "Series"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Select, {
+    value: selectedSeries,
+    onValueChange: setSelectedSeries
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
+    placeholder: "Select a series"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, seriesOptions.map(series => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
+    key: series.value,
+    value: series.value
+  }, series.label))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-end gap-4"
+  }, !showDataSourceSelect && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-1/3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mb-1 pl-1 text-base"
+  }, "Series"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Select, {
+    value: selectedSeries,
+    onValueChange: setSelectedSeries
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
+    placeholder: "Select a series"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, seriesOptions.map(series => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
+    key: series.value,
+    value: series.value
+  }, series.label))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.InputDialog, {
+    value: reportName,
+    onChange: setReportName,
+    submitOnEnter: true,
+    className: "flex-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.InputDialog.Field, {
+    className: "mb-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.InputDialog.Input, {
+    placeholder: "Report name",
+    disabled: !!selectedSeries
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex justify-end gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.InputDialog, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.InputDialog.Actions, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.InputDialog.ActionsSecondary, {
+    onClick: handleCancel
+  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.InputDialog.ActionsPrimary, {
+    onClick: handleSave
+  }, "Save"))))));
+}
+_s(ReportDialog, "mdpEkNZuZVN5TNpKXgGD2c+oIUA=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem];
+});
+_c = ReportDialog;
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.createReportDialog': ReportDialog
+});
+var _c;
+__webpack_require__.$Refresh$.register(_c, "ReportDialog");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/sortingCriteriaCustomization.ts":
+/*!**************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/sortingCriteriaCustomization.ts ***!
+  \**************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+const {
+  sortingCriteria
+} = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.utils;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  sortingCriteria: sortingCriteria.seriesSortCriteria.seriesInfoSortingCriteria
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/studyBrowserCustomization.ts":
+/*!***********************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/studyBrowserCustomization.ts ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+const {
+  formatDate
+} = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.utils;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'studyBrowser.studyMenuItems': [],
+  'studyBrowser.thumbnailMenuItems': [{
+    id: 'tagBrowser',
+    label: 'Tag Browser',
+    iconName: 'DicomTagBrowser',
+    onClick: ({
+      commandsManager,
+      displaySetInstanceUID
+    }) => {
+      commandsManager.runCommand('openDICOMTagViewer', {
+        displaySetInstanceUID
+      });
+    }
+  }, {
+    id: 'addAsLayer',
+    label: 'Add as Layer',
+    iconName: 'ViewportViews',
+    onClick: ({
+      commandsManager,
+      displaySetInstanceUID,
+      servicesManager
+    }) => {
+      const {
+        viewportGridService
+      } = servicesManager.services;
+
+      // Get the active viewport
+      const {
+        activeViewportId
+      } = viewportGridService.getState();
+      if (!activeViewportId) {
+        return;
+      }
+
+      // Use the new command to add the display set as a layer
+      commandsManager.runCommand('addDisplaySetAsLayer', {
+        viewportId: activeViewportId,
+        displaySetInstanceUID
+      });
+    }
+  }],
+  'studyBrowser.sortFunctions': [{
+    label: 'Series Number',
+    sortFunction: (a, b) => {
+      return a?.SeriesNumber - b?.SeriesNumber;
+    }
+  }, {
+    label: 'Series Date',
+    sortFunction: (a, b) => {
+      const dateA = new Date(formatDate(a?.SeriesDate));
+      const dateB = new Date(formatDate(b?.SeriesDate));
+      return dateB.getTime() - dateA.getTime();
+    }
+  }],
+  'studyBrowser.viewPresets': [{
+    id: 'list',
+    iconName: 'ListView',
+    selected: false
+  }, {
+    id: 'thumbnails',
+    iconName: 'ThumbnailView',
+    selected: true
+  }],
+  'studyBrowser.studyMode': 'all',
+  'studyBrowser.thumbnailDoubleClickCallback': {
+    callbacks: [({
+      activeViewportId,
+      servicesManager,
+      commandsManager,
+      isHangingProtocolLayout
+    }) => async displaySetInstanceUID => {
+      const {
+        hangingProtocolService,
+        uiNotificationService
+      } = servicesManager.services;
+      let updatedViewports = [];
+      const viewportId = activeViewportId;
+      try {
+        updatedViewports = hangingProtocolService.getViewportsRequireUpdate(viewportId, displaySetInstanceUID, isHangingProtocolLayout);
+      } catch (error) {
+        console.warn(error);
+        uiNotificationService.show({
+          title: 'Thumbnail Double Click',
+          message: 'The selected display sets could not be added to the viewport.',
+          type: 'error',
+          duration: 3000
+        });
+      }
+      commandsManager.run('setDisplaySetsForViewports', {
+        viewportsToUpdate: updatedViewports
+      });
+    }]
+  }
+});
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/customizations/userPreferencesCustomization.tsx":
+/*!***************************************************************************************!*\
+  !*** ../../../extensions/default/src/customizations/userPreferencesCustomization.tsx ***!
+  \***************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+
+
+
+
+
+
+const {
+  availableLanguages,
+  defaultLanguage,
+  currentLanguage: currentLanguageFn
+} = _ohif_i18n__WEBPACK_IMPORTED_MODULE_4__["default"];
+function UserPreferencesModalDefault({
+  hide
+}) {
+  _s();
+  const {
+    hotkeysManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useSystem)();
+  const {
+    t
+  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_3__.useTranslation)('UserPreferencesModal');
+  const {
+    hotkeyDefinitions = {},
+    hotkeyDefaults = {}
+  } = hotkeysManager;
+  const currentLanguage = currentLanguageFn();
+  const [state, setState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    hotkeyDefinitions: hotkeyDefinitions,
+    languageValue: currentLanguage.value
+  });
+  const onLanguageChangeHandler = value => {
+    setState(state => ({
+      ...state,
+      languageValue: value
+    }));
+  };
+  const onHotkeyChangeHandler = (id, newKeys) => {
+    setState(state => ({
+      ...state,
+      hotkeyDefinitions: {
+        ...state.hotkeyDefinitions,
+        [id]: {
+          ...state.hotkeyDefinitions[id],
+          keys: newKeys
+        }
+      }
+    }));
+  };
+  const onResetHandler = () => {
+    setState(state => ({
+      ...state,
+      languageValue: defaultLanguage.value,
+      hotkeyDefinitions: hotkeyDefaults
+    }));
+    hotkeysManager.restoreDefaultBindings();
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.UserPreferencesModal, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.UserPreferencesModal.Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mb-3 flex items-center space-x-14"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.UserPreferencesModal.SubHeading, null, t('Language')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.Select, {
+    defaultValue: state.languageValue,
+    onValueChange: onLanguageChangeHandler
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.SelectTrigger, {
+    className: "w-60",
+    "aria-label": "Language"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.SelectValue, {
+    placeholder: t('Select language')
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.SelectContent, null, availableLanguages.map(lang => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.SelectItem, {
+    key: lang.value,
+    value: lang.value
+  }, lang.label))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.UserPreferencesModal.SubHeading, null, t('Hotkeys')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.UserPreferencesModal.HotkeysGrid, null, Object.entries(state.hotkeyDefinitions).map(([id, definition]) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.UserPreferencesModal.Hotkey, {
+    key: id,
+    label: t(definition.label),
+    value: definition.keys,
+    onChange: newKeys => onHotkeyChangeHandler(id, newKeys),
+    placeholder: definition.keys,
+    hotkeys: _ohif_core__WEBPACK_IMPORTED_MODULE_1__.hotkeys
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Left, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Auxiliary, {
+    onClick: onResetHandler
+  }, t('Reset to defaults'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Right, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Secondary, {
+    onClick: () => {
+      _ohif_core__WEBPACK_IMPORTED_MODULE_1__.hotkeys.stopRecord();
+      _ohif_core__WEBPACK_IMPORTED_MODULE_1__.hotkeys.unpause();
+      hide();
+    }
+  }, t('Cancel')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Primary, {
+    onClick: () => {
+      if (state.languageValue !== currentLanguage.value) {
+        _ohif_i18n__WEBPACK_IMPORTED_MODULE_4__["default"].changeLanguage(state.languageValue);
+      }
+      hotkeysManager.setHotkeys(state.hotkeyDefinitions);
+      _ohif_core__WEBPACK_IMPORTED_MODULE_1__.hotkeys.stopRecord();
+      _ohif_core__WEBPACK_IMPORTED_MODULE_1__.hotkeys.unpause();
+      hide();
+    }
+  }, t('Save')))));
+}
+_s(UserPreferencesModalDefault, "CVRrsNxAXmKw2F7V3oOq4CVZMGo=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useSystem, react_i18next__WEBPACK_IMPORTED_MODULE_3__.useTranslation];
+});
+_c = UserPreferencesModalDefault;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  'ohif.userPreferencesModal': UserPreferencesModalDefault
+});
+var _c;
+__webpack_require__.$Refresh$.register(_c, "UserPreferencesModalDefault");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -8673,7 +12594,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************!*\
   !*** ../../../extensions/default/src/findViewportsByPosition.ts ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -8794,7 +12715,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -8809,20 +12746,37 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************!*\
   !*** ../../../extensions/default/src/getCustomizationModule.tsx ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ getCustomizationModule)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Panels_DataSourceSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Panels/DataSourceSelector */ "../../../extensions/default/src/Panels/DataSourceSelector.tsx");
-/* harmony import */ var _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Components/ProgressDropdownWithService */ "../../../extensions/default/src/Components/ProgressDropdownWithService.tsx");
-/* harmony import */ var _Components_DataSourceConfigurationComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Components/DataSourceConfigurationComponent */ "../../../extensions/default/src/Components/DataSourceConfigurationComponent.tsx");
-/* harmony import */ var _DataSourceConfigurationAPI_GoogleCloudDataSourceConfigurationAPI__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DataSourceConfigurationAPI/GoogleCloudDataSourceConfigurationAPI */ "../../../extensions/default/src/DataSourceConfigurationAPI/GoogleCloudDataSourceConfigurationAPI.ts");
-/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _customizations_defaultContextMenuCustomization__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./customizations/defaultContextMenuCustomization */ "../../../extensions/default/src/customizations/defaultContextMenuCustomization.ts");
+/* harmony import */ var _customizations_helloPageCustomization__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./customizations/helloPageCustomization */ "../../../extensions/default/src/customizations/helloPageCustomization.tsx");
+/* harmony import */ var _customizations_datasourcesCustomization__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./customizations/datasourcesCustomization */ "../../../extensions/default/src/customizations/datasourcesCustomization.tsx");
+/* harmony import */ var _customizations_multimonitorCustomization__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./customizations/multimonitorCustomization */ "../../../extensions/default/src/customizations/multimonitorCustomization.ts");
+/* harmony import */ var _customizations_customRoutesCustomization__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./customizations/customRoutesCustomization */ "../../../extensions/default/src/customizations/customRoutesCustomization.ts");
+/* harmony import */ var _customizations_studyBrowserCustomization__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./customizations/studyBrowserCustomization */ "../../../extensions/default/src/customizations/studyBrowserCustomization.ts");
+/* harmony import */ var _customizations_overlayItemCustomization__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./customizations/overlayItemCustomization */ "../../../extensions/default/src/customizations/overlayItemCustomization.tsx");
+/* harmony import */ var _customizations_contextMenuCustomization__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./customizations/contextMenuCustomization */ "../../../extensions/default/src/customizations/contextMenuCustomization.ts");
+/* harmony import */ var _customizations_contextMenuUICustomization__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./customizations/contextMenuUICustomization */ "../../../extensions/default/src/customizations/contextMenuUICustomization.ts");
+/* harmony import */ var _customizations_menuContentCustomization__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./customizations/menuContentCustomization */ "../../../extensions/default/src/customizations/menuContentCustomization.tsx");
+/* harmony import */ var _customizations_dataSourceConfigurationCustomization__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./customizations/dataSourceConfigurationCustomization */ "../../../extensions/default/src/customizations/dataSourceConfigurationCustomization.ts");
+/* harmony import */ var _customizations_progressDropdownCustomization__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./customizations/progressDropdownCustomization */ "../../../extensions/default/src/customizations/progressDropdownCustomization.ts");
+/* harmony import */ var _customizations_sortingCriteriaCustomization__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./customizations/sortingCriteriaCustomization */ "../../../extensions/default/src/customizations/sortingCriteriaCustomization.ts");
+/* harmony import */ var _customizations_onDropHandlerCustomization__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./customizations/onDropHandlerCustomization */ "../../../extensions/default/src/customizations/onDropHandlerCustomization.ts");
+/* harmony import */ var _customizations_loadingIndicatorProgressCustomization__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./customizations/loadingIndicatorProgressCustomization */ "../../../extensions/default/src/customizations/loadingIndicatorProgressCustomization.tsx");
+/* harmony import */ var _customizations_loadingIndicatorTotalPercentCustomization__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./customizations/loadingIndicatorTotalPercentCustomization */ "../../../extensions/default/src/customizations/loadingIndicatorTotalPercentCustomization.tsx");
+/* harmony import */ var _customizations_progressLoadingBarCustomization__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./customizations/progressLoadingBarCustomization */ "../../../extensions/default/src/customizations/progressLoadingBarCustomization.tsx");
+/* harmony import */ var _customizations_labellingFlowCustomization__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./customizations/labellingFlowCustomization */ "../../../extensions/default/src/customizations/labellingFlowCustomization.tsx");
+/* harmony import */ var _customizations_notificationCustomization__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./customizations/notificationCustomization */ "../../../extensions/default/src/customizations/notificationCustomization.ts");
+/* harmony import */ var _customizations_aboutModalCustomization__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./customizations/aboutModalCustomization */ "../../../extensions/default/src/customizations/aboutModalCustomization.tsx");
+/* harmony import */ var _customizations_userPreferencesCustomization__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./customizations/userPreferencesCustomization */ "../../../extensions/default/src/customizations/userPreferencesCustomization.tsx");
+/* harmony import */ var _customizations_reportDialogCustomization__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./customizations/reportDialogCustomization */ "../../../extensions/default/src/customizations/reportDialogCustomization.tsx");
+/* harmony import */ var _customizations_hotkeyBindingsCustomization__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./customizations/hotkeyBindingsCustomization */ "../../../extensions/default/src/customizations/hotkeyBindingsCustomization.ts");
+/* harmony import */ var _customizations_onboardingCustomization__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./customizations/onboardingCustomization */ "../../../extensions/default/src/customizations/onboardingCustomization.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -8832,7 +12786,23 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
-const formatDate = _ohif_core__WEBPACK_IMPORTED_MODULE_5__.utils.formatDate;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  *
@@ -8849,161 +12819,41 @@ function getCustomizationModule({
 }) {
   return [{
     name: 'helloPage',
-    merge: 'Append',
-    value: {
-      id: 'customRoutes',
-      routes: [{
-        path: '/custom',
-        children: () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-          style: {
-            color: 'white'
-          }
-        }, "Hello Custom Route")
-      }]
-    }
-  },
-  // Example customization to list a set of datasources
-  {
+    value: _customizations_helloPageCustomization__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }, {
     name: 'datasources',
-    merge: 'Append',
-    value: {
-      id: 'customRoutes',
-      routes: [{
-        path: '/datasources',
-        children: _Panels_DataSourceSelector__WEBPACK_IMPORTED_MODULE_1__["default"]
-      }]
-    }
+    value: _customizations_datasourcesCustomization__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }, {
+    name: 'multimonitor',
+    value: _customizations_multimonitorCustomization__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     name: 'default',
-    value: [
-    /**
-     * Customization Component Type definition for overlay items.
-     * Overlay items are texts (or other components) that will be displayed
-     * on a Viewport Overlay, which contains the information panels on the
-     * four corners of a viewport.
-     *
-     * @definition of a overlay item using this type
-     * The value to be displayed is defined by
-     *  - setting DICOM image instance's property to this field,
-     *  - or defining contentF()
-     *
-     * {
-     *   id: string - unique id for the overlay item
-     *   customizationType: string - indicates customization type definition to this
-     *   label: string - Label, to be displayed for the item
-     *   title: string - Tooltip, for the item
-     *   color: string - Color of the text
-     *   condition: ({ instance }) => boolean - decides whether to display the overlay item or not
-     *   attribute: string - property name of the DICOM image instance
-     *   contentF: ({ instance, formatters }) => string | component,
-     * }
-     *
-     * @example
-     *  {
-     *    id: 'PatientNameOverlay',
-     *    customizationType: 'ohif.overlayItem',
-     *    label: 'PN:',
-     *    title: 'Patient Name',
-     *    color: 'yellow',
-     *    condition: ({ instance }) => instance && instance.PatientName && instance.PatientName.Alphabetic,
-     *    attribute: 'PatientName',
-     *    contentF: ({ instance, formatters: { formatPN } }) => `${formatPN(instance.PatientName.Alphabetic)} ${(instance.PatientSex ? '(' + instance.PatientSex + ')' : '')}`,
-     *  },
-     *
-     * @see CustomizableViewportOverlay
-     */
-    {
-      id: 'ohif.overlayItem',
-      content: function (props) {
-        if (this.condition && !this.condition(props)) {
-          return null;
-        }
-        const {
-          instance
-        } = props;
-        const value = instance && this.attribute ? instance[this.attribute] : this.contentF && typeof this.contentF === 'function' ? this.contentF(props) : null;
-        if (!value) {
-          return null;
-        }
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-          className: "overlay-item flex flex-row",
-          style: {
-            color: this.color || undefined
-          },
-          title: this.title || ''
-        }, this.label && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-          className: "mr-1 shrink-0"
-        }, this.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-          className: "font-light"
-        }, value));
-      }
-    }, {
-      id: 'ohif.contextMenu',
-      /** Applies the customizationType to all the menu items.
-       * This function clones the object and child objects to prevent
-       * changes to the original customization object.
-       */
-      transform: function (customizationService) {
-        // Don't modify the children, as those are copied by reference
-        const clonedObject = {
-          ...this
-        };
-        clonedObject.menus = this.menus.map(menu => ({
-          ...menu
-        }));
-        for (const menu of clonedObject.menus) {
-          const {
-            items: originalItems
-          } = menu;
-          menu.items = [];
-          for (const item of originalItems) {
-            menu.items.push(customizationService.transform(item));
-          }
-        }
-        return clonedObject;
-      }
-    }, {
-      // the generic GUI component to configure a data source using an instance of a BaseDataSourceConfigurationAPI
-      id: 'ohif.dataSourceConfigurationComponent',
-      component: _Components_DataSourceConfigurationComponent__WEBPACK_IMPORTED_MODULE_3__["default"].bind(null, {
+    value: {
+      ..._customizations_customRoutesCustomization__WEBPACK_IMPORTED_MODULE_4__["default"],
+      ..._customizations_studyBrowserCustomization__WEBPACK_IMPORTED_MODULE_5__["default"],
+      ..._customizations_overlayItemCustomization__WEBPACK_IMPORTED_MODULE_6__["default"],
+      ..._customizations_contextMenuCustomization__WEBPACK_IMPORTED_MODULE_7__["default"],
+      ..._customizations_menuContentCustomization__WEBPACK_IMPORTED_MODULE_9__["default"],
+      ...(0,_customizations_dataSourceConfigurationCustomization__WEBPACK_IMPORTED_MODULE_10__["default"])({
         servicesManager,
         extensionManager
-      })
-    }, {
-      // The factory for creating an instance of a BaseDataSourceConfigurationAPI for Google Cloud Healthcare
-      id: 'ohif.dataSourceConfigurationAPI.google',
-      factory: dataSourceName => new _DataSourceConfigurationAPI_GoogleCloudDataSourceConfigurationAPI__WEBPACK_IMPORTED_MODULE_4__.GoogleCloudDataSourceConfigurationAPI(dataSourceName, servicesManager, extensionManager)
-    }, {
-      id: 'progressDropdownWithServiceComponent',
-      component: _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_2__.ProgressDropdownWithService
-    }, {
-      id: 'studyBrowser.sortFunctions',
-      values: [{
-        label: 'Series Number',
-        sortFunction: (a, b) => {
-          return a?.SeriesNumber - b?.SeriesNumber;
-        }
-      }, {
-        label: 'Series Date',
-        sortFunction: (a, b) => {
-          const dateA = new Date(formatDate(a?.SeriesDate));
-          const dateB = new Date(formatDate(b?.SeriesDate));
-          return dateB.getTime() - dateA.getTime();
-        }
-      }]
-    }, {
-      id: 'studyBrowser.viewPresets',
-      // change your default selected preset here
-      value: [{
-        id: 'list',
-        iconName: 'ListView',
-        selected: false
-      }, {
-        id: 'thumbnails',
-        iconName: 'ThumbnailView',
-        selected: true
-      }]
-    }]
+      }),
+      ..._customizations_progressDropdownCustomization__WEBPACK_IMPORTED_MODULE_11__["default"],
+      ..._customizations_sortingCriteriaCustomization__WEBPACK_IMPORTED_MODULE_12__["default"],
+      ..._customizations_defaultContextMenuCustomization__WEBPACK_IMPORTED_MODULE_0__["default"],
+      ..._customizations_onDropHandlerCustomization__WEBPACK_IMPORTED_MODULE_13__["default"],
+      ..._customizations_loadingIndicatorProgressCustomization__WEBPACK_IMPORTED_MODULE_14__["default"],
+      ..._customizations_loadingIndicatorTotalPercentCustomization__WEBPACK_IMPORTED_MODULE_15__["default"],
+      ..._customizations_progressLoadingBarCustomization__WEBPACK_IMPORTED_MODULE_16__["default"],
+      ..._customizations_labellingFlowCustomization__WEBPACK_IMPORTED_MODULE_17__["default"],
+      ..._customizations_contextMenuUICustomization__WEBPACK_IMPORTED_MODULE_8__["default"],
+      ..._customizations_notificationCustomization__WEBPACK_IMPORTED_MODULE_18__["default"],
+      ..._customizations_aboutModalCustomization__WEBPACK_IMPORTED_MODULE_19__["default"],
+      ..._customizations_userPreferencesCustomization__WEBPACK_IMPORTED_MODULE_20__["default"],
+      ..._customizations_reportDialogCustomization__WEBPACK_IMPORTED_MODULE_21__["default"],
+      ..._customizations_hotkeyBindingsCustomization__WEBPACK_IMPORTED_MODULE_22__["default"],
+      ..._customizations_onboardingCustomization__WEBPACK_IMPORTED_MODULE_23__["default"]
+    }
   }];
 }
 
@@ -9013,7 +12863,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9028,16 +12894,16 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************!*\
   !*** ../../../extensions/default/src/getDataSourcesModule.js ***!
   \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _DicomWebDataSource_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DicomWebDataSource/index.js */ "../../../extensions/default/src/DicomWebDataSource/index.js");
-/* harmony import */ var _DicomJSONDataSource_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DicomJSONDataSource/index.js */ "../../../extensions/default/src/DicomJSONDataSource/index.js");
-/* harmony import */ var _DicomLocalDataSource_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DicomLocalDataSource/index.js */ "../../../extensions/default/src/DicomLocalDataSource/index.js");
+/* harmony import */ var _DicomWebDataSource_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DicomWebDataSource/index */ "../../../extensions/default/src/DicomWebDataSource/index.ts");
+/* harmony import */ var _DicomJSONDataSource_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DicomJSONDataSource/index */ "../../../extensions/default/src/DicomJSONDataSource/index.js");
+/* harmony import */ var _DicomLocalDataSource_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DicomLocalDataSource/index */ "../../../extensions/default/src/DicomLocalDataSource/index.js");
 /* harmony import */ var _DicomWebProxyDataSource_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DicomWebProxyDataSource/index */ "../../../extensions/default/src/DicomWebProxyDataSource/index.ts");
 /* harmony import */ var _MergeDataSource_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MergeDataSource/index */ "../../../extensions/default/src/MergeDataSource/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
@@ -9060,7 +12926,7 @@ function getDataSourcesModule() {
   return [{
     name: 'dicomweb',
     type: 'webApi',
-    createDataSource: _DicomWebDataSource_index_js__WEBPACK_IMPORTED_MODULE_0__.createDicomWebApi
+    createDataSource: _DicomWebDataSource_index__WEBPACK_IMPORTED_MODULE_0__.createDicomWebApi
   }, {
     name: 'dicomwebproxy',
     type: 'webApi',
@@ -9068,11 +12934,11 @@ function getDataSourcesModule() {
   }, {
     name: 'dicomjson',
     type: 'jsonApi',
-    createDataSource: _DicomJSONDataSource_index_js__WEBPACK_IMPORTED_MODULE_1__.createDicomJSONApi
+    createDataSource: _DicomJSONDataSource_index__WEBPACK_IMPORTED_MODULE_1__.createDicomJSONApi
   }, {
     name: 'dicomlocal',
     type: 'localApi',
-    createDataSource: _DicomLocalDataSource_index_js__WEBPACK_IMPORTED_MODULE_2__.createDicomLocalApi
+    createDataSource: _DicomLocalDataSource_index__WEBPACK_IMPORTED_MODULE_2__.createDicomLocalApi
   }, {
     name: 'merge',
     type: 'mergeApi',
@@ -9087,7 +12953,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9102,7 +12984,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************!*\
   !*** ../../../extensions/default/src/getDisplaySetMessages.ts ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -9168,7 +13050,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9183,7 +13081,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************!*\
   !*** ../../../extensions/default/src/getDisplaySetsFromUnsupportedSeries.js ***!
   \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -9203,8 +13101,19 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 function getDisplaySetsFromUnsupportedSeries(instances) {
   const imageSet = new _ohif_core_src_classes_ImageSet__WEBPACK_IMPORTED_MODULE_0__["default"](instances);
   const messages = new _ohif_core__WEBPACK_IMPORTED_MODULE_1__.DisplaySetMessageList();
-  messages.addMessage(_ohif_core__WEBPACK_IMPORTED_MODULE_1__.DisplaySetMessage.CODES.UNSUPPORTED_DISPLAYSET);
   const instance = instances[0];
+  if (!instances.length) {
+    messages.addMessage(_ohif_core__WEBPACK_IMPORTED_MODULE_1__.DisplaySetMessage.CODES.NO_VALID_INSTANCES);
+  } else {
+    const sopClassUid = instance.SOPClassUID;
+    if (sopClassUid) {
+      messages.addMessage(_ohif_core__WEBPACK_IMPORTED_MODULE_1__.DisplaySetMessage.CODES.UNSUPPORTED_SOP_CLASS_UID, {
+        sopClassUid
+      });
+    } else {
+      messages.addMessage(_ohif_core__WEBPACK_IMPORTED_MODULE_1__.DisplaySetMessage.CODES.MISSING_SOP_CLASS_UID);
+    }
+  }
   imageSet.setAttributes({
     displaySetInstanceUID: imageSet.uid,
     // create a local alias for the imageSet UID
@@ -9232,7 +13141,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9247,7 +13172,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/default/src/getHangingProtocolModule.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -9323,7 +13248,7 @@ const defaultProtocol = {
       // It has no affect if nothing is specified in the URL.
       {
         attribute: 'isDisplaySetFromUrl',
-        weight: 10,
+        weight: 20,
         constraint: {
           equals: true
         }
@@ -9389,8 +13314,11 @@ function getHangingProtocolModule() {
   },
   // Create a MxN hanging protocol available by default
   {
-    name: _hangingprotocols_hpMNGrid__WEBPACK_IMPORTED_MODULE_0__["default"].id,
-    protocol: _hangingprotocols_hpMNGrid__WEBPACK_IMPORTED_MODULE_0__["default"]
+    name: _hangingprotocols_hpMNGrid__WEBPACK_IMPORTED_MODULE_0__.hpMN.id,
+    protocol: _hangingprotocols_hpMNGrid__WEBPACK_IMPORTED_MODULE_0__.hpMN
+  }, {
+    name: _hangingprotocols_hpMNGrid__WEBPACK_IMPORTED_MODULE_0__.hpMN8.id,
+    protocol: _hangingprotocols_hpMNGrid__WEBPACK_IMPORTED_MODULE_0__.hpMN8
   }];
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getHangingProtocolModule);
@@ -9401,7 +13329,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9416,7 +13360,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************!*\
   !*** ../../../extensions/default/src/getLayoutTemplateModule.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -9465,7 +13409,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9480,7 +13440,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/default/src/getPTImageIdInstanceMetadata.ts ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -9565,7 +13525,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9580,7 +13556,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************!*\
   !*** ../../../extensions/default/src/getPanelModule.tsx ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -9637,7 +13613,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9652,7 +13644,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/default/src/getSopClassHandlerModule.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -9660,10 +13652,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./id */ "../../../extensions/default/src/id.js");
-/* harmony import */ var _getDisplaySetMessages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getDisplaySetMessages */ "../../../extensions/default/src/getDisplaySetMessages.ts");
-/* harmony import */ var _getDisplaySetsFromUnsupportedSeries__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getDisplaySetsFromUnsupportedSeries */ "../../../extensions/default/src/getDisplaySetsFromUnsupportedSeries.js");
-/* harmony import */ var _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SOPClassHandlers/chartSOPClassHandler */ "../../../extensions/default/src/SOPClassHandlers/chartSOPClassHandler.ts");
+/* harmony import */ var _ohif_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/i18n */ "../../i18n/src/index.js");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./id */ "../../../extensions/default/src/id.js");
+/* harmony import */ var _getDisplaySetMessages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getDisplaySetMessages */ "../../../extensions/default/src/getDisplaySetMessages.ts");
+/* harmony import */ var _getDisplaySetsFromUnsupportedSeries__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getDisplaySetsFromUnsupportedSeries */ "../../../extensions/default/src/getDisplaySetsFromUnsupportedSeries.js");
+/* harmony import */ var _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SOPClassHandlers/chartSOPClassHandler */ "../../../extensions/default/src/SOPClassHandlers/chartSOPClassHandler.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -9672,8 +13665,11 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
+
 const {
   isImage,
+  sortStudyInstances,
+  instancesSortCriteria,
   sopClassDictionary,
   isDisplaySetReconstructable
 } = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.utils;
@@ -9731,8 +13727,14 @@ function getDisplaySetInfo(instances) {
   };
 }
 const makeDisplaySet = instances => {
+  // Need to sort the instances in order to get a consistent instance/thumbnail
+  sortStudyInstances(instances);
   const instance = instances[0];
   const imageSet = new ImageSet(instances);
+  const {
+    extensionManager
+  } = appContext;
+  const dataSource = extensionManager.getActiveDataSource()[0];
   const {
     isDynamicVolume,
     value: isReconstructable,
@@ -9742,7 +13744,16 @@ const makeDisplaySet = instances => {
   const volumeLoaderSchema = isDynamicVolume ? DYNAMIC_VOLUME_LOADER_SCHEME : DEFAULT_VOLUME_LOADER_SCHEME;
 
   // set appropriate attributes to image set...
-  const messages = (0,_getDisplaySetMessages__WEBPACK_IMPORTED_MODULE_2__["default"])(instances, isReconstructable, isDynamicVolume);
+  const messages = (0,_getDisplaySetMessages__WEBPACK_IMPORTED_MODULE_3__["default"])(instances, isReconstructable, isDynamicVolume);
+  const imageIds = dataSource.getImageIdsForDisplaySet(imageSet);
+  let imageId = imageIds[Math.floor(imageIds.length / 2)];
+  let thumbnailInstance = instances[Math.floor(instances.length / 2)];
+  if (isDynamicVolume) {
+    const timePoints = dynamicVolumeInfo.timePoints;
+    const middleIndex = Math.floor(timePoints.length / 2);
+    const middleTimePointImageIds = timePoints[middleIndex];
+    imageId = middleTimePointImageIds[Math.floor(middleTimePointImageIds.length / 2)];
+  }
   imageSet.setAttributes({
     volumeLoaderSchema,
     displaySetInstanceUID: imageSet.uid,
@@ -9759,22 +13770,18 @@ const makeDisplaySet = instances => {
     isMultiFrame: isMultiFrame(instance),
     countIcon: isReconstructable ? 'icon-mpr' : undefined,
     numImageFrames: instances.length,
-    SOPClassHandlerId: `${_id__WEBPACK_IMPORTED_MODULE_1__.id}.sopClassHandlerModule.${sopClassHandlerName}`,
+    SOPClassHandlerId: `${_id__WEBPACK_IMPORTED_MODULE_2__.id}.sopClassHandlerModule.${sopClassHandlerName}`,
     isReconstructable,
     messages,
     averageSpacingBetweenFrames: averageSpacingBetweenFrames || null,
     isDynamicVolume,
-    dynamicVolumeInfo
+    dynamicVolumeInfo,
+    getThumbnailSrc: dataSource.retrieve.getGetThumbnailSrc?.(thumbnailInstance, imageId),
+    supportsWindowLevel: true,
+    label: instance.SeriesDescription || `${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t('Series')} ${instance.SeriesNumber} - ${_ohif_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].t(instance.Modality)}`,
+    FrameOfReferenceUID: instance.FrameOfReferenceUID
   });
-
-  // Sort the images in this series if needed
-  const shallSort = true; //!OHIF.utils.ObjectPath.get(Meteor, 'settings.public.ui.sortSeriesByIncomingOrder');
-  if (shallSort) {
-    imageSet.sortBy((a, b) => {
-      // Sort by InstanceNumber (0020,0013)
-      return (parseInt(a.InstanceNumber) || 0) - (parseInt(b.InstanceNumber) || 0);
-    });
-  }
+  imageSet.sortBy(instancesSortCriteria.default);
 
   // Include the first image instance number (after sorted)
   /*imageSet.setAttribute(
@@ -9865,7 +13872,7 @@ function getDisplaySetsFromSeries(instances) {
 const sopClassUids = [sopClassDictionary.ComputedRadiographyImageStorage, sopClassDictionary.DigitalXRayImageStorageForPresentation, sopClassDictionary.DigitalXRayImageStorageForProcessing, sopClassDictionary.DigitalMammographyXRayImageStorageForPresentation, sopClassDictionary.DigitalMammographyXRayImageStorageForProcessing, sopClassDictionary.DigitalIntraOralXRayImageStorageForPresentation, sopClassDictionary.DigitalIntraOralXRayImageStorageForProcessing, sopClassDictionary.CTImageStorage, sopClassDictionary.EnhancedCTImageStorage, sopClassDictionary.LegacyConvertedEnhancedCTImageStorage, sopClassDictionary.UltrasoundMultiframeImageStorage, sopClassDictionary.MRImageStorage, sopClassDictionary.EnhancedMRImageStorage, sopClassDictionary.EnhancedMRColorImageStorage, sopClassDictionary.LegacyConvertedEnhancedMRImageStorage, sopClassDictionary.UltrasoundImageStorage, sopClassDictionary.UltrasoundImageStorageRET, sopClassDictionary.SecondaryCaptureImageStorage, sopClassDictionary.MultiframeSingleBitSecondaryCaptureImageStorage, sopClassDictionary.MultiframeGrayscaleByteSecondaryCaptureImageStorage, sopClassDictionary.MultiframeGrayscaleWordSecondaryCaptureImageStorage, sopClassDictionary.MultiframeTrueColorSecondaryCaptureImageStorage, sopClassDictionary.XRayAngiographicImageStorage, sopClassDictionary.EnhancedXAImageStorage, sopClassDictionary.XRayRadiofluoroscopicImageStorage, sopClassDictionary.EnhancedXRFImageStorage, sopClassDictionary.XRay3DAngiographicImageStorage, sopClassDictionary.XRay3DCraniofacialImageStorage, sopClassDictionary.BreastTomosynthesisImageStorage, sopClassDictionary.BreastProjectionXRayImageStorageForPresentation, sopClassDictionary.BreastProjectionXRayImageStorageForProcessing, sopClassDictionary.IntravascularOpticalCoherenceTomographyImageStorageForPresentation, sopClassDictionary.IntravascularOpticalCoherenceTomographyImageStorageForProcessing, sopClassDictionary.NuclearMedicineImageStorage, sopClassDictionary.VLEndoscopicImageStorage, sopClassDictionary.VideoEndoscopicImageStorage, sopClassDictionary.VLMicroscopicImageStorage, sopClassDictionary.VideoMicroscopicImageStorage, sopClassDictionary.VLSlideCoordinatesMicroscopicImageStorage, sopClassDictionary.VLPhotographicImageStorage, sopClassDictionary.VideoPhotographicImageStorage, sopClassDictionary.OphthalmicPhotography8BitImageStorage, sopClassDictionary.OphthalmicPhotography16BitImageStorage, sopClassDictionary.OphthalmicTomographyImageStorage,
 // Handled by another sop class module
 // sopClassDictionary.VLWholeSlideMicroscopyImageStorage,
-sopClassDictionary.PositronEmissionTomographyImageStorage, sopClassDictionary.EnhancedPETImageStorage, sopClassDictionary.LegacyConvertedEnhancedPETImageStorage, sopClassDictionary.RTImageStorage, sopClassDictionary.EnhancedUSVolumeStorage];
+sopClassDictionary.PositronEmissionTomographyImageStorage, sopClassDictionary.EnhancedPETImageStorage, sopClassDictionary.LegacyConvertedEnhancedPETImageStorage, sopClassDictionary.RTImageStorage, sopClassDictionary.EnhancedUSVolumeStorage, sopClassDictionary.RTDoseStorage];
 function getSopClassHandlerModule(appContextParam) {
   appContext = appContextParam;
   return [{
@@ -9875,11 +13882,11 @@ function getSopClassHandlerModule(appContextParam) {
   }, {
     name: 'not-supported-display-sets-handler',
     sopClassUids: [],
-    getDisplaySetsFromSeries: _getDisplaySetsFromUnsupportedSeries__WEBPACK_IMPORTED_MODULE_3__["default"]
+    getDisplaySetsFromSeries: _getDisplaySetsFromUnsupportedSeries__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
-    name: _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_4__.chartHandler.name,
-    sopClassUids: _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_4__.chartHandler.sopClassUids,
-    getDisplaySetsFromSeries: _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_4__.chartHandler.getDisplaySetsFromSeries
+    name: _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_5__.chartHandler.name,
+    sopClassUids: _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_5__.chartHandler.sopClassUids,
+    getDisplaySetsFromSeries: _SOPClassHandlers_chartSOPClassHandler__WEBPACK_IMPORTED_MODULE_5__.chartHandler.getDisplaySetsFromSeries
   }];
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getSopClassHandlerModule);
@@ -9890,7 +13897,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -9905,33 +13928,34 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************!*\
   !*** ../../../extensions/default/src/getToolbarModule.tsx ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ getToolbarModule)
 /* harmony export */ });
-/* harmony import */ var _Toolbar_ToolbarDivider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Toolbar/ToolbarDivider */ "../../../extensions/default/src/Toolbar/ToolbarDivider.tsx");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var _Toolbar_ToolbarLayoutSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Toolbar/ToolbarLayoutSelector */ "../../../extensions/default/src/Toolbar/ToolbarLayoutSelector.tsx");
-/* harmony import */ var _Toolbar_ToolbarSplitButtonWithServices__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Toolbar/ToolbarSplitButtonWithServices */ "../../../extensions/default/src/Toolbar/ToolbarSplitButtonWithServices.tsx");
-/* harmony import */ var _Toolbar_ToolbarButtonGroupWithServices__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Toolbar/ToolbarButtonGroupWithServices */ "../../../extensions/default/src/Toolbar/ToolbarButtonGroupWithServices.tsx");
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/ProgressDropdownWithService */ "../../../extensions/default/src/Components/ProgressDropdownWithService.tsx");
+/* harmony import */ var _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Components/ProgressDropdownWithService */ "../../../extensions/default/src/Components/ProgressDropdownWithService.tsx");
+/* harmony import */ var _Toolbar_ToolButtonListWrapper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Toolbar/ToolButtonListWrapper */ "../../../extensions/default/src/Toolbar/ToolButtonListWrapper.tsx");
+/* harmony import */ var _Toolbar_ToolRowWrapper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Toolbar/ToolRowWrapper */ "../../../extensions/default/src/Toolbar/ToolRowWrapper.tsx");
+/* harmony import */ var _Toolbar_ToolBoxWrapper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Toolbar/ToolBoxWrapper */ "../../../extensions/default/src/Toolbar/ToolBoxWrapper.tsx");
+/* harmony import */ var _Toolbar_ToolButtonWrapper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Toolbar/ToolButtonWrapper */ "../../../extensions/default/src/Toolbar/ToolButtonWrapper.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
 
+// legacy
+
+
+// new
 
 
 
-const getClassName = isToggled => {
-  return {
-    className: isToggled ? '!text-primary-active' : '!text-common-bright hover:!bg-primary-dark hover:text-primary-light'
-  };
-};
+
 function getToolbarModule({
   commandsManager,
   servicesManager
@@ -9939,16 +13963,26 @@ function getToolbarModule({
   const {
     cineService
   } = servicesManager.services;
-  return [{
-    name: 'ohif.radioGroup',
-    defaultComponent: _ohif_ui__WEBPACK_IMPORTED_MODULE_4__.ToolbarButton
+  return [
+  // new
+  {
+    name: 'ohif.toolButton',
+    defaultComponent: _Toolbar_ToolButtonWrapper__WEBPACK_IMPORTED_MODULE_6__.ToolButtonWrapper
   }, {
-    name: 'ohif.divider',
-    defaultComponent: _Toolbar_ToolbarDivider__WEBPACK_IMPORTED_MODULE_0__["default"]
+    name: 'ohif.toolButtonList',
+    defaultComponent: _Toolbar_ToolButtonListWrapper__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
-    name: 'ohif.splitButton',
-    defaultComponent: _Toolbar_ToolbarSplitButtonWithServices__WEBPACK_IMPORTED_MODULE_2__["default"]
+    name: 'ohif.row',
+    defaultComponent: _Toolbar_ToolRowWrapper__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
+    name: 'ohif.toolBoxButtonGroup',
+    defaultComponent: _Toolbar_ToolBoxWrapper__WEBPACK_IMPORTED_MODULE_5__.ToolBoxButtonGroupWrapper
+  }, {
+    name: 'ohif.toolBoxButton',
+    defaultComponent: _Toolbar_ToolBoxWrapper__WEBPACK_IMPORTED_MODULE_5__.ToolBoxButtonWrapper
+  },
+  // others
+  {
     name: 'ohif.layoutSelector',
     defaultComponent: props => (0,_Toolbar_ToolbarLayoutSelector__WEBPACK_IMPORTED_MODULE_1__["default"])({
       ...props,
@@ -9956,40 +13990,15 @@ function getToolbarModule({
       servicesManager
     })
   }, {
-    name: 'ohif.buttonGroup',
-    defaultComponent: _Toolbar_ToolbarButtonGroupWithServices__WEBPACK_IMPORTED_MODULE_3__["default"]
-  }, {
     name: 'ohif.progressDropdown',
-    defaultComponent: _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_5__.ProgressDropdownWithService
-  }, {
-    name: 'evaluate.group.promoteToPrimary',
-    evaluate: ({
-      viewportId,
-      button,
-      itemId
-    }) => {
-      const {
-        items
-      } = button.props;
-      if (!itemId) {
-        return {
-          primary: button.props.primary,
-          items
-        };
-      }
-
-      // other wise we can move the clicked tool to the primary button
-      const clickedItemProps = items.find(item => item.id === itemId || item.itemId === itemId);
-      return {
-        primary: clickedItemProps,
-        items
-      };
-    }
+    defaultComponent: _Components_ProgressDropdownWithService__WEBPACK_IMPORTED_MODULE_2__.ProgressDropdownWithService
   }, {
     name: 'evaluate.cine',
     evaluate: () => {
       const isToggled = cineService.getState().isCineEnabled;
-      return getClassName(isToggled);
+      return {
+        className: _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__.utils.getToggledClassName(isToggled)
+      };
     }
   }];
 }
@@ -10000,7 +14009,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10015,7 +14040,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************!*\
   !*** ../../../extensions/default/src/getViewportModule.tsx ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -10027,14 +14052,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
-const getViewportModule = ({
-  servicesManager,
-  commandsManager,
-  extensionManager
-}) => {
+const getViewportModule = () => {
   return [{
     name: 'chartViewport',
-    component: _Components_LineChartViewport_index__WEBPACK_IMPORTED_MODULE_0__["default"]
+    component: _Components_LineChartViewport_index__WEBPACK_IMPORTED_MODULE_0__["default"],
+    isReferenceViewable: () => false
   }];
 };
 
@@ -10045,7 +14067,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10060,7 +14098,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************!*\
   !*** ../../../extensions/default/src/hangingprotocols/hpCompare.ts ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -10095,7 +14133,7 @@ const defaultDisplaySetSelector = {
   // It has no affect if nothing is specified in the URL.
   {
     attribute: 'isDisplaySetFromUrl',
-    weight: 10,
+    weight: 20,
     constraint: {
       equals: true
     }
@@ -10126,7 +14164,7 @@ const priorDisplaySetSelector = {
   // It has no affect if nothing is specified in the URL.
   {
     attribute: 'isDisplaySetFromUrl',
-    weight: 10,
+    weight: 20,
     constraint: {
       equals: true
     }
@@ -10243,7 +14281,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10258,16 +14312,25 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************************!*\
   !*** ../../../extensions/default/src/hangingprotocols/hpMNGrid.ts ***!
   \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   HYDRATE_SEG_SYNC_GROUP: () => (/* binding */ HYDRATE_SEG_SYNC_GROUP),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   hpMN: () => (/* binding */ hpMN),
+/* harmony export */   hpMN8: () => (/* binding */ hpMN8)
 /* harmony export */ });
+/* harmony import */ var _utils_studySelectors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/studySelectors */ "../../../extensions/default/src/hangingprotocols/utils/studySelectors.ts");
+/* harmony import */ var _utils_seriesSelectors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/seriesSelectors */ "../../../extensions/default/src/hangingprotocols/utils/seriesSelectors.ts");
+/* harmony import */ var _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/viewportOptions */ "../../../extensions/default/src/hangingprotocols/utils/viewportOptions.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
+
 
 /**
  * Sync group configuration for hydrating segmentations across viewports
@@ -10294,42 +14357,18 @@ const hpMN = {
   id: '@ohif/mnGrid',
   description: 'Has various hanging protocol grid layouts',
   name: '2x2',
-  protocolMatchingRules: [{
-    id: 'OneOrMoreSeries',
-    weight: 25,
-    attribute: 'numberOfDisplaySetsWithImages',
-    constraint: {
-      greaterThan: 0
-    }
-  }],
+  protocolMatchingRules: _utils_studySelectors__WEBPACK_IMPORTED_MODULE_0__.studyWithImages,
   toolGroupIds: ['default'],
   displaySetSelectors: {
     defaultDisplaySetId: {
-      seriesMatchingRules: [{
-        attribute: 'numImageFrames',
-        constraint: {
-          greaterThan: {
-            value: 0
-          }
-        },
-        required: true
-      },
-      // This display set will select the specified items by preference
-      // It has no affect if nothing is specified in the URL.
-      {
-        attribute: 'isDisplaySetFromUrl',
-        weight: 10,
-        constraint: {
-          equals: true
-        }
-      }]
+      allowUnmatchedView: true,
+      seriesMatchingRules: _utils_seriesSelectors__WEBPACK_IMPORTED_MODULE_1__.seriesWithImages
     }
   },
   defaultViewport: {
     viewportOptions: {
       viewportType: 'stack',
       toolGroupId: 'default',
-      allowUnmatchedView: true,
       syncGroups: [HYDRATE_SEG_SYNC_GROUP]
     },
     displaySets: [{
@@ -10353,63 +14392,24 @@ const hpMN = {
       }
     },
     viewports: [{
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true,
-        syncGroups: [{
-          type: 'hydrateseg',
-          id: 'sameFORId',
-          source: true,
-          target: true,
-          options: {
-            matchingRules: ['sameFOR']
-          }
-        }]
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         id: 'defaultDisplaySetId'
       }]
     }, {
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         matchedDisplaySetsIndex: 1,
         id: 'defaultDisplaySetId'
       }]
     }, {
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true,
-        syncGroups: [{
-          type: 'hydrateseg',
-          id: 'sameFORId',
-          source: true,
-          target: true
-          // options: {
-          //   matchingRules: ['sameFOR'],
-          // },
-        }]
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         matchedDisplaySetsIndex: 2,
         id: 'defaultDisplaySetId'
       }]
     }, {
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true,
-        syncGroups: [{
-          type: 'hydrateseg',
-          id: 'sameFORId',
-          source: true,
-          target: true
-          // options: {
-          //   matchingRules: ['sameFOR'],
-          // },
-        }]
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         matchedDisplaySetsIndex: 3,
         id: 'defaultDisplaySetId'
@@ -10418,11 +14418,7 @@ const hpMN = {
   },
   // 3x1 stage
   {
-    id: '3x1',
-    // Obsolete settings:
-    requiredViewports: 1,
-    preferredViewports: 3,
-    // New equivalent:
+    name: '3x1',
     stageActivation: {
       enabled: {
         minViewportsMatched: 3
@@ -10436,27 +14432,18 @@ const hpMN = {
       }
     },
     viewports: [{
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         id: 'defaultDisplaySetId'
       }]
     }, {
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         id: 'defaultDisplaySetId',
         matchedDisplaySetsIndex: 1
       }]
     }, {
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         id: 'defaultDisplaySetId',
         matchedDisplaySetsIndex: 2
@@ -10465,9 +14452,7 @@ const hpMN = {
   },
   // A 2x1 stage
   {
-    id: '2x1',
-    requiredViewports: 1,
-    preferredViewports: 2,
+    name: '2x1',
     stageActivation: {
       enabled: {
         minViewportsMatched: 2
@@ -10481,18 +14466,12 @@ const hpMN = {
       }
     },
     viewports: [{
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         id: 'defaultDisplaySetId'
       }]
     }, {
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         matchedDisplaySetsIndex: 1,
         id: 'defaultDisplaySetId'
@@ -10501,9 +14480,7 @@ const hpMN = {
   },
   // A 1x1 stage - should be automatically activated if there is only 1 viewable instance
   {
-    id: '1x1',
-    requiredViewports: 1,
-    preferredViewports: 1,
+    name: '1x1',
     stageActivation: {
       enabled: {
         minViewportsMatched: 1
@@ -10517,16 +14494,141 @@ const hpMN = {
       }
     },
     viewports: [{
-      viewportOptions: {
-        toolGroupId: 'default',
-        allowUnmatchedView: true
-      },
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
       displaySets: [{
         id: 'defaultDisplaySetId'
       }]
     }]
   }],
   numberOfPriorsReferenced: -1
+};
+
+/**
+ * This hanging protocol can be activated on the primary mode by directly
+ * referencing it in a URL or by directly including it within a mode, e.g.:
+ * `&hangingProtocolId=@ohif/mnGrid8` added to the viewer URL
+ * It is not included in the viewer mode by default.
+ */
+const hpMN8 = {
+  ...hpMN,
+  id: '@ohif/mnGrid8',
+  description: 'Has various hanging protocol grid layouts up to 4x2',
+  name: '4x2',
+  stages: [{
+    id: '4x2',
+    name: '4x2',
+    stageActivation: {
+      enabled: {
+        minViewportsMatched: 7
+      }
+    },
+    viewportStructure: {
+      layoutType: 'grid',
+      properties: {
+        rows: 2,
+        columns: 4
+      }
+    },
+    viewports: [{
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 1,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 2,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 3,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 4,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 5,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 6,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 7,
+        id: 'defaultDisplaySetId'
+      }]
+    }]
+  }, {
+    id: '3x2',
+    name: '3x2',
+    stageActivation: {
+      enabled: {
+        minViewportsMatched: 5
+      }
+    },
+    viewportStructure: {
+      layoutType: 'grid',
+      properties: {
+        rows: 2,
+        columns: 3
+      }
+    },
+    viewports: [{
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 1,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 2,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 3,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 4,
+        id: 'defaultDisplaySetId'
+      }]
+    }, {
+      viewportOptions: _utils_viewportOptions__WEBPACK_IMPORTED_MODULE_2__.viewportOptions,
+      displaySets: [{
+        matchedDisplaySetsIndex: 5,
+        id: 'defaultDisplaySetId'
+      }]
+    }]
+  }, ...hpMN.stages]
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (hpMN);
 
@@ -10536,7 +14638,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10551,14 +14669,14 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/default/src/hangingprotocols/hpMammo.ts ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mammoDisplaySetSelector */ "../../../extensions/default/src/hangingprotocols/mammoDisplaySetSelector.ts");
+/* harmony import */ var _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/mammoDisplaySetSelector */ "../../../extensions/default/src/hangingprotocols/utils/mammoDisplaySetSelector.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -10601,14 +14719,14 @@ const hpMammography = {
   }],
   toolGroupIds: ['default'],
   displaySetSelectors: {
-    RCC: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RCC,
-    LCC: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LCC,
-    RMLO: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RMLO,
-    LMLO: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LMLO,
-    RCCPrior: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RCCPrior,
-    LCCPrior: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LCCPrior,
-    RMLOPrior: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RMLOPrior,
-    LMLOPrior: _mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LMLOPrior
+    RCC: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RCC,
+    LCC: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LCC,
+    RMLO: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RMLO,
+    LMLO: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LMLO,
+    RCCPrior: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RCCPrior,
+    LCCPrior: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LCCPrior,
+    RMLOPrior: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.RMLOPrior,
+    LMLOPrior: _utils_mammoDisplaySetSelector__WEBPACK_IMPORTED_MODULE_0__.LMLOPrior
   },
   stages: [{
     name: 'CC/MLO',
@@ -10724,7 +14842,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10739,7 +14873,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/default/src/hangingprotocols/hpScale.ts ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -10794,7 +14928,7 @@ const hpScale = {
       // It has no affect if nothing is specified in the URL.
       {
         attribute: 'isDisplaySetFromUrl',
-        weight: 10,
+        weight: 20,
         constraint: {
           equals: true
         }
@@ -10874,7 +15008,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10889,26 +15039,30 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************!*\
   !*** ../../../extensions/default/src/hangingprotocols/index.ts ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   HYDRATE_SEG_SYNC_GROUP: () => (/* reexport safe */ _hpMNGrid__WEBPACK_IMPORTED_MODULE_4__.HYDRATE_SEG_SYNC_GROUP),
 /* harmony export */   hpCompare: () => (/* reexport safe */ _hpCompare__WEBPACK_IMPORTED_MODULE_5__["default"]),
+/* harmony export */   hpMN: () => (/* reexport safe */ _hpMNGrid__WEBPACK_IMPORTED_MODULE_4__.hpMN),
+/* harmony export */   hpMN8: () => (/* reexport safe */ _hpMNGrid__WEBPACK_IMPORTED_MODULE_4__.hpMN8),
 /* harmony export */   hpMNGrid: () => (/* reexport safe */ _hpMNGrid__WEBPACK_IMPORTED_MODULE_4__["default"]),
 /* harmony export */   hpMammo: () => (/* reexport safe */ _hpMammo__WEBPACK_IMPORTED_MODULE_3__["default"]),
-/* harmony export */   lateralityAttribute: () => (/* reexport safe */ _laterality__WEBPACK_IMPORTED_MODULE_1__["default"]),
-/* harmony export */   registerHangingProtocolAttributes: () => (/* reexport safe */ _registerHangingProtocolAttributes__WEBPACK_IMPORTED_MODULE_2__["default"]),
-/* harmony export */   viewCodeAttribute: () => (/* reexport safe */ _viewCode__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */   lateralityAttribute: () => (/* reexport safe */ _utils_laterality__WEBPACK_IMPORTED_MODULE_1__["default"]),
+/* harmony export */   registerHangingProtocolAttributes: () => (/* reexport safe */ _utils_registerHangingProtocolAttributes__WEBPACK_IMPORTED_MODULE_2__["default"]),
+/* harmony export */   viewCodeAttribute: () => (/* reexport safe */ _utils_viewCode__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
-/* harmony import */ var _viewCode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./viewCode */ "../../../extensions/default/src/hangingprotocols/viewCode.ts");
-/* harmony import */ var _laterality__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./laterality */ "../../../extensions/default/src/hangingprotocols/laterality.ts");
-/* harmony import */ var _registerHangingProtocolAttributes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./registerHangingProtocolAttributes */ "../../../extensions/default/src/hangingprotocols/registerHangingProtocolAttributes.ts");
+/* harmony import */ var _utils_viewCode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/viewCode */ "../../../extensions/default/src/hangingprotocols/utils/viewCode.ts");
+/* harmony import */ var _utils_laterality__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/laterality */ "../../../extensions/default/src/hangingprotocols/utils/laterality.ts");
+/* harmony import */ var _utils_registerHangingProtocolAttributes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/registerHangingProtocolAttributes */ "../../../extensions/default/src/hangingprotocols/utils/registerHangingProtocolAttributes.ts");
 /* harmony import */ var _hpMammo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hpMammo */ "../../../extensions/default/src/hangingprotocols/hpMammo.ts");
 /* harmony import */ var _hpMNGrid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hpMNGrid */ "../../../extensions/default/src/hangingprotocols/hpMNGrid.ts");
 /* harmony import */ var _hpCompare__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hpCompare */ "../../../extensions/default/src/hangingprotocols/hpCompare.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -10924,7 +15078,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10935,11 +15105,11 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/default/src/hangingprotocols/laterality.ts":
-/*!**********************************************************************!*\
-  !*** ../../../extensions/default/src/hangingprotocols/laterality.ts ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/default/src/hangingprotocols/utils/laterality.ts":
+/*!****************************************************************************!*\
+  !*** ../../../extensions/default/src/hangingprotocols/utils/laterality.ts ***!
+  \****************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -10964,7 +15134,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -10975,11 +15161,11 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/default/src/hangingprotocols/mammoDisplaySetSelector.ts":
-/*!***********************************************************************************!*\
-  !*** ../../../extensions/default/src/hangingprotocols/mammoDisplaySetSelector.ts ***!
-  \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/default/src/hangingprotocols/utils/mammoDisplaySetSelector.ts":
+/*!*****************************************************************************************!*\
+  !*** ../../../extensions/default/src/hangingprotocols/utils/mammoDisplaySetSelector.ts ***!
+  \*****************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -11180,7 +15366,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11191,19 +15393,19 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/default/src/hangingprotocols/registerHangingProtocolAttributes.ts":
-/*!*********************************************************************************************!*\
-  !*** ../../../extensions/default/src/hangingprotocols/registerHangingProtocolAttributes.ts ***!
-  \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/default/src/hangingprotocols/utils/registerHangingProtocolAttributes.ts":
+/*!***************************************************************************************************!*\
+  !*** ../../../extensions/default/src/hangingprotocols/utils/registerHangingProtocolAttributes.ts ***!
+  \***************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ registerHangingProtocolAttributes)
 /* harmony export */ });
-/* harmony import */ var _viewCode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./viewCode */ "../../../extensions/default/src/hangingprotocols/viewCode.ts");
-/* harmony import */ var _laterality__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./laterality */ "../../../extensions/default/src/hangingprotocols/laterality.ts");
+/* harmony import */ var _viewCode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./viewCode */ "../../../extensions/default/src/hangingprotocols/utils/viewCode.ts");
+/* harmony import */ var _laterality__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./laterality */ "../../../extensions/default/src/hangingprotocols/utils/laterality.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -11225,7 +15427,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11236,11 +15454,134 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/default/src/hangingprotocols/viewCode.ts":
-/*!********************************************************************!*\
-  !*** ../../../extensions/default/src/hangingprotocols/viewCode.ts ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/default/src/hangingprotocols/utils/seriesSelectors.ts":
+/*!*********************************************************************************!*\
+  !*** ../../../extensions/default/src/hangingprotocols/utils/seriesSelectors.ts ***!
+  \*********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   seriesWithImages: () => (/* binding */ seriesWithImages)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+const seriesWithImages = [{
+  attribute: 'numImageFrames',
+  constraint: {
+    greaterThan: {
+      value: 0
+    }
+  },
+  weight: 1,
+  required: true
+},
+// This display set will select the specified items by preference
+// It has no affect if nothing is specified in the URL.
+{
+  attribute: 'isDisplaySetFromUrl',
+  weight: 20,
+  constraint: {
+    equals: true
+  }
+}];
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/hangingprotocols/utils/studySelectors.ts":
+/*!********************************************************************************!*\
+  !*** ../../../extensions/default/src/hangingprotocols/utils/studySelectors.ts ***!
+  \********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   studyWithImages: () => (/* binding */ studyWithImages)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+const studyWithImages = [{
+  id: 'OneOrMoreSeries',
+  weight: 25,
+  attribute: 'numberOfDisplaySetsWithImages',
+  constraint: {
+    greaterThan: 0
+  }
+}];
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/hangingprotocols/utils/viewCode.ts":
+/*!**************************************************************************!*\
+  !*** ../../../extensions/default/src/hangingprotocols/utils/viewCode.ts ***!
+  \**************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -11271,7 +15612,87 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/hangingprotocols/utils/viewportOptions.ts":
+/*!*********************************************************************************!*\
+  !*** ../../../extensions/default/src/hangingprotocols/utils/viewportOptions.ts ***!
+  \*********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   hydrateSegDefault: () => (/* binding */ hydrateSegDefault),
+/* harmony export */   viewportOptions: () => (/* binding */ viewportOptions)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+/** A default viewport options */
+const viewportOptions = {
+  toolGroupId: 'default',
+  allowUnmatchedView: true,
+  syncGroups: [{
+    type: 'hydrateseg',
+    id: 'sameFORId',
+    source: true,
+    target: true,
+    options: {
+      matchingRules: ['sameFOR']
+    }
+  }]
+};
+const hydrateSegDefault = viewportOptions;
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11286,7 +15707,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************!*\
   !*** ../../../extensions/default/src/hooks/usePatientInfo.tsx ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -11299,7 +15720,6 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
-var _s2 = __webpack_require__.$Refresh$.signature();
 var _s = __webpack_require__.$Refresh$.signature();
 
 
@@ -11307,9 +15727,11 @@ const {
   formatPN,
   formatDate
 } = _ohif_core__WEBPACK_IMPORTED_MODULE_1__.utils;
-function usePatientInfo(servicesManager) {
-  _s2();
+function usePatientInfo() {
   _s();
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useSystem)();
   const {
     displaySetService
   } = servicesManager.services;
@@ -11320,7 +15742,6 @@ function usePatientInfo(servicesManager) {
     PatientDOB: ''
   });
   const [isMixedPatients, setIsMixedPatients] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const displaySets = displaySetService.getActiveDisplaySets();
   const checkMixedPatients = PatientID => {
     const displaySets = displaySetService.getActiveDisplaySets();
     let isMixedPatients = false;
@@ -11335,34 +15756,37 @@ function usePatientInfo(servicesManager) {
     });
     setIsMixedPatients(isMixedPatients);
   };
-  const updatePatientInfo = () => {
-    const displaySet = displaySets[0];
+  const updatePatientInfo = ({
+    displaySetsAdded
+  }) => {
+    if (!displaySetsAdded.length) {
+      return;
+    }
+    const displaySet = displaySetsAdded[0];
     const instance = displaySet?.instances?.[0] || displaySet?.instance;
     if (!instance) {
       return;
     }
     setPatientInfo({
       PatientID: instance.PatientID || null,
-      PatientName: instance.PatientName ? formatPN(instance.PatientName.Alphabetic) : null,
+      PatientName: instance.PatientName ? formatPN(instance.PatientName) : null,
       PatientSex: instance.PatientSex || null,
       PatientDOB: formatDate(instance.PatientBirthDate) || null
     });
     checkMixedPatients(instance.PatientID || null);
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const subscription = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_ADDED, () => updatePatientInfo());
+    const subscription = displaySetService.subscribe(displaySetService.EVENTS.DISPLAY_SETS_ADDED, props => updatePatientInfo(props));
     return () => subscription.unsubscribe();
   }, []);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    updatePatientInfo();
-  }, [displaySets]);
   return {
     patientInfo,
     isMixedPatients
   };
 }
-_s2(usePatientInfo, "+xuf6kKNLt4PWfiY4m0up/m00Bw=");
-_s(usePatientInfo, "DMHHrlh4G5MtC6Yf3a/JitloUt0=");
+_s(usePatientInfo, "7hWkw5Vht30Rhc9mE/vhXJqoDjQ=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_1__.useSystem];
+});
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (usePatientInfo);
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
@@ -11371,7 +15795,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11386,7 +15826,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************!*\
   !*** ../../../extensions/default/src/id.js ***!
   \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -11407,7 +15847,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11422,27 +15878,29 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************!*\
   !*** ../../../extensions/default/src/index.ts ***!
   \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ContextMenuController: () => (/* reexport safe */ _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_12__.ContextMenuController),
-/* harmony export */   CustomizableContextMenuTypes: () => (/* reexport safe */ _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_12__.CustomizableContextMenuTypes),
+/* harmony export */   ContextMenuController: () => (/* reexport safe */ _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_13__.ContextMenuController),
+/* harmony export */   CustomizableContextMenuTypes: () => (/* reexport safe */ _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_13__.CustomizableContextMenuTypes),
+/* harmony export */   MoreDropdownMenu: () => (/* reexport safe */ _Components_MoreDropdownMenu__WEBPACK_IMPORTED_MODULE_31__["default"]),
 /* harmony export */   PanelStudyBrowserHeader: () => (/* reexport safe */ _Panels_StudyBrowser_PanelStudyBrowserHeader__WEBPACK_IMPORTED_MODULE_29__.PanelStudyBrowserHeader),
 /* harmony export */   StaticWadoClient: () => (/* reexport safe */ _DicomWebDataSource_utils_StaticWadoClient__WEBPACK_IMPORTED_MODULE_16__["default"]),
+/* harmony export */   Toolbox: () => (/* reexport safe */ _utils__WEBPACK_IMPORTED_MODULE_30__.Toolbox),
 /* harmony export */   callInputDialog: () => (/* reexport safe */ _utils_callInputDialog__WEBPACK_IMPORTED_MODULE_24__.callInputDialog),
-/* harmony export */   callLabelAutocompleteDialog: () => (/* reexport safe */ _utils_callInputDialog__WEBPACK_IMPORTED_MODULE_24__.callLabelAutocompleteDialog),
-/* harmony export */   cleanDenaturalizedDataset: () => (/* reexport safe */ _DicomWebDataSource_utils__WEBPACK_IMPORTED_MODULE_13__.cleanDenaturalizedDataset),
+/* harmony export */   callInputDialogAutoComplete: () => (/* reexport safe */ _utils_callInputDialog__WEBPACK_IMPORTED_MODULE_24__.callInputDialogAutoComplete),
+/* harmony export */   cleanDenaturalizedDataset: () => (/* reexport safe */ _DicomWebDataSource_utils__WEBPACK_IMPORTED_MODULE_14__.cleanDenaturalizedDataset),
 /* harmony export */   colorPickerDialog: () => (/* reexport safe */ _utils_colorPickerDialog__WEBPACK_IMPORTED_MODULE_25__["default"]),
 /* harmony export */   createReportAsync: () => (/* reexport safe */ _Actions_createReportAsync__WEBPACK_IMPORTED_MODULE_15__["default"]),
-/* harmony export */   createReportDialogPrompt: () => (/* reexport safe */ _Panels__WEBPACK_IMPORTED_MODULE_14__.createReportDialogPrompt),
+/* harmony export */   createReportDialogPrompt: () => (/* reexport safe */ _Panels__WEBPACK_IMPORTED_MODULE_12__.createReportDialogPrompt),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   dicomWebUtils: () => (/* reexport module object */ _DicomWebDataSource_utils__WEBPACK_IMPORTED_MODULE_13__),
+/* harmony export */   dicomWebUtils: () => (/* reexport module object */ _DicomWebDataSource_utils__WEBPACK_IMPORTED_MODULE_14__),
 /* harmony export */   getStudiesForPatientByMRN: () => (/* reexport safe */ _Panels_getStudiesForPatientByMRN__WEBPACK_IMPORTED_MODULE_7__["default"]),
 /* harmony export */   promptLabelAnnotation: () => (/* reexport safe */ _utils_promptLabelAnnotation__WEBPACK_IMPORTED_MODULE_27__["default"]),
 /* harmony export */   promptSaveReport: () => (/* reexport safe */ _utils_promptSaveReport__WEBPACK_IMPORTED_MODULE_26__["default"]),
-/* harmony export */   showLabelAnnotationPopup: () => (/* reexport safe */ _utils_callInputDialog__WEBPACK_IMPORTED_MODULE_24__.showLabelAnnotationPopup),
+/* harmony export */   requestDisplaySetCreationForStudy: () => (/* reexport safe */ _Panels_requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_32__["default"]),
 /* harmony export */   useDisplaySetSelectorStore: () => (/* reexport safe */ _stores_useDisplaySetSelectorStore__WEBPACK_IMPORTED_MODULE_20__.useDisplaySetSelectorStore),
 /* harmony export */   useHangingProtocolStageIndexStore: () => (/* reexport safe */ _stores_useHangingProtocolStageIndexStore__WEBPACK_IMPORTED_MODULE_21__.useHangingProtocolStageIndexStore),
 /* harmony export */   usePatientInfo: () => (/* reexport safe */ _hooks_usePatientInfo__WEBPACK_IMPORTED_MODULE_28__["default"]),
@@ -11453,21 +15911,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   useViewportsByPositionStore: () => (/* reexport safe */ _stores_useViewportsByPositionStore__WEBPACK_IMPORTED_MODULE_17__.useViewportsByPositionStore),
 /* harmony export */   utils: () => (/* reexport module object */ _utils__WEBPACK_IMPORTED_MODULE_30__)
 /* harmony export */ });
-/* harmony import */ var _getDataSourcesModule_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getDataSourcesModule.js */ "../../../extensions/default/src/getDataSourcesModule.js");
-/* harmony import */ var _getLayoutTemplateModule_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getLayoutTemplateModule.js */ "../../../extensions/default/src/getLayoutTemplateModule.js");
+/* harmony import */ var _getDataSourcesModule__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getDataSourcesModule */ "../../../extensions/default/src/getDataSourcesModule.js");
+/* harmony import */ var _getLayoutTemplateModule__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getLayoutTemplateModule */ "../../../extensions/default/src/getLayoutTemplateModule.js");
 /* harmony import */ var _getPanelModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getPanelModule */ "../../../extensions/default/src/getPanelModule.tsx");
-/* harmony import */ var _getSopClassHandlerModule_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getSopClassHandlerModule.js */ "../../../extensions/default/src/getSopClassHandlerModule.js");
+/* harmony import */ var _getSopClassHandlerModule__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getSopClassHandlerModule */ "../../../extensions/default/src/getSopClassHandlerModule.js");
 /* harmony import */ var _getToolbarModule__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getToolbarModule */ "../../../extensions/default/src/getToolbarModule.tsx");
 /* harmony import */ var _commandsModule__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./commandsModule */ "../../../extensions/default/src/commandsModule.ts");
 /* harmony import */ var _getHangingProtocolModule__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./getHangingProtocolModule */ "../../../extensions/default/src/getHangingProtocolModule.js");
 /* harmony import */ var _Panels_getStudiesForPatientByMRN__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Panels/getStudiesForPatientByMRN */ "../../../extensions/default/src/Panels/getStudiesForPatientByMRN.js");
 /* harmony import */ var _getCustomizationModule__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./getCustomizationModule */ "../../../extensions/default/src/getCustomizationModule.tsx");
 /* harmony import */ var _getViewportModule__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./getViewportModule */ "../../../extensions/default/src/getViewportModule.tsx");
-/* harmony import */ var _id_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./id.js */ "../../../extensions/default/src/id.js");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./id */ "../../../extensions/default/src/id.js");
 /* harmony import */ var _init__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./init */ "../../../extensions/default/src/init.ts");
-/* harmony import */ var _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./CustomizableContextMenu */ "../../../extensions/default/src/CustomizableContextMenu/index.ts");
-/* harmony import */ var _DicomWebDataSource_utils__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./DicomWebDataSource/utils */ "../../../extensions/default/src/DicomWebDataSource/utils/index.ts");
-/* harmony import */ var _Panels__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Panels */ "../../../extensions/default/src/Panels/index.js");
+/* harmony import */ var _Panels__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Panels */ "../../../extensions/default/src/Panels/index.js");
+/* harmony import */ var _CustomizableContextMenu__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./CustomizableContextMenu */ "../../../extensions/default/src/CustomizableContextMenu/index.ts");
+/* harmony import */ var _DicomWebDataSource_utils__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./DicomWebDataSource/utils */ "../../../extensions/default/src/DicomWebDataSource/utils/index.ts");
 /* harmony import */ var _Actions_createReportAsync__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./Actions/createReportAsync */ "../../../extensions/default/src/Actions/createReportAsync.tsx");
 /* harmony import */ var _DicomWebDataSource_utils_StaticWadoClient__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./DicomWebDataSource/utils/StaticWadoClient */ "../../../extensions/default/src/DicomWebDataSource/utils/StaticWadoClient.ts");
 /* harmony import */ var _stores_useViewportsByPositionStore__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./stores/useViewportsByPositionStore */ "../../../extensions/default/src/stores/useViewportsByPositionStore.ts");
@@ -11479,13 +15937,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stores_useToggleOneUpViewportGridStore__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./stores/useToggleOneUpViewportGridStore */ "../../../extensions/default/src/stores/useToggleOneUpViewportGridStore.ts");
 /* harmony import */ var _utils_callInputDialog__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./utils/callInputDialog */ "../../../extensions/default/src/utils/callInputDialog.tsx");
 /* harmony import */ var _utils_colorPickerDialog__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./utils/colorPickerDialog */ "../../../extensions/default/src/utils/colorPickerDialog.tsx");
-/* harmony import */ var _utils_promptSaveReport__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./utils/promptSaveReport */ "../../../extensions/default/src/utils/promptSaveReport.js");
+/* harmony import */ var _utils_promptSaveReport__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./utils/promptSaveReport */ "../../../extensions/default/src/utils/promptSaveReport.tsx");
 /* harmony import */ var _utils_promptLabelAnnotation__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./utils/promptLabelAnnotation */ "../../../extensions/default/src/utils/promptLabelAnnotation.js");
 /* harmony import */ var _hooks_usePatientInfo__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./hooks/usePatientInfo */ "../../../extensions/default/src/hooks/usePatientInfo.tsx");
 /* harmony import */ var _Panels_StudyBrowser_PanelStudyBrowserHeader__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./Panels/StudyBrowser/PanelStudyBrowserHeader */ "../../../extensions/default/src/Panels/StudyBrowser/PanelStudyBrowserHeader.tsx");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./utils */ "../../../extensions/default/src/utils/index.ts");
+/* harmony import */ var _Components_MoreDropdownMenu__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./Components/MoreDropdownMenu */ "../../../extensions/default/src/Components/MoreDropdownMenu.tsx");
+/* harmony import */ var _Panels_requestDisplaySetCreationForStudy__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./Panels/requestDisplaySetCreationForStudy */ "../../../extensions/default/src/Panels/requestDisplaySetCreationForStudy.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+
+
 
 
 
@@ -11523,7 +15986,7 @@ const defaultExtension = {
   /**
    * Only required property. Should be a unique value across all extensions.
    */
-  id: _id_js__WEBPACK_IMPORTED_MODULE_10__.id,
+  id: _id__WEBPACK_IMPORTED_MODULE_10__.id,
   preRegistration: _init__WEBPACK_IMPORTED_MODULE_11__["default"],
   onModeExit() {
     _stores_useViewportGridStore__WEBPACK_IMPORTED_MODULE_18__.useViewportGridStore.getState().clearViewportGridState();
@@ -11533,12 +15996,12 @@ const defaultExtension = {
     _stores_useToggleHangingProtocolStore__WEBPACK_IMPORTED_MODULE_22__.useToggleHangingProtocolStore.getState().clearToggleHangingProtocol();
     _stores_useViewportsByPositionStore__WEBPACK_IMPORTED_MODULE_17__.useViewportsByPositionStore.getState().clearViewportsByPosition();
   },
-  getDataSourcesModule: _getDataSourcesModule_js__WEBPACK_IMPORTED_MODULE_0__["default"],
+  getDataSourcesModule: _getDataSourcesModule__WEBPACK_IMPORTED_MODULE_0__["default"],
   getViewportModule: _getViewportModule__WEBPACK_IMPORTED_MODULE_9__["default"],
-  getLayoutTemplateModule: _getLayoutTemplateModule_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  getLayoutTemplateModule: _getLayoutTemplateModule__WEBPACK_IMPORTED_MODULE_1__["default"],
   getPanelModule: _getPanelModule__WEBPACK_IMPORTED_MODULE_2__["default"],
   getHangingProtocolModule: _getHangingProtocolModule__WEBPACK_IMPORTED_MODULE_6__["default"],
-  getSopClassHandlerModule: _getSopClassHandlerModule_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+  getSopClassHandlerModule: _getSopClassHandlerModule__WEBPACK_IMPORTED_MODULE_3__["default"],
   getToolbarModule: _getToolbarModule__WEBPACK_IMPORTED_MODULE_4__["default"],
   getCommandsModule: _commandsModule__WEBPACK_IMPORTED_MODULE_5__["default"],
   getUtilityModule({
@@ -11562,7 +16025,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11577,7 +16056,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************!*\
   !*** ../../../extensions/default/src/init.ts ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -11604,7 +16083,6 @@ const metadataProvider = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.classes.Metadat
  */
 function init({
   servicesManager,
-  configuration = {},
   commandsManager
 }) {
   const {
@@ -11613,12 +16091,13 @@ function init({
     viewportGridService
   } = servicesManager.services;
   toolbarService.registerEventForToolbarUpdate(cineService, [cineService.EVENTS.CINE_STATE_CHANGED]);
+
   // Add
-  _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.subscribe(_ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.EVENTS.INSTANCES_ADDED, handlePETImageMetadata);
+  _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.subscribe(_ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.EVENTS.INSTANCES_ADDED, handleScalingModules);
 
   // If the metadata for PET has changed by the user (e.g. manually changing the PatientWeight)
   // we need to recalculate the SUV Scaling Factors
-  _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.subscribe(_ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.EVENTS.SERIES_UPDATED, handlePETImageMetadata);
+  _ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.subscribe(_ohif_core__WEBPACK_IMPORTED_MODULE_0__.DicomMetadataStore.EVENTS.SERIES_UPDATED, handleScalingModules);
 
   // Adds extra custom attributes for use by hanging protocols
   (0,_hangingprotocols__WEBPACK_IMPORTED_MODULE_3__.registerHangingProtocolAttributes)({
@@ -11645,13 +16124,13 @@ function init({
     } = state;
     for (const [id, button] of Object.entries(buttons)) {
       const {
-        groupId,
+        buttonSection,
         items,
         listeners
       } = button.props || {};
 
       // Handle group items' listeners
-      if (groupId && items) {
+      if (buttonSection && items) {
         items.forEach(item => {
           if (item.listeners) {
             subscribeToEvents(item.listeners);
@@ -11666,7 +16145,7 @@ function init({
     }
   });
 }
-const handlePETImageMetadata = ({
+const handleScalingModules = ({
   SeriesInstanceUID,
   StudyInstanceUID
 }) => {
@@ -11677,11 +16156,37 @@ const handlePETImageMetadata = ({
     return;
   }
   const modality = instances[0].Modality;
-  if (!modality || modality !== 'PT') {
+  const allowedModality = ['PT', 'RTDOSE'];
+  if (!allowedModality.includes(modality)) {
     return;
   }
   const imageIds = instances.map(instance => instance.imageId);
   const instanceMetadataArray = [];
+  if (modality === 'RTDOSE') {
+    const DoseGridScaling = instances[0].DoseGridScaling;
+    const DoseSummation = instances[0].DoseSummation;
+    const DoseType = instances[0].DoseType;
+    const DoseUnit = instances[0].DoseUnit;
+    const NumberOfFrames = instances[0].NumberOfFrames;
+    const imageId = imageIds[0];
+
+    // add scaling module to the metadata
+    // since RTDOSE is always a multiframe we should add the scaling module to each frame
+    for (let i = 0; i < NumberOfFrames; i++) {
+      const frameIndex = i + 1;
+
+      // Todo: we should support other things like wadouri, local etc
+      const newImageId = `${imageId.replace(/\/frames\/\d+$/, '')}/frames/${frameIndex}`;
+      metadataProvider.addCustomMetadata(newImageId, 'scalingModule', {
+        DoseGridScaling,
+        DoseSummation,
+        DoseType,
+        DoseUnit
+      });
+    }
+    return;
+  }
+
   // try except block to prevent errors when the metadata is not correct
   try {
     imageIds.forEach(imageId => {
@@ -11708,7 +16213,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11723,15 +16244,15 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************************!*\
   !*** ../../../extensions/default/src/stores/useDisplaySetSelectorStore.ts ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useDisplaySetSelectorStore: () => (/* binding */ useDisplaySetSelectorStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../node_modules/zustand/esm/index.mjs");
-/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../node_modules/zustand/esm/middleware.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../../../node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../../../node_modules/zustand/esm/middleware.mjs");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -11793,7 +16314,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11808,15 +16345,15 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************************!*\
   !*** ../../../extensions/default/src/stores/useHangingProtocolStageIndexStore.ts ***!
   \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useHangingProtocolStageIndexStore: () => (/* binding */ useHangingProtocolStageIndexStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../node_modules/zustand/esm/index.mjs");
-/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../node_modules/zustand/esm/middleware.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../../../node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../../../node_modules/zustand/esm/middleware.mjs");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -11869,7 +16406,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11884,15 +16437,15 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************************!*\
   !*** ../../../extensions/default/src/stores/useToggleHangingProtocolStore.ts ***!
   \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useToggleHangingProtocolStore: () => (/* binding */ useToggleHangingProtocolStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../node_modules/zustand/esm/index.mjs");
-/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../node_modules/zustand/esm/middleware.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../../../node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../../../node_modules/zustand/esm/middleware.mjs");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -11945,7 +16498,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -11960,14 +16529,14 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*********************************************************************************!*\
   !*** ../../../extensions/default/src/stores/useToggleOneUpViewportGridStore.ts ***!
   \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useToggleOneUpViewportGridStore: () => (/* binding */ useToggleOneUpViewportGridStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../../../node_modules/zustand/esm/index.mjs");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -11992,7 +16561,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12007,15 +16592,15 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************!*\
   !*** ../../../extensions/default/src/stores/useUIStateStore.ts ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useUIStateStore: () => (/* binding */ useUIStateStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../node_modules/zustand/esm/index.mjs");
-/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../node_modules/zustand/esm/middleware.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../../../node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../../../node_modules/zustand/esm/middleware.mjs");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -12081,7 +16666,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12096,15 +16697,15 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************!*\
   !*** ../../../extensions/default/src/stores/useViewportGridStore.ts ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useViewportGridStore: () => (/* binding */ useViewportGridStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../node_modules/zustand/esm/index.mjs");
-/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../node_modules/zustand/esm/middleware.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../../../node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../../../node_modules/zustand/esm/middleware.mjs");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -12170,7 +16771,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12185,22 +16802,22 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************!*\
   !*** ../../../extensions/default/src/stores/useViewportsByPositionStore.ts ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useViewportsByPositionStore: () => (/* binding */ useViewportsByPositionStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../node_modules/zustand/esm/index.mjs");
-/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../node_modules/zustand/esm/middleware.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "../../../node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand_middleware__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand/middleware */ "../../../node_modules/zustand/esm/middleware.mjs");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
 const PRESENTATION_TYPE_ID = 'viewportsByPositionId';
-const DEBUG_STORE = true;
+const DEBUG_STORE = false;
 
 /**
  * Represents the state and actions for managing viewports by position.
@@ -12253,7 +16870,219 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/utils/Toolbox.tsx":
+/*!*********************************************************!*\
+  !*** ../../../extensions/default/src/utils/Toolbox.tsx ***!
+  \*********************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Toolbox: () => (/* binding */ Toolbox)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "../../../node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_i18next__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-i18next */ "../../../node_modules/react-i18next/dist/es/index.js");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+var _s = __webpack_require__.$Refresh$.signature();
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+
+
+
+/**
+ * A toolbox is a collection of buttons and commands that they invoke, used to provide
+ * custom control panels to users. This component is a generic UI component that
+ * interacts with services and commands in a generic fashion. While it might
+ * seem unconventional to import it from the UI and integrate it into the JSX,
+ * it belongs in the UI components as there isn't anything in this component that
+ * couldn't be used for a completely different type of app. It plays a crucial
+ * role in enhancing the app with a toolbox by providing a way to integrate
+ * and display various tools and their corresponding options
+ */
+function Toolbox({
+  buttonSectionId,
+  title
+}) {
+  _s();
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem)();
+  const {
+    t
+  } = (0,react_i18next__WEBPACK_IMPORTED_MODULE_4__.useTranslation)();
+  const {
+    toolbarService,
+    customizationService
+  } = servicesManager.services;
+  const [showConfig, setShowConfig] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const {
+    toolbarButtons: toolboxSections,
+    onInteraction
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useToolbar)({
+    buttonSection: buttonSectionId
+  });
+  if (!toolboxSections.length) {
+    return null;
+  }
+
+  // Ensure we have proper button sections at the top level.
+  if (!toolboxSections.every(section => section.componentProps.buttonSection)) {
+    throw new Error('Toolbox accepts only button sections at the top level, not buttons. Create at least one button section.');
+  }
+
+  // Helper to check a list of buttons for an active tool.
+  const findActiveOptions = buttons => {
+    for (const tool of buttons) {
+      if (tool.componentProps.isActive) {
+        return tool.componentProps.options;
+      }
+      if (tool.componentProps.buttonSection) {
+        const nestedButtons = toolbarService.getButtonPropsInButtonSection(tool.componentProps.buttonSection);
+        const activeNested = nestedButtons.find(nested => nested.isActive);
+        if (activeNested) {
+          return activeNested.options;
+        }
+      }
+    }
+    return null;
+  };
+
+  // Look for active tool options across all sections.
+  const activeToolOptions = toolboxSections.reduce((activeOptions, section) => {
+    if (activeOptions) {
+      return activeOptions;
+    }
+    const sectionId = section.componentProps.buttonSection;
+    const buttons = toolbarService.getButtonSection(sectionId);
+    return findActiveOptions(buttons);
+  }, null);
+
+  // Define the interaction handler once.
+  const handleInteraction = ({
+    itemId
+  }) => {
+    onInteraction?.({
+      itemId
+    });
+  };
+  const CustomConfigComponent = customizationService.getCustomization(`${buttonSectionId}.config`);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.PanelSection, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.PanelSection.Header, {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, t(title)), CustomConfigComponent && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "ml-auto mr-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.Settings, {
+    className: "text-primary h-4 w-4",
+    onClick: e => {
+      e.stopPropagation();
+      setShowConfig(!showConfig);
+    }
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.PanelSection.Content, {
+    className: "bg-muted flex-shrink-0 border-none"
+  }, showConfig && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CustomConfigComponent, null), toolboxSections.map(section => {
+    const sectionId = section.componentProps.buttonSection;
+    const buttons = toolbarService.getButtonSection(sectionId);
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: sectionId,
+      className: "bg-muted flex flex-wrap space-x-2 py-2 px-1"
+    }, buttons.map(tool => {
+      if (!tool) {
+        return null;
+      }
+      const {
+        id,
+        Component,
+        componentProps
+      } = tool;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        key: id,
+        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('ml-1')
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Component, _extends({}, componentProps, {
+        id: id,
+        onInteraction: handleInteraction,
+        size: "toolbox",
+        servicesManager: servicesManager
+      })));
+    }));
+  }), activeToolOptions && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-primary-dark mt-1 h-auto px-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.ToolSettings, {
+    options: activeToolOptions
+  }))));
+}
+_s(Toolbox, "woudtJ02c+gBnhNlD/aG2dl19c4=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_2__.useSystem, react_i18next__WEBPACK_IMPORTED_MODULE_4__.useTranslation, _ohif_core__WEBPACK_IMPORTED_MODULE_2__.useToolbar];
+});
+_c = Toolbox;
+var _c;
+__webpack_require__.$Refresh$.register(_c, "Toolbox");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12268,7 +17097,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************************!*\
   !*** ../../../extensions/default/src/utils/_shared/PROMPT_RESPONSES.ts ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -12294,7 +17123,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12309,25 +17154,22 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!********************************************************!*\
   !*** ../../../extensions/default/src/utils/addIcon.ts ***!
   \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addIcon: () => (/* binding */ addIcon)
 /* harmony export */ });
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
-
 /** Adds the icon to both ui and ui-next */
 function addIcon(name, icon) {
-  (0,_ohif_ui__WEBPACK_IMPORTED_MODULE_0__.addIcon)(name, icon);
-  _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Icons.addIcon(name, icon);
+  _ohif_ui_next__WEBPACK_IMPORTED_MODULE_0__.Icons.addIcon(name, icon);
 }
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
@@ -12336,7 +17178,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12351,7 +17209,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************!*\
   !*** ../../../extensions/default/src/utils/calculateScanAxisNormal.ts ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -12381,7 +17239,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12396,184 +17270,108 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************!*\
   !*** ../../../extensions/default/src/utils/callInputDialog.tsx ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   callInputDialog: () => (/* binding */ callInputDialog),
-/* harmony export */   callLabelAutocompleteDialog: () => (/* binding */ callLabelAutocompleteDialog),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   showLabelAnnotationPopup: () => (/* binding */ showLabelAnnotationPopup)
+/* harmony export */   callInputDialogAutoComplete: () => (/* binding */ callInputDialogAutoComplete),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _cornerstonejs_tools_utilities__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @cornerstonejs/tools/utilities */ "../../../node_modules/@cornerstonejs/tools/dist/esm/utilities/index.js");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
 
-/**
- *
- * @param {*} data
- * @param {*} data.text
- * @param {*} data.label
- * @param {*} event
- * @param {*} callback
- * @param {*} isArrowAnnotateInputDialog
- * @param {*} dialogConfig
- * @param {string?} dialogConfig.dialogTitle - title of the input dialog
- * @param {string?} dialogConfig.inputLabel - show label above the input
- */
 
-function callInputDialog(uiDialogService, data, callback, isArrowAnnotateInputDialog = true, dialogConfig = {}) {
+
+function InputDialogDefault({
+  hide,
+  onSave,
+  placeholder = 'Enter value',
+  defaultValue = '',
+  submitOnEnter
+}) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.InputDialog, {
+    submitOnEnter: submitOnEnter,
+    defaultValue: defaultValue
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.InputDialog.Field, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.InputDialog.Input, {
+    placeholder: placeholder
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.InputDialog.Actions, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.InputDialog.ActionsSecondary, {
+    onClick: hide
+  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.InputDialog.ActionsPrimary, {
+    onClick: value => {
+      onSave(value);
+      hide();
+    }
+  }, "Save")));
+}
+
+/**
+ * Shows an input dialog for entering text with customizable options
+ * @param uiDialogService - Service for showing UI dialogs
+ * @param onSave - Callback function called when save button is clicked with entered value
+ * @param defaultValue - Initial value to show in input field
+ * @param title - Title text to show in dialog header
+ * @param placeholder - Placeholder text for input field
+ * @param submitOnEnter - Whether to submit dialog when Enter key is pressed
+ */
+_c = InputDialogDefault;
+async function callInputDialog({
+  uiDialogService,
+  defaultValue = '',
+  title = 'Annotation',
+  placeholder = '',
+  submitOnEnter = true
+}) {
   const dialogId = 'dialog-enter-annotation';
-  const label = data ? isArrowAnnotateInputDialog ? data.text : data.label : '';
-  const {
-    dialogTitle = 'Annotation',
-    inputLabel = 'Enter your annotation',
-    validateFunc = value => true
-  } = dialogConfig;
-  const onSubmitHandler = ({
-    action,
-    value
-  }) => {
-    switch (action.id) {
-      case 'save':
-        if (typeof validateFunc === 'function' && !validateFunc(value.label)) {
-          return;
-        }
-        callback(value.label, action.id);
-        break;
-      case 'cancel':
-        callback('', action.id);
-        break;
-    }
-    uiDialogService.dismiss({
-      id: dialogId
-    });
-  };
-  if (uiDialogService) {
-    uiDialogService.create({
+  const value = await new Promise(resolve => {
+    uiDialogService.show({
       id: dialogId,
-      centralize: true,
-      isDraggable: false,
-      showOverlay: true,
-      content: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Dialog,
+      content: InputDialogDefault,
+      title: title,
+      shouldCloseOnEsc: true,
       contentProps: {
-        title: dialogTitle,
-        value: {
-          label
+        onSave: value => {
+          resolve(value);
         },
-        noCloseButton: true,
-        onClose: () => uiDialogService.dismiss({
-          id: dialogId
-        }),
-        actions: [{
-          id: 'cancel',
-          text: 'Cancel',
-          type: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonEnums.type.secondary
-        }, {
-          id: 'save',
-          text: 'Save',
-          type: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonEnums.type.primary
-        }],
-        onSubmit: onSubmitHandler,
-        body: ({
-          value,
-          setValue
-        }) => {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
-            autoFocus: true,
-            className: "border-primary-main bg-black",
-            type: "text",
-            id: "annotation",
-            label: inputLabel,
-            labelClassName: "text-white text-[14px] leading-[1.2]",
-            value: value.label,
-            onChange: event => {
-              event.persist();
-              setValue(value => ({
-                ...value,
-                label: event.target.value
-              }));
-            },
-            onKeyPress: event => {
-              if (event.key === 'Enter') {
-                onSubmitHandler({
-                  value,
-                  action: {
-                    id: 'save'
-                  }
-                });
-              }
-            }
-          });
-        }
+        placeholder,
+        defaultValue,
+        submitOnEnter
       }
     });
-  }
-}
-function callLabelAutocompleteDialog(uiDialogService, callback, dialogConfig, labelConfig) {
-  const exclusive = labelConfig ? labelConfig.exclusive : false;
-  const dropDownItems = labelConfig ? labelConfig.items : [];
-  const {
-    validateFunc = value => true
-  } = dialogConfig;
-  const labellingDoneCallback = value => {
-    if (typeof value === 'string') {
-      if (typeof validateFunc === 'function' && !validateFunc(value)) {
-        return;
-      }
-      callback(value, 'save');
-    } else {
-      callback('', 'cancel');
-    }
-    uiDialogService.dismiss({
-      id: 'select-annotation'
-    });
-  };
-  uiDialogService.create({
-    id: 'select-annotation',
-    centralize: true,
-    isDraggable: false,
-    showOverlay: true,
-    content: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.LabellingFlow,
-    contentProps: {
-      labellingDoneCallback: labellingDoneCallback,
-      measurementData: {
-        label: ''
-      },
-      componentClassName: {},
-      labelData: dropDownItems,
-      exclusive: exclusive
-    }
   });
+  return value;
 }
-function showLabelAnnotationPopup(measurement, uiDialogService, labelConfig) {
+async function callInputDialogAutoComplete({
+  measurement,
+  uiDialogService,
+  labelConfig,
+  renderContent = _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.LabellingFlow,
+  element
+}) {
   const exclusive = labelConfig ? labelConfig.exclusive : false;
   const dropDownItems = labelConfig ? labelConfig.items : [];
-  return new Promise((resolve, reject) => {
-    const labellingDoneCallback = value => {
-      uiDialogService.dismiss({
-        id: 'select-annotation'
-      });
-      if (typeof value === 'string') {
-        measurement.label = value;
+  const value = await new Promise((resolve, reject) => {
+    const labellingDoneCallback = newValue => {
+      uiDialogService.hide('select-annotation');
+      if (measurement && typeof newValue === 'string') {
+        const sourceAnnotation = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_2__.annotation.state.getAnnotation(measurement.uid);
+        (0,_cornerstonejs_tools_utilities__WEBPACK_IMPORTED_MODULE_1__.setAnnotationLabel)(sourceAnnotation, element, newValue);
       }
-      resolve(measurement);
+      resolve(newValue);
     };
-    uiDialogService.create({
+    uiDialogService.show({
       id: 'select-annotation',
-      isDraggable: false,
-      showOverlay: true,
-      content: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.LabellingFlow,
-      defaultPosition: {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2
-      },
+      title: 'Annotation',
+      content: renderContent,
       contentProps: {
         labellingDoneCallback: labellingDoneCallback,
         measurementData: measurement,
@@ -12583,8 +17381,11 @@ function showLabelAnnotationPopup(measurement, uiDialogService, labelConfig) {
       }
     });
   });
+  return value;
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (callInputDialog);
+var _c;
+__webpack_require__.$Refresh$.register(_c, "InputDialogDefault");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -12592,7 +17393,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12607,7 +17424,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/default/src/utils/colorPickerDialog.tsx ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -12616,82 +17433,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
-/* harmony import */ var react_color__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-color */ "../../../node_modules/react-color/es/index.js");
+/* harmony import */ var react_color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-color */ "../../../node_modules/react-color/es/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* harmony import */ var _colorPickerDialog_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./colorPickerDialog.css */ "../../../extensions/default/src/utils/colorPickerDialog.css");
 /* harmony import */ var _colorPickerDialog_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_colorPickerDialog_css__WEBPACK_IMPORTED_MODULE_3__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
+var _s = __webpack_require__.$Refresh$.signature();
 
 
 
 
-function colorPickerDialog(uiDialogService, rgbaColor, callback) {
-  const dialogId = 'pick-color';
-  const onSubmitHandler = ({
-    action,
-    value
-  }) => {
-    switch (action.id) {
-      case 'save':
-        callback(value.rgbaColor, action.id);
-        break;
-      case 'cancel':
-        callback('', action.id);
-        break;
-    }
-    uiDialogService.dismiss({
-      id: dialogId
-    });
+function ColorPickerDialog({
+  value,
+  hide,
+  onSave
+}) {
+  _s();
+  const [color, setColor] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(value);
+  const handleChange = color => {
+    setColor(color.rgb);
   };
-  if (uiDialogService) {
-    uiDialogService.create({
-      id: dialogId,
-      centralize: true,
-      isDraggable: false,
-      showOverlay: true,
-      content: _ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Dialog,
-      contentProps: {
-        title: 'Segment Color',
-        value: {
-          rgbaColor
-        },
-        noCloseButton: true,
-        onClose: () => uiDialogService.dismiss({
-          id: dialogId
-        }),
-        actions: [{
-          id: 'cancel',
-          text: 'Cancel',
-          type: 'primary'
-        }, {
-          id: 'save',
-          text: 'Save',
-          type: 'secondary'
-        }],
-        onSubmit: onSubmitHandler,
-        body: ({
-          value,
-          setValue
-        }) => {
-          const handleChange = color => {
-            setValue({
-              rgbaColor: color.rgb
-            });
-          };
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_color__WEBPACK_IMPORTED_MODULE_2__.ChromePicker, {
-            color: value.rgbaColor,
-            onChange: handleChange,
-            presetColors: [],
-            width: 300
-          });
-        }
-      }
-    });
-  }
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_color__WEBPACK_IMPORTED_MODULE_1__.ChromePicker, {
+    color: color,
+    onChange: handleChange,
+    presetColors: [],
+    width: 300
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Right, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Secondary, {
+    onClick: hide
+  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_2__.FooterAction.Primary, {
+    onClick: () => {
+      hide();
+      onSave(color);
+    }
+  }, "Save"))));
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (colorPickerDialog);
+_s(ColorPickerDialog, "5o5wpjcwen+9FLSa/sCn7Y7hMww=");
+_c = ColorPickerDialog;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ColorPickerDialog);
+var _c;
+__webpack_require__.$Refresh$.register(_c, "ColorPickerDialog");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -12699,7 +17481,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12714,7 +17512,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***********************************************************************!*\
   !*** ../../../extensions/default/src/utils/createRenderedRetrieve.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -12769,7 +17567,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12784,7 +17598,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************!*\
   !*** ../../../extensions/default/src/utils/getBulkdataValue.js ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -12844,7 +17658,93 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/utils/getCurrentDicomDateTime.ts":
+/*!************************************************************************!*\
+  !*** ../../../extensions/default/src/utils/getCurrentDicomDateTime.ts ***!
+  \************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getDicomDateTime: () => (/* binding */ getDicomDateTime),
+/* harmony export */   getSeriesDateTime: () => (/* binding */ getSeriesDateTime)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+const getSeriesDateTime = (jsDate = new Date()) => {
+  const dicomDateTime = getDicomDateTime(jsDate);
+  return {
+    SeriesDate: dicomDateTime.date,
+    SeriesTime: dicomDateTime.time
+  };
+};
+const getDicomDateTime = (jsDate = new Date()) => {
+  const month = String(jsDate.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(jsDate.getUTCDate()).padStart(2, '0');
+  const year = String(jsDate.getUTCFullYear()).padStart(4, '0');
+  const date = `${year}${month}${day}`;
+  const hours = String(jsDate.getUTCHours()).padStart(2, '0');
+  const minutes = String(jsDate.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(jsDate.getUTCSeconds()).padStart(2, '0');
+  const time = `${hours}${minutes}${seconds}`;
+  return {
+    date,
+    time
+  };
+};
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12859,7 +17759,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*************************************************************!*\
   !*** ../../../extensions/default/src/utils/getDirectURL.ts ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -12941,7 +17841,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12952,27 +17868,68 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/default/src/utils/getNextSRSeriesNumber.js":
-/*!**********************************************************************!*\
-  !*** ../../../extensions/default/src/utils/getNextSRSeriesNumber.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/default/src/utils/getSRSeriesAndInstanceNumber.js":
+/*!*****************************************************************************!*\
+  !*** ../../../extensions/default/src/utils/getSRSeriesAndInstanceNumber.js ***!
+  \*****************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ getNextSRSeriesNumber)
+/* harmony export */   getNextSeriesNumber: () => (/* binding */ getNextSeriesNumber),
+/* harmony export */   getSRSeriesAndInstanceNumber: () => (/* binding */ getSRSeriesAndInstanceNumber)
 /* harmony export */ });
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 const MIN_SR_SERIES_NUMBER = 4700;
-function getNextSRSeriesNumber(displaySetService) {
+function getNextSeriesNumber({
+  displaySetService,
+  modality,
+  minSeriesNumber
+}) {
   const activeDisplaySets = displaySetService.getActiveDisplaySets();
-  const srDisplaySets = activeDisplaySets.filter(ds => ds.Modality === 'SR');
-  const srSeriesNumbers = srDisplaySets.map(ds => ds.SeriesNumber);
-  const maxSeriesNumber = Math.max(...srSeriesNumbers, MIN_SR_SERIES_NUMBER);
-  return maxSeriesNumber + 1;
+  const modalityDisplaySets = activeDisplaySets.filter(ds => ds.Modality === modality);
+  const modalitySeriesNumbers = modalityDisplaySets.map(ds => ds.SeriesNumber);
+  const maxSeriesNumber = Math.max(...modalitySeriesNumbers, minSeriesNumber);
+  const allSeriesNumbers = activeDisplaySets.map(ds => ds.SeriesNumber);
+  let finalSeriesNumber = maxSeriesNumber + 1;
+  while (allSeriesNumbers.includes(finalSeriesNumber)) {
+    finalSeriesNumber++;
+  }
+  return {
+    SeriesNumber: finalSeriesNumber,
+    InstanceNumber: 1
+  };
+}
+function getSRSeriesAndInstanceNumber({
+  displaySetService,
+  SeriesInstanceUid
+}) {
+  if (!SeriesInstanceUid) {
+    return getNextSeriesNumber({
+      displaySetService,
+      modality: 'SR',
+      minSeriesNumber: MIN_SR_SERIES_NUMBER
+    });
+  }
+  const displaySetsMap = displaySetService.getDisplaySetCache();
+  const displaySets = Array.from(displaySetsMap.values());
+  const srDisplaySet = displaySets.find(ds => ds.Modality === 'SR' && ds.SeriesInstanceUID === SeriesInstanceUid);
+  const InstanceNumber = srDisplaySet.instances?.length + 1;
+  if (!srDisplaySet?.SeriesNumber || !InstanceNumber) {
+    return getNextSeriesNumber({
+      displaySetService,
+      modality: 'SR',
+      minSeriesNumber: MIN_SR_SERIES_NUMBER
+    });
+  }
+  return {
+    SeriesNumber: srDisplaySet.SeriesNumber,
+    InstanceNumber,
+    referenceDisplaySet: srDisplaySet
+  };
 }
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
@@ -12981,7 +17938,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -12996,16 +17969,19 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************!*\
   !*** ../../../extensions/default/src/utils/index.ts ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Toolbox: () => (/* reexport safe */ _Toolbox__WEBPACK_IMPORTED_MODULE_1__.Toolbox),
 /* harmony export */   addIcon: () => (/* reexport safe */ _addIcon__WEBPACK_IMPORTED_MODULE_0__.addIcon)
 /* harmony export */ });
 /* harmony import */ var _addIcon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./addIcon */ "../../../extensions/default/src/utils/addIcon.ts");
+/* harmony import */ var _Toolbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Toolbox */ "../../../extensions/default/src/utils/Toolbox.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -13015,7 +17991,231 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/default/src/utils/layerConfigurationUtils.ts":
+/*!************************************************************************!*\
+  !*** ../../../extensions/default/src/utils/layerConfigurationUtils.ts ***!
+  \************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DEFAULT_COLORMAP: () => (/* binding */ DEFAULT_COLORMAP),
+/* harmony export */   DEFAULT_OPACITY: () => (/* binding */ DEFAULT_OPACITY),
+/* harmony export */   DEFAULT_OPACITY_PERCENT: () => (/* binding */ DEFAULT_OPACITY_PERCENT),
+/* harmony export */   DERIVED_OVERLAY_MODALITIES: () => (/* binding */ DERIVED_OVERLAY_MODALITIES),
+/* harmony export */   canAddDisplaySetToViewport: () => (/* binding */ canAddDisplaySetToViewport),
+/* harmony export */   configureViewportForLayerAddition: () => (/* binding */ configureViewportForLayerAddition),
+/* harmony export */   configureViewportForLayerRemoval: () => (/* binding */ configureViewportForLayerRemoval),
+/* harmony export */   createColormapOverlayDisplaySetOptions: () => (/* binding */ createColormapOverlayDisplaySetOptions),
+/* harmony export */   getModalityOverlayColormap: () => (/* binding */ getModalityOverlayColormap)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+const DERIVED_OVERLAY_MODALITIES = ['SEG', 'RTSTRUCT'];
+const DEFAULT_COLORMAP = 'hsv';
+const DEFAULT_OPACITY = 0.9;
+const DEFAULT_OPACITY_PERCENT = DEFAULT_OPACITY * 100;
+
+/**
+ * Get modality-specific color and opacity settings from the customization service
+ */
+function getModalityOverlayColormap(customizationService, modality) {
+  const modalityOverlayDefaultColorMaps = customizationService?.getCustomization('cornerstone.modalityOverlayDefaultColorMaps') || {
+    defaultSettings: {}
+  };
+  return modalityOverlayDefaultColorMaps.defaultSettings[modality] || {
+    colormap: DEFAULT_COLORMAP,
+    opacity: DEFAULT_OPACITY
+  };
+}
+
+/**
+ * Create display set options based on modality and opacity settings
+ */
+function createColormapOverlayDisplaySetOptions(displaySet, opacity, customizationService) {
+  if (displaySet.Modality === 'SEG') {
+    return {};
+  }
+  const modalitySettings = getModalityOverlayColormap(customizationService, displaySet.Modality);
+  return {
+    colormap: {
+      name: modalitySettings.colormap || DEFAULT_COLORMAP,
+      opacity: opacity / 100 // Convert from percentage to 0-1 range
+    }
+  };
+}
+
+/**
+ * Configure viewport for adding a display set layer
+ */
+function configureViewportForLayerAddition(params) {
+  const {
+    viewport,
+    displaySetInstanceUID,
+    currentDisplaySetUIDs,
+    servicesManager
+  } = params;
+  const {
+    cornerstoneViewportService,
+    displaySetService,
+    customizationService
+  } = servicesManager.services;
+  const {
+    viewportId
+  } = viewport;
+
+  // Set the display set UIDs for the viewport
+  const allDisplaySetInstanceUIDs = [...currentDisplaySetUIDs, displaySetInstanceUID];
+  viewport.displaySetInstanceUIDs = allDisplaySetInstanceUIDs;
+  if (!viewport.viewportOptions) {
+    viewport.viewportOptions = {};
+  }
+  const requestedLayerDisplaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
+  if (!viewport.viewportOptions.orientation) {
+    viewport.viewportOptions.orientation = cornerstoneViewportService.getOrientation(viewportId);
+  }
+
+  // Do not force volume for SEG and RTSTRUCT if there is only one display set
+  if (requestedLayerDisplaySet.isOverlayDisplaySet && currentDisplaySetUIDs.length === 1) {
+    viewport.viewportOptions.viewportType = 'stack';
+  } else {
+    viewport.viewportOptions.viewportType = 'volume';
+  }
+
+  // create same amount of display set options as the number of display set UIDs
+  const displaySetOptions = allDisplaySetInstanceUIDs.map((uid, index) => {
+    if (index === 0) {
+      // no colormap for background
+      return {};
+    }
+    const displaySet = displaySetService.getDisplaySetByUID(uid);
+    return createColormapOverlayDisplaySetOptions(displaySet, 90, customizationService);
+  });
+  viewport.displaySetOptions = displaySetOptions;
+  return viewport;
+}
+
+/**
+ * Configure viewport for removing a display set layer
+ */
+function configureViewportForLayerRemoval(params) {
+  const {
+    viewport,
+    displaySetInstanceUID,
+    currentDisplaySetUIDs,
+    servicesManager
+  } = params;
+  const {
+    cornerstoneViewportService,
+    displaySetService
+  } = servicesManager.services;
+  const {
+    viewportId
+  } = viewport;
+
+  // Filter out the display set to remove
+  viewport.displaySetInstanceUIDs = currentDisplaySetUIDs.filter(uid => uid !== displaySetInstanceUID);
+  if (!viewport.viewportOptions) {
+    viewport.viewportOptions = {};
+  }
+  viewport.viewportOptions.viewportType = 'volume';
+
+  // orientation
+  if (!viewport.viewportOptions.orientation) {
+    viewport.viewportOptions.orientation = cornerstoneViewportService.getOrientation(viewportId);
+  }
+
+  // Recreate the display set options
+  viewport.displaySetOptions = viewport.displaySetInstanceUIDs.map(() => {
+    // For simplicity, we're returning empty options for now
+    // In a more complete implementation, we would need to preserve existing display set options
+    return {};
+  });
+  return viewport;
+}
+
+/**
+ * Check if a display set can be added as a layer to the specified viewport
+ */
+function canAddDisplaySetToViewport(params) {
+  const {
+    viewportId,
+    displaySetInstanceUID,
+    servicesManager
+  } = params;
+  const {
+    displaySetService,
+    viewportGridService
+  } = servicesManager.services;
+
+  // Check if the display set exists
+  const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
+  if (!displaySet) {
+    return false;
+  }
+
+  // Get current display sets in the viewport
+  const currentDisplaySetUIDs = viewportGridService.getDisplaySetsUIDsForViewport(viewportId);
+
+  // Check if the display set is already in the viewport
+  if (currentDisplaySetUIDs.includes(displaySetInstanceUID)) {
+    return false;
+  }
+  return true;
+}
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13030,7 +18230,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**********************************************************************!*\
   !*** ../../../extensions/default/src/utils/promptLabelAnnotation.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13047,26 +18247,47 @@ function promptLabelAnnotation({
 }, ctx, evt) {
   const {
     measurementService,
-    customizationService
+    customizationService,
+    toolGroupService,
+    uiDialogService
   } = servicesManager.services;
   const {
     viewportId,
     StudyInstanceUID,
     SeriesInstanceUID,
-    measurementId
+    measurementId,
+    toolName
   } = evt;
-  return new Promise(async function (resolve) {
-    const labelConfig = customizationService.get('measurementLabels');
-    const measurement = measurementService.getMeasurement(measurementId);
-    const value = await (0,_callInputDialog__WEBPACK_IMPORTED_MODULE_0__.showLabelAnnotationPopup)(measurement, servicesManager.services.uiDialogService, labelConfig);
-    measurementService.update(measurementId, {
-      ...value
-    }, true);
-    resolve({
-      StudyInstanceUID,
-      SeriesInstanceUID,
-      viewportId
-    });
+  return new Promise(resolve => {
+    (async () => {
+      const toolGroup = toolGroupService.getToolGroupForViewport(viewportId);
+      const activeToolOptions = toolGroup.getToolConfiguration(toolName);
+      if (activeToolOptions.getTextCallback) {
+        resolve({
+          StudyInstanceUID,
+          SeriesInstanceUID,
+          viewportId
+        });
+      } else {
+        const labelConfig = customizationService.getCustomization('measurementLabels');
+        const measurement = measurementService.getMeasurement(measurementId);
+        const renderContent = customizationService.getCustomization('ui.labellingComponent');
+        const value = await (0,_callInputDialog__WEBPACK_IMPORTED_MODULE_0__.callInputDialogAutoComplete)({
+          measurement,
+          uiDialogService,
+          labelConfig,
+          renderContent
+        });
+        measurementService.update(measurementId, {
+          ...value
+        }, true);
+        resolve({
+          StudyInstanceUID,
+          SeriesInstanceUID,
+          viewportId
+        });
+      }
+    })();
   });
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (promptLabelAnnotation);
@@ -13077,7 +18298,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13088,21 +18325,23 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../extensions/default/src/utils/promptSaveReport.js":
-/*!*****************************************************************!*\
-  !*** ../../../extensions/default/src/utils/promptSaveReport.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../../extensions/default/src/utils/promptSaveReport.tsx":
+/*!******************************************************************!*\
+  !*** ../../../extensions/default/src/utils/promptSaveReport.tsx ***!
+  \******************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Actions_createReportAsync__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Actions/createReportAsync */ "../../../extensions/default/src/Actions/createReportAsync.tsx");
-/* harmony import */ var _Panels__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Panels */ "../../../extensions/default/src/Panels/index.js");
-/* harmony import */ var _getNextSRSeriesNumber__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./getNextSRSeriesNumber */ "../../../extensions/default/src/utils/getNextSRSeriesNumber.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _Actions_createReportAsync__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Actions/createReportAsync */ "../../../extensions/default/src/Actions/createReportAsync.tsx");
+/* harmony import */ var _Panels__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Panels */ "../../../extensions/default/src/Panels/index.js");
 /* harmony import */ var _shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./_shared/PROMPT_RESPONSES */ "../../../extensions/default/src/utils/_shared/PROMPT_RESPONSES.ts");
+/* harmony import */ var _getSRSeriesAndInstanceNumber__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getSRSeriesAndInstanceNumber */ "../../../extensions/default/src/utils/getSRSeriesAndInstanceNumber.js");
+/* harmony import */ var _getCurrentDicomDateTime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./getCurrentDicomDateTime */ "../../../extensions/default/src/utils/getCurrentDicomDateTime.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -13110,52 +18349,75 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
+
+
+const {
+  filterAnd,
+  filterMeasurementsByStudyUID,
+  filterMeasurementsBySeriesUID,
+  filterPlanarMeasurement
+} = _ohif_core__WEBPACK_IMPORTED_MODULE_0__.utils.MeasurementFilters;
 async function promptSaveReport({
   servicesManager,
   commandsManager,
   extensionManager
 }, ctx, evt) {
   const {
-    uiDialogService,
     measurementService,
     displaySetService
   } = servicesManager.services;
   const viewportId = evt.viewportId === undefined ? evt.data.viewportId : evt.viewportId;
   const isBackupSave = evt.isBackupSave === undefined ? evt.data.isBackupSave : evt.isBackupSave;
-  const StudyInstanceUID = evt?.data?.StudyInstanceUID;
+  const StudyInstanceUID = evt?.data?.StudyInstanceUID || ctx.trackedStudy;
   const SeriesInstanceUID = evt?.data?.SeriesInstanceUID;
   const {
-    trackedStudy,
-    trackedSeries
+    displaySetInstanceUID
+  } = evt.data ?? evt;
+  const {
+    trackedSeries,
+    measurementFilter = filterAnd(filterMeasurementsByStudyUID(StudyInstanceUID), filterMeasurementsBySeriesUID(trackedSeries), filterPlanarMeasurement),
+    defaultSaveTitle = 'Create Report'
   } = ctx;
   let displaySetInstanceUIDs;
   try {
-    const promptResult = await (0,_Panels__WEBPACK_IMPORTED_MODULE_1__.createReportDialogPrompt)(uiDialogService, {
-      extensionManager
+    const promptResult = await (0,_Panels__WEBPACK_IMPORTED_MODULE_2__.createReportDialogPrompt)({
+      title: defaultSaveTitle,
+      extensionManager,
+      servicesManager
     });
     if (promptResult.action === _shared_PROMPT_RESPONSES__WEBPACK_IMPORTED_MODULE_3__["default"].CREATE_REPORT) {
-      const dataSources = extensionManager.getDataSources();
+      const dataSources = extensionManager.getDataSources(promptResult.dataSourceName);
       const dataSource = dataSources[0];
-      const measurements = measurementService.getMeasurements();
-      const trackedMeasurements = measurements.filter(m => trackedStudy === m.referenceStudyUID && trackedSeries.includes(m.referenceSeriesUID)).filter(m => m.referencedImageId != null);
-      const SeriesDescription =
-      // isUndefinedOrEmpty
-      promptResult.value === undefined || promptResult.value === '' ? 'Research Derived Series' // default
-      : promptResult.value; // provided value
-
-      const SeriesNumber = (0,_getNextSRSeriesNumber__WEBPACK_IMPORTED_MODULE_2__["default"])(displaySetService);
+      const measurementData = measurementService.getMeasurements(measurementFilter);
+      const SeriesDescription = promptResult.value || defaultSaveTitle;
+      const {
+        SeriesNumber,
+        InstanceNumber,
+        referenceDisplaySet
+      } = (0,_getSRSeriesAndInstanceNumber__WEBPACK_IMPORTED_MODULE_4__.getSRSeriesAndInstanceNumber)({
+        displaySetService,
+        SeriesInstanceUid: promptResult.series
+      });
+      const {
+        SeriesDate,
+        SeriesTime
+      } = referenceDisplaySet ?? (0,_getCurrentDicomDateTime__WEBPACK_IMPORTED_MODULE_5__.getSeriesDateTime)();
       const getReport = async () => {
         return commandsManager.runCommand('storeMeasurements', {
-          measurementData: trackedMeasurements,
+          measurementData,
           dataSource,
           additionalFindingTypes: ['ArrowAnnotate'],
           options: {
             SeriesDescription,
-            SeriesNumber
+            SeriesNumber,
+            InstanceNumber,
+            SeriesInstanceUID: promptResult.series,
+            SeriesDate,
+            SeriesTime
           }
         }, 'CORNERSTONE_STRUCTURED_REPORT');
       };
-      displaySetInstanceUIDs = await (0,_Actions_createReportAsync__WEBPACK_IMPORTED_MODULE_0__["default"])({
+      displaySetInstanceUIDs = await (0,_Actions_createReportAsync__WEBPACK_IMPORTED_MODULE_1__["default"])({
         servicesManager,
         getReport
       });
@@ -13168,9 +18430,11 @@ async function promptSaveReport({
       StudyInstanceUID,
       SeriesInstanceUID,
       viewportId,
-      isBackupSave
+      isBackupSave,
+      displaySetInstanceUID
     };
   } catch (error) {
+    console.warn('Unable to save report', error);
     return null;
   }
 }
@@ -13182,7 +18446,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13197,7 +18477,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*******************************************************************!*\
   !*** ../../../extensions/default/src/utils/reuseCachedLayouts.ts ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13299,7 +18579,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13314,7 +18610,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************!*\
   !*** ../../../extensions/default/src/utils/validations/areAllImageComponentsEqual.ts ***!
   \***************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13356,7 +18652,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13371,7 +18683,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!***************************************************************************************!*\
   !*** ../../../extensions/default/src/utils/validations/areAllImageDimensionsEqual.ts ***!
   \***************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13402,7 +18714,7 @@ function areAllImageDimensionsEqual(instances) {
       Rows,
       Columns
     } = instance;
-    if (Rows !== firstImageRows || Columns !== firstImageColumns) {
+    if ((0,_ohif_core_src_utils_toNumber__WEBPACK_IMPORTED_MODULE_0__["default"])(Rows) !== firstImageRows || (0,_ohif_core_src_utils_toNumber__WEBPACK_IMPORTED_MODULE_0__["default"])(Columns) !== firstImageColumns) {
       return false;
     }
   }
@@ -13415,7 +18727,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13430,7 +18758,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!*****************************************************************************************!*\
   !*** ../../../extensions/default/src/utils/validations/areAllImageOrientationsEqual.ts ***!
   \*****************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13472,7 +18800,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13487,7 +18831,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!**************************************************************************************!*\
   !*** ../../../extensions/default/src/utils/validations/areAllImagePositionsEqual.ts ***!
   \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13537,6 +18881,9 @@ function areAllImagePositionsEqual(instances) {
   const scanAxisNormal = (0,_calculateScanAxisNormal__WEBPACK_IMPORTED_MODULE_3__["default"])(firstImageOrientationPatient);
   const firstImagePositionPatient = (0,_ohif_core_src_utils_toNumber__WEBPACK_IMPORTED_MODULE_1__["default"])(instances[0].ImagePositionPatient);
   const lastIpp = (0,_ohif_core_src_utils_toNumber__WEBPACK_IMPORTED_MODULE_1__["default"])(instances[instances.length - 1].ImagePositionPatient);
+  if (!firstImagePositionPatient || !lastIpp) {
+    return false;
+  }
   const averageSpacingBetweenFrames = (0,_ohif_core_src_utils_isDisplaySetReconstructable__WEBPACK_IMPORTED_MODULE_2__._getPerpendicularDistance)(firstImagePositionPatient, lastIpp) / (instances.length - 1);
   let previousImagePositionPatient = firstImagePositionPatient;
   for (let i = 1; i < instances.length; i++) {
@@ -13556,7 +18903,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13571,7 +18934,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!************************************************************************************!*\
   !*** ../../../extensions/default/src/utils/validations/areAllImageSpacingEqual.ts ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13636,7 +18999,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13651,7 +19030,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!****************************************************************************!*\
   !*** ../../../extensions/default/src/utils/validations/checkMultiframe.ts ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13689,7 +19068,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13704,7 +19099,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /*!******************************************************************************!*\
   !*** ../../../extensions/default/src/utils/validations/checkSingleFrames.ts ***!
   \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13756,7 +19151,23 @@ const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
 );
 
 function $ReactRefreshModuleRuntime$(exports) {
-	if (false) {}
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
 }
 
 if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
@@ -13813,8 +19224,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.dicom-tag-browser-table {
 
 .dicom-tag-browser-content {
   overflow: hidden;
-  width: 100%;
-  padding-bottom: 50px;
   /*height: 500px;*/
 }
 
@@ -13840,7 +19249,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.dicom-tag-browser-table {
 .dicom-tag-browser-table th.dicom-tag-browser-table-left {
   text-align: left;
 }
-`, "",{"version":3,"sources":["webpack://./../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,cAAc;EACd,0BAA0B;EAC1B,mBAAmB;AACrB;;AAEA;EACE,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,WAAW;EACX,oBAAoB;EACpB,iBAAiB;AACnB;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,sBAAsB;AACxB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;AAClB","sourcesContent":[".dicom-tag-browser-table {\n  margin-right: auto;\n  margin-left: auto;\n}\n\n.dicom-tag-browser-table-wrapper {\n  /*  height: 500px;*/\n  /*overflow-y: scroll;*/\n  overflow-x: scroll;\n}\n\n.dicom-tag-browser-table tr {\n  padding-left: 10px;\n  padding-right: 10px;\n  color: #ffffff;\n  border-top: 1px solid #ddd;\n  white-space: nowrap;\n}\n\n.stick {\n  position: sticky;\n  overflow: clip;\n}\n\n.dicom-tag-browser-content {\n  overflow: hidden;\n  width: 100%;\n  padding-bottom: 50px;\n  /*height: 500px;*/\n}\n\n.dicom-tag-browser-instance-range .range {\n  height: 20px;\n}\n\n.dicom-tag-browser-instance-range {\n  padding: 20px 0 20px 0;\n}\n\n.dicom-tag-browser-table td.dicom-tag-browser-table-center {\n  text-align: center;\n}\n\n.dicom-tag-browser-table th {\n  padding-left: 10px;\n  padding-right: 10px;\n  text-align: center;\n  color: '#20A5D6';\n}\n\n.dicom-tag-browser-table th.dicom-tag-browser-table-left {\n  text-align: left;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,cAAc;EACd,0BAA0B;EAC1B,mBAAmB;AACrB;;AAEA;EACE,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,iBAAiB;AACnB;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,sBAAsB;AACxB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;AAClB","sourcesContent":[".dicom-tag-browser-table {\n  margin-right: auto;\n  margin-left: auto;\n}\n\n.dicom-tag-browser-table-wrapper {\n  /*  height: 500px;*/\n  /*overflow-y: scroll;*/\n  overflow-x: scroll;\n}\n\n.dicom-tag-browser-table tr {\n  padding-left: 10px;\n  padding-right: 10px;\n  color: #ffffff;\n  border-top: 1px solid #ddd;\n  white-space: nowrap;\n}\n\n.stick {\n  position: sticky;\n  overflow: clip;\n}\n\n.dicom-tag-browser-content {\n  overflow: hidden;\n  /*height: 500px;*/\n}\n\n.dicom-tag-browser-instance-range .range {\n  height: 20px;\n}\n\n.dicom-tag-browser-instance-range {\n  padding: 20px 0 20px 0;\n}\n\n.dicom-tag-browser-table td.dicom-tag-browser-table-center {\n  text-align: center;\n}\n\n.dicom-tag-browser-table th {\n  padding-left: 10px;\n  padding-right: 10px;\n  text-align: center;\n  color: '#20A5D6';\n}\n\n.dicom-tag-browser-table th.dicom-tag-browser-table-left {\n  text-align: left;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13900,6 +19309,69 @@ options.singleton = false;
 var update = api(content, options);
 
 
+if (true) {
+  if (!content.locals || module.hot.invalidate) {
+    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
+  if (!a && b || a && !b) {
+    return false;
+  }
+
+  var p;
+
+  for (p in a) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (a[p] !== b[p]) {
+      return false;
+    }
+  }
+
+  for (p in b) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (!a[p]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+    var oldLocals = content.locals;
+
+    module.hot.accept(
+      /*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./DicomTagBrowser.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css",
+      function () {
+        content = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./DicomTagBrowser.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css");
+
+              content = content.__esModule ? content.default : content;
+
+              if (typeof content === 'string') {
+                content = [[module.id, content, '']];
+              }
+
+              if (!isEqualLocals(oldLocals, content.locals)) {
+                module.hot.invalidate();
+
+                return;
+              }
+
+              oldLocals = content.locals;
+
+              update(content);
+      }
+    )
+  }
+
+  module.hot.dispose(function() {
+    update();
+  });
+}
 
 module.exports = content.locals || {};
 
@@ -13928,6 +19400,69 @@ options.singleton = false;
 var update = api(content, options);
 
 
+if (true) {
+  if (!content.locals || module.hot.invalidate) {
+    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
+  if (!a && b || a && !b) {
+    return false;
+  }
+
+  var p;
+
+  for (p in a) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (a[p] !== b[p]) {
+      return false;
+    }
+  }
+
+  for (p in b) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (!a[p]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+    var oldLocals = content.locals;
+
+    module.hot.accept(
+      /*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./colorPickerDialog.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/default/src/utils/colorPickerDialog.css",
+      function () {
+        content = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!./colorPickerDialog.css */ "../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].use[2]!../../../extensions/default/src/utils/colorPickerDialog.css");
+
+              content = content.__esModule ? content.default : content;
+
+              if (typeof content === 'string') {
+                content = [[module.id, content, '']];
+              }
+
+              if (!isEqualLocals(oldLocals, content.locals)) {
+                module.hot.invalidate();
+
+                return;
+              }
+
+              oldLocals = content.locals;
+
+              update(content);
+      }
+    )
+  }
+
+  module.hot.dispose(function() {
+    update();
+  });
+}
 
 module.exports = content.locals || {};
 
@@ -13940,7 +19475,7 @@ module.exports = content.locals || {};
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-default","version":"3.9.1","description":"Common/default features and functionality for basic image viewing","author":"OHIF Core Team","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-default.umd.js","module":"src/index.ts","publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"files":["dist","README.md"],"keywords":["ohif-extension"],"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pdf":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.9.1","@ohif/i18n":"3.9.1","dcmjs":"*","dicomweb-client":"^0.10.4","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-window":"^1.8.9","webpack":"5.89.0","webpack-merge":"^5.7.3"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/calculate-suv":"^1.1.0"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"@ohif/extension-default","version":"3.11.0-beta.37","description":"Common/default features and functionality for basic image viewing","author":"OHIF Core Team","license":"MIT","repository":"OHIF/Viewers","main":"dist/ohif-extension-default.umd.js","module":"src/index.ts","publishConfig":{"access":"public"},"engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"files":["dist","README.md"],"keywords":["ohif-extension"],"scripts":{"clean":"shx rm -rf dist","clean:deep":"yarn run clean && shx rm -rf node_modules","dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:dicom-pdf":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package-1":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"3.11.0-beta.37","@ohif/i18n":"3.11.0-beta.37","dcmjs":"*","dicomweb-client":"^0.10.4","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-window":"^1.8.9","webpack":"5.89.0","webpack-merge":"^5.7.3"},"dependencies":{"@babel/runtime":"^7.20.13","@cornerstonejs/calculate-suv":"^1.1.0","lodash.get":"^4.4.2","lodash.uniqby":"^4.7.0"}}');
 
 /***/ })
 

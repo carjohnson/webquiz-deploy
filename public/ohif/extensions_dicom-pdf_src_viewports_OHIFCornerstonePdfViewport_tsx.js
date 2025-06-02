@@ -150,7 +150,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.pdf-no-click {
   height: 100%;
   width: 100%;
 }
-`, "",{"version":3,"sources":["webpack://./../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.css"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,WAAW;AACb;;AAEA;EACE,oBAAoB;EACpB,YAAY;EACZ,WAAW;AACb","sourcesContent":[".pdf-no-click {\n  pointer-events: none;\n  height: 100%;\n  width: 100%;\n}\n\n.pdf-yes-click {\n  pointer-events: auto;\n  height: 100%;\n  width: 100%;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.css"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;EACZ,WAAW;AACb;;AAEA;EACE,oBAAoB;EACpB,YAAY;EACZ,WAAW;AACb","sourcesContent":[".pdf-no-click {\r\n  pointer-events: none;\r\n  height: 100%;\r\n  width: 100%;\r\n}\r\n\r\n.pdf-yes-click {\r\n  pointer-events: auto;\r\n  height: 100%;\r\n  width: 100%;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

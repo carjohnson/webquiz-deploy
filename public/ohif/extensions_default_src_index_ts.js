@@ -13790,8 +13790,8 @@ const makeDisplaySet = instances => {
   );*/
 
   /*const isReconstructable = isDisplaySetReconstructable(series, instances);
-   imageSet.isReconstructable = isReconstructable.value;
-   if (isReconstructable.missingFrames) {
+    imageSet.isReconstructable = isReconstructable.value;
+    if (isReconstructable.missingFrames) {
     // TODO -> This is currently unused, but may be used for reconstructing
     // Volumes with gaps later on.
     imageSet.missingFrames = isReconstructable.missingFrames;
@@ -19249,7 +19249,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.dicom-tag-browser-table {
 .dicom-tag-browser-table th.dicom-tag-browser-table-left {
   text-align: left;
 }
-`, "",{"version":3,"sources":["webpack://./../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,cAAc;EACd,0BAA0B;EAC1B,mBAAmB;AACrB;;AAEA;EACE,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,iBAAiB;AACnB;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,sBAAsB;AACxB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;AAClB","sourcesContent":[".dicom-tag-browser-table {\n  margin-right: auto;\n  margin-left: auto;\n}\n\n.dicom-tag-browser-table-wrapper {\n  /*  height: 500px;*/\n  /*overflow-y: scroll;*/\n  overflow-x: scroll;\n}\n\n.dicom-tag-browser-table tr {\n  padding-left: 10px;\n  padding-right: 10px;\n  color: #ffffff;\n  border-top: 1px solid #ddd;\n  white-space: nowrap;\n}\n\n.stick {\n  position: sticky;\n  overflow: clip;\n}\n\n.dicom-tag-browser-content {\n  overflow: hidden;\n  /*height: 500px;*/\n}\n\n.dicom-tag-browser-instance-range .range {\n  height: 20px;\n}\n\n.dicom-tag-browser-instance-range {\n  padding: 20px 0 20px 0;\n}\n\n.dicom-tag-browser-table td.dicom-tag-browser-table-center {\n  text-align: center;\n}\n\n.dicom-tag-browser-table th {\n  padding-left: 10px;\n  padding-right: 10px;\n  text-align: center;\n  color: '#20A5D6';\n}\n\n.dicom-tag-browser-table th.dicom-tag-browser-table-left {\n  text-align: left;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./../../../extensions/default/src/DicomTagBrowser/DicomTagBrowser.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,cAAc;EACd,0BAA0B;EAC1B,mBAAmB;AACrB;;AAEA;EACE,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,iBAAiB;AACnB;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,sBAAsB;AACxB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,mBAAmB;EACnB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;AAClB","sourcesContent":[".dicom-tag-browser-table {\r\n  margin-right: auto;\r\n  margin-left: auto;\r\n}\r\n\r\n.dicom-tag-browser-table-wrapper {\r\n  /*  height: 500px;*/\r\n  /*overflow-y: scroll;*/\r\n  overflow-x: scroll;\r\n}\r\n\r\n.dicom-tag-browser-table tr {\r\n  padding-left: 10px;\r\n  padding-right: 10px;\r\n  color: #ffffff;\r\n  border-top: 1px solid #ddd;\r\n  white-space: nowrap;\r\n}\r\n\r\n.stick {\r\n  position: sticky;\r\n  overflow: clip;\r\n}\r\n\r\n.dicom-tag-browser-content {\r\n  overflow: hidden;\r\n  /*height: 500px;*/\r\n}\r\n\r\n.dicom-tag-browser-instance-range .range {\r\n  height: 20px;\r\n}\r\n\r\n.dicom-tag-browser-instance-range {\r\n  padding: 20px 0 20px 0;\r\n}\r\n\r\n.dicom-tag-browser-table td.dicom-tag-browser-table-center {\r\n  text-align: center;\r\n}\r\n\r\n.dicom-tag-browser-table th {\r\n  padding-left: 10px;\r\n  padding-right: 10px;\r\n  text-align: center;\r\n  color: '#20A5D6';\r\n}\r\n\r\n.dicom-tag-browser-table th.dicom-tag-browser-table-left {\r\n  text-align: left;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -19279,7 +19279,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, `.chrome-picker {
   background: #090c29 !important;
 }
-`, "",{"version":3,"sources":["webpack://./../../../extensions/default/src/utils/colorPickerDialog.css"],"names":[],"mappings":"AAAA;EACE,8BAA8B;AAChC","sourcesContent":[".chrome-picker {\n  background: #090c29 !important;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./../../../extensions/default/src/utils/colorPickerDialog.css"],"names":[],"mappings":"AAAA;EACE,8BAA8B;AAChC","sourcesContent":[".chrome-picker {\r\n  background: #090c29 !important;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

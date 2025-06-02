@@ -1,20 +1,20 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["ohif-extensions_ohif-extension-training_src_index_tsx"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["ohif-extensions_ohif-extension-webquiz_src_index_tsx"],{
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/index.js":
-/*!*****************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/index.js ***!
-  \*****************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/index.js":
+/*!****************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/index.js ***!
+  \****************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(/*! ./lib */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/index.js");
+module.exports = __webpack_require__(/*! ./lib */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/index.js");
 
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/arithmetic/index.js":
-/*!********************************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/arithmetic/index.js ***!
-  \********************************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/arithmetic/index.js":
+/*!*******************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/arithmetic/index.js ***!
+  \*******************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -163,10 +163,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/constants.js":
-/*!*************************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/constants.js ***!
-  \*************************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/constants.js":
+/*!************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/constants.js ***!
+  \************************************************************************************************/
 /***/ ((module) => {
 
 /**
@@ -215,28 +215,28 @@ module.exports = Object.freeze({
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/index.js":
-/*!*********************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/index.js ***!
-  \*********************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/index.js":
+/*!********************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/index.js ***!
+  \********************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = Object.assign({},
-    __webpack_require__(/*! ./utils */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/utils/index.js"),
-    __webpack_require__(/*! ./statistics */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/statistics/index.js"),
-    __webpack_require__(/*! ./probability */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/probability/index.js"),
-    __webpack_require__(/*! ./arithmetic */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/arithmetic/index.js"),
-    __webpack_require__(/*! ./unit */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/unit/index.js"),
-    __webpack_require__(/*! ./trigonometric */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/trigonometric/index.js")
+    __webpack_require__(/*! ./utils */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/utils/index.js"),
+    __webpack_require__(/*! ./statistics */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/statistics/index.js"),
+    __webpack_require__(/*! ./probability */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/probability/index.js"),
+    __webpack_require__(/*! ./arithmetic */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/arithmetic/index.js"),
+    __webpack_require__(/*! ./unit */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/unit/index.js"),
+    __webpack_require__(/*! ./trigonometric */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/trigonometric/index.js")
 );
 
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/probability/index.js":
-/*!*********************************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/probability/index.js ***!
-  \*********************************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/probability/index.js":
+/*!********************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/probability/index.js ***!
+  \********************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -257,10 +257,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/statistics/index.js":
-/*!********************************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/statistics/index.js ***!
-  \********************************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/statistics/index.js":
+/*!*******************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/statistics/index.js ***!
+  \*******************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -281,10 +281,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/trigonometric/index.js":
-/*!***********************************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/trigonometric/index.js ***!
-  \***********************************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/trigonometric/index.js":
+/*!**********************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/trigonometric/index.js ***!
+  \**********************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -332,13 +332,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/unit/index.js":
-/*!**************************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/unit/index.js ***!
-  \**************************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/unit/index.js":
+/*!*************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/unit/index.js ***!
+  \*************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var constants = __webpack_require__(/*! ../constants */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/constants.js");
+var constants = __webpack_require__(/*! ../constants */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/constants.js");
 module.exports = {
 
     // Unit converters
@@ -419,10 +419,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/utils/index.js":
-/*!***************************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/lib/utils/index.js ***!
-  \***************************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/utils/index.js":
+/*!**************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/utils/index.js ***!
+  \**************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = {
@@ -463,10 +463,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/src/MathSidePanelComponent.tsx":
-/*!******************************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/src/MathSidePanelComponent.tsx ***!
-  \******************************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/src/WebQuizSidePanelComponent.tsx":
+/*!********************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/src/WebQuizSidePanelComponent.tsx ***!
+  \********************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -476,22 +476,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! math.js */ "../../../../ohif-extensions/ohif-extension-training/node_modules/math.js/index.js");
+/* harmony import */ var math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! math.js */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/index.js");
 /* harmony import */ var math_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(math_js__WEBPACK_IMPORTED_MODULE_1__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
-function MathSidePanelComponent() {
+// import BtnComponent from './Questions/btnComponent';
+// import ReadFile from './utils/ReadFile';
+
+/**
+ *  Creating a React component to be used as a side panel in OHIF.
+ *  Also performs a simple div that uses Math.js to output the square root.
+ */
+function WebQuizSidePanelComponent() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-white w-full texst-center"
-  }, `The sqare root of four is ${(0,math_js__WEBPACK_IMPORTED_MODULE_1__.sqrt)(4)}`);
+    className: "text-white w-full text-center"
+  }, `Web Quiz version : ${(0,math_js__WEBPACK_IMPORTED_MODULE_1__.sqrt)(9)}`);
 }
-_c = MathSidePanelComponent;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MathSidePanelComponent);
+_c = WebQuizSidePanelComponent;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WebQuizSidePanelComponent);
 var _c;
-__webpack_require__.$Refresh$.register(_c, "MathSidePanelComponent");
+__webpack_require__.$Refresh$.register(_c, "WebQuizSidePanelComponent");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -526,10 +533,10 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/src/id.js":
-/*!*********************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/src/id.js ***!
-  \*********************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/src/id.js":
+/*!********************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/src/id.js ***!
+  \********************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -537,7 +544,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   id: () => (/* binding */ id)
 /* harmony export */ });
-/* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../package.json */ "../../../../ohif-extensions/ohif-extension-training/package.json");
+/* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../package.json */ "../../../../ohif-extensions/ohif-extension-webquiz/package.json");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -578,10 +585,10 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/src/index.tsx":
-/*!*************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/src/index.tsx ***!
-  \*************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/src/index.tsx":
+/*!************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/src/index.tsx ***!
+  \************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -589,8 +596,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./id */ "../../../../ohif-extensions/ohif-extension-training/src/id.js");
-/* harmony import */ var _MathSidePanelComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MathSidePanelComponent */ "../../../../ohif-extensions/ohif-extension-training/src/MathSidePanelComponent.tsx");
+/* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./id */ "../../../../ohif-extensions/ohif-extension-webquiz/src/id.js");
+/* harmony import */ var _WebQuizSidePanelComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WebQuizSidePanelComponent */ "../../../../ohif-extensions/ohif-extension-webquiz/src/WebQuizSidePanelComponent.tsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -629,10 +636,11 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
     extensionManager
   }) => {
     return [{
-      name: 'math',
-      iconName: 'logo-ohif-small',
-      label: 'Math',
-      component: _MathSidePanelComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
+      name: "webquiz",
+      iconname: "BainesLogo",
+      iconlabel: "",
+      label: "Web Quiz",
+      component: _WebQuizSidePanelComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
     }];
   },
   /**
@@ -761,16 +769,16 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "../../../../ohif-extensions/ohif-extension-training/package.json":
-/*!************************************************************************!*\
-  !*** ../../../../ohif-extensions/ohif-extension-training/package.json ***!
-  \************************************************************************/
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/package.json":
+/*!***********************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/package.json ***!
+  \***********************************************************************/
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"name":"ohif-extension-training","version":"0.0.1","description":"","author":"","license":"MIT","main":"dist/umd/ohif-extension-training/index.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:my-extension":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"^3.11.0-beta.37","@ohif/extension-default":"^3.11.0-beta.37","@ohif/extension-cornerstone":"^3.11.0-beta.37","@ohif/i18n":"^1.0.0","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-router":"^6.23.1","react-router-dom":"^6.23.1","webpack":"5.89.0","webpack-merge":"^5.7.3"},"dependencies":{"@babel/runtime":"^7.20.13","math.js":"^1.1.46","react":"^17.0.2"},"devDependencies":{"@babel/core":"7.24.7","@babel/plugin-proposal-class-properties":"^7.16.7","@babel/plugin-proposal-object-rest-spread":"^7.17.3","@babel/plugin-proposal-private-methods":"^7.18.6","@babel/plugin-syntax-dynamic-import":"^7.8.3","@babel/plugin-transform-arrow-functions":"^7.16.7","@babel/plugin-transform-regenerator":"^7.16.7","@babel/plugin-transform-runtime":"7.24.7","@babel/plugin-transform-typescript":"^7.13.0","@babel/preset-env":"7.24.7","@babel/preset-react":"^7.16.7","@babel/preset-typescript":"^7.13.0","@babel/plugin-proposal-private-property-in-object":"7.21.11","babel-eslint":"9.x","babel-loader":"^8.2.4","@svgr/webpack":"^8.1.0","babel-plugin-module-resolver":"^5.0.0","clean-webpack-plugin":"^4.0.0","copy-webpack-plugin":"^10.2.0","cross-env":"^7.0.3","dotenv":"^14.1.0","eslint":"^8.39.0","eslint-loader":"^2.0.0","webpack":"5.89.0","webpack-merge":"^5.7.3","webpack-cli":"^5.0.2"}}');
+module.exports = /*#__PURE__*/JSON.parse('{"name":"ohif-extension-webquiz","version":"0.0.1","description":"","author":"","license":"MIT","main":"dist/umd/ohif-extension-webquiz/index.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:my-extension":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"^3.11.0-beta.37","@ohif/extension-default":"^3.11.0-beta.37","@ohif/extension-cornerstone":"^3.11.0-beta.37","@ohif/i18n":"^1.0.0","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-router":"^6.23.1","react-router-dom":"^6.23.1","webpack":"5.89.0","webpack-merge":"^5.7.3"},"dependencies":{"@babel/runtime":"^7.20.13","math.js":"^1.1.46","react":"^19.1.0"},"devDependencies":{"@babel/core":"7.24.7","@babel/plugin-proposal-class-properties":"^7.16.7","@babel/plugin-proposal-object-rest-spread":"^7.17.3","@babel/plugin-proposal-private-methods":"^7.18.6","@babel/plugin-syntax-dynamic-import":"^7.8.3","@babel/plugin-transform-arrow-functions":"^7.16.7","@babel/plugin-transform-regenerator":"^7.16.7","@babel/plugin-transform-runtime":"7.24.7","@babel/plugin-transform-typescript":"^7.13.0","@babel/preset-env":"7.24.7","@babel/preset-react":"^7.16.7","@babel/preset-typescript":"^7.13.0","@babel/plugin-proposal-private-property-in-object":"7.21.11","babel-eslint":"9.x","babel-loader":"^8.2.4","@svgr/webpack":"^8.1.0","babel-plugin-module-resolver":"^5.0.0","clean-webpack-plugin":"^4.0.0","copy-webpack-plugin":"^10.2.0","cross-env":"^7.0.3","dotenv":"^14.1.0","eslint":"^8.39.0","eslint-loader":"^2.0.0","webpack":"5.89.0","webpack-merge":"^5.7.3","webpack-cli":"^5.0.2"}}');
 
 /***/ })
 
 }]);
-//# sourceMappingURL=ohif-extensions_ohif-extension-training_src_index_tsx.js.map
+//# sourceMappingURL=ohif-extensions_ohif-extension-webquiz_src_index_tsx.js.map

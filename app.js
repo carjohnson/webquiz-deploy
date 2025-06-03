@@ -3,10 +3,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 var path = require('path');
+var logger = require('morgan');
 const port = 3001;
 
-// var indexRouter = require('./routes/index');
-// var catalogRouter = require('./routes/catalog');
+var indexRouter = require('./routes/index');
+var loginRouter = require('./routes/login');
+var webquizRouter = require("./routes/webquiz");
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -23,11 +25,13 @@ app.set("view engine", "pug");
 //   await mongoose.connect(mongoDB);
 // }
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(logger('dev'));
 app.use(express.json());
-// app.use('/', indexRouter);
-// app.use('/catalog', catalogRouter);
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/', indexRouter);
+app.use('/login', loginRouter);
+app.use('/webquiz', webquizRouter);
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);

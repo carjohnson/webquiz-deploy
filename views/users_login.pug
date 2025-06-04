@@ -2,4 +2,21 @@ extends layout
 
 block content
   h1= title
-  p Login User
+
+  <form action="/login" method="POST">
+    <fieldset>
+            
+        <label>Email ID</label>
+        <input type ="email" id = 'email' name="email" placeholder="abc@example.com" required>
+        <br><br>
+
+        <label>Password</label>
+        <input type="password" id = "password" name="password" required>
+        <br><br>
+
+        <button type ="reset">Reset</button>
+        <button type ="submit">Submit</button>
+        <br></br>
+        <a id="registerlink" href="/users/users_register">Register</a>
+    </fieldset>
+  </form>

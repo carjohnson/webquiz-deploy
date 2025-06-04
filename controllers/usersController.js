@@ -10,12 +10,12 @@ exports.users_setup_get = asyncHandler(async (req, res, next) => {
 
 exports.users_login_get = asyncHandler(async (req, res, next) => {
   res.render("users_login", {
-    title: "Login User",
+    title: "Login",
   });
 });
 
 exports.users_register_get = asyncHandler(async (req, res, next) => {
   res.render("users_register", {
-    title: "Register User",
+    title: "Register",
   });
 });

@@ -7,7 +7,7 @@ var logger = require('morgan');
 const port = 3001;
 
 var indexRouter = require('./routes/index');
-var loginRouter = require('./routes/login');
+var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 
 // View engine setup
@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
+app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 
 app.listen(port, () => {

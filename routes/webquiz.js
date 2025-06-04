@@ -8,9 +8,7 @@ const webquiz_controller = require("../controllers/webquizController");
 
 // GET webquiz home page.
 router.get("/", webquiz_controller.index); // this actually maps to /webquiz/ (see routes/index.js)
-// router.get("/",(req,res) => {
-//     res.render("webquiz",{title: "Web Quiz Home"})
-// });
+
 router.get("/webquiz", webquiz_controller.index);
 
 module.exports = router;

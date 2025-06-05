@@ -10,8 +10,8 @@ router.get("/users_login", users_controller.users_login_get);
 
 router.get("/users_register", users_controller.users_register_get);
 
-// router.post('/register', users_controller.register_post);
+router.post('/users_register', users_controller.users_register_post);
 
-// router.post('/login', users_controller.login_post);
+router.post('/users_login', users_controller.users_login_post);
 
 module.exports = router;

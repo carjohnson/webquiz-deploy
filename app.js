@@ -1,13 +1,14 @@
 // app.js
 const express = require('express');
 const mongoose = require('mongoose');
+require("dotenv").config();
 const app = express();
 var path = require('path');
 var logger = require('morgan');
 const port = 3001;
 
 var indexRouter = require('./routes/index');
-var loginRouter = require('./routes/login');
+var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 
 // View engine setup
@@ -15,22 +16,25 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 
-// // import mongoose module
-// const mongoDB = require('./mongouri');
-// mongoose.set("strictQuery", 'throw');  // error if querying something missing from db
+// import mongoose module
+mongoose.set("strictQuery", 'throw');  // error if querying something missing from db
 
-// // Wait for database to connect, logging an error if there is a problem
-// main().catch((err) => console.log(err));
-// async function main() {
-//   await mongoose.connect(mongoDB);
-// }
+// Wait for database to connect, logging an error if there is a problem
+main().catch((err) =>  console.log(err));
+async function main() {
+  await mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch ((err) => {
+    console.error("MongoDB connection error", err);
+  });
+}
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
+app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 
 app.listen(port, () => {

@@ -5,11 +5,11 @@ const bcrypt = require('bcrypt')
 const User = require("../models/user");
 
 
-exports.authorize_get = asyncHandler(async (req, res, next) => {
-  res.render("authorize", {
-    title: "Authorize User",
-  });
-});
+// exports.authorize_get = asyncHandler(async (req, res, next) => {
+//   res.render("authorize", {
+//     title: "Authorize User",
+//   });
+// });
 
 exports.login_get = asyncHandler(async (req, res, next) => {
   res.render("login", {
@@ -38,9 +38,9 @@ exports.register_post = asyncHandler(async (req, res, next) => {
             hashPassword = await bcrypt.hash(req.body.password, 10);
 
             const newUser = new User({
-              username    : req.body.username.toLowerCase(),
+              username    : req.body.username.trim().toLowerCase(),
               password    : hashPassword,
-              email       : req.body.email.toLowerCase(),
+              email       : req.body.email.trim().toLowerCase(),
             });
 
             await newUser.save();
@@ -60,7 +60,7 @@ exports.register_post = asyncHandler(async (req, res, next) => {
 
 exports.login_post = asyncHandler(async (req, res, next) => {
     try{
-          const userExists = await User.find({email: req.body.email.toLowerCase()})
+          const userExists = await User.find({email: req.body.email.toLowerCase().trim()})
           .collation({ locale: "en", strength: 2 })
           .exec();
 

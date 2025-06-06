@@ -1,6 +1,7 @@
 // app.js
 const express = require('express');
 const mongoose = require('mongoose');
+require("dotenv").config();
 const app = express();
 var path = require('path');
 var logger = require('morgan');
@@ -15,15 +16,20 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 
-// // import mongoose module
-// const mongoDB = require('./mongouri');
-// mongoose.set("strictQuery", 'throw');  // error if querying something missing from db
+// import mongoose module
+// const mongoDB = require('./mongouri');  // uri stored in file on server
+mongoose.set("strictQuery", 'throw');  // error if querying something missing from db
 
-// // Wait for database to connect, logging an error if there is a problem
-// main().catch((err) => console.log(err));
-// async function main() {
-//   await mongoose.connect(mongoDB);
-// }
+// Wait for database to connect, logging an error if there is a problem
+main().catch((err) =>  console.log(err));
+async function main() {
+  // await mongoose.connect(mongoDB);
+  await mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch ((err) => {
+    console.error("MongoDB connection error", err);
+  });
+}
 
 app.use(logger('dev'));
 app.use(express.json());

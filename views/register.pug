@@ -3,9 +3,12 @@ extends layout
 block content
   h1= title
 
-  <form action="/users/users_login" method="POST">
-    <fieldset>
-            
+  <form action="/users/register" method="POST">
+      <fieldset>
+        <label>Username</label>
+        <input type ="text" id = 'username' name="username" placeholder="renfield" required>
+        <br><br>
+
         <label>Email ID</label>
         <input type ="email" id = 'email' name="email" placeholder="abc@example.com" required>
         <br><br>
@@ -17,6 +20,9 @@ block content
         <button type ="reset">Reset</button>
         <button type ="submit">Submit</button>
         <br></br>
-        <a id="registerlink" href="/users/users_register">Register</a>
-    </fieldset>
+        <a id="loginlink" href="/users/login">Login</a>
+      </fieldset>
   </form>
+    
+
+  h3(style="color: orange")=msg

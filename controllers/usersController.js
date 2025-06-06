@@ -2,69 +2,81 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
 const bcrypt = require('bcrypt')
-const users = require('../data').userDB;
+const User = require("../models/user");
 
 
-exports.users_setup_get = asyncHandler(async (req, res, next) => {
-  res.render("users_setup", {
+exports.authorize_get = asyncHandler(async (req, res, next) => {
+  res.render("authorize", {
     title: "Authorize User",
   });
 });
 
-exports.users_login_get = asyncHandler(async (req, res, next) => {
-  res.render("users_login", {
-    title: "Login",
+exports.login_get = asyncHandler(async (req, res, next) => {
+  res.render("login", {
+    title : "Login",
+    msg   : req.query.msg,
   });
 });
 
-exports.users_register_get = asyncHandler(async (req, res, next) => {
-  res.render("users_register", {
-    title: "Register",
+exports.register_get = asyncHandler(async (req, res, next) => {
+  res.render("register", {
+    title : "Register",
+    msg   : req.query.msg,
   });
 });
 
-exports.users_register_post = asyncHandler(async (req, res, next) => {
-
+exports.register_post = asyncHandler(async (req, res, next) => {
+  
       try{
-        console.log(__dirname);
-        let foundUser = users.find((data) => req.body.email === data.email);
-        if (!foundUser) {
-    
-            let hashPassword = await bcrypt.hash(req.body.password, 10);
-    
-            let newUser = {
-                id: Date.now(),
-                username: req.body.username,
-                email: req.body.email,
-                password: hashPassword,
-            };
-            users.push(newUser);
-            console.log('User list', users);
-    
-            res.send("<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='/users/users_login'>login</a></div><br><br><div align='center'><a href='/users/users_register.html'>Register another user</a></div>");
+
+        const userExists = await User.find({username: req.body.username})
+            .collation({ locale: "en", strength: 2 })
+            .exec();
+
+          if(userExists.length === 0){
+
+            hashPassword = await bcrypt.hash(req.body.password, 10);
+
+            const newUser = new User({
+              username    : req.body.username.toLowerCase(),
+              password    : hashPassword,
+              email       : req.body.email.toLowerCase(),
+            });
+
+            await newUser.save();
+            res.redirect('/users/login?msg=Account created!');
+            // res.send("<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='/users/login'>login</a></div><br><br><div align='center'><a href='/users/register'>Register another user</a></div>");
+            
           } else {
-            res.send("<div align ='center'><h2>Email already used</h2></div><br><br><div align='center'><a href='/users/users_register'>Register again</a></div>");
-        }
-    } catch{
+            res.redirect('/users/register?msg=Username Unavailable');
+            //res.send("<div align ='center'><h2>Username already used</h2></div><br><br><div align='center'><a href='/users/register'>Register again</a></div>");
+          }
+
+    } catch (error) {
+        console.error("Error:", error);
         res.send("Internal server error");
     }
 });
 
-exports.users_login_post = asyncHandler(async (req, res, next) => {
+exports.login_post = asyncHandler(async (req, res, next) => {
     try{
-        let foundUser = users.find((data) => req.body.email === data.email);
-        if (foundUser) {
-    
-            let submittedPass = req.body.password; 
-            let storedPass = foundUser.password; 
+          const userExists = await User.find({email: req.body.email.toLowerCase()})
+          .collation({ locale: "en", strength: 2 })
+          .exec();
+
+        if(userExists.length){
+
+            let submittedPass = req.body.password
+            let storedPass = userExists[0].password; 
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
             if (passwordMatch) {
-                let usrname = foundUser.username;
-                // res.send(`<div align ='center'><h2>login successful</h2></div><br><br><br><div align ='center'><h3>Hello ${usrname}</h3></div><br><br><div align='center'><a href='/users/users_login'>logout</a></div>`);
+                // let usrname = foundUser.username;
+                // res.send(`<div align ='center'><h2>login successful</h2></div><br><br><br><div align ='center'><h3>Hello ${usrname}</h3></div><br><br><div align='center'><a href='/users/login'>logout</a></div>`);
                 res.redirect('/webquiz');
             } else {
-                res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align ='center'><a href='/users/users_login'>login again</a></div>");
+                res.redirect('/users/login?msg=Invalid email or password');
+                // res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align ='center'><a href='/users/login'>login again</a></div>");
             }
         }
         else {
@@ -72,9 +84,11 @@ exports.users_login_post = asyncHandler(async (req, res, next) => {
             let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
             await bcrypt.compare(req.body.password, fakePass);
     
-            res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align='center'><a href='/users/users_login'>login again<a><div>");
+            res.redirect('/users/login?msg=Invalid email or password');
+            // res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align='center'><a href='/users/login'>login again<a><div>");
         }
-    } catch{
+    } catch (error) {
+        console.error("Error:", error);
         res.send("Internal server error");
     }
 }); 

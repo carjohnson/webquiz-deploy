@@ -4,14 +4,15 @@ var router = express.Router();
 const users_controller = require("../controllers/usersController");
 
 
-router.get("/", users_controller.users_setup_get);
+router.get("/", users_controller.authorize_get);
 
-router.get("/users_login", users_controller.users_login_get);
+router.get("/login", users_controller.login_get);
 
-router.get("/users_register", users_controller.users_register_get);
+router.post('/login', users_controller.login_post);
 
-router.post('/users_register', users_controller.users_register_post);
+router.get("/register", users_controller.register_get);
 
-router.post('/users_login', users_controller.users_login_post);
+router.post('/register', users_controller.register_post);
+
 
 module.exports = router;

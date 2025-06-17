@@ -23,11 +23,6 @@ function BtnComponent({
   annotationData
 }) {
   const handleButtonClick = () => {
-    console.log('********** About to post a test *********');
-    window.parent.postMessage({
-      type: 'test',
-      msg: 'hello from B'
-    }, '*');
     console.log('Number of annotations: ', annotationData.length);
     window.parent.postMessage({
       type: 'annotation',

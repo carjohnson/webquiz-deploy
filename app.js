@@ -13,6 +13,7 @@ process.env.PUBLIC_URL = process.env.PUBLIC_URL || `http://localhost:${port}`;
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
+var iframehostRouter = require("./routes/iframehost");
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -39,13 +40,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
+app.use('/iframehost', iframehostRouter);
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/quiz-ohif', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
-});
 
 
 app.listen(port, () => {

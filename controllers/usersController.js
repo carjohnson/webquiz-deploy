@@ -5,12 +5,6 @@ const bcrypt = require('bcrypt')
 const User = require("../models/user");
 
 
-// exports.authorize_get = asyncHandler(async (req, res, next) => {
-//   res.render("authorize", {
-//     title: "Authorize User",
-//   });
-// });
-
 exports.login_get = asyncHandler(async (req, res, next) => {
   res.render("login", {
     title : "Login",
@@ -71,12 +65,9 @@ exports.login_post = asyncHandler(async (req, res, next) => {
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
             if (passwordMatch) {
-                // let usrname = foundUser.username;
-                // res.send(`<div align ='center'><h2>login successful</h2></div><br><br><br><div align ='center'><h3>Hello ${usrname}</h3></div><br><br><div align='center'><a href='/users/login'>logout</a></div>`);
                 
-                res.redirect('/quiz-ohif');
+                res.redirect('/iframehost');
 
-                //res.redirect('/webquiz')
             } else {
                 res.redirect('/users/login?msg=Invalid email or password');
                 // res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align ='center'><a href='/users/login'>login again</a></div>");

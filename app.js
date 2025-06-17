@@ -5,7 +5,10 @@ require("dotenv").config();
 const app = express();
 var path = require('path');
 var logger = require('morgan');
-const port = 3001;
+
+
+const port = process.env.PORT || 3000;
+process.env.PUBLIC_URL = process.env.PUBLIC_URL || `http://localhost:${port}`;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -46,9 +49,8 @@ app.get('/quiz-ohif', (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+  console.log(`Server listening at http://localhost:${port}`);
 });
-
 
 
 // catch 404 and forward to error handler

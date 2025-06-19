@@ -6,9 +6,8 @@ const webquiz_controller = require("../controllers/webquizController");
 
 /// WEBQUIZ ROUTES ///
 
-// GET webquiz home page.
 router.get("/", webquiz_controller.index); 
 
-router.get("/webquiz", webquiz_controller.index);
+router.post("/", webquiz_controller.post_lengths);
 
 module.exports = router;

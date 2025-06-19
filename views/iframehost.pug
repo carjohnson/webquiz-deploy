@@ -1,8 +1,12 @@
 extends layout
 
 block content
-    h1= title
     script(src="/scripts/iframehost-relay.js")
+    div(class='row')
+      div(class='col-sm-2')
+      a(href='/users') Login &nbsp &nbsp
+      a(href='/about') About
+    h1= title
     div(style="display: flex;")
       <iframe src="/webquiz" id="webquiz_iframe" width="500" height="800" style="border: none;"></iframe>
       <iframe src="/ohif" id="ohif_iframe" width="1500" height="800" style="border: none;"></iframe>

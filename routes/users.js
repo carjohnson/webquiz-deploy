@@ -4,8 +4,6 @@ var router = express.Router();
 const users_controller = require("../controllers/usersController");
 
 
-router.get("/", users_controller.login_get);
-
 router.get("/login", users_controller.login_get);
 
 router.post('/login', users_controller.login_post);

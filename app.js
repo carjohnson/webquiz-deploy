@@ -8,9 +8,6 @@ var path = require('path');
 var logger = require('morgan');
 
 
-const port = process.env.PORT || 3000;
-process.env.PUBLIC_URL = process.env.PUBLIC_URL || `http://localhost:${port}`;
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
@@ -53,12 +50,6 @@ app.use('/iframehost', iframehostRouter);
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
 
 
 // catch 404 and forward to error handler

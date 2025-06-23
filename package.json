@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstart": "SET DEBUG=webquizproject:* & npm run devstart"
+    "serverstart": "SET DEBUG=webquizproject:* & yarn devstart"
   },
   "author": "",
   "license": "ISC",
@@ -23,5 +23,8 @@
     "mongoose": "^8.15.1",
     "morgan": "^1.10.0",
     "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "express-session": "^1.18.1"
   }
 }

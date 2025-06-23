@@ -1,15 +1,17 @@
 // app.js
 const express = require('express');
+const session = require('express-session');
 const mongoose = require('mongoose');
 require("dotenv").config();
 const app = express();
 var path = require('path');
 var logger = require('morgan');
-const port = 3001;
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
+var iframehostRouter = require("./routes/iframehost");
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -33,22 +35,21 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+
+// Mount routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
+app.use('/iframehost', iframehostRouter);
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/quiz-ohif', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
-});
-
-
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-});
-
 
 
 // catch 404 and forward to error handler

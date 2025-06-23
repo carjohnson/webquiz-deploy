@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h2= title
+  p Welcome to #[em Baines Imaging - Radiology Coach], a web-based learning tool.
+  <script src="/scripts/webquiz-listener.js"></script>
+
+  script.
+    const lengths = !{JSON.stringify(lengths)};
+    console.log('*****>>>>> Lengths received from server:', lengths); 
+
+  <br><br>
+  <label><strong>Annotations</strong></label>
+  <br><br>
+  // Render the lengths list
+  if lengths && lengths.length
+    ul
+      each length in lengths
+        li= length
+  else
+    p No lengths received.
+
+  h3(style="color: orange")=msg

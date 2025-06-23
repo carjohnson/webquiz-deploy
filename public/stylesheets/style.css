@@ -1,14 +1,36 @@
-/* body {
+body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: left;
 }
 
 a {
-  color: #00B7FF;
-} */
+  color: #00B3F6;
+  font-size: 20px;
+}
 
-.sidebar-nav {
-  margin-top: 20px;
-  padding: 0;
-  list-style: none;
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100px;
+}
+
+.form-button {
+  margin-right: 1rem;
+}
+
+.button-group {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }

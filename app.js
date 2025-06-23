@@ -35,6 +35,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// set up session ID to store info that both client and server
+//  can access through req.session
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
   resave: false,

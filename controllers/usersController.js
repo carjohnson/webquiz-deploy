@@ -24,19 +24,26 @@ exports.register_get = asyncHandler(async (req, res, next) => {
 exports.register_post = asyncHandler(async (req, res, next) => {
   
       try{
+        const { username, email, password, role } = req.body;
 
-        const userExists = await User.find({username: req.body.username})
+        // Validate role
+        if (!['reader', 'admin'].includes(role)) {
+          return res.status(400).send('Invalid role selected');
+        }
+
+        const userExists = await User.find({username: username})
             .collation({ locale: "en", strength: 2 })
             .exec();
 
           if(userExists.length === 0){
 
-            hashPassword = await bcrypt.hash(req.body.password, 10);
+            hashPassword = await bcrypt.hash(password, 10);
 
             const newUser = new User({
-              username    : req.body.username.trim().toLowerCase(),
+              username    : username.trim().toLowerCase(),
               password    : hashPassword,
-              email       : req.body.email.trim().toLowerCase(),
+              email       : email.trim().toLowerCase(),
+              role        : role,
             });
 
             await newUser.save();
@@ -48,19 +55,21 @@ exports.register_post = asyncHandler(async (req, res, next) => {
 
     } catch (error) {
         console.error("Error:", error);
-        res.send("Internal server error");
+        res.send("usersController>register_post : Internal server error");
     }
 });
 
 exports.login_post = asyncHandler(async (req, res, next) => {
     try{
-          const userExists = await User.find({email: req.body.email.toLowerCase().trim()})
+          const { email, password } = req.body;
+
+          const userExists = await User.find({email: email.toLowerCase().trim()})
           .collation({ locale: "en", strength: 2 })
           .exec();
 
         if(userExists.length){
 
-            let submittedPass = req.body.password
+            let submittedPass = password
             let storedPass = userExists[0].password; 
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
@@ -75,12 +84,12 @@ exports.login_post = asyncHandler(async (req, res, next) => {
         else {
     
             let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
-            await bcrypt.compare(req.body.password, fakePass);
+            await bcrypt.compare(password, fakePass);
     
             res.redirect('/users/login?msg=Invalid email or password');
         }
     } catch (error) {
         console.error("Error:", error);
-        res.send("Internal server error");
+        res.send("usersController>login_post : Internal server error");
     }
 }); 

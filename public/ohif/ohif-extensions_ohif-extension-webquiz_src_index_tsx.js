@@ -1,6 +1,88 @@
 "use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([["ohif-extensions_ohif-extension-webquiz_src_index_tsx"],{
 
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/src/CreateCustomIcon.tsx":
+/*!***********************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/src/CreateCustomIcon.tsx ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_BainesTransparentTiny_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/BainesTransparentTiny.png */ "../../../../ohif-extensions/ohif-extension-webquiz/assets/BainesTransparentTiny.png");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+const CreateCustomIcon = Icons => {
+  //   console.log('📦 Icons keys:', Object.keys(Icons));   // for debug
+
+  const BaineslogoIcon = props => {
+    const {
+      width = 22,
+      height = 22,
+      ...rest
+    } = props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", _extends({
+      src: _assets_BainesTransparentTiny_png__WEBPACK_IMPORTED_MODULE_1__["default"],
+      width: width,
+      height: height
+    }, rest));
+  };
+  Icons.addIcon('baines-logo', BaineslogoIcon);
+};
+_c = CreateCustomIcon;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateCustomIcon);
+var _c;
+__webpack_require__.$Refresh$.register(_c, "CreateCustomIcon");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
 /***/ "../../../../ohif-extensions/ohif-extension-webquiz/src/Questions/btnComponent.tsx":
 /*!*****************************************************************************************!*\
   !*** ../../../../ohif-extensions/ohif-extension-webquiz/src/Questions/btnComponent.tsx ***!
@@ -13,25 +95,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ohif_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui */ "../../ui/src/index.js");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
 function BtnComponent({
-  annotationData
+  measurementData,
+  segmentationData
 }) {
   const handleButtonClick = () => {
-    console.log('Number of annotations: ', annotationData.length);
+    console.log('Number of measurements: ', measurementData.length);
+    console.log("Number of segmentations:", segmentationData.length);
     window.parent.postMessage({
-      type: 'annotation',
-      annotationdata: annotationData
+      type: 'annotations',
+      measurementdata: measurementData,
+      segmentationdata: segmentationData
     }, '*');
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: handleButtonClick
-  }, "Post")));
+  }, "Post"));
 }
 _c = BtnComponent;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BtnComponent);
@@ -86,38 +171,68 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! math.js */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/index.js");
 /* harmony import */ var math_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(math_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _Questions_btnComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Questions/btnComponent */ "../../../../ohif-extensions/ohif-extension-webquiz/src/Questions/btnComponent.tsx");
-/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
-/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
+var _s = __webpack_require__.$Refresh$.signature();
 
 
 
-// import ReadFile from './utils/ReadFile';
 
 
 
-const l_annotationdata = [];
+const lo_annotationdata = [];
 
 /**
  *  Creating a React component to be used as a side panel in OHIF.
  *  Also performs a simple div that uses Math.js to output the square root.
  */
 function WebQuizSidePanelComponent() {
-  _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_3__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_4__.Enums.Events.ANNOTATION_COMPLETED, o_annotationdata => {
-    console.log("boom");
-    const bIsNotIncluded = l_annotationdata.findIndex(item => item === o_annotationdata.detail) === -1;
+  _s();
+  _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_COMPLETED, o_annotationdata => {
+    console.log("===> boom - annotation completed");
+    const bIsNotIncluded = lo_annotationdata.findIndex(item => item === o_annotationdata.detail) === -1;
     if (bIsNotIncluded) {
-      l_annotationdata.push(o_annotationdata.detail);
+      lo_annotationdata.push(o_annotationdata.detail);
     }
   });
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem)();
+  const {
+    segmentationService
+  } = servicesManager.services;
+  const lo_segmentations = segmentationService.getSegmentations();
+  console.log("===> num segs:", lo_segmentations.length);
+  const lo_allVolumes = [];
+  lo_segmentations.forEach((segmentation, segIndex) => {
+    const segments = segmentation.segments;
+    Object.keys(segments).forEach(segmentKey => {
+      const segment = segments[segmentKey];
+      const volume = segment?.cachedStats?.namedStats?.volume?.value;
+      if (volume !== undefined) {
+        lo_allVolumes.push({
+          segmentation: segIndex + 1,
+          segment: segmentKey,
+          volume
+        });
+      }
+    });
+  });
+  console.table(lo_allVolumes);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-white w-full text-center"
   }, `Web Quiz version : ${(0,math_js__WEBPACK_IMPORTED_MODULE_1__.sqrt)(9)}`, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Questions_btnComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    annotationData: l_annotationdata
+    measurementData: lo_annotationdata,
+    segmentationData: lo_allVolumes
   }));
 }
+_s(WebQuizSidePanelComponent, "9im43WjHHpYAdxqRAjz29gyfNeo=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem];
+});
 _c = WebQuizSidePanelComponent;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WebQuizSidePanelComponent);
 var _c;
@@ -219,11 +334,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./id */ "../../../../ohif-extensions/ohif-extension-webquiz/src/id.js");
 /* harmony import */ var _WebQuizSidePanelComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WebQuizSidePanelComponent */ "../../../../ohif-extensions/ohif-extension-webquiz/src/WebQuizSidePanelComponent.tsx");
+/* harmony import */ var _CreateCustomIcon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateCustomIcon */ "../../../../ohif-extensions/ohif-extension-webquiz/src/CreateCustomIcon.tsx");
+/* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
+
+
+(0,_CreateCustomIcon__WEBPACK_IMPORTED_MODULE_2__["default"])(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons);
 
 /**
  * You can remove any of the following modules if you don't need them.
@@ -256,10 +376,11 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
     commandsManager,
     extensionManager
   }) => {
+    // console.log('🧪 In Panel Module Is baines-logo in Icons?', 'baines-logo' in Icons);
     return [{
       name: "webquiz",
-      iconname: "BainesLogo",
-      iconlabel: "",
+      iconName: 'baines-logo',
+      iconLabel: "Web Quiz",
       label: "Web Quiz",
       component: _WebQuizSidePanelComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
     }];
@@ -387,6 +508,20 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 } else {
 	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
 }
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/assets/BainesTransparentTiny.png":
+/*!*******************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/assets/BainesTransparentTiny.png ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/BainesTransparentTiny.png");
 
 /***/ }),
 

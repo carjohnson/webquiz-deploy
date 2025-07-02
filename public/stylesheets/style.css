@@ -9,6 +9,9 @@ a {
   font-size: 20px;
 }
 
+h4{
+font-weight: bold;
+}
 
 .form-group {
   margin-bottom: 1rem;

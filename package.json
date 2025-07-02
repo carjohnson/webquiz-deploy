@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstart": "SET DEBUG=webquizproject:* & yarn devstart"
+    "serverstart": "cross-env DEBUG=* & yarn devstart"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "pug": "^3.0.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "express-session": "^1.18.1"
   }
 }

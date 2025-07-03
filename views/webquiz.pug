@@ -7,7 +7,9 @@ block content
 
   script.
     const lengths = !{JSON.stringify(lengths)};
-    console.log('*****>>>>> Lengths received from server:', lengths); 
+    const volumes = !{JSON.stringify(volumes)};
+    console.log('📏 Lengths:', lengths);
+    console.log('📦 Volumes:', volumes);
 
   <br><br>
   h4="Annotations"
@@ -21,5 +23,24 @@ block content
         li= length
   else
     p No lengths received.
+
+  <br><br>
+  <label><strong>Volumes</strong></label>
+  <br><br>
+  if volumes && volumes.length
+    table(border="1" cellpadding="5" cellspacing="0")
+      thead
+        tr
+          th Segmentation
+          th Segment
+          th Volume (cc)
+      tbody
+        each v in volumes
+          tr
+            td= v.segmentation
+            td= v.segment
+            td= v.volume
+  else
+    p No volume data received.
 
   h3(style="color: orange")=msg

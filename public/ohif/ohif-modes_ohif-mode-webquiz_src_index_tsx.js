@@ -212,7 +212,7 @@ function modeFactory({
           props: {
             leftPanels: [ohif.thumbnailList],
             leftPanelResizable: true,
-            rightPanels: ['ohif-extension-webquiz.panelModule.webquiz', cornerstone.measurements, cornerstone.segmentation],
+            rightPanels: ['ohif-extension-webquiz.panelModule.webquiz', cornerstone.segmentation, cornerstone.measurements],
             rightPanelResizable: true,
             viewports: [{
               namespace: cornerstone.viewport,

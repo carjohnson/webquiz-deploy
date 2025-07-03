@@ -34,12 +34,6 @@ window.addEventListener('message', (event) => {
 
     const payload = { lengths, volumes };
 
-    // postDataToWebQuiz('lengths', { lengths });
-    // postDataToWebQuiz('volumes', { volumes });
-
-
-
-
     postDataToWebQuiz('lengths', { lengths }).then(() => {
       received.lengths = true;
       maybeReloadIframe();
@@ -50,27 +44,27 @@ window.addEventListener('message', (event) => {
       maybeReloadIframe();
     });
   
-
  }
 });
 
+// dynamic function to return specific fetch for requested 
+//    route with associated data
 function postDataToWebQuiz(path, payload) {
   return fetch(`/webquiz/${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ payload })
   })
-    .then(res => res.json())
+    .then(res => res.json())  // turn response into usable object ('data')
     .then(data => {
       console.log(`✅ Server responded for ${path}:`, data);
-      // window.parent.postMessage({ type: 'reload-webquiz' }, '*');
       return data; // hand control back to caller
     })
     .catch(error => console.error(`❌ Error posting ${path}:`, error));
 }
 
 
-// this function checks that all data has been received before reloading
+// Check that all data has been received before reloading
 //  the panel. We only want one reload.
 function maybeReloadIframe() {
   if (received.lengths && received.volumes) {

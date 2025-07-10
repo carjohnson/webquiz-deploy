@@ -4,23 +4,30 @@ console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
 let received = { lengths: false, volumes: false };
 
+// // for debugging
+// window.addEventListener('message', (event) => {
+//     console.log('*******  Raw message received in WebQuiz:', event);
+// });
 
 window.addEventListener('message', (event) => {
-    console.log('*******  Raw message received in WebQuiz:', event);
-});
-
-window.addEventListener('message', (event) => {
-  console.log('********** Message listener triggered in webquiz iframe');
+  console.log('\x1b[32m*******  Raw message received in WebQuiz:\x1b[0m"', event);
   if (event.data.type === 'annotations') {
+    console.log('\x1b[32m********** In webquiz iframe - handling all annotations\x1b[0m"');
 
     const measurements = event.data.measurementdata;
     const segmentations = event.data.segmentationdata;
     console.log('Received measurements:', measurements);
     console.log('Received segmentations:', segmentations);
 
-    const lengths = measurements.flatMap(measurement => {
-      const cachedStats = measurement.annotation?.data?.cachedStats || {};
-      return Object.values(cachedStats).map(stat => stat.length).filter(Boolean);
+    // const lengths = measurements.flatMap(measurement => {
+    //   const cachedStats = measurement.annotation?.data?.cachedStats || {};
+    //   return Object.values(cachedStats).map(stat => stat.length).filter(Boolean);
+    // });
+
+    const lengths = measurements.flatMap((statsObj) => {
+      return Object.values(statsObj)
+        .filter((stat) => typeof stat === 'object' && stat !== null && 'length' in stat)
+        .map((stat) => stat.length);
     });
 
     const volumes = segmentations.map(entry => ({

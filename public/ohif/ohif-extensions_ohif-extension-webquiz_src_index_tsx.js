@@ -103,16 +103,22 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 function BtnComponent({
   measurementData,
-  segmentationData
+  segmentationData,
+  refreshData,
+  setIsSaved
 }) {
   const handleButtonClick = () => {
-    console.log('Number of measurements: ', measurementData.length);
-    console.log("Number of segmentations:", segmentationData.length);
+    // refresh the annotation data before posting
+    // segmentation data is refreshed automatically through segmentation service
+    const [freshMeasurementData, freshSegmentationData] = refreshData();
+    console.log('Number of measurements: ', freshMeasurementData.length);
+    console.log("Number of segments:", freshSegmentationData.length);
     window.parent.postMessage({
       type: 'annotations',
-      measurementdata: measurementData,
-      segmentationdata: segmentationData
+      measurementdata: freshMeasurementData,
+      segmentationdata: freshSegmentationData
     }, '*');
+    setIsSaved(true);
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: handleButtonClick
@@ -184,53 +190,172 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 
-const lo_annotationdata = [];
+
 
 /**
  *  Creating a React component to be used as a side panel in OHIF.
  *  Also performs a simple div that uses Math.js to output the square root.
  */
+
 function WebQuizSidePanelComponent() {
   _s();
-  _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_COMPLETED, o_annotationdata => {
-    console.log("===> boom - annotation completed");
-    const bIsNotIncluded = lo_annotationdata.findIndex(item => item === o_annotationdata.detail) === -1;
-    if (bIsNotIncluded) {
-      lo_annotationdata.push(o_annotationdata.detail);
-    }
-  });
+  // set up useEffect hook to manage gathering all data from services
+  //  as the other components may be updating asynchronously and this
+  //  component needs to be subscribed to those updates
+
   const {
     servicesManager
   } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem)();
   const {
     segmentationService
   } = servicesManager.services;
-  const lo_segmentations = segmentationService.getSegmentations();
-  console.log("===> num segs:", lo_segmentations.length);
-  const lo_allVolumes = [];
-  lo_segmentations.forEach((segmentation, segIndex) => {
-    const segments = segmentation.segments;
-    Object.keys(segments).forEach(segmentKey => {
-      const segment = segments[segmentKey];
-      const volume = segment?.cachedStats?.namedStats?.volume?.value;
-      if (volume !== undefined) {
-        lo_allVolumes.push({
-          segmentation: segIndex + 1,
-          segment: segmentKey,
-          volume
-        });
+  const [segmentationData, setSegmentationData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [annotationData, setAnnotationData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [isSaved, setIsSaved] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
+  // generic for capture of cachedStats object
+
+  // Annotations listeners
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const handleAnnotationChange = () => {
+      const lo_annotationStats = getAnnotationsStats();
+      setAnnotationData(lo_annotationStats);
+
+      // const lengths = lo_annotationStats.flatMap((statsObj) => 
+      //     Object.values(statsObj)
+      //         .filter((stat): stat is { length: number } => typeof stat === 'object' && stat !== null && 'length' in stat)
+      //         .map((stat) => stat.length)
+      //     );
+
+      // console.log("LENGTHS ===>", lengths);
+    };
+
+    // Register listeners
+    // cornerstone.eventTarget.addEventListener(cornerstoneTools.Enums.Events.ANNOTATION_ADDED, handleAnnotationChange);
+    _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_MODIFIED, handleAnnotationChange);
+    _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_REMOVED, handleAnnotationChange);
+    _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_COMPLETED, handleAnnotationChange);
+
+    // Cleanup on unmount
+    return () => {
+      // cornerstone.eventTarget.removeEventListener(cornerstoneTools.Enums.Events.ANNOTATION_ADDED, handleAnnotationChange);
+      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.removeEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_MODIFIED, handleAnnotationChange);
+      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.removeEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_REMOVED, handleAnnotationChange);
+      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.removeEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.ANNOTATION_COMPLETED, handleAnnotationChange);
+    };
+  }, []);
+
+  //=====================
+  // Segmentation listener
+
+  // don't rely on segmentationService. 
+  // These useEffects are tapping into the events for a more immediate response
+  // useEffect(() => {
+  //     const lo_allVolumes = buildVolumeTable();
+  //     setSegmentationData(lo_allVolumes);
+  //     console.table(lo_allVolumes);
+  //     }, [segmentationService]);
+  // Refactored ... ===>
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const handleSegmentationChange = () => {
+      const lo_allVolumes = buildVolumeTable();
+      setSegmentationData(lo_allVolumes);
+      console.table(lo_allVolumes);
+    };
+    _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_ADDED, handleSegmentationChange);
+    _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_DELETED, handleSegmentationChange);
+    _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_MODIFIED, handleSegmentationChange);
+    _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_DATA_MODIFIED, handleSegmentationChange);
+    return () => {
+      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.removeEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_ADDED, handleSegmentationChange);
+      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.removeEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_DELETED, handleSegmentationChange);
+      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.removeEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_MODIFIED, handleSegmentationChange);
+      _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.removeEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_DATA_MODIFIED, handleSegmentationChange);
+    };
+  }, []);
+
+  //=====================
+  // watch for changes to the state properties
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (annotationData.length > 0) {
+      setIsSaved(false);
+      // console.log(' Annotation Change');
+    }
+  }, [annotationData]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (segmentationData.length > 0) {
+      setIsSaved(false);
+      // console.log(' Segmentation Change');
+    }
+  }, [segmentationData]);
+
+  ////////////////////////////////////////////
+  //=====================
+  // helper functions
+  //=====================
+  ////////////////////////////////////////////
+
+  //=====================
+  // function to get list of all cached annotation stats
+  const getAnnotationsStats = () => {
+    const lo_annotationStats = [];
+    const allAnnotations = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.annotation.state.getAllAnnotations();
+    allAnnotations.forEach((ann, index) => {
+      const stats = ann.data?.cachedStats;
+      if (stats && Object.keys(stats).length > 0) {
+        lo_annotationStats.push(stats);
+        // console.log("ANNOTATION Tool ===>", ` Annotation ${index}:`, ann.data.cachedStats);
       }
     });
-  });
-  console.table(lo_allVolumes);
+    return lo_annotationStats;
+  };
+
+  //=====================
+  // function to get the list of objects holding segment volume data
+  const buildVolumeTable = () => {
+    const lo_segmentations = segmentationService.getSegmentations();
+    const lo_allVolumes = [];
+    lo_segmentations.forEach((segmentation, segIndex) => {
+      const segments = segmentation.segments;
+      Object.keys(segments).forEach(segmentKey => {
+        const segment = segments[segmentKey];
+        const volume = segment?.cachedStats?.namedStats?.volume?.value;
+        if (volume !== undefined) {
+          lo_allVolumes.push({
+            segmentation: segIndex + 1,
+            segment: segmentKey,
+            volume
+          });
+        }
+      });
+    });
+    return lo_allVolumes;
+  };
+
+  //=====================
+  const refreshData = () => {
+    const lo_annotationStats = getAnnotationsStats();
+    setAnnotationData(lo_annotationStats);
+    const lo_allVolumes = buildVolumeTable();
+    setSegmentationData(lo_allVolumes);
+    console.table(lo_allVolumes);
+    return [lo_annotationStats, lo_allVolumes]; // ensures stats are updated before continuing
+  };
+
+  ////////////////////////////////////////////
+  //=====================
+  // return
+  //=====================
+  ////////////////////////////////////////////
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-white w-full text-center"
-  }, `Web Quiz version : ${(0,math_js__WEBPACK_IMPORTED_MODULE_1__.sqrt)(9)}`, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Questions_btnComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    measurementData: lo_annotationdata,
-    segmentationData: lo_allVolumes
+  }, `Web Quiz version : ${(0,math_js__WEBPACK_IMPORTED_MODULE_1__.sqrt)(4)}`, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Questions_btnComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    measurementData: annotationData,
+    segmentationData: segmentationData,
+    refreshData: refreshData,
+    setIsSaved: setIsSaved
   }));
 }
-_s(WebQuizSidePanelComponent, "9im43WjHHpYAdxqRAjz29gyfNeo=", false, function () {
+_s(WebQuizSidePanelComponent, "qOuSSmRrH0wB2hLqw5zVXfr9I3o=", false, function () {
   return [_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem];
 });
 _c = WebQuizSidePanelComponent;

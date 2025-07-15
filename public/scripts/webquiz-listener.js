@@ -1,39 +1,109 @@
-console.log("*******  In listener script");
-console.log("Current path:", window.location.pathname);
-console.log("Is inside iframe:", window !== window.parent);
+console.log("\x1b[32m*******  In listener script\x1b[0m");
+console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
+console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
-window.addEventListener('message', (event) => {
-    console.log('*******  Raw message received in WebQuiz:', event);
-});
+let received = { lengths: false, volumes: false };
 
-window.addEventListener('message', (event) => {
-  console.log('********** Message listener triggered in webquiz iframe');
-  if (event.data.type === 'annotation') {
-    console.log('Received annotation:', event.data.annotationdata);
 
-    const annotations = event.data.annotationdata;
+window.addEventListener('message', async (event) => {
+  console.log('\x1b[32m*******  Raw message received in WebQuiz:\x1b[0m"', event);
 
-    const lengths = annotations.flatMap(annotation => {
-      const cachedStats = annotation.annotation.data.cachedStats;
-      return Object.values(cachedStats).map(stat => stat.length);
+  if (event.data?.type === "SEGMENTATION_UPLOAD") {
+    const { filename, payload } = event.data;
+    console.log("📥 Received segmentation upload:", event.data.filename);
+    console.log("Payload is a Blob?", event.data.payload instanceof Blob);
+    
+ 
+    postDataToWebQuizForDICOM('dicomsegdata', payload, filename).then(() => {
+      received.dicomsegdata = true;
+      maybeReloadIframe();
+    });
+  
+  }
+
+  if (event.data?.type === 'annotations') {
+    console.log('\x1b[32m********** In webquiz iframe - handling all annotations\x1b[0m"');
+
+    const measurements = event.data.measurementdata;
+    const segmentations = event.data.segmentationdata;
+    console.log('Received measurements:', measurements);
+    console.log('Received segmentations:', segmentations);
+
+    // const lengths = measurements.flatMap(measurement => {
+    //   const cachedStats = measurement.annotation?.data?.cachedStats || {};
+    //   return Object.values(cachedStats).map(stat => stat.length).filter(Boolean);
+    // });
+
+    const lengths = measurements.flatMap((statsObj) => {
+      return Object.values(statsObj)
+        .filter((stat) => typeof stat === 'object' && stat !== null && 'length' in stat)
+        .map((stat) => stat.length);
     });
 
+    const volumes = segmentations.map(entry => ({
+      segmentation: entry.segmentation,
+      segment: entry.segment,
+      volume: entry.volume
+    }));
+
     console.log('********** Lengths extracted in webquiz_iframe:', lengths); // An array of all lengths across all annotations
+    console.log('********** Volumes extracted:', volumes);
 
+    const payload = { lengths, volumes };
 
-  fetch('/webquiz', {
+    postDataToWebQuiz('lengths', { lengths }).then(() => {
+      received.lengths = true;
+      maybeReloadIframe();
+    });
+
+    postDataToWebQuiz('volumes', { volumes }).then(() => {
+      received.volumes = true;
+      maybeReloadIframe();
+    });
+  
+ }
+});
+
+// dynamic function to return specific fetch for requested 
+//    route with associated data
+function postDataToWebQuiz(path, payload) {
+  return fetch(`/webquiz/${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ lengths })
+    body: JSON.stringify({ payload })
   })
-    .then(res => {
-      return res.json();
-    })
+    .then(res => res.json())  // turn response into usable object ('data')
     .then(data => {
-      console.log('✅ Server responded with JSON:', data);
-      window.parent.postMessage({ type: 'reload-webquiz' }, '*');
+      console.log(`✅ Server responded for ${path}:`, data);
+      return data; // hand control back to caller
     })
-    .catch(error => console.error('❌ Error posting lengths:', error));
+    .catch(error => console.error(`❌ Error posting ${path}:`, error));
+}
+
+function postDataToWebQuizForDICOM(path, blob, filename) {
+  return fetch(`/webquiz/${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/octet-stream',
+      'X-Filename': filename
+    },
+    body: blob
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log(`✅ Server responded for ${path}:`, data);
+      return data;
+    })
+    .catch(error => console.error(`❌ Error posting ${path}:`, error));
+}
+
+
+// Check that all data has been received before reloading
+//  the panel. We only want one reload.
+function maybeReloadIframe() {
+  if (received.lengths && received.volumes) {
+    window.parent.postMessage({ type: 'reload-webquiz' }, '*');
+    received = { lengths: false, volumes: false };
   }
-});
+}
 

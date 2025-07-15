@@ -35,6 +35,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// set up session ID to store info that both client and server
+//  can access through req.session
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
   resave: false,
@@ -51,6 +53,11 @@ app.use('/iframehost', iframehostRouter);
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// log incoming requests
+app.use((req, res, next) => {
+  console.log(`📮 [${req.method}] ${req.originalUrl}`);
+  next();
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

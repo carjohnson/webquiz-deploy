@@ -55,7 +55,7 @@
 /******/ 	// the startup function
 /******/ 	__webpack_require__.x = () => {
 /******/ 		// Load entry module and return exports
-/******/ 		var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_cornerstonejs_tools_dist_esm_utilities_segmentation_index_js","vendors-node_modules_cornerstonejs_tools_dist_esm_index_js","vendors-node_modules_comlink_dist_esm_comlink_mjs","vendors-node_modules_kitware_vtk_js_Common_DataModel_ImageData_js","vendors-node_modules_cornerstonejs_core_dist_esm_index_js","vendors-node_modules_cornerstonejs_polymorphic-segmentation_dist_esm_workers_polySegConverter-30c086"], () => (__webpack_require__("../../../node_modules/@cornerstonejs/polymorphic-segmentation/dist/esm/workers/polySegConverters.js")))
+/******/ 		var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_cornerstonejs_tools_dist_esm_utilities_segmentation_index_js","vendors-node_modules_cornerstonejs_tools_dist_esm_index_js-node_modules_cornerstonejs_tools_d-153b78","vendors-node_modules_comlink_dist_esm_comlink_mjs","vendors-node_modules_kitware_vtk_js_Common_DataModel_ImageData_js","vendors-node_modules_cornerstonejs_core_dist_esm_index_js","vendors-node_modules_cornerstonejs_polymorphic-segmentation_dist_esm_workers_polySegConverter-30c086"], () => (__webpack_require__("../../../node_modules/@cornerstonejs/polymorphic-segmentation/dist/esm/workers/polySegConverters.js")))
 /******/ 		__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 		return __webpack_exports__;
 /******/ 	};
@@ -169,7 +169,7 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("77cd08c4a501d5e92c94")
+/******/ 		__webpack_require__.h = () => ("7679883f0a48d52851cc")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -1176,7 +1176,7 @@
 /******/ 	(() => {
 /******/ 		var next = __webpack_require__.x;
 /******/ 		__webpack_require__.x = () => {
-/******/ 			return Promise.all(["vendors-node_modules_cornerstonejs_tools_dist_esm_utilities_segmentation_index_js","vendors-node_modules_cornerstonejs_tools_dist_esm_index_js","vendors-node_modules_comlink_dist_esm_comlink_mjs","vendors-node_modules_kitware_vtk_js_Common_DataModel_ImageData_js","vendors-node_modules_cornerstonejs_core_dist_esm_index_js","vendors-node_modules_cornerstonejs_polymorphic-segmentation_dist_esm_workers_polySegConverter-30c086"].map(__webpack_require__.e, __webpack_require__)).then(next);
+/******/ 			return Promise.all(["vendors-node_modules_cornerstonejs_tools_dist_esm_utilities_segmentation_index_js","vendors-node_modules_cornerstonejs_tools_dist_esm_index_js-node_modules_cornerstonejs_tools_d-153b78","vendors-node_modules_comlink_dist_esm_comlink_mjs","vendors-node_modules_kitware_vtk_js_Common_DataModel_ImageData_js","vendors-node_modules_cornerstonejs_core_dist_esm_index_js","vendors-node_modules_cornerstonejs_polymorphic-segmentation_dist_esm_workers_polySegConverter-30c086"].map(__webpack_require__.e, __webpack_require__)).then(next);
 /******/ 		};
 /******/ 	})();
 /******/ 	

@@ -3,26 +3,32 @@ extends layout
 block content
   h1= title
 
-  <form action="/users/register" method="POST">
-      <fieldset>
-        <label>Username</label>
-        <input type ="text" id = 'username' name="username" placeholder="renfield" required>
-        <br><br>
+ 
+  form(action="/users/register" method="POST")
+    fieldset
+      div.form-group
+        label(for="username") Username
+        input#username(type="text" name="username" placeholder="renfield" required)
 
-        <label>Email ID</label>
-        <input type ="email" id = 'email' name="email" placeholder="abc@example.com" required>
-        <br><br>
+      div.form-group
+        label(for="email") Email ID
+        input#email(type="email", name="email" placeholder="abc@example.com" required)
 
-        <label>Password</label>
-        <input type="password" id = "password" name="password" required>
-        <br><br>
+      div.form-group
+        label(for="password") Password
+        input#password(type="password" name="password" required)
 
-        <button type ="reset">Reset</button>
-        <button type ="submit">Submit</button>
-        <br></br>
-        <a id="loginlink" href="/users/login">Login</a>
-      </fieldset>
-  </form>
-    
+      div.form-group
+        label(for="role") Select Role
+        select#role(name="role" required)
+          option(value="reader") Reader
+          option(value="admin") Admin
 
-  h3(style="color: orange")=msg
+      div.button-group
+        button(type="reset") Reset
+        button(type="submit") Register
+
+      br
+      a#loginlink(href="/users/login") Login
+
+  h3(style="color: #FF9500")=msg

@@ -4,14 +4,24 @@ console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
 let received = { lengths: false, volumes: false };
 
-// // for debugging
-// window.addEventListener('message', (event) => {
-//     console.log('*******  Raw message received in WebQuiz:', event);
-// });
 
-window.addEventListener('message', (event) => {
+window.addEventListener('message', async (event) => {
   console.log('\x1b[32m*******  Raw message received in WebQuiz:\x1b[0m"', event);
-  if (event.data.type === 'annotations') {
+
+  if (event.data?.type === "SEGMENTATION_UPLOAD") {
+    const { filename, payload } = event.data;
+    console.log("📥 Received segmentation upload:", event.data.filename);
+    console.log("Payload is a Blob?", event.data.payload instanceof Blob);
+    
+ 
+    postDataToWebQuizForDICOM('dicomsegdata', payload, filename).then(() => {
+      received.dicomsegdata = true;
+      maybeReloadIframe();
+    });
+  
+  }
+
+  if (event.data?.type === 'annotations') {
     console.log('\x1b[32m********** In webquiz iframe - handling all annotations\x1b[0m"');
 
     const measurements = event.data.measurementdata;
@@ -66,6 +76,23 @@ function postDataToWebQuiz(path, payload) {
     .then(data => {
       console.log(`✅ Server responded for ${path}:`, data);
       return data; // hand control back to caller
+    })
+    .catch(error => console.error(`❌ Error posting ${path}:`, error));
+}
+
+function postDataToWebQuizForDICOM(path, blob, filename) {
+  return fetch(`/webquiz/${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/octet-stream',
+      'X-Filename': filename
+    },
+    body: blob
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log(`✅ Server responded for ${path}:`, data);
+      return data;
     })
     .catch(error => console.error(`❌ Error posting ${path}:`, error));
 }

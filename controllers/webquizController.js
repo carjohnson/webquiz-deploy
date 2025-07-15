@@ -1,20 +1,25 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
+// NOTE: dicomMeta comes from dicomsegController
 
 exports.index = asyncHandler(async (req, res, next) => {
   const lengths = req.session.lengths || [];
   const volumes = req.session.volumes || [];
+  const dicomMeta = req.session.dicomMeta || [];
+
   console.log('🧪 View render data:', { lengths, volumes: req.session.volumes });
   // connect to *.pug view
   res.render("webquiz", {
     title: "WebQuiz Panel",
     lengths,
-    volumes
+    volumes,
+    dicomMeta
   });
   // clear after rendering
   req.session.lengths = null;
   req.session.volumes = null;
+  req.session.dicomMeta = null;
 });
 
 

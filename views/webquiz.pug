@@ -8,6 +8,7 @@ block content
   script.
     const lengths = !{JSON.stringify(lengths)};
     const volumes = !{JSON.stringify(volumes)};
+
     console.log('📏 Lengths:', lengths);
     console.log('📦 Volumes:', volumes);
 
@@ -43,4 +44,17 @@ block content
   else
     p No volume data received.
 
+  <br><br>
+  <label><strong>Dicom Seg Metadata</strong></label>
+  <br><br>
+  if dicomMeta && dicomMeta.labels && dicomMeta.labels.length
+    p Modality: #{dicomMeta.modality}
+    p Series UID: #{dicomMeta.seriesUID}
+
+    label Segments:
+    ul
+      each label in dicomMeta.labels
+        li= label
+  else
+    p No segmentation metadata received
   h3(style="color: orange")=msg

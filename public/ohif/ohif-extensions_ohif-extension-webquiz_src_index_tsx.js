@@ -1,5 +1,467 @@
-"use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([["ohif-extensions_ohif-extension-webquiz_src_index_tsx"],{
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/index.js":
+/*!****************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/index.js ***!
+  \****************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! ./lib */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/index.js");
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/arithmetic/index.js":
+/*!*******************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/arithmetic/index.js ***!
+  \*******************************************************************************************************/
+/***/ ((module) => {
+
+module.exports = {
+
+    ceil: function(val) {
+        return Math.ceil(val / 10) * 10;
+    },
+
+    round: function(n) {
+        return Math.round(n);
+    },
+
+    fround: function(n) {
+        return Math.fround(n)
+    },
+
+    /**
+     * Returns the largest integer less than or equal to the given number.
+     * @param n
+     * @returns {number}
+     */
+    floor: function(n) {
+        return Math.floor(n);
+    },
+
+    sign: function(n) {
+        return Math.sign(n);
+    },
+
+    abs: function(n) {
+        return Math.abs(n)
+    },
+
+    imul: function(a, b) {
+        return Math.imul(a, b);
+    },
+
+    pow: function(base, exp) {
+        return Math.pow(base, exp);
+    },
+
+    square: function(val) {
+        return val * val;
+    },
+
+    cube: function(val) {
+        return val * val * val;
+    },
+
+    sqrt: function(n) {
+        return Math.sqrt(n);
+    },
+
+    cbrt: function (n) {
+        return Math.cbrt(n);
+    },
+
+    exp: function (n) {
+        return Math.exp(n);
+    },
+
+    expm1: function(n) {
+        return Math.expm1(n);
+    },
+
+    trunc: function(n) {
+        return Math.trunc(n);
+    },
+
+    greatestCommonDivisor: function gcd(x, y) {
+        var remainder = x % y;
+        if (remainder === 0) {
+            return y;
+        }
+
+        return gcd(y, remainder);
+    },
+
+    log: function (n) {
+        return Math.log(n);
+    },
+
+    log2: function (n) {
+        return Math.log2(n);
+    },
+
+    log10: function (n) {
+        return Math.log10(n);
+    },
+
+    log1p: function(n) {
+        return Math.log1p(n);
+    },
+
+    hypot: function(...arr) {
+        return Math.hypot(...arr);
+    }, 
+
+    /**
+     * Performs ceil in the n decimal digit of num
+     * @param num
+     * @param n
+     * @returns {number}
+     */
+    dCeil: function(num, n) {
+        let multiplyValue = Math.pow(10, n);
+        console.log('dCeil', num, n, multiplyValue, Math.ceil(num / multiplyValue) * multiplyValue)
+        return Math.ceil(num * multiplyValue) / multiplyValue;
+    },
+
+    /**
+     * Performs round in the n decimal digit of num
+     * @param num
+     * @param n
+     * @returns {number}
+     */
+    dRound: function(num, n) {
+        let multiplyValue = Math.pow(10, n);
+        return Math.round(num * multiplyValue) / multiplyValue;
+    },
+
+    /**
+     * Performs floor in the n decimal digit of num
+     * @param num
+     * @param n
+     * @returns {number}
+     */
+    dFloor: function(num, n) {
+        let multiplyValue = Math.pow(10, n);
+        return Math.floor(num * multiplyValue) / multiplyValue;
+    },
+
+    /**
+     * Performs trunc in the n decimal digit of num
+     * @param num
+     * @param n
+     * @returns {number}
+     */
+    dTrunc: function(num, n) {
+        let multiplyValue = Math.pow(10, n);
+        return Math.trunc(num * multiplyValue) / multiplyValue;
+    }
+
+};
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/constants.js":
+/*!************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/constants.js ***!
+  \************************************************************************************************/
+/***/ ((module) => {
+
+/**
+ * A constants class to maintain all the fixed variables.
+ * @type {Object}
+ */
+module.exports = Object.freeze({
+    /**
+     * Built-in constants.
+     */
+    PI: Math.PI,
+    E: Math.E,
+    LN10: Math.LN10,
+    LN2: Math.LN2,
+    LOG10E: Math.LOG10E,
+    LOG2E: Math.LOG2E,
+    SQRT1_2: Math.SQRT1_2,
+    SQRT2: Math.SQRT2,
+
+
+    /**
+     * Unit converter constants.
+     */
+    FEET_TO_INCHES_FACTOR:  12,
+    FEET_TO_METERS_FACTOR: 0.3048,
+    FEET_TO_MILES_FACTOR: 1 / 5280,
+    FEET_TO_YARDS_FACTOR: 1 / 3,
+    INCHES_TO_FEET_FACTOR: 1 / 12,
+    INCHES_TO_METERS_FACTOR: 0.0254,
+    INCHES_TO_MILES_FACTOR: 1 / 63360,
+    INCHES_TO_YARDS_FACTOR: 1 / 36,
+    MILES_TO_FEET_FACTOR: 5280,
+    MILES_TO_INCHES_FACTOR: 63360,
+    MILES_TO_METERS_FACTOR: 1609.344,
+    MILES_TO_YARDS_FACTOR: 1760,
+    YARDS_TO_INCHES_FACTOR: 36,
+    YARDS_TO_FEET_FACTOR: 3,
+    YARDS_TO_METERS_FACTOR: 0.9144,
+    YARDS_TO_MILES_FACTOR: 1 / 1760,
+    CELSIUS_TO_FAHRENEIT_MUTLIPLIER_FACTOR: 9 / 5,
+    CELSIUS_TO_FAHRENEIT_FACTOR: 32
+
+
+});
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/index.js":
+/*!********************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/index.js ***!
+  \********************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = Object.assign({},
+    __webpack_require__(/*! ./utils */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/utils/index.js"),
+    __webpack_require__(/*! ./statistics */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/statistics/index.js"),
+    __webpack_require__(/*! ./probability */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/probability/index.js"),
+    __webpack_require__(/*! ./arithmetic */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/arithmetic/index.js"),
+    __webpack_require__(/*! ./unit */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/unit/index.js"),
+    __webpack_require__(/*! ./trigonometric */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/trigonometric/index.js")
+);
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/probability/index.js":
+/*!********************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/probability/index.js ***!
+  \********************************************************************************************************/
+/***/ ((module) => {
+
+module.exports = {
+
+    random: function() {
+        return Math.random();
+    },
+
+    randomElement: function(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    },
+
+    factorial: function(n) {
+        return n * (n-1);
+    }
+};
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/statistics/index.js":
+/*!*******************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/statistics/index.js ***!
+  \*******************************************************************************************************/
+/***/ ((module) => {
+
+module.exports = {
+
+    minElement: function(arr) {
+        return Math.min.apply(null, arr);
+    },
+
+    maxElement: function(arr) {
+        return Math.max.apply(null, arr);
+    },
+
+    between: function (val, min, max) {
+        return min<=val==val<=max;
+    }
+}
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/trigonometric/index.js":
+/*!**********************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/trigonometric/index.js ***!
+  \**********************************************************************************************************/
+/***/ ((module) => {
+
+module.exports = {
+// Trigonometric functions
+    sin: function (n) {
+        return Math.sin(n);
+    },
+
+    cos: function (n) {
+        return Math.cos(n);
+    },
+
+    tan: function (n) {
+        return Math.tan(n);
+    },
+
+    acos: function (n) {
+        return Math.acos(n);
+    },
+
+    asin: function (n) {
+        return Math.asin(n);
+    },
+
+    acosh: function (n) {
+        return Math.acosh(n);
+    },
+
+    atan: function (n) {
+        return Math.atan(n);
+    },
+
+    /**
+     * Arc tangent of two numbers. Both arguments are used to determine the quadrant of the result.
+     * @param y
+     * @param x
+     * @returns {number} an angle expressed in radians
+     */
+    atan2: function (y, x) {
+        return Math.atan2(y, x);
+    }
+
+};
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/unit/index.js":
+/*!*************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/unit/index.js ***!
+  \*************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var constants = __webpack_require__(/*! ../constants */ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/constants.js");
+module.exports = {
+
+    // Unit converters
+    yardsToFeet: function(n) {
+        return n * constants.YARDS_TO_FEET_FACTOR;
+    },
+
+    feetToYards: function(n) {
+        return n * constants.FEET_TO_YARDS_FACTOR;
+    },
+
+    yardsToInches: function(n) {
+        return n * constants.YARDS_TO_INCHES_FACTOR;
+    },
+
+    inchesToYards: function(n) {
+        return constants.INCHES_TO_YARDS_FACTOR * n;
+    },
+
+    inchesToMiles: function(n) {
+        return constants.INCHES_TO_MILES_FACTOR * n;
+    },
+
+    feetToInches: function(n) {
+        return constants.FEET_TO_INCHES_FACTOR * n;
+    },
+
+    feetToMeters: function (n) {
+        return constants.FEET_TO_METERS_FACTOR * n;
+    },
+
+    feetToMiles: function(n) {
+        return constants.FEET_TO_MILES_FACTOR * n;
+    },
+
+    inchesToFeet: function(n) {
+        return constants.INCHES_TO_FEET_FACTOR * n;
+    },
+
+    inchesToMeters: function(n) {
+        return constants.INCHES_TO_METERS_FACTOR * n;
+    },
+
+    milesToYards: function(n) {
+        return constants.MILES_TO_YARDS_FACTOR * n;
+    },
+
+    milesToMeters: function(n) {
+        return constants.MILES_TO_METERS_FACTOR * n;
+    },
+
+    milesToInches: function(n) {
+        return constants.MILES_TO_INCHES_FACTOR * n;
+    },
+
+    milesToFeet: function(n) {
+        return constants.MILES_TO_FEET_FACTOR * n;
+    },
+
+    yardsToMiles: function(n) {
+        return constants.YARDS_TO_MILES_FACTOR * n;
+    },
+
+    yardsToMeters: function(n) {
+        return constants.YARDS_TO_METERS_FACTOR * n;
+    },
+
+    toFahrenheit: function(val) {
+        return val * constants.CELSIUS_TO_FAHRENEIT_MUTLIPLIER_FACTOR + constants.CELSIUS_TO_FAHRENEIT_FACTOR;
+    },
+
+    toCelsius: function(val) {
+        return (val - constants.CELSIUS_TO_FAHRENEIT_FACTOR) / constants.CELSIUS_TO_FAHRENEIT_MUTLIPLIER_FACTOR;
+    },
+
+};
+
+
+/***/ }),
+
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/utils/index.js":
+/*!**************************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/node_modules/math.js/lib/utils/index.js ***!
+  \**************************************************************************************************/
+/***/ ((module) => {
+
+module.exports = {
+    isPrime: function(n) {
+        for (var i = 2 ; i < n ; i++) {
+            if (n % i === 0) {
+                return false;
+            }
+        }
+        return n > 1;
+    },
+
+    isEven: function(n) {
+        return n % 2 === 0;
+    },
+
+    isOdd: function(n) {
+        return !this.isEven(n);
+    },
+
+    format: function(val, decimals) {
+        return ( val.toFixed(decimals) )/1;
+    },
+
+    dropFirstDigit: function(n) {
+        return Number(n.toString().substring(1));
+    },
+
+    dropLastDigit: function(n) {
+        return Number(n.toString().substring(0, n.toString().length-1));
+    },
+
+    dropDigit: function(n, pos) {
+        return Number(n.toString().substring(0, pos-1).concat(n.toString().substring(pos, n)));
+    }
+};
+
+
+/***/ }),
 
 /***/ "../../../../ohif-extensions/ohif-extension-webquiz/src/CreateCustomIcon.tsx":
 /*!***********************************************************************************!*\
@@ -7,6 +469,7 @@
   \***********************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -89,6 +552,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \*****************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -96,32 +560,80 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
+/* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
+/* harmony import */ var buffer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! buffer */ "../../../node_modules/buffer/index.js");
+/* harmony import */ var _utils_util_segmentation__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/util_segmentation */ "../../../../ohif-extensions/ohif-extension-webquiz/src/utils/util_segmentation.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
 
 
+
+
+
+
+
+const {
+  datasetToDict
+} = dcmjs__WEBPACK_IMPORTED_MODULE_2__.data;
 function BtnComponent({
   measurementData,
   segmentationData,
   refreshData,
   setIsSaved
 }) {
-  const handleButtonClick = () => {
+  const handleUploadAnnotationsClick = () => {
     // refresh the annotation data before posting
     // segmentation data is refreshed automatically through segmentation service
-    const [freshMeasurementData, freshSegmentationData] = refreshData();
+    const [freshMeasurementData, freshVolumeData] = refreshData();
     console.log('Number of measurements: ', freshMeasurementData.length);
-    console.log("Number of segments:", freshSegmentationData.length);
+    console.log("Number of segments:", freshVolumeData.length);
     window.parent.postMessage({
       type: 'annotations',
       measurementdata: freshMeasurementData,
-      segmentationdata: freshSegmentationData
+      segmentationdata: freshVolumeData
     }, '*');
     setIsSaved(true);
   };
+  const handleUploadSegmentationsClick = async () => {
+    const [,, freshSegmentationData] = refreshData();
+    const selectedId = freshSegmentationData[0]?.segmentationId;
+    const currentViewports = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.utilities.getAllViewportIds?.() || [(0,_cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.getEnabledElement)()?.viewport?.id];
+    const state = {
+      segmentationId: selectedId,
+      viewportIds: currentViewports
+    };
+    const result = await (0,_utils_util_segmentation__WEBPACK_IMPORTED_MODULE_6__.getGeneratedSegmentation)(state);
+    if (!result?.dataset) {
+      console.error("No dataset generated.");
+      return;
+    }
+    uploadDICOMData(result.dataset, `segmentation-${Date.now()}.dcm`);
+  };
+  const uploadDICOMData = (dataset, filename) => {
+    try {
+      const buffer = buffer__WEBPACK_IMPORTED_MODULE_5__.Buffer.from(datasetToDict(dataset).write());
+      const blob = new Blob([buffer], {
+        type: "application/dicom"
+      });
+
+      // Send blob to parent app
+      window.parent.postMessage({
+        type: "SEGMENTATION_UPLOAD",
+        filename,
+        payload: blob
+      }, "*");
+      console.log("📤 Segmentation message posted to parent window.");
+    } catch (error) {
+      console.error("❌ Failed to post segmentation:", error);
+    }
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    onClick: handleButtonClick
+    onClick: handleUploadSegmentationsClick
+  }, "Upload Segmentations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: handleUploadAnnotationsClick
   }, "Post"));
 }
 _c = BtnComponent;
@@ -168,6 +680,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \********************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -210,6 +723,7 @@ function WebQuizSidePanelComponent() {
     segmentationService
   } = servicesManager.services;
   const [segmentationData, setSegmentationData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [volumeData, setVolumeData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [annotationData, setAnnotationData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [isSaved, setIsSaved] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
   // generic for capture of cachedStats object
@@ -220,6 +734,7 @@ function WebQuizSidePanelComponent() {
       const lo_annotationStats = getAnnotationsStats();
       setAnnotationData(lo_annotationStats);
 
+      ////// for debug /////
       // const lengths = lo_annotationStats.flatMap((statsObj) => 
       //     Object.values(statsObj)
       //         .filter((stat): stat is { length: number } => typeof stat === 'object' && stat !== null && 'length' in stat)
@@ -250,15 +765,15 @@ function WebQuizSidePanelComponent() {
   // don't rely on segmentationService. 
   // These useEffects are tapping into the events for a more immediate response
   // useEffect(() => {
-  //     const lo_allVolumes = buildVolumeTable();
-  //     setSegmentationData(lo_allVolumes);
+  //     const lo_allVolumes = getSegmentationStats();
+  //     setVolumeData(lo_allVolumes);
   //     console.table(lo_allVolumes);
   //     }, [segmentationService]);
   // Refactored ... ===>
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     const handleSegmentationChange = () => {
-      const lo_allVolumes = buildVolumeTable();
-      setSegmentationData(lo_allVolumes);
+      const [lo_segmentations, lo_allVolumes] = getSegmentationStats();
+      setVolumeData(lo_allVolumes);
       console.table(lo_allVolumes);
     };
     _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__.eventTarget.addEventListener(_cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_5__.Enums.Events.SEGMENTATION_ADDED, handleSegmentationChange);
@@ -282,9 +797,15 @@ function WebQuizSidePanelComponent() {
     }
   }, [annotationData]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (volumeData.length > 0) {
+      setIsSaved(false);
+      // console.log(' Volume Change');
+    }
+  }, [volumeData]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (segmentationData.length > 0) {
       setIsSaved(false);
-      // console.log(' Segmentation Change');
+      // console.log(' Volume Change');
     }
   }, [segmentationData]);
 
@@ -310,8 +831,9 @@ function WebQuizSidePanelComponent() {
   };
 
   //=====================
-  // function to get the list of objects holding segment volume data
-  const buildVolumeTable = () => {
+  // function to get the list of objects holding segmentations and
+  //  extract volume data
+  const getSegmentationStats = () => {
     const lo_segmentations = segmentationService.getSegmentations();
     const lo_allVolumes = [];
     lo_segmentations.forEach((segmentation, segIndex) => {
@@ -328,17 +850,18 @@ function WebQuizSidePanelComponent() {
         }
       });
     });
-    return lo_allVolumes;
+    return [lo_segmentations, lo_allVolumes];
   };
 
   //=====================
   const refreshData = () => {
     const lo_annotationStats = getAnnotationsStats();
     setAnnotationData(lo_annotationStats);
-    const lo_allVolumes = buildVolumeTable();
-    setSegmentationData(lo_allVolumes);
+    const [lo_segmentations, lo_allVolumes] = getSegmentationStats();
+    setVolumeData(lo_allVolumes);
+    setSegmentationData(lo_segmentations);
     console.table(lo_allVolumes);
-    return [lo_annotationStats, lo_allVolumes]; // ensures stats are updated before continuing
+    return [lo_annotationStats, lo_allVolumes, lo_segmentations]; // ensures stats are updated before continuing
   };
 
   ////////////////////////////////////////////
@@ -355,7 +878,7 @@ function WebQuizSidePanelComponent() {
     setIsSaved: setIsSaved
   }));
 }
-_s(WebQuizSidePanelComponent, "qOuSSmRrH0wB2hLqw5zVXfr9I3o=", false, function () {
+_s(WebQuizSidePanelComponent, "vdaIHZ2iZtlnqzUFfB0Ch/9/9Y4=", false, function () {
   return [_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem];
 });
 _c = WebQuizSidePanelComponent;
@@ -402,6 +925,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \********************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   id: () => (/* binding */ id)
@@ -453,6 +977,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
   \************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -636,12 +1161,159 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
+/***/ "../../../../ohif-extensions/ohif-extension-webquiz/src/utils/util_segmentation.ts":
+/*!*****************************************************************************************!*\
+  !*** ../../../../ohif-extensions/ohif-extension-webquiz/src/utils/util_segmentation.ts ***!
+  \*****************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getGeneratedSegmentation: () => (/* binding */ getGeneratedSegmentation),
+/* harmony export */   getSegmentationIds: () => (/* binding */ getSegmentationIds)
+/* harmony export */ });
+/* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @cornerstonejs/tools */ "../../../node_modules/@cornerstonejs/tools/dist/esm/index.js");
+/* harmony import */ var _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @cornerstonejs/adapters */ "../../../node_modules/@cornerstonejs/adapters/dist/esm/index.js");
+/* harmony import */ var dcmjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dcmjs */ "../../../node_modules/dcmjs/build/dcmjs.es.js");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+// Utility to convert the segmentation object obtained through OHIF segmentationService
+// This is modified code which  originated from example utility found in cornerstonejs github
+//          cornerstone3D/packages/adapters/examples/segmentationVolume/utils.ts
+
+
+
+
+
+const {
+  cache,
+  imageLoader,
+  metaData
+} = _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_0__;
+const {
+  segmentation: csToolsSegmentation
+} = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_1__;
+const {
+  downloadDICOMData
+} = _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_2__.helpers;
+const {
+  Cornerstone3D
+} = _cornerstonejs_adapters__WEBPACK_IMPORTED_MODULE_2__.adaptersSEG;
+async function getGeneratedSegmentation(state) {
+  const {
+    segmentationId,
+    viewportIds
+  } = state;
+  const segmentationIds = getSegmentationIds();
+  if (!segmentationIds.length) {
+    return null;
+  }
+  const segmentation = csToolsSegmentation.state.getSegmentation(segmentationId);
+  const {
+    imageIds
+  } = segmentation.representationData.Labelmap;
+  const segImages = imageIds.map(imageId => cache.getImage(imageId));
+  const referencedImages = segImages.map(image => cache.getImage(image.referencedImageId));
+  const labelmaps2D = [];
+  let z = 0;
+  for (const segImage of segImages) {
+    const segmentsOnLabelmap = new Set();
+    const pixelData = segImage.getPixelData();
+    const {
+      rows,
+      columns
+    } = segImage;
+    for (let i = 0; i < pixelData.length; i++) {
+      const segment = pixelData[i];
+      if (segment !== 0) {
+        segmentsOnLabelmap.add(segment);
+      }
+    }
+    labelmaps2D[z++] = {
+      segmentsOnLabelmap: Array.from(segmentsOnLabelmap),
+      pixelData,
+      rows,
+      columns
+    };
+  }
+  const allSegmentsOnLabelmap = labelmaps2D.map(lm => lm.segmentsOnLabelmap);
+  const labelmap3D = {
+    segmentsOnLabelmap: Array.from(new Set(allSegmentsOnLabelmap.flat())),
+    metadata: [],
+    labelmaps2D
+  };
+  labelmap3D.segmentsOnLabelmap.forEach(segmentIndex => {
+    const color = csToolsSegmentation.config.color.getSegmentIndexColor(viewportIds[0], segmentationId, segmentIndex) || [255, 255, 255, 255]; // fallback RGBA
+
+    const RecommendedDisplayCIELabValue = dcmjs__WEBPACK_IMPORTED_MODULE_3__["default"].data.Colors.rgb2DICOMLAB(color.slice(0, 3).map(value => value / 255)).map(value => Math.round(value));
+    const segmentMetadata = {
+      SegmentNumber: segmentIndex.toString(),
+      SegmentLabel: `Segment ${segmentIndex}`,
+      SegmentAlgorithmType: "MANUAL",
+      SegmentAlgorithmName: "OHIF Brush",
+      RecommendedDisplayCIELabValue,
+      SegmentedPropertyCategoryCodeSequence: {
+        CodeValue: "T-D0050",
+        CodingSchemeDesignator: "SRT",
+        CodeMeaning: "Tissue"
+      },
+      SegmentedPropertyTypeCodeSequence: {
+        CodeValue: "T-D0050",
+        CodingSchemeDesignator: "SRT",
+        CodeMeaning: "Tissue"
+      }
+    };
+    labelmap3D.metadata[segmentIndex] = segmentMetadata;
+  });
+  return Cornerstone3D.Segmentation.generateSegmentation(referencedImages, labelmap3D, metaData);
+}
+function getSegmentationIds() {
+  return csToolsSegmentation.state.getSegmentations().map(x => x.segmentationId);
+}
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
 /***/ "../../../../ohif-extensions/ohif-extension-webquiz/assets/BainesTransparentTiny.png":
 /*!*******************************************************************************************!*\
   !*** ../../../../ohif-extensions/ohif-extension-webquiz/assets/BainesTransparentTiny.png ***!
   \*******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -656,6 +1328,7 @@ __webpack_require__.r(__webpack_exports__);
   \***********************************************************************/
 /***/ ((module) => {
 
+"use strict";
 module.exports = /*#__PURE__*/JSON.parse('{"name":"ohif-extension-webquiz","version":"0.0.1","description":"","author":"","license":"MIT","main":"dist/umd/ohif-extension-webquiz/index.umd.js","files":["dist/**","public/**","README.md"],"repository":"OHIF/Viewers","keywords":["ohif-extension"],"module":"src/index.tsx","engines":{"node":">=14","npm":">=6","yarn":">=1.18.0"},"scripts":{"dev":"cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --output-pathinfo","dev:my-extension":"yarn run dev","build":"cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js","build:package":"yarn run build","start":"yarn run dev"},"peerDependencies":{"@ohif/core":"^3.11.0-beta.37","@ohif/extension-default":"^3.11.0-beta.37","@ohif/extension-cornerstone":"^3.11.0-beta.37","@ohif/i18n":"^1.0.0","prop-types":"^15.6.2","react":"^18.3.1","react-dom":"^18.3.1","react-i18next":"^12.2.2","react-router":"^6.23.1","react-router-dom":"^6.23.1","webpack":"5.89.0","webpack-merge":"^5.7.3"},"dependencies":{"@babel/runtime":"^7.20.13","math.js":"^1.1.46","react":"^19.1.0"},"devDependencies":{"@babel/core":"7.24.7","@babel/plugin-proposal-class-properties":"^7.16.7","@babel/plugin-proposal-object-rest-spread":"^7.17.3","@babel/plugin-proposal-private-methods":"^7.18.6","@babel/plugin-syntax-dynamic-import":"^7.8.3","@babel/plugin-transform-arrow-functions":"^7.16.7","@babel/plugin-transform-regenerator":"^7.16.7","@babel/plugin-transform-runtime":"7.24.7","@babel/plugin-transform-typescript":"^7.13.0","@babel/preset-env":"7.24.7","@babel/preset-react":"^7.16.7","@babel/preset-typescript":"^7.13.0","@babel/plugin-proposal-private-property-in-object":"7.21.11","babel-eslint":"9.x","babel-loader":"^8.2.4","@svgr/webpack":"^8.1.0","babel-plugin-module-resolver":"^5.0.0","clean-webpack-plugin":"^4.0.0","copy-webpack-plugin":"^10.2.0","cross-env":"^7.0.3","dotenv":"^14.1.0","eslint":"^8.39.0","eslint-loader":"^2.0.0","webpack":"5.89.0","webpack-merge":"^5.7.3","webpack-cli":"^5.0.2"}}');
 
 /***/ })

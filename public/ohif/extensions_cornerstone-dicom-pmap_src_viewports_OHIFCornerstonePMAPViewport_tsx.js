@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone-dicom-pmap_src_viewports_OHIFCornerstonePMAPViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone-dicom-pmap_src_viewports_OHIFCornerstonePMAPViewport_tsx"],{
 
 /***/ "../../../extensions/cornerstone-dicom-pmap/src/viewports/OHIFCornerstonePMAPViewport.tsx":
 /*!************************************************************************************************!*\

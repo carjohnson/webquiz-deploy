@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_dicom-pdf_src_viewports_OHIFCornerstonePdfViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_dicom-pdf_src_viewports_OHIFCornerstonePdfViewport_tsx"],{
 
 /***/ "../../../extensions/dicom-pdf/src/viewports/OHIFCornerstonePdfViewport.tsx":
 /*!**********************************************************************************!*\

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["modes_basic-dev-mode_src_index_ts"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["modes_basic-dev-mode_src_index_ts"],{
 
 /***/ "../../../modes/basic-dev-mode/src/id.js":
 /*!***********************************************!*\

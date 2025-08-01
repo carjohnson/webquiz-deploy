@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_dicom-video_src_viewports_OHIFCornerstoneVideoViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_dicom-video_src_viewports_OHIFCornerstoneVideoViewport_tsx"],{
 
 /***/ "../../../extensions/dicom-video/src/viewports/OHIFCornerstoneVideoViewport.tsx":
 /*!**************************************************************************************!*\

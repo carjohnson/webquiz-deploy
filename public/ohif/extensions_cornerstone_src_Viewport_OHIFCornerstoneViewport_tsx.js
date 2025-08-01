@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone_src_Viewport_OHIFCornerstoneViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone_src_Viewport_OHIFCornerstoneViewport_tsx"],{
 
 /***/ "../../../extensions/cornerstone/src/Viewport/OHIFCornerstoneViewport.tsx":
 /*!********************************************************************************!*\
@@ -2509,16 +2509,13 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.viewport-wrapper {
 }
 
 .cornerstone-viewport-element {
-  outline: 0 !important;
-}
-
-.cornerstone-viewport-element {
   width: 100%;
   height: 100%;
   position: relative;
   background-color: black;
 
   /* Prevent the blue outline in Chrome when a viewport is selected */
+  outline: 0 !important;
 
   /* Prevents the entire page from getting larger
      when the magnify tool is near the sides/corners of the page */
@@ -2548,7 +2545,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.viewport-wrapper {
   -moz-user-select: none;
   -ms-user-select: none;
 }
-`, "",{"version":3,"sources":["webpack://./../../../extensions/cornerstone/src/Viewport/OHIFCornerstoneViewport.css"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,YAAY,EAAE,uDAAuD;EACrE,kBAAkB;EAClB,0DAA0D;EAC1D,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB;;AAEA;EAOE,qBAAqB;AAWvB;;AAlBA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;;EAEvB,mEAAmE;;EAGnE;kEACgE;EAChE,gBAAgB;;EAEhB,mDAAmD;EACnD,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB;;AAEA,+CAA+C;;AAC/C;EACE,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB;;AAEA,uEAAuE;;AACvE;EACE,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB","sourcesContent":[".viewport-wrapper {\r\n  width: 100%;\r\n  height: 100%; /* MUST have `height` to prevent resize infinite loop */\r\n  position: relative;\r\n  /* Prevent text selection on the entire viewport wrapper */\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n\r\n.cornerstone-viewport-element {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: relative;\r\n  background-color: black;\r\n\r\n  /* Prevent the blue outline in Chrome when a viewport is selected */\r\n  outline: 0 !important;\r\n\r\n  /* Prevents the entire page from getting larger\r\n     when the magnify tool is near the sides/corners of the page */\r\n  overflow: hidden;\r\n  \r\n  /* Prevent text selection on the viewport element */\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n\r\n/* Prevent text selection on overlay elements */\r\n.noselect {\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n\r\n/* Ensure all elements within viewport wrapper prevent text selection */\r\n.viewport-wrapper * {\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./../../../extensions/cornerstone/src/Viewport/OHIFCornerstoneViewport.css"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,YAAY,EAAE,uDAAuD;EACrE,kBAAkB;EAClB,0DAA0D;EAC1D,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;;EAEvB,mEAAmE;EACnE,qBAAqB;;EAErB;kEACgE;EAChE,gBAAgB;;EAEhB,mDAAmD;EACnD,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB;;AAEA,+CAA+C;;AAC/C;EACE,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB;;AAEA,uEAAuE;;AACvE;EACE,iBAAiB;EACjB,yBAAyB;EACzB,sBAAsB;EACtB,qBAAqB;AACvB","sourcesContent":[".viewport-wrapper {\r\n  width: 100%;\r\n  height: 100%; /* MUST have `height` to prevent resize infinite loop */\r\n  position: relative;\r\n  /* Prevent text selection on the entire viewport wrapper */\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n\r\n.cornerstone-viewport-element {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: relative;\r\n  background-color: black;\r\n\r\n  /* Prevent the blue outline in Chrome when a viewport is selected */\r\n  outline: 0 !important;\r\n\r\n  /* Prevents the entire page from getting larger\r\n     when the magnify tool is near the sides/corners of the page */\r\n  overflow: hidden;\r\n  \r\n  /* Prevent text selection on the viewport element */\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n\r\n/* Prevent text selection on overlay elements */\r\n.noselect {\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n\r\n/* Ensure all elements within viewport wrapper prevent text selection */\r\n.viewport-wrapper * {\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["modes_longitudinal_src_index_ts"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["modes_longitudinal_src_index_ts"],{
 
 /***/ "../../../modes/longitudinal/src/id.js":
 /*!*********************************************!*\

@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone_src_components_NavigationComponent_NavigationComponent_tsx-extensions_-cc794b"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone_src_components_NavigationComponent_NavigationComponent_tsx-extensions_-cc794b"],{
 
 /***/ "../../../extensions/cornerstone/src/commandsModule.ts":
 /*!*************************************************************!*\
@@ -26737,8 +26737,11 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
  * to be used with the jumpToSlice utility function.
  */
 var JumpPresets = /*#__PURE__*/function (JumpPresets) {
+  /** Jumps to first slice */
   JumpPresets["First"] = "first";
+  /** Jumps to last slice */
   JumpPresets["Last"] = "last";
+  /** Jumps to the middle slice */
   JumpPresets["Middle"] = "middle";
   return JumpPresets;
 }(JumpPresets || {});

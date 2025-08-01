@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_measurement-tracking_src_viewports_TrackedCornerstoneViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_measurement-tracking_src_viewports_TrackedCornerstoneViewport_tsx"],{
 
 /***/ "../../../extensions/measurement-tracking/src/viewports/TrackedCornerstoneViewport.tsx":
 /*!*********************************************************************************************!*\

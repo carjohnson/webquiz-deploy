@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone-dicom-seg_src_viewports_OHIFCornerstoneSEGViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone-dicom-seg_src_viewports_OHIFCornerstoneSEGViewport_tsx"],{
 
 /***/ "../../../extensions/cornerstone-dicom-seg/src/utils/initSEGToolGroup.ts":
 /*!*******************************************************************************!*\

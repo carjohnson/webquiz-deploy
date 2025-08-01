@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone-dicom-sr_src_components_OHIFCornerstoneSRViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone-dicom-sr_src_components_OHIFCornerstoneSRViewport_tsx"],{
 
 /***/ "../../../extensions/cornerstone-dicom-sr/src/components/OHIFCornerstoneSRContainer.tsx":
 /*!**********************************************************************************************!*\

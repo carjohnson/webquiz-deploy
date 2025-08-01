@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_tmtv_src_index_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_tmtv_src_index_tsx"],{
 
 /***/ "../../../extensions/tmtv/src/Panels/PanelPetSUV.tsx":
 /*!***********************************************************!*\

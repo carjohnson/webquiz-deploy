@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone-dicom-seg_src_index_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone-dicom-seg_src_index_tsx"],{
 
 /***/ "../../../extensions/cornerstone-dicom-seg/src/commandsModule.ts":
 /*!***********************************************************************!*\

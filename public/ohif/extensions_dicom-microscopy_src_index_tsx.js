@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_dicom-microscopy_src_index_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_dicom-microscopy_src_index_tsx"],{
 
 /***/ "../../../extensions/dicom-microscopy/src/DicomMicroscopySRSopClassHandler.js":
 /*!************************************************************************************!*\

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["modes_tmtv_src_index_ts"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["modes_tmtv_src_index_ts"],{
 
 /***/ "../../../modes/tmtv/src/id.js":
 /*!*************************************!*\

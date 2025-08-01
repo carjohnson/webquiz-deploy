@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_default_src_index_ts"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_default_src_index_ts"],{
 
 /***/ "../../../extensions/default/src/Actions/createReportAsync.tsx":
 /*!*********************************************************************!*\

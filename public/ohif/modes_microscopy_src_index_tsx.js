@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["modes_microscopy_src_index_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["modes_microscopy_src_index_tsx"],{
 
 /***/ "../../../modes/microscopy/src/id.js":
 /*!*******************************************!*\

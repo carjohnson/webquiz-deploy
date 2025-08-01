@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["modes_preclinical-4d_src_index_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["modes_preclinical-4d_src_index_tsx"],{
 
 /***/ "../../../modes/preclinical-4d/src/getWorkflowSettings.ts":
 /*!****************************************************************!*\

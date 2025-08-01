@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone-dicom-pmap_src_index_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone-dicom-pmap_src_index_tsx"],{
 
 /***/ "../../../extensions/cornerstone-dicom-pmap/src/getSopClassHandlerModule.ts":
 /*!**********************************************************************************!*\

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["extensions_cornerstone-dicom-rt_src_viewports_OHIFCornerstoneRTViewport_tsx"],{
+(globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_cornerstone-dicom-rt_src_viewports_OHIFCornerstoneRTViewport_tsx"],{
 
 /***/ "../../../extensions/cornerstone-dicom-rt/src/utils/initRTToolGroup.ts":
 /*!*****************************************************************************!*\

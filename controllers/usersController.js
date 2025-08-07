@@ -44,10 +44,11 @@ exports.register_post = asyncHandler(async (req, res, next) => {
               password    : hashPassword,
               email       : email.trim().toLowerCase(),
               role        : role,
+              authorized  : false,
             });
 
             await newUser.save();
-            res.redirect('/users/login?msg=Account created!');
+            res.redirect('/users/login?msg=Account created! Please contact the administrator for authorization.');
             
           } else {
             res.redirect('/users/register?msg=Username Unavailable');
@@ -69,13 +70,19 @@ exports.login_post = asyncHandler(async (req, res, next) => {
 
         if(userExists.length){
 
+            const user = userExists[0];
             let submittedPass = password
             let storedPass = userExists[0].password; 
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
             if (passwordMatch) {
                 
+              if (!user.authorized) {
+                res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
+              } else{
+                req.session.user = user;
                 res.redirect('/iframehost');
+              }
 
             } else {
                 res.redirect('/users/login?msg=Invalid email or password');

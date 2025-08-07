@@ -21,4 +21,9 @@ block content
     </fieldset>
   </form>
     
-  h3(style="color: #FF9500")=msg
+  h3#form-message(style="color: #FF9500")=msg
+  script.
+    document.querySelector('button[type="reset"]').addEventListener('click', () => {
+      const msgEl = document.getElementById('form-message');
+      if (msgEl) msgEl.textContent = '';
+    });

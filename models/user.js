@@ -11,7 +11,8 @@ const UserSchema = new Schema({
       enum: ['reader', 'admin'],
       default: 'reader',
       required: true,
-    }
+    },
+    authorized  : {type: Boolean, default: false }
 });
 
 

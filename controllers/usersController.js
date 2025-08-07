@@ -100,3 +100,23 @@ exports.login_post = asyncHandler(async (req, res, next) => {
         res.send("usersController>login_post : Internal server error");
     }
 }); 
+
+exports.logout_get = asyncHandler(async (req,res,next) => {
+  try {
+    req.session.destroy(() => {
+      res.render('logout', {message: "Thank you for participating!"});
+    });
+  } catch (error) {
+    console.log("Logout error:", error);
+    res.send("usersController>logout_get : Internal server error");
+  }
+});
+
+exports.about_get = asyncHandler(async (req,res,next) => {
+  try {
+    res.render('about');
+  } catch (error) {
+    console.log("About error:", error);
+    res.send("usersController>about_get : Internal server error");
+  }
+});

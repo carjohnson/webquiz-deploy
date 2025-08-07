@@ -11,7 +11,7 @@ exports.index = asyncHandler(async (req, res, next) => {
   console.log('🧪 View render data:', { lengths, volumes: req.session.volumes });
   // connect to *.pug view
   res.render("webquiz", {
-    title: "WebQuiz Panel",
+    title: "Quiz",
     lengths,
     volumes,
     dicomMeta

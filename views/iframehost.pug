@@ -1,13 +1,20 @@
 extends layout
 
 block content
-    script(src="/scripts/iframehost-relay.js")
-    div(class='row')
-      div(class='col-sm-2')
-      a(href='/users') Login &nbsp &nbsp
-      a(href='/about') About
-    h1= title
-    div(class="container")
-      iframe(src="/webquiz" id="webquiz_iframe" width="1000" height="800" style="border: none;")
-      //- iframe(src="/ohif" id="ohif_iframe" width="3000" height="800" style="border: none;")    
-      iframe(src="http://localhost/ohif/" id="ohif_iframe" width="3000" height="800" style="border: none;")
+  script(src="/scripts/iframehost-relay.js")
+  div.header-bar
+    <header>
+      <img src="/assets/baineslogo.png" alt="Your Company Logo" class="logo">
+      <h1>Baines Imaging - Radiology Coach</h1>
+    </header>
+    div.link-group
+      if user
+        a(href='/users/logout') Logout&nbsp;&nbsp;
+      else
+        a(href='/users/login') Login&nbsp;&nbsp;
+      a(href='/users/about') About
+
+  div(class="ohif-container")
+    iframe(src="/webquiz" id="webquiz_iframe" width="1000" height="800" style="border: none;")
+    //- iframe(src="/ohif" id="ohif_iframe" width="3000" height="800" style="border: none;")    
+    iframe(src="http://localhost/ohif/" id="ohif_iframe" width="3000" height="800" style="border: none;")

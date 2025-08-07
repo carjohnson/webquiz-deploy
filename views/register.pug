@@ -1,39 +1,40 @@
 extends layout
 
 block content
-  h1= title
+  .login-container
+    <header>
+      <img src="/assets/baineslogo.png" alt="Your Company Logo" class="logo">
+      <h1>Baines Imaging - Radiology Coach</h1>
+    </header>
+    p Welcome to #[em Baines Imaging - Radiology Coach], a web-based learning tool.
+    h2= title
 
- 
-  form(action="/users/register" method="POST")
-    fieldset
-      div.form-group
-        label(for="username") Username
-        input#username(type="text" name="username" placeholder="renfield" required)
+  
+    form(action="/users/register" method="POST")
+      fieldset
+        div.form-group
+          label(for="username") Username
+          input#username(type="text" name="username" placeholder="renfield" required)
 
-      div.form-group
-        label(for="email") Email ID
-        input#email(type="email", name="email" placeholder="abc@example.com" required)
+        div.form-group
+          label(for="email") Email ID
+          input#email(type="email", name="email" placeholder="abc@example.com" required)
 
-      div.form-group
-        label(for="password") Password
-        input#password(type="password" name="password" required)
+        div.form-group
+          label(for="password") Password
+          input#password(type="password" name="password" required)
 
-      div.form-group
-        label(for="role") Select Role
-        select#role(name="role" required)
-          option(value="reader") Reader
-          option(value="admin") Admin
+        div.form-group
+          label(for="role") Select Role
+          select#role(name="role" required)
+            option(value="reader") Reader
+            option(value="admin") Admin
 
-      div.button-group
-        button(type="reset") Reset
-        button(type="submit") Register
+        div.button-group
+          button(type="reset") Reset
+          button(type="submit") Register
 
-      br
-      a#loginlink(href="/users/login") Login
+        br
+        a#loginlink(href="/users/login") Login
 
-  h3#form-message(style="color: #FF9500")=msg
-  script.
-    document.querySelector('button[type="reset"]').addEventListener('click', () => {
-      const msgEl = document.getElementById('form-message');
-      if (msgEl) msgEl.textContent = '';
-    });
+    h3(style="color: #FF9500")=msg

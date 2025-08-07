@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  padding: 50px 50px 50px 0; /* top, right, bottom, left */
+  padding: 0rem 2rem 2rem 0;  /* top, right, bottom, left */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   text-align: left;
   width: 100vw;
@@ -8,8 +8,57 @@ body {
   overflow-x: hidden;
 }
 
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* space between logo and h1 */
+}
 
-.container {
+.logo {
+  height: 40px; /* adjust as needed */
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: top;   /* vertical centering */
+  align-items: center;       /* horizontal centering */
+  height: 100vh;             /* full viewport height */
+  text-align: center;
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;  /* h1 left, links right */
+  align-items: center;             /* vertical alignment within the bar */
+  padding: 1rem 2rem;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ccc;
+}
+
+.header-bar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.link-group a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #007BFF;
+}
+
+.link-group a:hover {
+  text-decoration: underline;
+}
+
+form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.ohif-container {
   display: flex;
   justify-content: flex-start;
   gap: 10px;
@@ -34,6 +83,10 @@ body {
 a {
   color: #00B3F6;
   font-size: 20px;
+}
+
+h1 {
+  text-align: center;
 }
 
 h4{
@@ -62,4 +115,39 @@ input, select {
   display: flex;
   gap: 1rem;
   align-items: center;
+  justify-content: center;
+  border: 1px
+}
+
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;  /* Push h1 left, links right */
+  align-items: center;             /* Vertically align items */
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;   /* Optional: visual separation */
+}
+
+.header-bar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.link-group a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #007BFF;                  /* Optional: link color */
+}
+
+.link-group a:hover {
+  text-decoration: underline;
+}
+
+.content-area {
+  flex: 1; /* Takes up remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; /* Even vertical spacing */
+  align-items: center;
+  padding: 2rem 0;
 }

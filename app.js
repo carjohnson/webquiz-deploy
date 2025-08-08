@@ -44,6 +44,22 @@ app.use(session({
 }));
 
 
+
+
+// lock down all other routes unless logged in 
+//    (expose style and assets prior to the guard)
+app.use('/style.css', express.static(path.join(__dirname, 'public', 'stylesheets', 'style.css')));
+app.use('/baineslogo.png', express.static(path.join(__dirname, 'public','assets','baineslogo.png')))
+
+app.use((req, res, next) => {
+  const publicPaths = ['/users/login', '/users/register', '/about', '/stylesheets/style.css', '/assets/baineslogo.png'];
+  if (publicPaths.includes(req.path) || req.session.user) {
+    return next();
+  } else {
+    return res.redirect('/users/login?msg=Please log in');
+  }
+});
+
 // Mount routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

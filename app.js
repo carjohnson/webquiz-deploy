@@ -37,19 +37,24 @@ app.use(express.urlencoded({ extended: false }));
 
 // set up session ID to store info that both client and server
 //  can access through req.session
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // 🔐 Better for security
+  cookie: {
+    httpOnly: true,
+    secure: false, // Set to true when using HTTPS
+    maxAge: 60 * 60 * 1000 // 1 hour
+  }
 }));
-
-
 
 
 // lock down all other routes unless logged in 
 //    (expose style and assets prior to the guard)
 app.use('/style.css', express.static(path.join(__dirname, 'public', 'stylesheets', 'style.css')));
 app.use('/baineslogo.png', express.static(path.join(__dirname, 'public','assets','baineslogo.png')))
+
 
 app.use((req, res, next) => {
   const publicPaths = ['/users/login', '/users/register', '/about', '/stylesheets/style.css', '/assets/baineslogo.png'];
@@ -78,6 +83,12 @@ app.use((req, res, next) => {
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
+});
+
+// catch 500
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).send('Internal Server Error');
 });
 
 // error handler

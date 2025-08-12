@@ -2,7 +2,7 @@ console.log("\x1b[32m*******  In listener script\x1b[0m");
 console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
 console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
-let received = { lengths: false, volumes: false };
+let received = { lengths: false, volumes: false , annotationObjects: false };
 
 
 window.addEventListener('message', async (event) => {
@@ -26,13 +26,11 @@ window.addEventListener('message', async (event) => {
 
     const measurements = event.data.measurementdata;
     const segmentations = event.data.segmentationdata;
+    const annotationObjects = event.data.annotationObjects;
     console.log('Received measurements:', measurements);
     console.log('Received segmentations:', segmentations);
 
-    // const lengths = measurements.flatMap(measurement => {
-    //   const cachedStats = measurement.annotation?.data?.cachedStats || {};
-    //   return Object.values(cachedStats).map(stat => stat.length).filter(Boolean);
-    // });
+ 
 
     const lengths = measurements.flatMap((statsObj) => {
       return Object.values(statsObj)
@@ -49,20 +47,31 @@ window.addEventListener('message', async (event) => {
     console.log('********** Lengths extracted in webquiz_iframe:', lengths); // An array of all lengths across all annotations
     console.log('********** Volumes extracted:', volumes);
 
-    const payload = { lengths, volumes };
+    // const payload = { lengths, volumes, annotationObjects };
 
-    postDataToWebQuiz('lengths', { lengths }).then(() => {
-      received.lengths = true;
+    // TODO: change timeout to listener for reload of iframe
+    Promise.all([
+      postAndTrack('lengths', { lengths }),
+      postAndTrack('volumes', { volumes }),
+      postAndTrack('annotationObjects', { annotationObjects })
+    ]).then(() => {
       maybeReloadIframe();
-    });
+      setTimeout(() => {
+        fetch("/webquiz/clear-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+      }, 1000); // Adjust timing as needed
 
-    postDataToWebQuiz('volumes', { volumes }).then(() => {
-      received.volumes = true;
-      maybeReloadIframe();
     });
-  
  }
 });
+
+  function postAndTrack(key, data) {
+    return postDataToWebQuiz(key, data).then(() => {
+      received[key] = true;
+    });
+  }
 
 // dynamic function to return specific fetch for requested 
 //    route with associated data
@@ -74,7 +83,7 @@ function postDataToWebQuiz(path, payload) {
   })
     .then(res => res.json())  // turn response into usable object ('data')
     .then(data => {
-      console.log(`✅ Server responded for ${path}:`, data);
+      console.log(`✅ Server responded for ${path}`);
       return data; // hand control back to caller
     })
     .catch(error => console.error(`❌ Error posting ${path}:`, error));
@@ -101,9 +110,9 @@ function postDataToWebQuizForDICOM(path, blob, filename) {
 // Check that all data has been received before reloading
 //  the panel. We only want one reload.
 function maybeReloadIframe() {
-  if (received.lengths && received.volumes) {
+  if (received.lengths && received.volumes && received.annotationObjects) {
     window.parent.postMessage({ type: 'reload-webquiz' }, '*');
-    received = { lengths: false, volumes: false };
+    received = { lengths: false, volumes: false, annotationObjects: false };
   }
 }
 

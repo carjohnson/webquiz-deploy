@@ -30,7 +30,6 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 });
 
-
 exports.post_lengths = handleSessionPost( {key: 'lengths', keyLabel: 'lengths'});
 
 exports.post_volumes = handleSessionPost( {key: 'volumes', keyLabel: 'volumes'});
@@ -77,7 +76,7 @@ exports.post_clear_session = (req, res) => {
 
 // >>>>>>>>>>>>> Helper functions <<<<<<<<<<<<<
 function saveAnnotationsToFile(annotationObjects, filename) {
-  const filePath = path.join(__dirname, '../tempTesting', filename);
+  const filePath = path.join(__dirname, '../public/tempForTesting', filename);
   fs.writeFileSync(filePath, JSON.stringify(annotationObjects, null, 2), 'utf8');
   console.log(`📁 Saved annotations to ${filePath}`);
 }

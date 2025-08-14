@@ -1,88 +1,5 @@
 (globalThis["webpackChunk"] = globalThis["webpackChunk"] || []).push([["extensions_ohif_extension-webquiz_src_index_tsx"],{
 
-/***/ "../../../extensions/@ohif/extension-webquiz/src/CreateCustomIcon.tsx":
-/*!****************************************************************************!*\
-  !*** ../../../extensions/@ohif/extension-webquiz/src/CreateCustomIcon.tsx ***!
-  \****************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _assets_BainesTransparentTiny_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/BainesTransparentTiny.png */ "../../../extensions/@ohif/extension-webquiz/assets/BainesTransparentTiny.png");
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
-
-function _extends() {
-  return _extends = Object.assign ? Object.assign.bind() : function (n) {
-    for (var e = 1; e < arguments.length; e++) {
-      var t = arguments[e];
-      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
-    }
-    return n;
-  }, _extends.apply(null, arguments);
-}
-
-
-const CreateCustomIcon = Icons => {
-  //   console.log('📦 Icons keys:', Object.keys(Icons));   // for debug
-
-  const BaineslogoIcon = props => {
-    const {
-      width = 22,
-      height = 22,
-      ...rest
-    } = props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", _extends({
-      src: _assets_BainesTransparentTiny_png__WEBPACK_IMPORTED_MODULE_1__["default"],
-      width: width,
-      height: height
-    }, rest));
-  };
-  Icons.addIcon('baines-logo', BaineslogoIcon);
-};
-_c = CreateCustomIcon;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateCustomIcon);
-var _c;
-__webpack_require__.$Refresh$.register(_c, "CreateCustomIcon");
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (true) {
-		let errorOverlay;
-		if (true) {
-			errorOverlay = false;
-		}
-		let testMode;
-		if (typeof __react_refresh_test__ !== 'undefined') {
-			testMode = __react_refresh_test__;
-		}
-		return __react_refresh_utils__.executeRuntime(
-			exports,
-			$ReactRefreshModuleId$,
-			module.hot,
-			errorOverlay,
-			testMode
-		);
-	}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
 /***/ "../../../extensions/@ohif/extension-webquiz/src/Questions/btnComponent.tsx":
 /*!**********************************************************************************!*\
   !*** ../../../extensions/@ohif/extension-webquiz/src/Questions/btnComponent.tsx ***!
@@ -105,8 +22,13 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
+var _s = __webpack_require__.$Refresh$.signature();
+// import React from "react";
 
 
+
+
+// import * as cornerstone from '@cornerstonejs/core';
 
 
 
@@ -116,21 +38,25 @@ const {
   datasetToDict
 } = dcmjs__WEBPACK_IMPORTED_MODULE_2__.data;
 function BtnComponent({
-  measurementData,
-  segmentationData,
   refreshData,
   setIsSaved
 }) {
+  _s();
+  const measurementListRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)([]);
   const handleUploadAnnotationsClick = () => {
     // refresh the annotation data before posting
     // segmentation data is refreshed automatically through segmentation service
     const [freshMeasurementData, freshVolumeData] = refreshData();
+    const allAnnotations = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.state.getAllAnnotations();
+    measurementListRef.current = [...allAnnotations];
     console.log('Number of measurements: ', freshMeasurementData.length);
     console.log("Number of segments:", freshVolumeData.length);
+    console.log("Number of annotation objects:", measurementListRef.current.length);
     window.parent.postMessage({
       type: 'annotations',
       measurementdata: freshMeasurementData,
-      segmentationdata: freshVolumeData
+      segmentationdata: freshVolumeData,
+      annotationObjects: measurementListRef.current
     }, '*');
     setIsSaved(true);
   };
@@ -167,12 +93,69 @@ function BtnComponent({
       console.error("❌ Failed to post segmentation:", error);
     }
   };
+  const saveAnnotations = () => {
+    const allAnnotations = _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.state.getAllAnnotations();
+    measurementListRef.current = [...allAnnotations];
+  };
+  const handleClearMeasurementsClick = async () => {
+    saveAnnotations();
+    console.log("Clearing measurements");
+    measurementListRef.current.forEach(annotationEntry => {
+      const {
+        annotationUID
+      } = annotationEntry;
+      _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.state.removeAnnotation(annotationUID);
+    });
+    // // trigger a re-render or update the viewport
+    // const renderingEngine = getRenderingEngine('webquizRenderEngine');
+    // const viewports = renderingEngine.getViewports();
+
+    // if (viewports.length > 0) {
+    //   renderingEngine.renderViewports(viewports.map(vp => vp.id));
+    // }
+  };
+  const handleRedrawSavedMeasurementsClick = () => {
+    measurementListRef.current.forEach(savedAnnotation => {
+      if (savedAnnotation && typeof savedAnnotation.annotationUID === 'string' && savedAnnotation.annotationUID.length > 0) {
+        _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.state.addAnnotation(savedAnnotation);
+      }
+    });
+
+    // const renderingEngine = getRenderingEngine('yourRenderingEngineId');
+    // if (renderingEngine) {
+    //   renderingEngine.render();
+    // }
+  };
+  async function handlefetchAnnotationsClick() {
+    try {
+      console.log('Fetching annotations from server');
+      debugger;
+      // const response = await fetch('tempTesting/testSavedAnnotationObjects.json');
+      const response = await fetch('http://localhost:3000/tempTesting/testSavedAnnotationObjects.json');
+      if (!response.ok) throw new Error('Network response was not ok');
+      const annotations = await response.json();
+      annotations.forEach(fetchedAnnotation => {
+        if (fetchedAnnotation && typeof fetchedAnnotation.annotationUID === 'string' && fetchedAnnotation.annotationUID.length > 0) {
+          _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.state.addAnnotation(fetchedAnnotation);
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching annotations:', error);
+    }
+  }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: handleUploadSegmentationsClick
   }, "Upload Segmentations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: handleUploadAnnotationsClick
-  }, "Post"));
+  }, "Post"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: handleClearMeasurementsClick
+  }, "Clear Measurements"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: handleRedrawSavedMeasurementsClick
+  }, "Redraw Measurements saved in OHIF"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: handlefetchAnnotationsClick
+  }, "Restore Measurements from static dir"));
 }
+_s(BtnComponent, "Rs+ICPp+hWlWcpHzqrx6u2cdtys=");
 _c = BtnComponent;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BtnComponent);
 var _c;
@@ -409,8 +392,6 @@ function WebQuizSidePanelComponent() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-white w-full text-center"
   }, `Web Quiz version : ${(0,math_js__WEBPACK_IMPORTED_MODULE_1__.sqrt)(4)}`, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Questions_btnComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    measurementData: annotationData,
-    segmentationData: segmentationData,
     refreshData: refreshData,
     setIsSaved: setIsSaved
   }));
@@ -521,7 +502,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./id */ "../../../extensions/@ohif/extension-webquiz/src/id.js");
 /* harmony import */ var _WebQuizSidePanelComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WebQuizSidePanelComponent */ "../../../extensions/@ohif/extension-webquiz/src/WebQuizSidePanelComponent.tsx");
-/* harmony import */ var _CreateCustomIcon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateCustomIcon */ "../../../extensions/@ohif/extension-webquiz/src/CreateCustomIcon.tsx");
+/* harmony import */ var _utils_CreateCustomIcon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/CreateCustomIcon */ "../../../extensions/@ohif/extension-webquiz/src/utils/CreateCustomIcon.tsx");
 /* harmony import */ var _ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ohif/ui-next */ "../../ui-next/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
@@ -530,7 +511,7 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
 
 
 
-(0,_CreateCustomIcon__WEBPACK_IMPORTED_MODULE_2__["default"])(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons);
+(0,_utils_CreateCustomIcon__WEBPACK_IMPORTED_MODULE_2__["default"])(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_3__.Icons);
 
 /**
  * You can remove any of the following modules if you don't need them.
@@ -664,6 +645,89 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_mo
     extensionManager
   }) => {}
 });
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "../../../extensions/@ohif/extension-webquiz/src/utils/CreateCustomIcon.tsx":
+/*!**********************************************************************************!*\
+  !*** ../../../extensions/@ohif/extension-webquiz/src/utils/CreateCustomIcon.tsx ***!
+  \**********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_BainesTransparentTiny_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/BainesTransparentTiny.png */ "../../../extensions/@ohif/extension-webquiz/assets/BainesTransparentTiny.png");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
+
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+const CreateCustomIcon = Icons => {
+  //   console.log('📦 Icons keys:', Object.keys(Icons));   // for debug
+
+  const BaineslogoIcon = props => {
+    const {
+      width = 22,
+      height = 22,
+      ...rest
+    } = props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", _extends({
+      src: _assets_BainesTransparentTiny_png__WEBPACK_IMPORTED_MODULE_1__["default"],
+      width: width,
+      height: height
+    }, rest));
+  };
+  Icons.addIcon('baines-logo', BaineslogoIcon);
+};
+_c = CreateCustomIcon;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateCustomIcon);
+var _c;
+__webpack_require__.$Refresh$.register(_c, "CreateCustomIcon");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(

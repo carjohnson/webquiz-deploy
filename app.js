@@ -1,5 +1,6 @@
 // app.js
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
 require("dotenv").config();
@@ -13,6 +14,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
+
+app.use(cors());
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -38,6 +41,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // set up session ID to store info that both client and server
 //  can access through req.session
+const isDev = process.env.NODE_ENV !== 'production';
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
@@ -45,21 +49,31 @@ app.use(session({
   saveUninitialized: false, // 🔐 Better for security
   cookie: {
     httpOnly: true,
-    secure: false, // Set to true when using HTTPS
+    secure: !isDev,    // Set to true when using HTTPS
+    sameSite: isDev ? 'lax' : 'none',
     maxAge: 60 * 60 * 1000 // 1 hour
   }
 }));
 
 
 // lock down all other routes unless logged in 
-//    (expose style and assets prior to the guard)
-app.use('/style.css', express.static(path.join(__dirname, 'public', 'stylesheets', 'style.css')));
-app.use('/baineslogo.png', express.static(path.join(__dirname, 'public','assets','baineslogo.png')))
-
+// TODO: Remove isPublicAsset reference to req.originalUrl.startsWith('/tempForTesting/') 
 
 app.use((req, res, next) => {
-  const publicPaths = ['/users/login', '/users/register', '/about', '/stylesheets/style.css', '/assets/baineslogo.png'];
-  if (publicPaths.includes(req.path) || req.session.user) {
+  const publicPaths = [
+    '/users/login',
+    '/users/register',
+    '/about'
+  ];
+
+  const isPublicAsset =
+    req.originalUrl.startsWith('/stylesheets/') ||
+    req.originalUrl.startsWith('/assets/') ||
+    req.originalUrl.startsWith('/tempForTesting/');
+
+  const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
+
+  if (isPublicPath || req.session.user || isPublicAsset) {
     return next();
   } else {
     return res.redirect('/users/login?msg=Please log in');

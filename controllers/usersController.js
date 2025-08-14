@@ -69,17 +69,15 @@ exports.login_post = asyncHandler(async (req, res, next) => {
           .exec();
 
         if(userExists.length){
-
             const user = userExists[0];
             let submittedPass = password
             let storedPass = userExists[0].password; 
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
             if (passwordMatch) {
-                
               if (!user.authorized) {
                 res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
-              } else{
+              } else {
                 req.session.user = user;
                 res.redirect('/iframehost');
               }

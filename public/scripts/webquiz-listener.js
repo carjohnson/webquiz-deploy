@@ -100,7 +100,8 @@ function postDataToWebQuizForDICOM(path, blob, filename) {
   })
     .then(res => res.json())
     .then(data => {
-      console.log(`✅ Server responded for ${path}:`, data);
+      // console.log(`✅ Server responded for ${path}:`, data);
+      console.log(`✅ Server responded for ${path}:`);
       return data;
     })
     .catch(error => console.error(`❌ Error posting ${path}:`, error));

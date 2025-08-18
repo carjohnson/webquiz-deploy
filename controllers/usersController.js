@@ -53,12 +53,11 @@ exports.register_post = asyncHandler(async (req, res, next) => {
           } else {
             res.redirect('/users/register?msg=Username Unavailable');
           }
-
     } catch (error) {
-        console.error("Error:", error);
-        res.send("usersController>register_post : Internal server error");
+      error.message = `usersController>register_post: ${error.message}`;
+      throw error; 
     }
-});
+  });
 
 exports.login_post = asyncHandler(async (req, res, next) => {
     try{
@@ -94,8 +93,8 @@ exports.login_post = asyncHandler(async (req, res, next) => {
             res.redirect('/users/login?msg=Invalid email or password');
         }
     } catch (error) {
-        console.error("Error:", error);
-        res.send("usersController>login_post : Internal server error");
+      error.message = `usersController>login_post: ${error.message}`;
+      throw error; 
     }
 }); 
 
@@ -104,17 +103,33 @@ exports.logout_get = asyncHandler(async (req,res,next) => {
     req.session.destroy(() => {
       res.render('logout', {message: "Thank you for participating!"});
     });
+
   } catch (error) {
-    console.log("Logout error:", error);
-    res.send("usersController>logout_get : Internal server error");
+    error.message = `usersController>logout_get: ${error.message}`;
+    throw error; 
   }
+
 });
 
 exports.about_get = asyncHandler(async (req,res,next) => {
   try {
     res.render('about');
   } catch (error) {
-    console.log("About error:", error);
-    res.send("usersController>about_get : Internal server error");
+    error.message = `usersController>about_get: ${error.message}`;
+    throw error; 
+  }
+
+});
+
+exports.sessioninfo_get = asyncHandler(async (req, res, next) => {
+  try {
+    if (req.session && req.session.user) {
+      res.json(req.session.user);
+    } else {
+      res.status(401).json({ error: 'Not logged in' });
+    }
+  } catch (error) {
+    error.message = `usersController>sessioninfo_get: ${error.message}`;
+    throw error; // asyncHandler will pass this to your global error handler (catch 500 in app.js)
   }
 });

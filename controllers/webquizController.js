@@ -91,9 +91,13 @@ async function saveAnnotationsToDB(annotationObjects, req) {
     });
 
     if (existingAnnotation) {
-      console.log('*** Found an annotation document for this user and patient - updating');
+      console.log('✏️ Updating existing annotation document');
+      existingAnnotation.data = annotationObjects;
+      existingAnnotation.created_at = new Date(); // optional: refresh timestamp
+      await existingAnnotation.save();
+      console.log('✅ Annotation updated in DB');
     } else {
-      console.log('*** Creating annotation record');
+      console.log('🆕 Creating new annotation document');
       const newAnnotation = new Annotation({
         user_id: req.session.user._id,
         patient_id: patientid,

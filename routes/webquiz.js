@@ -15,6 +15,8 @@ router.post("/volumes", webquiz_controller.post_volumes);
 
 router.post("/annotationObjects", webquiz_controller.post_annotationObjects);
 
+router.post("/patientid", webquiz_controller.post_patientid);
+
 router.post('/dicomsegdata', express.raw({ type: 'application/octet-stream', limit: '25mb' }), dicomsegController.uploadSegmentation);
 
 router.post('/clear-session', webquiz_controller.post_clear_session);

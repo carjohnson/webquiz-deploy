@@ -2,31 +2,24 @@ const fs = require('fs');
 const path = require('path');
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
-
+const Annotation = require('../models/annotation');
 
 // NOTE: dicomMeta comes from dicomsegController
 
 exports.index = asyncHandler(async (req, res, next) => {
   const lengths = req.session.lengths || [];
   const volumes = req.session.volumes || [];
-  const annotationObjects = req.session.annotationObjects || [];
   const dicomMeta = req.session.dicomMeta || [];
 
   console.log('🧪 View render data:', { lengths, volumes: req.session.volumes });
+  
   // connect to *.pug view
   res.render("webquiz", {
     title: "Quiz",
     lengths,
     volumes,
     dicomMeta,
-    annotationObjects
   });
-
-  // >>>>>> interim step - before save to db
-  // save annotation objects to file
-  if (annotationObjects.length > 0) {
-    saveAnnotationsToFile(annotationObjects, 'testSavedAnnotationObjects.json');
-  }
 
 });
 
@@ -34,35 +27,9 @@ exports.post_lengths = handleSessionPost( {key: 'lengths', keyLabel: 'lengths'})
 
 exports.post_volumes = handleSessionPost( {key: 'volumes', keyLabel: 'volumes'});
 
+exports.post_patientid = handleSessionPost( {key: 'patientid', keyLabel: 'patientid'});
+
 exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
-
-function handleSessionPost( {key, keyLabel} ) {
-  return (req, res, next) => {
-    // console.log(`\x1b[32m🛬 Incoming ${keyLabel} POST body:\n%s\x1b[0m`, JSON.stringify(req.body, null, 2));
-
-    const data = req.body.payload?.[key];
-
-    if (!data) {
-      console.error(`❌ No ${keyLabel} received in payload`);
-      return res.status(400).json({ error: `Missing ${keyLabel}` });
-    }
-
-    req.session[key] = data;
-
-    console.log('\x1b[32m%s', `🗃️ Saved ${keyLabel} to session:\x1b[0m`, data);
-
-    req.session.save((err) => {
-      if (err) {
-        console.error(`❌ Error saving ${keyLabel} session:`, err);
-        return res.status(500).json({ error: 'Session save failed' });
-      }
-
-      console.log('\x1b[32m%s', `✅ ${keyLabel} session saved successfully\x1b[0m`);
-      res.json({ status: 'ok' });
-    });
-  }
-};
-
 
 exports.post_clear_session = (req, res) => {
   req.session.lengths = null;
@@ -75,8 +42,68 @@ exports.post_clear_session = (req, res) => {
 };
 
 // >>>>>>>>>>>>> Helper functions <<<<<<<<<<<<<
-function saveAnnotationsToFile(annotationObjects, filename) {
-  const filePath = path.join(__dirname, '../public/tempForTesting', filename);
-  fs.writeFileSync(filePath, JSON.stringify(annotationObjects, null, 2), 'utf8');
-  console.log(`📁 Saved annotations to ${filePath}`);
+function handleSessionPost({ key, keyLabel }) {
+  return async (req, res, next) => {
+    const data = req.body.payload?.[key];
+    if (!data) return res.status(400).json({ error: `Missing ${keyLabel}` });
+
+    req.session[key] = data;
+
+    try {
+      await new Promise((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+
+      console.log(`✅ ${keyLabel} session saved`);
+
+      if (key === 'annotationObjects' && Array.isArray(data) && data.length > 0) {
+        await saveAnnotationsToDB(data, req);
+        console.log('✅ Annotations saved to DB');
+      }
+
+      res.json({ status: 'ok' });
+    } catch (err) {
+      console.error(`❌ Error in webquizController>handleSessionPost:`, err);
+      next(err);
+    }
+  };
+}
+
+
+async function saveAnnotationsToDB(annotationObjects, req) {
+  // first get user id based on user name
+  const username = req.session.user.username;
+  const patientid = req.session.patientid;
+
+  console.log("*** USER NAME: ", username, "   PATIENT ID: ", patientid);
+  if (!username || !patientid) {
+    console.error("❌ Missing user or patient ID in session");
+    return;
+  }
+
+  try {
+    const existingAnnotation = await Annotation.findOne({
+      user_id: req.session.user._id,
+      patient_id: patientid
+    });
+
+    if (existingAnnotation) {
+      console.log('*** Found an annotation document for this user and patient - updating');
+    } else {
+      console.log('*** Creating annotation record');
+      const newAnnotation = new Annotation({
+        user_id: req.session.user._id,
+        patient_id: patientid,
+        data: annotationObjects
+      });
+      await newAnnotation.save();
+      console.log('✅ Annotation saved to DB');
+    }
+  } catch (error) {
+      console.error("❌ DB error trying to save annotation objects:", error);
+      throw error;
+  }
 }

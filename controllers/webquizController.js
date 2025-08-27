@@ -41,6 +41,50 @@ exports.post_clear_session = (req, res) => {
   res.json({ status: "Session cleared" });
 };
 
+// route to send either all users' annotations or a specific user's annotations to the Viewer iframe when requested
+//  This is not relayed through the parent. The request from the viewer is direct to the server
+exports.list_users_annotations = asyncHandler(async (req, res, next) => {
+  console.log('***Fetching annotations list');
+  const sessionUser = req.session.user;
+  // const patientId = req.session.patientid;
+  const { username, patientid } = req.query;
+  console.log("--- Username from req.query: ", username, " --- User role from req.session: ", sessionUser.role, " --- Patient ID: ", patientid);
+
+  if (!sessionUser) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
+  if (!patientid) {
+    return res.status(400).json({ error: 'Missing patient ID in session' });
+  }
+
+  try {
+    let annotationsList = [];
+
+    if (sessionUser.role === 'admin') {
+      // Admin: get all annotations for the specified patient
+      const patientAnnotations = await Annotation.find({ patient_id: patientid });
+      annotationsList = patientAnnotations.map(doc => doc.data);
+    } else {
+      // Reader: get annotations for this user and patient
+      const userid = sessionUser._id;
+
+      const userAnnotations = await Annotation.find({
+        user_id: userid,
+        patient_id: patientid
+      });
+
+      annotationsList = userAnnotations.map(doc => doc.data);
+    }
+
+    res.json({ type: 'list-users-annotations', payload: annotationsList });
+  } catch (err) {
+    console.error('❌ Error retrieving annotations:', err);
+    next(err);
+  }
+});
+
+
 // >>>>>>>>>>>>> Helper functions <<<<<<<<<<<<<
 function handleSessionPost({ key, keyLabel }) {
   return async (req, res, next) => {

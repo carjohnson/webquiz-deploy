@@ -19,6 +19,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cornerstonejs_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @cornerstonejs/core */ "../../../node_modules/@cornerstonejs/core/dist/esm/index.js");
 /* harmony import */ var buffer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! buffer */ "../../../node_modules/buffer/index.js");
 /* harmony import */ var _utils_util_segmentation__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/util_segmentation */ "../../../extensions/@ohif/extension-webquiz/src/utils/util_segmentation.ts");
+/* harmony import */ var _ohif_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ohif/core */ "../../core/src/index.ts");
+/* harmony import */ var _ohif_extension_default__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ohif/extension-default */ "../../../extensions/default/src/index.ts");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "../../../node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ../../../node_modules/react-refresh/runtime.js */ "../../../node_modules/react-refresh/runtime.js");
 
@@ -34,15 +36,38 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 
+
+
 const {
   datasetToDict
 } = dcmjs__WEBPACK_IMPORTED_MODULE_2__.data;
 function BtnComponent({
+  userInfo,
   refreshData,
   setIsSaved
 }) {
   _s();
+  const [listOfUsersAnnotations, setListOfUsersAnnotations] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const measurementListRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)([]);
+  const userDefinedBtnLabel = () => {
+    if (userInfo?.role === "admin") {
+      return "Restore all users' measurements.";
+    } else {
+      return "Restore logged-in user's measurements.";
+    }
+  };
+  const {
+    servicesManager
+  } = (0,_ohif_core__WEBPACK_IMPORTED_MODULE_7__.useSystem)();
+  const displaySetService = servicesManager.services.displaySetService;
+  const activeDisplaySets = displaySetService.getActiveDisplaySets();
+  const studyInstanceUID = activeDisplaySets[0]?.StudyInstanceUID;
+  const {
+    patientInfo
+  } = (0,_ohif_extension_default__WEBPACK_IMPORTED_MODULE_8__.usePatientInfo)();
+  // in this study, patient name is set up to be unique and is being
+  //  sent to the parent as the patient_id
+  const patientName = patientInfo.PatientName;
   const handleUploadAnnotationsClick = () => {
     // refresh the annotation data before posting
     // segmentation data is refreshed automatically through segmentation service
@@ -56,7 +81,8 @@ function BtnComponent({
       type: 'annotations',
       measurementdata: freshMeasurementData,
       segmentationdata: freshVolumeData,
-      annotationObjects: measurementListRef.current
+      annotationObjects: measurementListRef.current,
+      patientid: patientName
     }, '*');
     setIsSaved(true);
   };
@@ -126,21 +152,82 @@ function BtnComponent({
     //   renderingEngine.render();
     // }
   };
-  async function handlefetchAnnotationsClick() {
+
+  // // OLD - getting annotations from server folder
+  //    async function handleFetchAnnotationsClick() {
+  //     try {
+
+  //       console.log('Fetching annotations from server');
+
+  //       // get annotation objects from json file
+  //       const response = await fetch('http://localhost:3000/tempForTesting/testSavedAnnotationObjects.json');
+  //       if (!response.ok) throw new Error('Network response was not ok');
+  //       const annotations = await response.json();
+  //       annotations.forEach(fetchedAnnotation => {
+  //         if (
+  //           fetchedAnnotation &&
+  //           typeof fetchedAnnotation.annotationUID === 'string' &&
+  //           fetchedAnnotation.annotationUID.length > 0
+  //         ) {
+  //           annotation.state.addAnnotation(fetchedAnnotation);
+  //         }
+  //       });
+
+  //     } catch (error) {
+  //       console.error('❌ Error fetching annotations (check if Express is running):', error);
+  //     }
+  //   }
+
+  //   // useEffect if you want the annotations to appear automatically when the component mounts
+  //   useEffect(() => {
+  //   const fetchAnnotations = async () => {
+  //     const username = userInfo?.role === 'reader' ? userInfo.username : 'all';
+
+  //     try {
+  //       const response = await fetch(`/webquiz/list-users-annotations?username=${username}`);
+  //       if (!response.ok) throw new Error('Failed to fetch annotations');
+
+  //       const { payload: annotationsList } = await response.json();
+  //       setListOfUsersAnnotations(annotationsList);
+
+  //       annotationsList.forEach(userAnnotationObjects => {
+  //         userAnnotationObjects.forEach(fetchedAnnotation => {
+  //           if (
+  //             fetchedAnnotation &&
+  //             typeof fetchedAnnotation.annotationUID === 'string' &&
+  //             fetchedAnnotation.annotationUID.length > 0
+  //           ) {
+  //             annotation.state.addAnnotation(fetchedAnnotation);
+  //           }
+  //         });
+  //       });
+  //     } catch (error) {
+  //       console.error('❌ Error fetching annotations:', error);
+  //     }
+  //   };
+
+  //   fetchAnnotations();
+  // }, [userInfo]);
+
+  // get annotations from database based on user role
+  async function handleFetchAnnotationsClick() {
+    const username = userInfo?.role === 'reader' ? userInfo.username : 'all';
     try {
-      console.log('Fetching annotations from server');
-      debugger;
-      // const response = await fetch('tempTesting/testSavedAnnotationObjects.json');
-      const response = await fetch('http://localhost:3000/tempTesting/testSavedAnnotationObjects.json');
-      if (!response.ok) throw new Error('Network response was not ok');
-      const annotations = await response.json();
-      annotations.forEach(fetchedAnnotation => {
-        if (fetchedAnnotation && typeof fetchedAnnotation.annotationUID === 'string' && fetchedAnnotation.annotationUID.length > 0) {
-          _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.state.addAnnotation(fetchedAnnotation);
-        }
+      const response = await fetch(`/webquiz/list-users-annotations?username=${username}&patientid=${patientName}`);
+      if (!response.ok) throw new Error('Failed to fetch annotations');
+      const {
+        payload: annotationsList
+      } = await response.json();
+      setListOfUsersAnnotations(annotationsList);
+      annotationsList.forEach(userAnnotationObjects => {
+        userAnnotationObjects.forEach(fetchedAnnotation => {
+          if (fetchedAnnotation && typeof fetchedAnnotation.annotationUID === 'string' && fetchedAnnotation.annotationUID.length > 0) {
+            _cornerstonejs_tools__WEBPACK_IMPORTED_MODULE_3__.annotation.state.addAnnotation(fetchedAnnotation);
+          }
+        });
       });
     } catch (error) {
-      console.error('Error fetching annotations:', error);
+      console.error('❌ Error fetching annotations:', error);
     }
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -152,10 +239,12 @@ function BtnComponent({
   }, "Clear Measurements"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: handleRedrawSavedMeasurementsClick
   }, "Redraw Measurements saved in OHIF"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ohif_ui_next__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    onClick: handlefetchAnnotationsClick
-  }, "Restore Measurements from static dir"));
+    onClick: handleFetchAnnotationsClick
+  }, userDefinedBtnLabel(userInfo)));
 }
-_s(BtnComponent, "Rs+ICPp+hWlWcpHzqrx6u2cdtys=");
+_s(BtnComponent, "HiC5JocY08ugS9CBmv3DR8iQ2uI=", false, function () {
+  return [_ohif_core__WEBPACK_IMPORTED_MODULE_7__.useSystem, _ohif_extension_default__WEBPACK_IMPORTED_MODULE_8__.usePatientInfo];
+});
 _c = BtnComponent;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BtnComponent);
 var _c;
@@ -245,6 +334,7 @@ function WebQuizSidePanelComponent() {
   const [segmentationData, setSegmentationData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [volumeData, setVolumeData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [annotationData, setAnnotationData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [userInfo, setUserInfo] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [isSaved, setIsSaved] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
   // generic for capture of cachedStats object
 
@@ -329,6 +419,28 @@ function WebQuizSidePanelComponent() {
     }
   }, [segmentationData]);
 
+  // get user info from parent iframehost
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    // send request to parent for user info
+    window.parent.postMessage({
+      type: 'request-user-info'
+    }, '*');
+
+    // Listen for response
+    const handleMessage = event => {
+      if (event.data.type === 'user-info') {
+        console.log('✅ Viewer > Received user info:', event.data.payload);
+        setUserInfo(event.data.payload);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   ////////////////////////////////////////////
   //=====================
   // helper functions
@@ -392,11 +504,12 @@ function WebQuizSidePanelComponent() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-white w-full text-center"
   }, `Web Quiz version : ${(0,math_js__WEBPACK_IMPORTED_MODULE_1__.sqrt)(4)}`, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Questions_btnComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    userInfo: userInfo,
     refreshData: refreshData,
     setIsSaved: setIsSaved
-  }));
+  }), userInfo && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "User Name: ", userInfo.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "User Role: ", userInfo.role)));
 }
-_s(WebQuizSidePanelComponent, "vdaIHZ2iZtlnqzUFfB0Ch/9/9Y4=", false, function () {
+_s(WebQuizSidePanelComponent, "5sljVcTio8qtSxxNuOvR4iVmIE4=", false, function () {
   return [_ohif_core__WEBPACK_IMPORTED_MODULE_3__.useSystem];
 });
 _c = WebQuizSidePanelComponent;

@@ -15,7 +15,19 @@ var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 
-app.use(cors());
+
+const allowedOrigins = ['https://localhost:3000', 'https://localhost'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -43,21 +55,20 @@ app.use(express.urlencoded({ extended: false }));
 //  can access through req.session
 const isDev = process.env.NODE_ENV !== 'production';
 
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
   resave: false,
   saveUninitialized: false, // 🔐 Better for security
   cookie: {
     httpOnly: true,
-    secure: !isDev,    // Set to true when using HTTPS
-    sameSite: isDev ? 'lax' : 'none',
-    maxAge: 60 * 60 * 1000 // 1 hour
+    secure: true,           // ✅ Must be true for HTTPS
+    sameSite: 'none',       // ✅ Required for cross-origin iframe access
+    maxAge: 60 * 60 * 1000  // 1 hour
   }
 }));
 
-
 // lock down all other routes unless logged in 
-// TODO: Remove isPublicAsset reference to req.originalUrl.startsWith('/tempForTesting/') 
 
 app.use((req, res, next) => {
   const publicPaths = [
@@ -68,8 +79,7 @@ app.use((req, res, next) => {
 
   const isPublicAsset =
     req.originalUrl.startsWith('/stylesheets/') ||
-    req.originalUrl.startsWith('/assets/') ||
-    req.originalUrl.startsWith('/tempForTesting/');
+    req.originalUrl.startsWith('/assets/');
 
   const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
 
@@ -92,6 +102,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // log incoming requests
 app.use((req, res, next) => {
   console.log(`📮 [${req.method}] ${req.originalUrl}`);
+  console.log('🧠 Session:', req.session);
   next();
 });
 

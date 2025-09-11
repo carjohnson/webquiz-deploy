@@ -8,6 +8,8 @@ var app = require('../app');
 var debug = require('debug')('webquizproject:server');
 const https = require('https');
 const fs = require('fs');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 
 /**
  * Load certificates
@@ -104,3 +106,22 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * Express will forward WebSocket upgrade requests (handshakes)
+ * -  to Webpack Dev Server at https://localhost:3000/ws
+ */
+const wsProxy = createProxyMiddleware({
+  target: 'https://localhost:3000',
+  changeOrigin: true,
+  ws: true,
+  secure: false,
+});
+
+// Attach the upgrade handler AFTER server.listen()
+server.on('upgrade', (req, socket, head) => {
+  if (req.url.startsWith('/ws')) {
+    // console.log('Forwarding WebSocket upgrade for:', req.url);
+    wsProxy(req, socket, head);
+  }
+});

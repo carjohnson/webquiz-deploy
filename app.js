@@ -8,7 +8,6 @@ const app = express();
 var path = require('path');
 var logger = require('morgan');
 const createError = require('http-errors');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -27,15 +26,6 @@ app.use(cors({
     }
   },
   credentials: true
-}));
-
-// proxy websocket /ws to ohif's web server ( with the port)
-//    since the ohif_iframe loads from https://localhost/ohif/ (without the port)
-app.use('/ws', createProxyMiddleware({
-  target: 'https://localhost:3000',
-  changeOrigin: true,
-  ws: true,
-  secure: false, // if using self-signed certs
 }));
 
 // View engine setup

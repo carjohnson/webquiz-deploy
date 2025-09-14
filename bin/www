@@ -6,7 +6,22 @@
 
 var app = require('../app');
 var debug = require('debug')('webquizproject:server');
-var http = require('http');
+const https = require('https');
+const fs = require('fs');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+
+/**
+ * Load certificates
+ */
+const path = require('path');
+
+const certPath = path.join(__dirname, '../certs');
+// same certs also used in ohif viewer (common name set as CN=localhost)
+const options = {
+  key: fs.readFileSync(path.join(certPath, 'nginx.key')),
+  cert: fs.readFileSync(path.join(certPath, 'nginx.crt'))
+};
 
 /**
  * Get port from environment and store in Express.
@@ -19,7 +34,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+const server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -91,3 +106,22 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * Express will forward WebSocket upgrade requests (handshakes)
+ * -  to Webpack Dev Server at https://localhost:3000/ws
+ */
+const wsProxy = createProxyMiddleware({
+  target: 'https://localhost:3000',
+  changeOrigin: true,
+  ws: true,
+  secure: false,
+});
+
+// Attach the upgrade handler AFTER server.listen()
+server.on('upgrade', (req, socket, head) => {
+  if (req.url.startsWith('/ws')) {
+    // console.log('Forwarding WebSocket upgrade for:', req.url);
+    wsProxy(req, socket, head);
+  }
+});

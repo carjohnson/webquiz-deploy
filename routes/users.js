@@ -16,5 +16,7 @@ router.get("/logout", users_controller.logout_get);
 
 router.get("/about", users_controller.about_get);
 
+router.get("/session-info", users_controller.sessioninfo_get);
+
 
 module.exports = router;

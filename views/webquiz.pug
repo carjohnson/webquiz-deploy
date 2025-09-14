@@ -6,9 +6,11 @@ block content
   script.
     const lengths = !{JSON.stringify(lengths)};
     const volumes = !{JSON.stringify(volumes)};
+    const legend  = !{JSON.stringify(legend)};
 
     console.log('📏 Lengths:', lengths);
     console.log('📦 Volumes:', volumes);
+    console.log('🧮 Legend:', legend);
 
   <br><br>
   h4="Annotations"
@@ -55,4 +57,13 @@ block content
         li= label
   else
     p No segmentation metadata received
+  <br><br>
+  <label><strong>Annotations Legend</strong></label>
+  if legend && legend.length
+    ul#annotation-legend
+      each item in legend
+        li(style=`color: ${item.color}`)
+          | User #{item.index + 1} - #{item.user_name} - #{item.user_id}
+  else
+    p No annotation legend available.
   h3(style="color: orange")=msg

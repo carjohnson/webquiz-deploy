@@ -2,7 +2,7 @@ console.log("\x1b[32m*******  In listener script\x1b[0m");
 console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
 console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
-let received = { lengths: false, volumes: false , annotationObjects: false };
+let received = { lengths: false, volumes: false , annotationObjects: false, patientid: false, legend: false };
 
 
 window.addEventListener('message', async (event) => {
@@ -27,6 +27,7 @@ window.addEventListener('message', async (event) => {
     const measurements = event.data.measurementdata;
     const segmentations = event.data.segmentationdata;
     const annotationObjects = event.data.annotationObjects;
+    const patientid = event.data.patientid;
     console.log('Received measurements:', measurements);
     console.log('Received segmentations:', segmentations);
 
@@ -47,29 +48,44 @@ window.addEventListener('message', async (event) => {
     console.log('********** Lengths extracted in webquiz_iframe:', lengths); // An array of all lengths across all annotations
     console.log('********** Volumes extracted:', volumes);
 
-    // const payload = { lengths, volumes, annotationObjects };
-
     // TODO: change timeout to listener for reload of iframe
-    Promise.all([
-      postAndTrack('lengths', { lengths }),
-      postAndTrack('volumes', { volumes }),
-      postAndTrack('annotationObjects', { annotationObjects })
-    ]).then(() => {
-      maybeReloadIframe();
+
+    // post these data in series so that patientid gets saved before the annotationObjects which uses it
+    postAndTrack('lengths', { lengths })
+      .then(() => postAndTrack('volumes', { volumes }))
+      .then(() => postAndTrack('patientid', { patientid }))
+      .then(() => postAndTrack('annotationObjects', { annotationObjects }))
+      .then(() => {
+        maybeReloadIframe();
+        setTimeout(() => {
+          fetch("/webquiz/clear-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+          });
+        }, 1000);
+      });
+
+  }
+
+  if (event.data?.type === 'update-legend') {
+    const legend = event.data.legend;
+    postAndTrack('legend', { legend })
+    .then(() => {
+      window.parent.postMessage({ type: 'reload-webquiz' }, '*');
       setTimeout(() => {
         fetch("/webquiz/clear-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" }
         });
-      }, 1000); // Adjust timing as needed
-
+      }, 1000);
     });
- }
-});
+  }
+
 
   function postAndTrack(key, data) {
     return postDataToWebQuiz(key, data).then(() => {
       received[key] = true;
+      console.log('Key: ', key, ' Bool: ', received[key]);
     });
   }
 
@@ -111,9 +127,11 @@ function postDataToWebQuizForDICOM(path, blob, filename) {
 // Check that all data has been received before reloading
 //  the panel. We only want one reload.
 function maybeReloadIframe() {
-  if (received.lengths && received.volumes && received.annotationObjects) {
+  console.log('*** In request to reload. Received props:', received);
+  if (received.lengths && received.volumes && received.annotationObjects && received.patientid) {
     window.parent.postMessage({ type: 'reload-webquiz' }, '*');
-    received = { lengths: false, volumes: false, annotationObjects: false };
+    received = { lengths: false, volumes: false, annotationObjects: false, patientid: false };
   }
 }
 
+});

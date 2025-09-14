@@ -3,6 +3,14 @@ const path = require('path');
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Annotation = require('../models/annotation');
+const User = require('../models/user');
+
+const userColors = [
+  '#e6194b', '#46f0f0', '#ffe119', '#4363d8', '#f58231',
+  '#911eb4', '#3cb44b', '#f032e6', '#bcf60c', '#fabebe',
+  '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000',
+  '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080'
+];
 
 // NOTE: dicomMeta comes from dicomsegController
 
@@ -10,8 +18,9 @@ exports.index = asyncHandler(async (req, res, next) => {
   const lengths = req.session.lengths || [];
   const volumes = req.session.volumes || [];
   const dicomMeta = req.session.dicomMeta || [];
+  const legend = req.session.legend || [];
 
-  console.log('🧪 View render data:', { lengths, volumes: req.session.volumes });
+  console.log('🧪 View render data:', { lengths, volumes: req.session.volumes, legend: req.session.legend });
   
   // connect to *.pug view
   res.render("webquiz", {
@@ -19,6 +28,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     lengths,
     volumes,
     dicomMeta,
+    legend,
   });
 
 });
@@ -31,11 +41,14 @@ exports.post_patientid = handleSessionPost( {key: 'patientid', keyLabel: 'patien
 
 exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
 
+exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
+
 exports.post_clear_session = (req, res) => {
   req.session.lengths = null;
   req.session.volumes = null;
   req.session.dicomMeta = null;
   req.session.annotationObjects = null;
+  req.session.legend = null;
 
   console.log("🧹 Session cleared");
   res.json({ status: "Session cleared" });
@@ -53,31 +66,79 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
   }
-
   if (!patientid) {
     return res.status(400).json({ error: 'Missing patient ID in session' });
   }
 
   try {
+
     let annotationsList = [];
+
 
     if (sessionUser.role === 'admin') {
       // Admin: get all annotations for the specified patient
       const patientAnnotations = await Annotation.find({ patient_id: patientid });
-      annotationsList = patientAnnotations.map(doc => doc.data);
+
+      // 🧮 Map user ID to index
+      const uniqueUserIds = [...new Set(patientAnnotations.map(doc => doc.user_id.toString()))];
+      const userIndexMap = new Map();
+      uniqueUserIds.forEach((userId, idx) => {
+        userIndexMap.set(userId, idx);
+      });
+
+      // build list of annotations with user id and assigned color
+      annotationsList = patientAnnotations.map(doc => ({
+        data: doc.data,
+        user_id: doc.user_id,
+        color: userColors[userIndexMap.get(doc.user_id.toString()) % userColors.length]
+      }));
+
+      // get user name for legend
+      const users = await User.find({
+        _id: { $in: uniqueUserIds}
+      });
+      const userNameMap = new Map();
+      users.forEach(user => {
+        userNameMap.set(user._id.toString(), user.username);
+      })
+
+      var legend = uniqueUserIds.map(userId => ({
+        user_id: userId,
+        user_name: userNameMap.get(userId),
+        color: userColors[userIndexMap.get(userId) % userColors.length],
+        index: userIndexMap.get(userId)
+      }));
+
     } else {
       // Reader: get annotations for this user and patient
       const userid = sessionUser._id;
-
       const userAnnotations = await Annotation.find({
         user_id: userid,
         patient_id: patientid
       });
 
-      annotationsList = userAnnotations.map(doc => doc.data);
+      const user = await(User.find({
+        _id: userid
+      }));
+      const username = user.username;
+
+      annotationsList = userAnnotations.map(doc => ({
+        data: doc.data,
+        user_id: doc.user_id,
+        color: userColors[1]
+      }));
+
+      var legend = [{
+        user_id: userid.toString(),
+        user_name: username,
+        color: userColors[1],
+        index: 1
+      }];
+
     }
 
-    res.json({ type: 'list-users-annotations', payload: annotationsList });
+    // console.log('🧮 Annotations list with colours', annotationsList);
+    res.json({ type: 'list-users-annotations', payload: annotationsList, legend });
   } catch (err) {
     console.error('❌ Error retrieving annotations:', err);
     next(err);
@@ -102,6 +163,9 @@ function handleSessionPost({ key, keyLabel }) {
       });
 
       console.log(`✅ ${keyLabel} session saved`);
+      if (key === 'legend') {
+        console.log('req.session[legend] data: ', req.session['legend']);
+      }
 
       if (key === 'annotationObjects' && Array.isArray(data) && data.length > 0) {
         await saveAnnotationsToDB(data, req);

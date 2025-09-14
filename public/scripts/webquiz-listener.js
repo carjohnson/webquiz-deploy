@@ -2,7 +2,7 @@ console.log("\x1b[32m*******  In listener script\x1b[0m");
 console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
 console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
-let received = { lengths: false, volumes: false , annotationObjects: false, patientid: false };
+let received = { lengths: false, volumes: false , annotationObjects: false, patientid: false, legend: false };
 
 
 window.addEventListener('message', async (event) => {
@@ -66,11 +66,26 @@ window.addEventListener('message', async (event) => {
       });
 
   }
-});
+
+  if (event.data?.type === 'update-legend') {
+    const legend = event.data.legend;
+    postAndTrack('legend', { legend })
+    .then(() => {
+      window.parent.postMessage({ type: 'reload-webquiz' }, '*');
+      setTimeout(() => {
+        fetch("/webquiz/clear-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+      }, 1000);
+    });
+  }
+
 
   function postAndTrack(key, data) {
     return postDataToWebQuiz(key, data).then(() => {
       received[key] = true;
+      console.log('Key: ', key, ' Bool: ', received[key]);
     });
   }
 
@@ -112,9 +127,11 @@ function postDataToWebQuizForDICOM(path, blob, filename) {
 // Check that all data has been received before reloading
 //  the panel. We only want one reload.
 function maybeReloadIframe() {
+  console.log('*** In request to reload. Received props:', received);
   if (received.lengths && received.volumes && received.annotationObjects && received.patientid) {
     window.parent.postMessage({ type: 'reload-webquiz' }, '*');
     received = { lengths: false, volumes: false, annotationObjects: false, patientid: false };
   }
 }
 
+});

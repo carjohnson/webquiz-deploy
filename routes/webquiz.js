@@ -19,8 +19,11 @@ router.get('/list-users-annotations', webquiz_controller.list_users_annotations)
 
 router.post("/patientid", webquiz_controller.post_patientid);
 
+router.post('/legend', webquiz_controller.post_legend);
+
 router.post('/dicomsegdata', express.raw({ type: 'application/octet-stream', limit: '25mb' }), dicomsegController.uploadSegmentation);
 
 router.post('/clear-session', webquiz_controller.post_clear_session);
+
 
 module.exports = router;

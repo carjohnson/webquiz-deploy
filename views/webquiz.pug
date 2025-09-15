@@ -4,66 +4,19 @@ block content
   <script src="/scripts/webquiz-listener.js"></script>
 
   script.
-    const lengths = !{JSON.stringify(lengths)};
-    const volumes = !{JSON.stringify(volumes)};
     const legend  = !{JSON.stringify(legend)};
 
-    console.log('📏 Lengths:', lengths);
-    console.log('📦 Volumes:', volumes);
     console.log('🧮 Legend:', legend);
 
   <br><br>
   h4="Annotations"
-  <br>
-  <label><strong>Measurements</strong></label>
   <br><br>
-  // Render the lengths list
-  if lengths && lengths.length
-    ul
-      each length in lengths
-        li= length
-  else
-    p No lengths received.
-
-  <br><br>
-  <label><strong>Volumes</strong></label>
-  <br><br>
-  if volumes && volumes.length
-    table(border="1" cellpadding="5" cellspacing="0")
-      thead
-        tr
-          th Segmentation
-          th Segment
-          th Volume (cc)
-      tbody
-        each v in volumes
-          tr
-            td= v.segmentation
-            td= v.segment
-            td= v.volume
-  else
-    p No volume data received.
-
-  <br><br>
-  <label><strong>Dicom Seg Metadata</strong></label>
-  <br><br>
-  if dicomMeta && dicomMeta.labels && dicomMeta.labels.length
-    p Modality: #{dicomMeta.modality}
-    p Series UID: #{dicomMeta.seriesUID}
-
-    label Segments:
-    ul
-      each label in dicomMeta.labels
-        li= label
-  else
-    p No segmentation metadata received
-  <br><br>
-  <label><strong>Annotations Legend</strong></label>
+  <label><strong>Legend</strong></label>
   if legend && legend.length
     ul#annotation-legend
       each item in legend
         li(style=`color: ${item.color}`)
-          | User #{item.index + 1} - #{item.user_name} - #{item.user_id}
+          | User #{item.index + 1} - #{item.user_name}
   else
     p No annotation legend available.
   h3(style="color: orange")=msg

@@ -1,7 +1,4 @@
-const fs = require('fs');
-const path = require('path');
 const asyncHandler = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
 const Annotation = require('../models/annotation');
 const User = require('../models/user');
 
@@ -12,30 +9,16 @@ const userColors = [
   '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080'
 ];
 
-// NOTE: dicomMeta comes from dicomsegController
-
 exports.index = asyncHandler(async (req, res, next) => {
-  const lengths = req.session.lengths || [];
-  const volumes = req.session.volumes || [];
-  const dicomMeta = req.session.dicomMeta || [];
   const legend = req.session.legend || [];
 
-  console.log('🧪 View render data:', { lengths, volumes: req.session.volumes, legend: req.session.legend });
-  
   // connect to *.pug view
   res.render("webquiz", {
     title: "Quiz",
-    lengths,
-    volumes,
-    dicomMeta,
     legend,
   });
 
 });
-
-exports.post_lengths = handleSessionPost( {key: 'lengths', keyLabel: 'lengths'});
-
-exports.post_volumes = handleSessionPost( {key: 'volumes', keyLabel: 'volumes'});
 
 exports.post_patientid = handleSessionPost( {key: 'patientid', keyLabel: 'patientid'});
 
@@ -44,9 +27,6 @@ exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', k
 exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
 
 exports.post_clear_session = (req, res) => {
-  req.session.lengths = null;
-  req.session.volumes = null;
-  req.session.dicomMeta = null;
   req.session.annotationObjects = null;
   req.session.legend = null;
 
@@ -57,11 +37,8 @@ exports.post_clear_session = (req, res) => {
 // route to send either all users' annotations or a specific user's annotations to the Viewer iframe when requested
 //  This is not relayed through the parent. The request from the viewer is direct to the server
 exports.list_users_annotations = asyncHandler(async (req, res, next) => {
-  console.log('***Fetching annotations list');
   const sessionUser = req.session.user;
-  // const patientId = req.session.patientid;
   const { username, patientid } = req.query;
-  console.log("--- Username from req.query: ", username, " --- User role from req.session: ", sessionUser.role, " --- Patient ID: ", patientid);
 
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
@@ -164,7 +141,6 @@ function handleSessionPost({ key, keyLabel }) {
 
       console.log(`✅ ${keyLabel} session saved`);
       if (key === 'legend') {
-        console.log('req.session[legend] data: ', req.session['legend']);
       }
 
       if (key === 'annotationObjects' && Array.isArray(data) && data.length > 0) {
@@ -186,7 +162,7 @@ async function saveAnnotationsToDB(annotationObjects, req) {
   const username = req.session.user.username;
   const patientid = req.session.patientid;
 
-  console.log("*** USER NAME: ", username, "   PATIENT ID: ", patientid);
+  // console.log("*** USER NAME: ", username, "   PATIENT ID: ", patientid);
   if (!username || !patientid) {
     console.error("❌ Missing user or patient ID in session");
     return;

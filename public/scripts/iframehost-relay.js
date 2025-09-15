@@ -6,12 +6,11 @@ console.log("Is in parent:", window == window.parent);
 //  reload the webquiz iframe if requested
 //  otherwise - repost all other events
 window.addEventListener('message', (event) => {
-  console.log('******* Parent --- Raw message received :', event);
+  // console.log('******* Parent --- Raw message received :', event);
   const quizFrame = document.getElementById('webquiz_iframe');
   const viewerFrame = document.getElementById('ohif_iframe');
 
   if (event.data.type === 'reload-webquiz') {
-    console.log("******* In parent - About to reload webquiz iframe");
     if (quizFrame) {
       quizFrame.src = quizFrame.src;  // simple reload
       console.log('🔁 Reloaded webquiz iframe');
@@ -24,7 +23,7 @@ window.addEventListener('message', (event) => {
         type: 'user-info',
         payload: userInfo
       }, '*');
-      console.log('📨 Parent --- Sent user info to viewer iframe: ', userInfo);
+      // console.log('📨 Parent --- Sent user info to viewer iframe: ', userInfo);
     }
   } else {
     quizFrame.contentWindow.postMessage(event.data, '*');

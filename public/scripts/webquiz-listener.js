@@ -2,58 +2,73 @@ console.log("\x1b[32m*******  In listener script\x1b[0m");
 console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
 console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
-let received = { lengths: false, volumes: false , annotationObjects: false, patientid: false, legend: false };
+// let received = { lengths: false, volumes: false , annotationObjects: false, patientid: false, legend: false };
+let received = { annotationObjects: false, patientid: false, legend: false };
 
 
 window.addEventListener('message', async (event) => {
   console.log('\x1b[32m*******  Raw message received in WebQuiz:\x1b[0m"', event);
 
-  if (event.data?.type === "SEGMENTATION_UPLOAD") {
-    const { filename, payload } = event.data;
-    console.log("📥 Received segmentation upload:", event.data.filename);
-    console.log("Payload is a Blob?", event.data.payload instanceof Blob);
+  // if (event.data?.type === "SEGMENTATION_UPLOAD") {
+  //   const { filename, payload } = event.data;
+  //   console.log("📥 Received segmentation upload:", event.data.filename);
+  //   console.log("Payload is a Blob?", event.data.payload instanceof Blob);
     
  
-    postDataToWebQuizForDICOM('dicomsegdata', payload, filename).then(() => {
-      received.dicomsegdata = true;
-      maybeReloadIframe();
-    });
+  //   postDataToWebQuizForDICOM('dicomsegdata', payload, filename).then(() => {
+  //     received.dicomsegdata = true;
+  //     maybeReloadIframe();
+  //   });
   
-  }
+  // }
 
   if (event.data?.type === 'annotations') {
     console.log('\x1b[32m********** In webquiz iframe - handling all annotations\x1b[0m"');
 
-    const measurements = event.data.measurementdata;
-    const segmentations = event.data.segmentationdata;
+    // const measurements = event.data.measurementdata;
+    // const segmentations = event.data.segmentationdata;
     const annotationObjects = event.data.annotationObjects;
     const patientid = event.data.patientid;
-    console.log('Received measurements:', measurements);
-    console.log('Received segmentations:', segmentations);
+    // console.log('Received measurements:', measurements);
+    // console.log('Received segmentations:', segmentations);
 
  
 
-    const lengths = measurements.flatMap((statsObj) => {
-      return Object.values(statsObj)
-        .filter((stat) => typeof stat === 'object' && stat !== null && 'length' in stat)
-        .map((stat) => stat.length);
-    });
+    // const lengths = measurements.flatMap((statsObj) => {
+    //   return Object.values(statsObj)
+    //     .filter((stat) => typeof stat === 'object' && stat !== null && 'length' in stat)
+    //     .map((stat) => stat.length);
+    // });
 
-    const volumes = segmentations.map(entry => ({
-      segmentation: entry.segmentation,
-      segment: entry.segment,
-      volume: entry.volume
-    }));
+    // const volumes = segmentations.map(entry => ({
+    //   segmentation: entry.segmentation,
+    //   segment: entry.segment,
+    //   volume: entry.volume
+    // }));
 
-    console.log('********** Lengths extracted in webquiz_iframe:', lengths); // An array of all lengths across all annotations
-    console.log('********** Volumes extracted:', volumes);
+    // console.log('********** Lengths extracted in webquiz_iframe:', lengths); // An array of all lengths across all annotations
+    // console.log('********** Volumes extracted:', volumes);
 
     // TODO: change timeout to listener for reload of iframe
 
+    // // post these data in series so that patientid gets saved before the annotationObjects which uses it
+    // postAndTrack('lengths', { lengths })
+    //   .then(() => postAndTrack('volumes', { volumes }))
+    //   .then(() => postAndTrack('patientid', { patientid }))
+    //   .then(() => postAndTrack('annotationObjects', { annotationObjects }))
+    //   .then(() => {
+    //     maybeReloadIframe();
+    //     setTimeout(() => {
+    //       fetch("/webquiz/clear-session", {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json" }
+    //       });
+    //     }, 1000);
+    //   });
+
+
     // post these data in series so that patientid gets saved before the annotationObjects which uses it
-    postAndTrack('lengths', { lengths })
-      .then(() => postAndTrack('volumes', { volumes }))
-      .then(() => postAndTrack('patientid', { patientid }))
+    postAndTrack('patientid', { patientid })
       .then(() => postAndTrack('annotationObjects', { annotationObjects }))
       .then(() => {
         maybeReloadIframe();
@@ -128,9 +143,13 @@ function postDataToWebQuizForDICOM(path, blob, filename) {
 //  the panel. We only want one reload.
 function maybeReloadIframe() {
   console.log('*** In request to reload. Received props:', received);
-  if (received.lengths && received.volumes && received.annotationObjects && received.patientid) {
+  // if (received.lengths && received.volumes && received.annotationObjects && received.patientid) {
+  //   window.parent.postMessage({ type: 'reload-webquiz' }, '*');
+  //   received = { lengths: false, volumes: false, annotationObjects: false, patientid: false };
+  // }
+  if (received.annotationObjects && received.patientid) {
     window.parent.postMessage({ type: 'reload-webquiz' }, '*');
-    received = { lengths: false, volumes: false, annotationObjects: false, patientid: false };
+    received = { annotationObjects: false, patientid: false };
   }
 }
 

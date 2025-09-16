@@ -24,12 +24,7 @@ exports.register_get = asyncHandler(async (req, res, next) => {
 exports.register_post = asyncHandler(async (req, res, next) => {
   
       try{
-        const { username, email, password, role } = req.body;
-
-        // Validate role
-        if (!['reader', 'admin'].includes(role)) {
-          return res.status(400).send('Invalid role selected');
-        }
+        const { username, email, password } = req.body;
 
         const userExists = await User.find({username: username})
             .collation({ locale: "en", strength: 2 })
@@ -43,7 +38,6 @@ exports.register_post = asyncHandler(async (req, res, next) => {
               username    : username.trim().toLowerCase(),
               password    : hashPassword,
               email       : email.trim().toLowerCase(),
-              role        : role,
               authorized  : false,
             });
 

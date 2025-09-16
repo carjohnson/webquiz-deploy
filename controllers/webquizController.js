@@ -94,10 +94,10 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
         patient_id: patientid
       });
 
-      const user = await(User.find({
+      const user = await(User.findOne({
         _id: userid
       }));
-      const username = user.username;
+      const username = user?.username ?? 'Unknown';
 
       annotationsList = userAnnotations.map(doc => ({
         data: doc.data,

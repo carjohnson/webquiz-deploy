@@ -3,10 +3,18 @@ const Annotation = require('../models/annotation');
 const User = require('../models/user');
 
 const userColors = [
-  '#e6194b', '#46f0f0', '#ffe119', '#4363d8', '#f58231',
+  '#e6194b', '#46f0f0', '#e6beff', '#4363d8', '#f58231',
   '#911eb4', '#3cb44b', '#f032e6', '#bcf60c', '#fabebe',
-  '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000',
+  '#008080', '#ffe119', '#9a6324', '#fffac8', '#800000',
   '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080'
+];
+
+const suspicionScores = [
+    '1 - definitely benign',
+    '2 - probably benign',
+    '3 - indeterminent',
+    '4 - probably metastatic',
+    '5 - definitely metastatic',
 ];
 
 exports.index = asyncHandler(async (req, res, next) => {
@@ -16,6 +24,7 @@ exports.index = asyncHandler(async (req, res, next) => {
   res.render("webquiz", {
     title: "Quiz",
     legend,
+    suspicionScores,
   });
 
 });

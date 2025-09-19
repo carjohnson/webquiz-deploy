@@ -5,12 +5,11 @@ block content
 
   script.
     const legend  = !{JSON.stringify(legend)};
-
+    
   <br><br>
   <br><br>
   h4="Annotations"
   <br><br>
-  <label><strong>Legend</strong></label>
   if legend && legend.length
     ul#annotation-legend
       each item in legend
@@ -18,4 +17,14 @@ block content
           | User #{item.index + 1} - #{item.user_name}
   else
     p No annotation legend available.
+  <br><br>
+  <br><br>
+  h5 Suspicion Scores
+  if suspicionScores && suspicionScores.length
+    ul#score-list
+      each score in suspicionScores
+        li= score
+  else
+    p No suspicion scores available.
+
   h3(style="color: orange")=msg

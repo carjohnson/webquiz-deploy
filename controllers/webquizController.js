@@ -12,7 +12,7 @@ const userColors = [
 const suspicionScores = [
     '1 - definitely benign',
     '2 - probably benign',
-    '3 - indeterminent',
+    '3 - indeterminate',
     '4 - probably metastatic',
     '5 - definitely metastatic',
 ];

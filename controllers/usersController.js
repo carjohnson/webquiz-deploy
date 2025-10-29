@@ -48,6 +48,10 @@ exports.register_post = asyncHandler(async (req, res, next) => {
             res.redirect('/users/register?msg=Username Unavailable');
           }
     } catch (error) {
+      if (error.name === 'ValidationError') {
+        const errors = Object.values(error.errors).map(err => err.message).join(', ');
+        return res.render('register', { msg: errors, formData: req.body });
+      }
       error.message = `usersController>register_post: ${error.message}`;
       throw error; 
     }

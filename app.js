@@ -13,6 +13,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
+var studyRoutes = require("./routes/studies");
 
 
 const allowedOrigins = ['https://localhost:3000', 'https://localhost'];
@@ -94,6 +95,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
+app.use('/api', studyRoutes);  // endpoint accessible at GET /api/studies/:studyUID
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));

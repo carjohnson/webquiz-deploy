@@ -102,8 +102,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // log incoming requests
 app.use((req, res, next) => {
-  console.log(`📮 [${req.method}] ${req.originalUrl}`);
-  console.log('🧠 Session:', req.session);
+  // console.log(`📮 [${req.method}] ${req.originalUrl}`);
+  // console.log('🧠 Session:', req.session);
   next();
 });
 

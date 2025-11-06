@@ -1,5 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const Study = require("../models/study");
+const User = require('../models/user');
+const UserStudyProgress = require('../models/userStudyProgress');
+const { computeStudyStatus } = require('../utils/studyStatus');
+
+
 
 /////// FOR DEBUGGING /////
 // restart server, and after logging in try to access the route:
@@ -31,6 +36,25 @@ exports.study_get = asyncHandler(async (req, res, next) => {
   }
 });
 
+// get all studies from the database
+exports.studyUID_list_get = asyncHandler(async (req, res, next) => {
+  try {
+    const studyUIDList = await Study.find({}, 'studyUID');
+    if (!studyUIDList || studyUIDList.length === 0) {
+      return res.status(404).json({
+      error: 'No studies found',
+      collection: Study.collection.name
+    });
+  }
+  res.status(200).json(studyUIDList);
+  } catch (err) {
+    console.error("Error fetching study list:", err);
+    res.status(500).json({
+      error: 'studiesController>>studyUID_list_get>Server error' 
+    });
+  }
+});
+
 
 // Ensure a series is part of the group listed in the study
 // test example: //    https://localhost:3000/api/studies/1.2.3.4.5/validate/1.2.3.4.5.6.7
@@ -45,3 +69,109 @@ exports.study_validate_series = asyncHandler(async (req, res, next) => {
   const isValid = study.seriesUIDs.includes(seriesUID);
   res.json({ studyUID, seriesUID, isValid });
 });
+
+// Update the user-study-progress douments
+exports.study_progress_post = asyncHandler(async (req, res, next) => {
+
+  const { username, studyUID, seriesUID, status } = req.body;
+
+  if (!username || !studyUID || !seriesUID || !status) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const validStatuses = ['new', 'wip', 'done'];
+  const normalizedStatus = status.trim().toLowerCase();
+  if (!validStatuses.includes(normalizedStatus)) {
+    return res.status(400).json({ error: 'Invalid status value' });
+  }
+
+  try {
+    // Find user and study references
+    const user = await User.findOne({ username });
+    const study = await Study.findOne({ studyUID: studyUID });
+
+    if (!user || !study) {
+      return res.status(404).json({ error: 'User or Study not found' });
+    }
+
+    // Check if progress already exists
+    let progress = await UserStudyProgress.findOne({
+      user_id: user._id,
+      study_id: study._id,
+    });
+
+    if (!progress) {
+      // Create new progress document
+      progress = new UserStudyProgress({
+        user_id: user._id,
+        study_id: study._id,
+        series_progress: [{ SeriesUID: seriesUID, status }],
+        study_status: status,
+      });
+    } else {
+      // Update existing progress
+      const existingSeries = progress.series_progress.find(sp => sp.SeriesUID === seriesUID);
+      if (existingSeries) {
+        existingSeries.status = status;
+      } else {
+        progress.series_progress.push({ SeriesUID: seriesUID, status });
+      }
+
+
+    // Recalculate study_status based on actual series count
+    const totalSeries = study.seriesUIDs.length;
+    progress.study_status = computeStudyStatus(progress.series_progress, totalSeries);
+
+  }
+
+    await progress.save();
+    res.status(200).json({ message: 'Progress updated', progress });
+
+  } catch (err) {
+    console.error('Error updating study progress:', err);
+    res.status(500).json({ error: 'studiesController>>study_progress_post>Internal server error' });
+  }
+});
+
+
+exports.study_progress_get = asyncHandler(async (req, res, next) => {
+  const { username, studyUID } = req.query;
+
+  if (!username || !studyUID) {
+    return res.status(400).json({ error: 'Missing username or studyUID' });
+  }
+
+  try {
+    const user = await User.findOne({ username });
+    const study = await Study.findOne({ studyUID });
+
+    if (!user || !study) {
+      return res.status(404).json({ error: 'User or Study not found' });
+    }
+
+    const progress = await UserStudyProgress.findOne({
+      user_id: user._id,
+      study_id: study._id,
+    });
+
+    if (!progress) {
+      return res.status(200).json({ study_status: 'new', series_progress: [] });
+    }
+
+    // Recalculate study_status based on actual series count
+    const totalSeries = study.seriesUIDs.length;
+    const computedStatus = computeStudyStatus(progress.series_progress, totalSeries);
+
+
+    return res.status(200).json({
+      study_status: computedStatus,
+      series_progress: progress.series_progress,
+      updated_at: progress.updated_at,
+    });
+
+  } catch (err) {
+    console.error('Error fetching study progress:', err);
+    return res.status(500).json({ error: 'studiesController>>study_progress_get>Internal server error' });
+  }
+});
+

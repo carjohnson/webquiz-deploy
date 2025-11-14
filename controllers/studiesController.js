@@ -105,16 +105,16 @@ exports.study_progress_post = asyncHandler(async (req, res, next) => {
       progress = new UserStudyProgress({
         user_id: user._id,
         study_id: study._id,
-        series_progress: [{ SeriesUID: seriesUID, status }],
+        series_progress: [{ seriesUID, status }],
         study_status: status,
       });
     } else {
       // Update existing progress
-      const existingSeries = progress.series_progress.find(sp => sp.SeriesUID === seriesUID);
+      const existingSeries = progress.series_progress.find(sp => sp.seriesUID === seriesUID);
       if (existingSeries) {
         existingSeries.status = status;
       } else {
-        progress.series_progress.push({ SeriesUID: seriesUID, status });
+        progress.series_progress.push({ seriesUID, status });
       }
 
 

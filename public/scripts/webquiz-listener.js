@@ -57,15 +57,23 @@ window.addEventListener('message', async (event) => {
 // dynamic function to return specific fetch for requested 
 //    route with associated data
 function postDataToWebQuiz(path, payload) {
+  // console.log('📤 Posting to backend:', path, payload); // for debug
+
   return fetch(`/webquiz/${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ payload })
+    body: JSON.stringify({payload})  
   })
-    .then(res => res.json())  // turn response into usable object ('data')
-    .then(data => {
-      console.log(`✅ Server responded for ${path}`);
-      return data; // hand control back to caller
+    .then(async res => {
+      const text = await res.text(); // read raw response
+      try {
+        const data = JSON.parse(text);
+        console.log(`✅ Server responded for ${path}`, data);
+        return data;
+      } catch (err) {
+        console.error(`❌ Response was not JSON for ${path}:`, text);
+        throw err;
+      }
     })
     .catch(error => console.error(`❌ Error posting ${path}:`, error));
 }

@@ -8,7 +8,7 @@ const AnnotationSchema = new Schema({
     patient_id      : { type: String, required: true },
     data            : { type: Schema.Types.Mixed },
     created_at      : { type: Date, default: Date.now }
-});
+},  { versionKey: false });
 
 
 // Virtual for user's URL

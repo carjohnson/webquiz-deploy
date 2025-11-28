@@ -136,6 +136,12 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
 function handleSessionPost({ key, keyLabel }) {
   return async (req, res, next) => {
     const data = req.body.payload?.[key];
+
+    // 🔎 Log the raw payload and the extracted data - for debug
+    // console.log(`📥 Incoming POST for ${keyLabel}`);
+    // console.log('Full req.body:', JSON.stringify(req.body, null, 2));
+    // console.log(`Extracted data for key "${key}":`, JSON.stringify(data, null, 2));
+
     if (!data) return res.status(400).json({ error: `Missing ${keyLabel}` });
 
     req.session[key] = data;
@@ -152,9 +158,23 @@ function handleSessionPost({ key, keyLabel }) {
       if (key === 'legend') {
       }
 
-      if (key === 'annotationObjects' && Array.isArray(data) && data.length > 0) {
-        await saveAnnotationsToDB(data, req);
-        console.log('✅ Annotations saved to DB');
+      if (key === 'annotationObjects' && Array.isArray(data)) {
+        if (data.length > 0) {
+          await saveAnnotationsToDB(data, req);
+          console.log('✅ Annotations saved to DB');
+        } else {
+          // last annotation for this userid/patientid has been deleted
+          //  clear all entries from the database
+          const userid = req.session.user._id
+          const patientid = req.session.patientid;
+
+          if (!userid || !patientid) {
+            console.warn('⚠️ Missing userid/patientid, skipping delete');
+          } else {
+            await Annotation.deleteMany({ patient_id: patientid, user_id: userid });
+            console.log('🗑️ All annotations deleted from DB for patient', patientid, 'user', userid);
+          }
+        }
       }
 
       res.json({ status: 'ok' });

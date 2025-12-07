@@ -18,6 +18,7 @@ const { computeStudyStatus } = require('../utils/studyStatus');
 // });
 
 
+//=========================================================
 // GET /api/studies/:studyUID
 exports.study_get = asyncHandler(async (req, res, next) => {
   try {
@@ -36,6 +37,7 @@ exports.study_get = asyncHandler(async (req, res, next) => {
   }
 });
 
+//=========================================================
 // get all studies from the database
 exports.studyUID_list_get = asyncHandler(async (req, res, next) => {
   try {
@@ -56,6 +58,7 @@ exports.studyUID_list_get = asyncHandler(async (req, res, next) => {
 });
 
 
+//=========================================================
 // Ensure a series is part of the group listed in the study
 // test example: //    https://localhost:3000/api/studies/1.2.3.4.5/validate/1.2.3.4.5.6.7
 exports.study_validate_series = asyncHandler(async (req, res, next) => {
@@ -70,8 +73,63 @@ exports.study_validate_series = asyncHandler(async (req, res, next) => {
   res.json({ studyUID, seriesUID, isValid });
 });
 
-// Update the user-study-progress douments
-exports.study_progress_post = asyncHandler(async (req, res, next) => {
+//=========================================================
+// Mark entire study as complete
+exports.study_complete_post = asyncHandler(async (req, res, next) => {
+  const { username, studyUID } = req.body;
+
+  if (!username || !studyUID) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    // Find user and study references
+    const user = await User.findOne({ username });
+    const study = await Study.findOne({ studyUID });
+
+    if (!user || !study) {
+      return res.status(404).json({ error: 'User or Study not found' });
+    }
+
+    // Check if progress already exists
+    let progress = await UserStudyProgress.findOne({
+      user_id: user._id,
+      study_id: study._id,
+    });
+
+    // Build series_progress array with all series marked done
+    const completedSeries = study.seriesUIDs.map(seriesUID => ({
+      seriesUID,
+      status: 'done',
+    }));
+
+    if (!progress) {
+      // Create new progress document
+      progress = new UserStudyProgress({
+        user_id: user._id,
+        study_id: study._id,
+        series_progress: completedSeries,
+        study_status: 'done',
+      });
+    } else {
+      // Update existing progress
+      progress.series_progress = completedSeries;
+      progress.study_status = 'done';
+      progress.updated_at = Date.now();
+    }
+
+    await progress.save();
+
+    res.status(200).json({ message: 'Study marked as complete', progress });
+  } catch (err) {
+    console.error('Error completing study:', err);
+    res.status(500).json({ error: 'studiesController>>study_complete_post>Internal server error' });
+  }
+});
+
+//=========================================================
+// Update the user-study-progress documents for the specified series
+exports.series_progress_post = asyncHandler(async (req, res, next) => {
 
   const { username, studyUID, seriesUID, status } = req.body;
 
@@ -134,6 +192,7 @@ exports.study_progress_post = asyncHandler(async (req, res, next) => {
 });
 
 
+//=========================================================
 exports.study_progress_get = asyncHandler(async (req, res, next) => {
   const { username, studyUID } = req.query;
 

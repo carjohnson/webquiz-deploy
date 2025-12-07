@@ -9,8 +9,10 @@ router.get("/studies/:studyUID/validate/:seriesUID", studies_controller.study_va
 
 router.get("/studies", studies_controller.studyUID_list_get);
 
-router.post("/study-progress", studies_controller.study_progress_post);
+router.post("/series-progress", studies_controller.series_progress_post);
 
 router.get("/study-progress", studies_controller.study_progress_get);
+
+router.post("/study-complete", studies_controller.study_complete_post);
 
 module.exports = router;

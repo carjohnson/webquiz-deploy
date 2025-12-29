@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const UserStudyProgressSchema = new Schema({
+const ProgressSchema = new Schema({
   user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   study_id: { type: Schema.Types.ObjectId, ref: 'Study', required: true },
   series_progress: [{
@@ -19,6 +19,6 @@ const UserStudyProgressSchema = new Schema({
     default: 'new',
   },
   updated_at: { type: Date, default: Date.now }
-}, {collection: 'userstudyprogress' } );
+}, {collection: 'progress' } );
 
-module.exports = mongoose.model("UserStudyProgress", UserStudyProgressSchema);
+module.exports = mongoose.model("Progress", ProgressSchema);

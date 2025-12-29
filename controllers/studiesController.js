@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Study = require("../models/study");
 const User = require('../models/user');
-const UserStudyProgress = require('../models/userStudyProgress');
+const Progress = require('../models/progress');
 const { computeStudyStatus } = require('../utils/studyStatus');
 
 
@@ -92,7 +92,7 @@ exports.study_complete_post = asyncHandler(async (req, res, next) => {
     }
 
     // Check if progress already exists
-    let progress = await UserStudyProgress.findOne({
+    let progress = await Progress.findOne({
       user_id: user._id,
       study_id: study._id,
     });
@@ -105,7 +105,7 @@ exports.study_complete_post = asyncHandler(async (req, res, next) => {
 
     if (!progress) {
       // Create new progress document
-      progress = new UserStudyProgress({
+      progress = new Progress({
         user_id: user._id,
         study_id: study._id,
         series_progress: completedSeries,
@@ -153,14 +153,14 @@ exports.series_progress_post = asyncHandler(async (req, res, next) => {
     }
 
     // Check if progress already exists
-    let progress = await UserStudyProgress.findOne({
+    let progress = await Progress.findOne({
       user_id: user._id,
       study_id: study._id,
     });
 
     if (!progress) {
       // Create new progress document
-      progress = new UserStudyProgress({
+      progress = new Progress({
         user_id: user._id,
         study_id: study._id,
         series_progress: [{ seriesUID, status }],
@@ -208,7 +208,7 @@ exports.study_progress_get = asyncHandler(async (req, res, next) => {
       return res.status(404).json({ error: 'User or Study not found' });
     }
 
-    const progress = await UserStudyProgress.findOne({
+    const progress = await Progress.findOne({
       user_id: user._id,
       study_id: study._id,
     });

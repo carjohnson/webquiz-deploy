@@ -13,7 +13,7 @@ const UserSchema = new Schema({
       required: true,
     },
     authorized  : {type: Boolean, default: false }
-});
+}, {collection: 'user' } );
 
 
 // Virtual for user's URL

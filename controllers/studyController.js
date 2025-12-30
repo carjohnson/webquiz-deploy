@@ -8,7 +8,7 @@ const { computeStudyStatus } = require('../utils/studyStatus');
 
 /////// FOR DEBUGGING /////
 // restart server, and after logging in try to access the route:
-//    https://localhost:3000/api/studies/1.2.3.4.5
+//    https://localhost:3000/api/study/1.2.3.4.5
 //////////////////////////
 // exports.study_get = asyncHandler(async (req, res, next) => {
 //   res.json({
@@ -19,7 +19,7 @@ const { computeStudyStatus } = require('../utils/studyStatus');
 
 
 //=========================================================
-// GET /api/studies/:studyUID
+// GET /api/study/:studyUID
 exports.study_get = asyncHandler(async (req, res, next) => {
   try {
     const study = await Study.findOne({ studyUID: req.params.studyUID });
@@ -52,7 +52,7 @@ exports.studyUID_list_get = asyncHandler(async (req, res, next) => {
   } catch (err) {
     console.error("Error fetching study list:", err);
     res.status(500).json({
-      error: 'studiesController>>studyUID_list_get>Server error' 
+      error: 'studyController>>studyUID_list_get>Server error' 
     });
   }
 });
@@ -60,7 +60,7 @@ exports.studyUID_list_get = asyncHandler(async (req, res, next) => {
 
 //=========================================================
 // Ensure a series is part of the group listed in the study
-// test example: //    https://localhost:3000/api/studies/1.2.3.4.5/validate/1.2.3.4.5.6.7
+// test example: //    https://localhost:3000/api/study/1.2.3.4.5/validate/1.2.3.4.5.6.7
 exports.study_validate_series = asyncHandler(async (req, res, next) => {
   const { studyUID, seriesUID } = req.params;
 
@@ -69,7 +69,7 @@ exports.study_validate_series = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ error: 'Study not found', studyUID });
   }
 
-  const isValid = study.seriesUIDs.includes(seriesUID);
+  const isValid = study.seriesUIDsToBeAnnotated.includes(seriesUID);
   res.json({ studyUID, seriesUID, isValid });
 });
 
@@ -98,7 +98,7 @@ exports.study_complete_post = asyncHandler(async (req, res, next) => {
     });
 
     // Build series_progress array with all series marked done
-    const completedSeries = study.seriesUIDs.map(seriesUID => ({
+    const completedSeries = study.seriesUIDsToBeAnnotated.map(seriesUID => ({
       seriesUID,
       status: 'done',
     }));
@@ -123,7 +123,7 @@ exports.study_complete_post = asyncHandler(async (req, res, next) => {
     res.status(200).json({ message: 'Study marked as complete', progress });
   } catch (err) {
     console.error('Error completing study:', err);
-    res.status(500).json({ error: 'studiesController>>study_complete_post>Internal server error' });
+    res.status(500).json({ error: 'studyController>>study_complete_post>Internal server error' });
   }
 });
 
@@ -177,7 +177,7 @@ exports.series_progress_post = asyncHandler(async (req, res, next) => {
 
 
     // Recalculate study_status based on actual series count
-    const totalSeries = study.seriesUIDs.length;
+    const totalSeries = study.seriesUIDsToBeAnnotated.length;
     progress.study_status = computeStudyStatus(progress.series_progress, totalSeries);
 
   }
@@ -187,7 +187,7 @@ exports.series_progress_post = asyncHandler(async (req, res, next) => {
 
   } catch (err) {
     console.error('Error updating study progress:', err);
-    res.status(500).json({ error: 'studiesController>>study_progress_post>Internal server error' });
+    res.status(500).json({ error: 'studyController>>study_progress_post>Internal server error' });
   }
 });
 
@@ -218,7 +218,7 @@ exports.study_progress_get = asyncHandler(async (req, res, next) => {
     }
 
     // Recalculate study_status based on actual series count
-    const totalSeries = study.seriesUIDs.length;
+    const totalSeries = study.seriesUIDsToBeAnnotated.length;
     const computedStatus = computeStudyStatus(progress.series_progress, totalSeries);
 
 
@@ -230,7 +230,7 @@ exports.study_progress_get = asyncHandler(async (req, res, next) => {
 
   } catch (err) {
     console.error('Error fetching study progress:', err);
-    return res.status(500).json({ error: 'studiesController>>study_progress_get>Internal server error' });
+    return res.status(500).json({ error: 'studyController>>study_progress_get>Internal server error' });
   }
 });
 

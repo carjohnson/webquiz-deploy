@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const AnnotationSchema = new Schema({
+const RulerMeasurementsSchema = new Schema({
     user_id         : { type: Schema.Types.ObjectId, ref: "User", required: true },
     patient_id      : { type: String, required: true },
     data            : { type: Schema.Types.Mixed },
@@ -12,9 +12,9 @@ const AnnotationSchema = new Schema({
 
 
 // Virtual for user's URL
-AnnotationSchema.virtual("url").get(function () {
+RulerMeasurementsSchema.virtual("url").get(function () {
   // We don't use an arrow function as we'll need the this object
   return `/webquiz/annotation/${this._id}`;
-});
+}, {collection: 'rulermeasurements' } );
 // Export model
-module.exports = mongoose.model("Annotation", AnnotationSchema);
+module.exports = mongoose.model("RulerMeasurements", RulerMeasurementsSchema);

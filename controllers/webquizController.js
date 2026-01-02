@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const Annotation = require('../models/annotation');
+const RulerMeasurements = require('../models/rulermeasurements');
 const User = require('../models/user');
 
 const userColors = [
@@ -63,7 +63,7 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
 
     if (sessionUser.role === 'admin') {
       // Admin: get all annotations for the specified patient
-      const patientAnnotations = await Annotation.find({ patient_id: patientid });
+      const patientAnnotations = await RulerMeasurements.find({ patient_id: patientid });
 
       // 🧮 Map user ID to index
       const uniqueUserIds = [...new Set(patientAnnotations.map(doc => doc.user_id.toString()))];
@@ -98,7 +98,7 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
     } else {
       // Reader: get annotations for this user and patient
       const userid = sessionUser._id;
-      const userAnnotations = await Annotation.find({
+      const userAnnotations = await RulerMeasurements.find({
         user_id: userid,
         patient_id: patientid
       });
@@ -171,7 +171,7 @@ function handleSessionPost({ key, keyLabel }) {
           if (!userid || !patientid) {
             console.warn('⚠️ Missing userid/patientid, skipping delete');
           } else {
-            await Annotation.deleteMany({ patient_id: patientid, user_id: userid });
+            await RulerMeasurements.deleteMany({ patient_id: patientid, user_id: userid });
             console.log('🗑️ All annotations deleted from DB for patient', patientid, 'user', userid);
           }
         }
@@ -198,7 +198,7 @@ async function saveAnnotationsToDB(annotationObjects, req) {
   }
 
   try {
-    const existingAnnotation = await Annotation.findOne({
+    const existingAnnotation = await RulerMeasurements.findOne({
       user_id: req.session.user._id,
       patient_id: patientid
     });
@@ -211,7 +211,7 @@ async function saveAnnotationsToDB(annotationObjects, req) {
       console.log('✅ Annotation updated in DB');
     } else {
       console.log('🆕 Creating new annotation document');
-      const newAnnotation = new Annotation({
+      const newAnnotation = new RulerMeasurements({
         user_id: req.session.user._id,
         patient_id: patientid,
         data: annotationObjects

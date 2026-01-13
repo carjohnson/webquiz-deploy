@@ -19,5 +19,6 @@ router.post('/legend', webquiz_controller.post_legend);
 
 router.post('/clear-session', webquiz_controller.post_clear_session);
 
+router.post("/studyid", webquiz_controller.post_studyid);
 
 module.exports = router;

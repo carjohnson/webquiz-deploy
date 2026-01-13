@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const RulerMeasurementsSchema = new Schema({
     user_id         : { type: Schema.Types.ObjectId, ref: "User", required: true },
+    study_id        : { type: Schema.Types.ObjectId, ref: "Study", required: true },
     patient_id      : { type: String, required: true },
     data            : { type: Schema.Types.Mixed },
     created_at      : { type: Date, default: Date.now }

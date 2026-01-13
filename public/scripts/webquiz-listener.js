@@ -10,15 +10,17 @@ window.addEventListener('message', async (event) => {
 
 
   if (event.data?.type === 'annotations') {
-    console.log('\x1b[32m********** In webquiz iframe - handling all annotations\x1b[0m"');
+    console.log('\x1b[32m********** In webquiz iframe - handling all annotations\x1b[0m"', event.data);
 
 
     const annotationObjects = event.data.annotationObjects;
     const patientid = event.data.patientid;
+    const studyuid = event.data.studyUID;
 
 
-    // post these data in series so that patientid gets saved before the annotationObjects which uses it
+    // post these data in series so that patientid studyid gets saved before the annotationObjects which uses it
     postAndTrack('patientid', { patientid })
+      .then(() => postAndTrack('studyid', { studyuid }))
       .then(() => postAndTrack('annotationObjects', { annotationObjects }))
       .then(() => {
         maybeReloadIframe();
@@ -57,7 +59,7 @@ window.addEventListener('message', async (event) => {
 // dynamic function to return specific fetch for requested 
 //    route with associated data
 function postDataToWebQuiz(path, payload) {
-  // console.log('📤 Posting to backend:', path, payload); // for debug
+  console.log('📤 Posting to backend:', path, payload); // for debug
 
   return fetch(`/webquiz/${path}`, {
     method: 'POST',

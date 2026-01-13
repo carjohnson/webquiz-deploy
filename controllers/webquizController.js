@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const RulerMeasurements = require('../models/rulermeasurements');
 const User = require('../models/user');
+const Study = require("../models/study");
 
 const userColors = [
   '#e6194b', '#46f0f0', '#e6beff', '#4363d8', '#f58231',
@@ -43,17 +44,47 @@ exports.post_clear_session = (req, res) => {
   res.json({ status: "Session cleared" });
 };
 
+exports.post_studyid = async (req, res) => {
+  console.log("📥 Incoming POST for studyid");
+  console.log("🔍 Body:", req.body);
+  console.log("🧪 Session BEFORE lookup:", req.session);
+
+  try {
+    const studyuid = req.body.payload?.studyuid;
+
+    const study = await Study.findOne({ studyUID: studyuid });
+
+    if (!study) {
+      console.log("❌ Study not found for UID:", studyuid);
+      return res.status(404).json({ error: "Study not found" });
+    }
+
+    req.session.study_id = study._id;
+
+    console.log("💾 Session AFTER saving study_id:", req.session);
+
+    res.json({ success: true, study_id: study._id });
+  } catch (err) {
+    console.error("❌ Error in post_studyid:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 // route to send either all users' annotations or a specific user's annotations to the Viewer iframe when requested
 //  This is not relayed through the parent. The request from the viewer is direct to the server
 exports.list_users_annotations = asyncHandler(async (req, res, next) => {
   const sessionUser = req.session.user;
-  const { username, patientid } = req.query;
+  const { username, patientid, study_id } = req.query;
 
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
   }
   if (!patientid) {
     return res.status(400).json({ error: 'Missing patient ID in session' });
+  }
+
+  if (!study_id) {
+    return res.status(400).json({ error: 'Missing study ID in session' });
   }
 
   try {
@@ -96,7 +127,7 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
       }));
 
     } else {
-      // Reader: get annotations for this user and patient
+      // Reader: get annotations for this user and study
       const userid = sessionUser._id;
       const userAnnotations = await RulerMeasurements.find({
         user_id: userid,
@@ -167,6 +198,7 @@ function handleSessionPost({ key, keyLabel }) {
           //  clear all entries from the database
           const userid = req.session.user._id
           const patientid = req.session.patientid;
+          const study_id = req.session.study_id;
 
           if (!userid || !patientid) {
             console.warn('⚠️ Missing userid/patientid, skipping delete');
@@ -190,17 +222,19 @@ async function saveAnnotationsToDB(annotationObjects, req) {
   // first get user id based on user name
   const username = req.session.user.username;
   const patientid = req.session.patientid;
+  const study_id = req.session.study_id;
 
-  // console.log("*** USER NAME: ", username, "   PATIENT ID: ", patientid);
-  if (!username || !patientid) {
-    console.error("❌ Missing user or patient ID in session");
+  console.log("*** USER NAME: ", username, "   PATIENT ID: ", patientid, "  STUDY:", study_id);
+  if (!username || !study_id) {
+    console.error("❌ Missing user or study ID in session");
     return;
   }
 
   try {
     const existingAnnotation = await RulerMeasurements.findOne({
       user_id: req.session.user._id,
-      patient_id: patientid
+      study_id: req.session.study_id,
+      patient_id: patientid,
     });
 
     if (existingAnnotation) {
@@ -214,6 +248,7 @@ async function saveAnnotationsToDB(annotationObjects, req) {
       const newAnnotation = new RulerMeasurements({
         user_id: req.session.user._id,
         patient_id: patientid,
+        study_id,
         data: annotationObjects
       });
       await newAnnotation.save();

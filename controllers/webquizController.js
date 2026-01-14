@@ -30,8 +30,6 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 });
 
-exports.post_patientid = handleSessionPost( {key: 'patientid', keyLabel: 'patientid'});
-
 exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
 
 exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
@@ -45,9 +43,9 @@ exports.post_clear_session = (req, res) => {
 };
 
 exports.post_studyid = async (req, res) => {
-  console.log("📥 Incoming POST for studyid");
-  console.log("🔍 Body:", req.body);
-  console.log("🧪 Session BEFORE lookup:", req.session);
+  // console.log("📥 Incoming POST for studyid");
+  // console.log("🔍 Body:", req.body);
+  // console.log("🧪 Session BEFORE lookup:", req.session);
 
   try {
     const studyuid = req.body.payload?.studyuid;
@@ -61,7 +59,7 @@ exports.post_studyid = async (req, res) => {
 
     req.session.study_id = study._id;
 
-    console.log("💾 Session AFTER saving study_id:", req.session);
+    // console.log("💾 Session AFTER saving study_id:", req.session);
 
     res.json({ success: true, study_id: study._id });
   } catch (err) {
@@ -93,11 +91,9 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
 
     if (sessionUser.role === 'admin') {
       // Admin: get all annotations for the specified study
-      // const patientAnnotations = await RulerMeasurements.find({ patient_id: patientid });
       const studyAnnotations = await RulerMeasurements.find({study_id});
 
       // 🧮 Map user ID to index
-      // const uniqueUserIds = [...new Set(patientAnnotations.map(doc => doc.user_id.toString()))];
       const uniqueUserIds = [...new Set(studyAnnotations.map(doc => doc.user_id.toString()))];
       const userIndexMap = new Map();
       uniqueUserIds.forEach((userId, idx) => {
@@ -105,7 +101,6 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
       });
 
       // build list of annotations with user id and assigned color
-      // annotationsList = patientAnnotations.map(doc => ({
       annotationsList = studyAnnotations.map(doc => ({
         data: doc.data,
         user_id: doc.user_id,
@@ -133,7 +128,6 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
       const userid = sessionUser._id;
       const userAnnotations = await RulerMeasurements.find({
         user_id: userid,
-        // patient_id: patientid
         study_id,
       });
 
@@ -178,9 +172,11 @@ function handleSessionPost({ key, keyLabel }) {
 
     if (!data) return res.status(400).json({ error: `Missing ${keyLabel}` });
 
-    req.session[key] = data;
 
     try {
+
+      req.session[key] = data;
+
       await new Promise((resolve, reject) => {
         req.session.save((err) => {
           if (err) reject(err);
@@ -197,18 +193,16 @@ function handleSessionPost({ key, keyLabel }) {
           await saveAnnotationsToDB(data, req);
           console.log('✅ Annotations saved to DB');
         } else {
-          // last annotation for this userid/patientid has been deleted
+          // last annotation for this userid/studyid has been deleted
           //  clear all entries from the database
           const userid = req.session.user._id
-          const patientid = req.session.patientid;
           const study_id = req.session.study_id;
 
-          if (!userid || !patientid || !study_id) {
+          if (!userid || !study_id) {
             console.warn('⚠️ Missing userid/studyid, skipping delete');
           } else {
-            // await RulerMeasurements.deleteMany({ patient_id: patientid, user_id: userid });
             await RulerMeasurements.deleteMany({ study_id, user_id: userid });
-            console.log('🗑️ All annotations deleted from DB for study',study_id,'patient', patientid, 'user', userid);
+            console.log('🗑️ All annotations deleted from DB for study', study_id, 'user', userid);
           }
         }
       }
@@ -225,10 +219,9 @@ function handleSessionPost({ key, keyLabel }) {
 async function saveAnnotationsToDB(annotationObjects, req) {
   // first get user id based on user name
   const username = req.session.user.username;
-  const patientid = req.session.patientid;
   const study_id = req.session.study_id;
 
-  console.log("*** USER NAME: ", username, "   PATIENT ID: ", patientid, "  STUDY:", study_id);
+  console.log("*** USER NAME: ", username,  "  STUDY:", study_id);
   if (!username || !study_id) {
     console.error("❌ Missing user or study ID in session");
     return;
@@ -238,7 +231,6 @@ async function saveAnnotationsToDB(annotationObjects, req) {
     const existingAnnotation = await RulerMeasurements.findOne({
       user_id: req.session.user._id,
       study_id: req.session.study_id,
-      // patient_id: patientid,
     });
 
     if (existingAnnotation) {
@@ -251,7 +243,6 @@ async function saveAnnotationsToDB(annotationObjects, req) {
       console.log('🆕 Creating new annotation document');
       const newAnnotation = new RulerMeasurements({
         user_id: req.session.user._id,
-        patient_id: patientid,
         study_id,
         data: annotationObjects
       });

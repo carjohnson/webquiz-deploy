@@ -2,7 +2,7 @@ console.log("\x1b[32m*******  In listener script\x1b[0m");
 console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
 console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
-let received = { annotationObjects: false, patientid: false, legend: false };
+let received = { annotationObjects: false, studyid: false, legend: false };
 
 
 window.addEventListener('message', async (event) => {
@@ -14,13 +14,11 @@ window.addEventListener('message', async (event) => {
 
 
     const annotationObjects = event.data.annotationObjects;
-    const patientid = event.data.patientid;
     const studyuid = event.data.studyUID;
 
 
-    // post these data in series so that patientid studyid gets saved before the annotationObjects which uses it
-    postAndTrack('patientid', { patientid })
-      .then(() => postAndTrack('studyid', { studyuid }))
+    // post these data in series so that studyid gets saved before the annotationObjects which uses it
+    postAndTrack('studyid', { studyuid })
       .then(() => postAndTrack('annotationObjects', { annotationObjects }))
       .then(() => {
         maybeReloadIframe();
@@ -85,9 +83,9 @@ function postDataToWebQuiz(path, payload) {
 //  the panel. We only want one reload.
 function maybeReloadIframe() {
   console.log('*** In request to reload. Received props:', received);
-  if (received.annotationObjects && received.patientid) {
+  if (received.annotationObjects && received.studyid) {
     window.parent.postMessage({ type: 'reload-webquiz' }, '*');
-    received = { annotationObjects: false, patientid: false };
+    received = { annotationObjects: false, studyid: false };
   }
 }
 

@@ -74,13 +74,12 @@ exports.post_studyid = async (req, res) => {
 //  This is not relayed through the parent. The request from the viewer is direct to the server
 exports.list_users_annotations = asyncHandler(async (req, res, next) => {
   const sessionUser = req.session.user;
-  const { username, patientid, study_id } = req.query;
+  const { username, studyUID } = req.query;
+  const study = await Study.findOne({ studyUID });
+  const study_id = study._id;
 
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
-  }
-  if (!patientid) {
-    return res.status(400).json({ error: 'Missing patient ID in session' });
   }
 
   if (!study_id) {
@@ -93,18 +92,21 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
 
 
     if (sessionUser.role === 'admin') {
-      // Admin: get all annotations for the specified patient
-      const patientAnnotations = await RulerMeasurements.find({ patient_id: patientid });
+      // Admin: get all annotations for the specified study
+      // const patientAnnotations = await RulerMeasurements.find({ patient_id: patientid });
+      const studyAnnotations = await RulerMeasurements.find({study_id});
 
       // 🧮 Map user ID to index
-      const uniqueUserIds = [...new Set(patientAnnotations.map(doc => doc.user_id.toString()))];
+      // const uniqueUserIds = [...new Set(patientAnnotations.map(doc => doc.user_id.toString()))];
+      const uniqueUserIds = [...new Set(studyAnnotations.map(doc => doc.user_id.toString()))];
       const userIndexMap = new Map();
       uniqueUserIds.forEach((userId, idx) => {
         userIndexMap.set(userId, idx);
       });
 
       // build list of annotations with user id and assigned color
-      annotationsList = patientAnnotations.map(doc => ({
+      // annotationsList = patientAnnotations.map(doc => ({
+      annotationsList = studyAnnotations.map(doc => ({
         data: doc.data,
         user_id: doc.user_id,
         color: userColors[userIndexMap.get(doc.user_id.toString()) % userColors.length]
@@ -131,7 +133,8 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
       const userid = sessionUser._id;
       const userAnnotations = await RulerMeasurements.find({
         user_id: userid,
-        patient_id: patientid
+        // patient_id: patientid
+        study_id,
       });
 
       const user = await(User.findOne({
@@ -200,11 +203,12 @@ function handleSessionPost({ key, keyLabel }) {
           const patientid = req.session.patientid;
           const study_id = req.session.study_id;
 
-          if (!userid || !patientid) {
-            console.warn('⚠️ Missing userid/patientid, skipping delete');
+          if (!userid || !patientid || !study_id) {
+            console.warn('⚠️ Missing userid/studyid, skipping delete');
           } else {
-            await RulerMeasurements.deleteMany({ patient_id: patientid, user_id: userid });
-            console.log('🗑️ All annotations deleted from DB for patient', patientid, 'user', userid);
+            // await RulerMeasurements.deleteMany({ patient_id: patientid, user_id: userid });
+            await RulerMeasurements.deleteMany({ study_id, user_id: userid });
+            console.log('🗑️ All annotations deleted from DB for study',study_id,'patient', patientid, 'user', userid);
           }
         }
       }
@@ -234,7 +238,7 @@ async function saveAnnotationsToDB(annotationObjects, req) {
     const existingAnnotation = await RulerMeasurements.findOne({
       user_id: req.session.user._id,
       study_id: req.session.study_id,
-      patient_id: patientid,
+      // patient_id: patientid,
     });
 
     if (existingAnnotation) {

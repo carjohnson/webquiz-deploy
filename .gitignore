@@ -6,3 +6,4 @@ dist
 .env
 public/ohif-demo/
 public/ohif-pacs/
+public/ohif/

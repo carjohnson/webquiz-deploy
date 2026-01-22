@@ -12,12 +12,20 @@ block content
         a(href='/users/logout') Logout&nbsp;&nbsp;
       else
         a(href='/users/login') Login&nbsp;&nbsp;
-      a(href='/users/about') About
+      //- a(href='/users/about') About
 
   div(class="ohif-container")
     button#toggle-btn(style="position: absolute; top: 10px; left: 10px; z-index: 999;") <
     iframe(src="/webquiz" id="webquiz_iframe" width="1000" height="800" style="border: none;")
-    //- iframe(src="/ohif" id="ohif_iframe" width="3000" height="800" style="border: none;")    
-    iframe(src="https://localhost/ohif/" id="ohif_iframe" width="3000" height="800" style="border: none;")
 
+    //-for running app as static files in backend/public/ohif
+    //-     these files need to be updated - copied from the frontend development ../platform/app/dist
+    //- iframe(src="/ohif" id="ohif_iframe" width="3000" height="800" style="border: none;")    
+
+    //- uses docker container /usr/share/nginx/html/ohif
+    //-           which is kept up to date while developing with the 
+    //-               "- ../../dist:/usr/share/nginx/html/ohif "
+    //-           command in docker-compose.yml
+    iframe(src="https://localhost/ohif/" id="ohif_iframe" width="3000" height="800" style="border: none;")
+    
   script(src="/scripts/iframe-toggle.js")

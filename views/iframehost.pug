@@ -20,12 +20,13 @@ block content
 
     //-for running app as static files in backend/public/ohif
     //-     these files need to be updated - copied from the frontend development ../platform/app/dist
-    //- iframe(src="/ohif" id="ohif_iframe" width="3000" height="800" style="border: none;")    
+    //- iframe(src="/ohif?role=admin" id="ohif_iframe" width="3000" height="800" style="border: none;")    
 
     //- uses docker container /usr/share/nginx/html/ohif
     //-           which is kept up to date while developing with the 
     //-               "- ../../dist:/usr/share/nginx/html/ohif "
     //-           command in docker-compose.yml
-    iframe(src="https://localhost/ohif/" id="ohif_iframe" width="3000" height="800" style="border: none;")
-    
+    //- iframe(src="https://localhost/ohif/" id="ohif_iframe" width="3000" height="800" style="border: none;")
+    iframe(src=`https://localhost/ohif/?role=${user && user.role}` id="ohif_iframe" width="3000" height="800" style="border: none;")
+
   script(src="/scripts/iframe-toggle.js")

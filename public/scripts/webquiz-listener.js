@@ -2,7 +2,12 @@ console.log("\x1b[32m*******  In listener script\x1b[0m");
 console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
 console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
-let received = { annotationObjects: false, studyid: false, legend: false };
+let received = { 
+  annotationObjects: false,
+  studyid: false,
+  legend: false,
+  segmentationObjects: false,
+};
 
 
 window.addEventListener('message', async (event) => {
@@ -10,7 +15,7 @@ window.addEventListener('message', async (event) => {
 
 
   if (event.data?.type === 'annotations') {
-    console.log('\x1b[32m********** In webquiz iframe - handling all annotations\x1b[0m"', event.data);
+    console.log('\x1b[32m********** In backend webquiz iframe - handling all annotations\x1b[0m"', event.data);
 
 
     const annotationObjects = event.data.annotationObjects;
@@ -32,6 +37,24 @@ window.addEventListener('message', async (event) => {
 
   }
 
+  if (event.data?.type === 'segmentations') {
+    console.log('\x1b[32m********** In backend webquiz iframe - handling all segmentations\x1b[0m"', event.data);
+    const segmentationObjects = event.data.segmentationObjects;
+    const studyuid = event.data.studyUID;
+
+    postAndTrack('studyid', { studyuid })
+      .then(() => postAndTrack('segmentationObjects', { segmentationObjects }))
+      .then(() => {
+        // maybeReloadIframe();  needs parameter for annotation or segmentation
+        setTimeout(() => {
+          fetch("/webquiz/clear-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+          });
+        }, 1000);
+      });
+  }
+
   if (event.data?.type === 'update-legend') {
     const legend = event.data.legend;
     postAndTrack('legend', { legend })
@@ -48,7 +71,7 @@ window.addEventListener('message', async (event) => {
 
 
   function postAndTrack(key, data) {
-    return postDataToWebQuiz(key, data).then(() => {
+    return postDataToWebQuizBackend(key, data).then(() => {
       received[key] = true;
       console.log('Key: ', key, ' Bool: ', received[key]);
     });
@@ -56,7 +79,7 @@ window.addEventListener('message', async (event) => {
 
 // dynamic function to return specific fetch for requested 
 //    route with associated data
-function postDataToWebQuiz(path, payload) {
+function postDataToWebQuizBackend(path, payload) {
   console.log('📤 Posting to backend:', path, payload); // for debug
 
   return fetch(`/webquiz/${path}`, {

@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const RulerMeasurements = require('../models/rulermeasurements');
 const User = require('../models/user');
 const Study = require("../models/study");
+const Segmentations = require("../models/segmentations");
 
 const userColors = [
   '#e6194b', '#46f0f0', '#e6beff', '#4363d8', '#f58231',
@@ -31,6 +32,8 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
+
+exports.post_segmentationObjects = handleSessionPost( {key: 'segmentationObjects', keyLabel: 'segmentationObjects'});
 
 exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
 
@@ -207,6 +210,13 @@ function handleSessionPost({ key, keyLabel }) {
         }
       }
 
+      if (key === 'segmentationObjects' && Array.isArray(data)) {
+        if (data.length > 0) {
+          await saveSegmentationsToDB(data, req);
+          console.log('✅ Segmentations saved to DB');
+        }
+      }
+
       res.json({ status: 'ok' });
     } catch (err) {
       console.error(`❌ Error in webquizController>handleSessionPost:`, err);
@@ -251,6 +261,65 @@ async function saveAnnotationsToDB(annotationObjects, req) {
     }
   } catch (error) {
       console.error("❌ DB error trying to save annotation objects:", error);
+      throw error;
+  }
+}
+
+
+async function saveSegmentationsToDB(segmentationObjects, req) {
+  // first get user id based on user name
+  const username = req.session.user.username;
+  const study_id = req.session.study_id;
+
+  console.log("*** USER NAME: ", username,  "  STUDY:", study_id, "Seg Objects:", segmentationObjects);
+  if (!username || !study_id) {
+    console.error("❌ Missing user or study ID in session");
+    return;
+  }
+  try {
+
+    for (const seg of segmentationObjects) {
+      const {
+        segmentationId,
+        seriesInstanceUid,
+        label,
+        segments,
+        segmentationDataRef,
+      } = seg;
+
+      const existingSegmentation = await Segmentations.findOne({
+        user_id: req.session.user._id,
+        study_id,
+        segmentationId,
+      });
+
+      if (existingSegmentation) {
+        console.log('✏️ Updating existing segmentations document');
+ 
+        existingSegmentation.label = label;
+        existingSegmentation.segments = segments;
+        existingSegmentation.segmentationDataRef = segmentationDataRef;
+ 
+        existingSegmentation.created_at = new Date(); // optional: refresh timestamp
+        await existingSegmentation.save();
+        console.log('✅ Segmentations updated in DB');
+      } else {
+        console.log('🆕 Creating new annotation document');
+        const newSegmentation = new Segmentations({
+          user_id: req.session.user._id,
+          study_id,
+          segmentationId,
+          seriesInstanceUid,
+          label,
+          segments,
+          segmentationDataRef,
+        });
+        await newSegmentation.save();
+        console.log('✅ Segmentations saved to DB');
+      }
+    } // for each segmentation object
+  } catch (error) {
+      console.error("❌ DB error trying to save segmentation objects:", error);
       throw error;
   }
 }

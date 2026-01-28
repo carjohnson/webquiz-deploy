@@ -19,4 +19,6 @@ router.post('/clear-session', webquiz_controller.post_clear_session);
 
 router.post("/studyid", webquiz_controller.post_studyid);
 
+router.post("/segmentationObjects", webquiz_controller.post_segmentationObjects);
+
 module.exports = router;

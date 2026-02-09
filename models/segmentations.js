@@ -6,12 +6,8 @@ const Schema = mongoose.Schema;
 const SegmentSchema = new mongoose.Schema({
     segmentIndex: Number,
     label: String,
-    location: String,
-    referenceScore: String,
-    color: [Number], // [R, G, B, A]
-    opacity: Number,
-    visibility: Boolean,
-    isLocked: Boolean,
+    lesionLocation: [String],
+    lesionReferenceScore: String,
     // Add additional metadata if needed
 });
 

@@ -1,8 +1,12 @@
+const fs = require('fs').promises;
+const path = require('path');
+
 const asyncHandler = require("express-async-handler");
 const RulerMeasurements = require('../models/rulermeasurements');
 const User = require('../models/user');
 const Study = require("../models/study");
 const Segmentations = require("../models/segmentations");
+
 
 const userColors = [
   '#e6194b', '#46f0f0', '#e6beff', '#4363d8', '#f58231',
@@ -19,6 +23,7 @@ const suspicionScores = [
     '5 - definitely metastatic',
 ];
 
+//=========================================================
 exports.index = asyncHandler(async (req, res, next) => {
   const legend = req.session.legend || [];
 
@@ -31,27 +36,34 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 });
 
-exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
-
-exports.post_segmentationObjects = handleSessionPost( {key: 'segmentationObjects', keyLabel: 'segmentationObjects'});
-
-exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
-
 exports.post_clear_session = (req, res) => {
   req.session.annotationObjects = null;
+  req.session.segmentationObjects = null;
   req.session.legend = null;
 
   console.log("🧹 Session cleared");
   res.json({ status: "Session cleared" });
 };
 
+//=========================================================
 exports.post_studyid = async (req, res) => {
   // console.log("📥 Incoming POST for studyid");
   // console.log("🔍 Body:", req.body);
   // console.log("🧪 Session BEFORE lookup:", req.session);
 
   try {
-    const studyuid = req.body.payload?.studyuid;
+    let payload = req.body.payload;
+    if (typeof payload === 'string') {
+      try {
+        payload = JSON.parse(payload);
+      } catch (err) {
+        console.error("❌ Failed to parse payload JSON:", err, payload);
+        return res.status(400).json({ error: "Invalid JSON payload" });
+      }
+    }
+
+    const studyuid = payload.studyuid;
+    // console.log("📌 Extracted studyuid:", studyuid);
 
     const study = await Study.findOne({ studyUID: studyuid });
 
@@ -61,9 +73,7 @@ exports.post_studyid = async (req, res) => {
     }
 
     req.session.study_id = study._id;
-
     // console.log("💾 Session AFTER saving study_id:", req.session);
-
     res.json({ success: true, study_id: study._id });
   } catch (err) {
     console.error("❌ Error in post_studyid:", err);
@@ -71,6 +81,7 @@ exports.post_studyid = async (req, res) => {
   }
 };
 
+//=========================================================
 // route to send either all users' annotations or a specific user's annotations to the Viewer iframe when requested
 //  This is not relayed through the parent. The request from the viewer is direct to the server
 exports.list_users_annotations = asyncHandler(async (req, res, next) => {
@@ -162,19 +173,117 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
   }
 });
 
+//=========================================================
+// exports.post_segmentationObjects = handleSessionPost( {key: 'segmentationObjects', keyLabel: 'segmentationObjects'});
+exports.post_segmentationObjects = async (req, res) => {
+    // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
+    if (Object.keys(req.body).length > 0) {
+      // console.log('✅ Saving segmentations:', req.body);
+      const segmentations = [];
+      const username = req.session.user.username;
+      const study_id = req.session.study_id;
+
+      // Reconstruct array from segObj_X_metadata + blobs (add files check later)
+      for (const field of Object.keys(req.body)) {
+        if (field.endsWith('_metadata')) {
+
+          const match = field.match(/segObj_(\d+)_metadata/);
+          if (!match) return;
+          
+          const index = parseInt(match[1]);
+          const metadata = JSON.parse(req.body[field]);
+          
+          // ✅ Now safely find matching blob
+          const blobFile = req.files?.find(f => 
+            f.fieldname === `segObj_${index}_blob`
+          );
+          
+          if (blobFile) {
+            // Generate safe filename
+            const safeSegId = metadata.segmentationId.replace(/[^a-zA-Z0-9-]/g, '_');
+            const filename = `${study_id}_${username}_${safeSegId}.dcm`;
+            const filepath = path.join(__dirname, '../segmentations', filename);
+            
+
+            // Ensure directory exists
+            await fs.mkdir(path.dirname(filepath), { recursive: true });
+            // ✅ Save blob to disk
+            await fs.writeFile(filepath, blobFile.buffer);
+            console.log(`💾 Saved ${blobFile.size} bytes to ${filepath}`);
+            
+            metadata.segmentationDataRef = filepath;
+        } else {
+          console.warn(`⚠️ No blob found for segObj_${index}_blob`);
+        }
+          segmentations[index] = metadata;
+        }
+      }  // end for loop
+
+      const validSegs = segmentations.filter(Boolean);
+      // console.log('✅ Reconstructed:', validSegs);
+      
+      await saveSegmentationsToDB(validSegs, req);
+      res.json({ success: true, count: validSegs.length });
+      return;
+    } else {
+      // last segmentation was deleted - remove from DB and file storage
+
+      const userid = req.session.user._id
+      const study_id = req.session.study_id;
+      if (!userid || !study_id) {
+        console.warn('⚠️ Missing userid/studyid, skipping delete');
+      } else {
+        // // get references to seg files stored - for deletion
+        // const existingSegmentation = await Segmentations.findOne({
+        //   user_id: req.session.user._id,
+        //   study_id,
+        //   segmentationId,
+        // });
+
+        // if (existingSegmentation) {
+        //   await fs.unlink(existingSegmentation.segmentationDataRef);
+
+        //   // await Segmentations.deleteMany({ study_id, user_id: userid });
+        //   console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
+        // }
+      }
+    } // end else - last seg deleted
+}
+
+//=========================================================
+exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
+
+//=========================================================
+exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
+
+//=========================================================
 
 // >>>>>>>>>>>>> Helper functions <<<<<<<<<<<<<
 function handleSessionPost({ key, keyLabel }) {
   return async (req, res, next) => {
-    const data = req.body.payload?.[key];
 
     // 🔎 Log the raw payload and the extracted data - for debug
-    // console.log(`📥 Incoming POST for ${keyLabel}`);
+    console.log(`📥 Incoming POST for ${keyLabel}`, '... Key :', key);
+    console.log('🔎 In handleSessionPost ... req', req.body);
     // console.log('Full req.body:', JSON.stringify(req.body, null, 2));
     // console.log(`Extracted data for key "${key}":`, JSON.stringify(data, null, 2));
 
-    if (!data) return res.status(400).json({ error: `Missing ${keyLabel}` });
 
+    // >>>>>  JSON strings  <<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    let payload = req.body.payload;
+    // if payload is a JSON string, parse it
+    if (typeof payload === 'string') {
+      try {
+        payload = JSON.parse(payload);
+      } catch (e) {
+        console.error('❌ Failed to parse payload JSON:', e, 'payload:', req.body.payload);
+        return res.status(400).json({ error: 'Invalid JSON payload' });
+      }
+    }
+
+    const data = payload?.[key];
+    if (!data) return res.status(400).json({ error: `Missing ${keyLabel}` });
 
     try {
 
@@ -190,6 +299,8 @@ function handleSessionPost({ key, keyLabel }) {
       console.log(`✅ ${keyLabel} session saved`);
       if (key === 'legend') {
       }
+
+      // >>>>>  annotation objects - JSON strings
 
       if (key === 'annotationObjects' && Array.isArray(data)) {
         if (data.length > 0) {
@@ -207,13 +318,6 @@ function handleSessionPost({ key, keyLabel }) {
             await RulerMeasurements.deleteMany({ study_id, user_id: userid });
             console.log('🗑️ All annotations deleted from DB for study', study_id, 'user', userid);
           }
-        }
-      }
-
-      if (key === 'segmentationObjects' && Array.isArray(data)) {
-        if (data.length > 0) {
-          await saveSegmentationsToDB(data, req);
-          console.log('✅ Segmentations saved to DB');
         }
       }
 
@@ -304,7 +408,9 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
         await existingSegmentation.save();
         console.log('✅ Segmentations updated in DB');
       } else {
-        console.log('🆕 Creating new annotation document');
+        const blob = seg.segmentationDataRef;
+        console.log('🆕 Creating new segmentation document', seg);
+
         const newSegmentation = new Segmentations({
           user_id: req.session.user._id,
           study_id,

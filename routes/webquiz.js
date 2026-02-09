@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });  // Explicit memory storage
+
 
 // Require controller modules.
 const webquiz_controller = require("../controllers/webquizController");
@@ -9,16 +12,16 @@ const webquiz_controller = require("../controllers/webquizController");
 router.get("/", webquiz_controller.index); 
 
 
-router.post("/annotationObjects", webquiz_controller.post_annotationObjects);
+router.post("/annotationObjects", upload.any(), webquiz_controller.post_annotationObjects);
 
 router.get('/list-users-annotations', webquiz_controller.list_users_annotations);
 
-router.post('/legend', webquiz_controller.post_legend);
+router.post('/legend', upload.any(), webquiz_controller.post_legend);
 
-router.post('/clear-session', webquiz_controller.post_clear_session);
+router.post('/clear-session', upload.any(), webquiz_controller.post_clear_session);
 
-router.post("/studyid", webquiz_controller.post_studyid);
+router.post("/studyid", upload.any(), webquiz_controller.post_studyid);
 
-router.post("/segmentationObjects", webquiz_controller.post_segmentationObjects);
+router.post("/segmentationObjects", upload.any(), webquiz_controller.post_segmentationObjects);
 
 module.exports = router;

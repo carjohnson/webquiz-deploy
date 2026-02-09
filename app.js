@@ -108,15 +108,17 @@ app.use((req, res, next) => {
   next();
 });
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// 404 handler (no throwing)
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Not Found' });
 });
 
-// catch 500
+// Error handler (handles real errors)
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
-  res.status(500).send('Internal Server Error');
+
+  const status = err.status || 500;
+  res.status(status).json({ error: err.message });
 });
 
 // error handler

@@ -8,17 +8,21 @@ const SegmentSchema = new mongoose.Schema({
     label: String,
     lesionLocation: [String],
     lesionReferenceScore: String,
-    // Add additional metadata if needed
+});
+
+const SegmentationEntrySchema = new mongoose.Schema({
+  segmentationId: { type: String, required: true },   // OHIF segmentation UUID
+  seriesInstanceUid: String,
+  label: String,
+  segments: [SegmentSchema],  
+  segmentationDataRef: String,                        // S3 / binary storage pointer
+  created_at: { type: Date, default: Date.now }
 });
 
 const SegmentationsSchema = new Schema({
     user_id         : { type: Schema.Types.ObjectId, ref: "User", required: true },
     study_id        : { type: Schema.Types.ObjectId, ref: "Study", required: true },
-    segmentationId: String,
-    seriesInstanceUid: String,
-    label: String,
-    segments: [SegmentSchema], // Array of individual segment data
-    segmentationDataRef: String, // Or reference to S3/Binary storage for large labelmaps
+    segmentationIds: [SegmentationEntrySchema],
     created_at      : { type: Date, default: Date.now }
 },  { versionKey: false,
       collection: 'segmentations',
@@ -26,7 +30,7 @@ const SegmentationsSchema = new Schema({
 
 // define an index to prevent duplicates
 SegmentationsSchema.index(
-    { user_id: 1, study_id: 1, segmentationId: 1 },
+    { user_id: 1, study_id: 1, "segmentationIds.segmentationId": 1 },
     { unique: true }
 );
 

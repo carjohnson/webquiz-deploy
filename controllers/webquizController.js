@@ -233,19 +233,18 @@ exports.post_segmentationObjects = async (req, res) => {
       if (!userid || !study_id) {
         console.warn('⚠️ Missing userid/studyid, skipping delete');
       } else {
-        // // get references to seg files stored - for deletion
-        // const existingSegmentation = await Segmentations.findOne({
-        //   user_id: req.session.user._id,
-        //   study_id,
-        //   segmentationId,
-        // });
+        // get references to seg files stored - for deletion
+        const existingSegmentation = await Segmentations.findOne({
+          user_id: req.session.user._id,
+          study_id,
+        });
 
-        // if (existingSegmentation) {
-        //   await fs.unlink(existingSegmentation.segmentationDataRef);
+        if (existingSegmentation) {
+          await fs.unlink(existingSegmentation.segmentationDataRef);
 
-        //   // await Segmentations.deleteMany({ study_id, user_id: userid });
-        //   console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
-        // }
+          await Segmentations.deleteMany({ study_id, user_id: userid });
+          console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
+        }
       }
     } // end else - last seg deleted
 }
@@ -264,7 +263,7 @@ function handleSessionPost({ key, keyLabel }) {
 
     // 🔎 Log the raw payload and the extracted data - for debug
     console.log(`📥 Incoming POST for ${keyLabel}`, '... Key :', key);
-    console.log('🔎 In handleSessionPost ... req', req.body);
+    // console.log('🔎 In handleSessionPost ... req', req.body);
     // console.log('Full req.body:', JSON.stringify(req.body, null, 2));
     // console.log(`Extracted data for key "${key}":`, JSON.stringify(data, null, 2));
 
@@ -335,7 +334,6 @@ async function saveAnnotationsToDB(annotationObjects, req) {
   const username = req.session.user.username;
   const study_id = req.session.study_id;
 
-  console.log("*** USER NAME: ", username,  "  STUDY:", study_id);
   if (!username || !study_id) {
     console.error("❌ Missing user or study ID in session");
     return;
@@ -375,7 +373,7 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
   const username = req.session.user.username;
   const study_id = req.session.study_id;
 
-  console.log("*** USER NAME: ", username,  "  STUDY:", study_id, "Seg Objects:", segmentationObjects);
+  // console.log("*** USER NAME: ", username,  "  STUDY:", study_id, "Seg Objects:", segmentationObjects);
   if (!username || !study_id) {
     console.error("❌ Missing user or study ID in session");
     return;
@@ -391,37 +389,58 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
         segmentationDataRef,
       } = seg;
 
-      const existingSegmentation = await Segmentations.findOne({
+      const parent = await Segmentations.findOne({
         user_id: req.session.user._id,
         study_id,
-        segmentationId,
       });
 
-      if (existingSegmentation) {
+      if (parent) {
         console.log('✏️ Updating existing segmentations document');
- 
-        existingSegmentation.label = label;
-        existingSegmentation.segments = segments;
-        existingSegmentation.segmentationDataRef = segmentationDataRef;
- 
-        existingSegmentation.created_at = new Date(); // optional: refresh timestamp
-        await existingSegmentation.save();
-        console.log('✅ Segmentations updated in DB');
-      } else {
-        const blob = seg.segmentationDataRef;
-        console.log('🆕 Creating new segmentation document', seg);
 
-        const newSegmentation = new Segmentations({
+        const index = parent.segmentationIds.findIndex(
+          s => s.segmentationId === segmentationId
+        );
+        if (index !== -1) {
+          parent.segmentationIds[index].label = label;
+          parent.segmentationIds[index].segments = segments;
+          parent.segmentationIds[index].seriesInstanceUid = seriesInstanceUid;
+          parent.segmentationIds[index].segmentationDataRef = segmentationDataRef;
+          parent.segmentationIds[index].created_at = new Date(); 
+        
+        } else {
+          console.log('➕ Adding new segmentation entry');
+
+          parent.segmentationIds.push({
+            segmentationId,
+            seriesInstanceUid,
+            label,
+            segments,
+            segmentationDataRef,
+            created_at: new Date(),
+          });
+        }
+
+        await parent.save();
+        console.log('✅ Parent segmentation document updated in DB');
+
+      } else {
+        const newParent = new Segmentations({
           user_id: req.session.user._id,
           study_id,
-          segmentationId,
-          seriesInstanceUid,
-          label,
-          segments,
-          segmentationDataRef,
+          segmentationIds: [
+            {
+              segmentationId,
+              seriesInstanceUid,
+              label,
+              segments,
+              segmentationDataRef,
+              created_at: new Date(),
+            }
+          ],
         });
-        await newSegmentation.save();
-        console.log('✅ Segmentations saved to DB');
+
+        await newParent.save();
+        console.log('✅ New parent segmentation document saved to DB');
       }
     } // for each segmentation object
   } catch (error) {

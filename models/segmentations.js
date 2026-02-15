@@ -12,8 +12,8 @@ const SegmentSchema = new mongoose.Schema({
 });
 
 const SegmentationEntrySchema = new mongoose.Schema({
-  segmentationId: { type: String, required: true },   // OHIF segmentation UUID
-  seriesInstanceUid: String,
+  dicomSegSeriesUID: { type: String, required: true },
+  sourceSeriesInstanceUid: String,
   label: String,
   segments: [SegmentSchema],  
   segmentationDataRef: String,                        // S3 / binary storage pointer
@@ -23,7 +23,7 @@ const SegmentationEntrySchema = new mongoose.Schema({
 const SegmentationsSchema = new Schema({
     user_id         : { type: Schema.Types.ObjectId, ref: "User", required: true },
     study_id        : { type: Schema.Types.ObjectId, ref: "Study", required: true },
-    segmentationIds: [SegmentationEntrySchema],
+    dicomSegSeriesUIDs: [SegmentationEntrySchema],
     created_at      : { type: Date, default: Date.now }
 },  { versionKey: false,
       collection: 'segmentations',

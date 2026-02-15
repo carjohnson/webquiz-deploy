@@ -200,7 +200,7 @@ exports.post_segmentationObjects = async (req, res) => {
           
           if (blobFile) {
             // Generate safe filename
-            const safeSegId = metadata.segmentationId.replace(/[^a-zA-Z0-9-]/g, '_');
+            const safeSegId = metadata.dicomSegSeriesUID.replace(/[^a-zA-Z0-9-]/g, '_');
             const filename = `${study_id}_${username}_${safeSegId}.dcm`;
             const filepath = path.join(__dirname, '../segmentations', filename);
             
@@ -382,8 +382,8 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
 
     for (const seg of segmentationObjects) {
       const {
-        segmentationId,
-        seriesInstanceUid,
+        dicomSegSeriesUID,
+        sourceSeriesInstanceUid,
         label,
         segments,
         segmentationDataRef,
@@ -397,22 +397,22 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
       if (parent) {
         console.log('✏️ Updating existing segmentations document');
 
-        const index = parent.segmentationIds.findIndex(
-          s => s.segmentationId === segmentationId
+        const index = parent.dicomSegSeriesUIDs.findIndex(
+          s => s.dicomSegSeriesUID === dicomSegSeriesUID
         );
         if (index !== -1) {
-          parent.segmentationIds[index].label = label;
-          parent.segmentationIds[index].segments = segments;
-          parent.segmentationIds[index].seriesInstanceUid = seriesInstanceUid;
-          parent.segmentationIds[index].segmentationDataRef = segmentationDataRef;
-          parent.segmentationIds[index].created_at = new Date(); 
+          parent.dicomSegSeriesUIDs[index].label = label;
+          parent.dicomSegSeriesUIDs[index].segments = segments;
+          parent.dicomSegSeriesUIDs[index].sourceSeriesInstanceUid = sourceSeriesInstanceUid;
+          parent.dicomSegSeriesUIDs[index].segmentationDataRef = segmentationDataRef;
+          parent.dicomSegSeriesUIDs[index].created_at = new Date(); 
         
         } else {
           console.log('➕ Adding new segmentation entry');
 
-          parent.segmentationIds.push({
-            segmentationId,
-            seriesInstanceUid,
+          parent.dicomSegSeriesUIDs.push({
+            dicomSegSeriesUID,
+            sourceSeriesInstanceUid,
             label,
             segments,
             segmentationDataRef,
@@ -427,10 +427,10 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
         const newParent = new Segmentations({
           user_id: req.session.user._id,
           study_id,
-          segmentationIds: [
+          dicomSegSeriesUIDs: [
             {
-              segmentationId,
-              seriesInstanceUid,
+              dicomSegSeriesUID,
+              sourceSeriesInstanceUid,
               label,
               segments,
               segmentationDataRef,

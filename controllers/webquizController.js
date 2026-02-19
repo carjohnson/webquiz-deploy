@@ -174,7 +174,69 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
 });
 
 //=========================================================
-// exports.post_segmentationObjects = handleSessionPost( {key: 'segmentationObjects', keyLabel: 'segmentationObjects'});
+exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
+  const sessionUser = req.session.user;
+  const { username, studyUID } = req.query;
+  const study = await Study.findOne({ studyUID });
+  const study_id = study._id;
+  const user = await User.findOne({username})
+  const user_id = user._id;
+
+  if (!sessionUser) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+  if (!study_id) {
+    return res.status(400).json({ error: 'Missing study ID in session' });
+  }
+
+  try {
+
+    let segmentationsList = [];
+
+
+      const userStudySegmentations = await Segmentations.find({
+        user_id,
+        study_id,
+      });
+
+
+    // build the payload with the array buffer and seg series UID
+    for (const doc of userStudySegmentations) {
+      for (const entry of doc.dicomSegSeriesUIDs) {
+
+        let base64 = null;
+
+        if (entry.segmentationDataRef) {
+          try {
+            // Read the file from disk
+            const fileBuffer = await safeReadFile(entry.segmentationDataRef);
+            if (!fileBuffer) continue;
+            
+            base64 = fileBuffer.toString('base64')
+
+          } catch (err) {
+            console.error("❌ Failed to read SEG file:", entry.segmentationDataRef, err);
+          }
+        }
+
+        segmentationsList.push({
+          dicomSegSeriesUID: entry.dicomSegSeriesUID,
+          referencedSeriesUID: entry.sourceSeriesInstanceUid,
+          base64,
+        });
+      }
+    }
+
+    // console.log('🧮 Segmentations list', segmentationsList);
+    res.json({ type: 'list-study-segmentations', payload: segmentationsList });
+
+  } catch (err) {
+    console.error('❌ Error retrieving segmentations:', err);
+    next(err);
+  }
+  
+});
+//=========================================================
 exports.post_segmentationObjects = async (req, res) => {
     // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
     if (Object.keys(req.body).length > 0) {
@@ -257,7 +319,9 @@ exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
 
 //=========================================================
 
+//=========================================================
 // >>>>>>>>>>>>> Helper functions <<<<<<<<<<<<<
+//=========================================================
 function handleSessionPost({ key, keyLabel }) {
   return async (req, res, next) => {
 
@@ -329,6 +393,7 @@ function handleSessionPost({ key, keyLabel }) {
 }
 
 
+//=========================================================
 async function saveAnnotationsToDB(annotationObjects, req) {
   // first get user id based on user name
   const username = req.session.user.username;
@@ -368,6 +433,7 @@ async function saveAnnotationsToDB(annotationObjects, req) {
 }
 
 
+//=========================================================
 async function saveSegmentationsToDB(segmentationObjects, req) {
   // first get user id based on user name
   const username = req.session.user.username;
@@ -446,5 +512,20 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
   } catch (error) {
       console.error("❌ DB error trying to save segmentation objects:", error);
       throw error;
+  }
+}
+
+
+
+//=========================================================
+async function safeReadFile(path) {
+  try {
+    return await fs.readFile(path);
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      console.warn(`⚠️ Requested file missing on disk: ${path}`);
+      return null;
+    }
+    throw err;
   }
 }

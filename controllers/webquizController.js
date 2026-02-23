@@ -199,33 +199,42 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
         study_id,
       });
 
+  for (const segDoc of userStudySegmentations) {
+  for (const entry of segDoc.dicomSegSeriesUIDs) {
 
-    // build the payload with the array buffer and seg series UID
-    for (const doc of userStudySegmentations) {
-      for (const entry of doc.dicomSegSeriesUIDs) {
+    // Collect segmentation-level label
+    const segmentationLabel = entry.label;
 
-        let base64 = null;
+    // Collect segment-level labels
+    const segmentLabels = entry.segments.map(seg => ({
+      segmentIndex: seg.segmentIndex,
+      label: seg.label,
+    }));
 
-        if (entry.segmentationDataRef) {
-          try {
-            // Read the file from disk
-            const fileBuffer = await safeReadFile(entry.segmentationDataRef);
-            if (!fileBuffer) continue;
-            
-            base64 = fileBuffer.toString('base64')
-
-          } catch (err) {
-            console.error("❌ Failed to read SEG file:", entry.segmentationDataRef, err);
-          }
+    // Load SEG binary
+    let base64Buffer = null;
+    if (entry.segmentationDataRef) {
+      try {
+        const fileBuffer = await safeReadFile(entry.segmentationDataRef);
+        if (fileBuffer) {
+          base64Buffer = fileBuffer.toString("base64");
         }
-
-        segmentationsList.push({
-          dicomSegSeriesUID: entry.dicomSegSeriesUID,
-          referencedSeriesUID: entry.sourceSeriesInstanceUid,
-          base64,
-        });
+      } catch (err) {
+        console.error("❌ Failed to read SEG file:", entry.segmentationDataRef, err);
       }
     }
+
+    // Push one clean payload entry
+    segmentationsList.push({
+      dicomSegSeriesUID: entry.dicomSegSeriesUID,
+      referencedSeriesUID: entry.sourceSeriesInstanceUid,
+      segmentationLabel,
+      segmentLabels,
+      base64Buffer,
+    });
+  }
+}
+
 
     // console.log('🧮 Segmentations list', segmentationsList);
     res.json({ type: 'list-study-segmentations', payload: segmentationsList });

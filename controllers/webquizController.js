@@ -200,7 +200,7 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
       });
 
   for (const segDoc of userStudySegmentations) {
-  for (const entry of segDoc.dicomSegSeriesUIDs) {
+  for (const entry of segDoc.segmentationIds) {
 
     // Collect segmentation-level label
     const segmentationLabel = entry.label;
@@ -226,7 +226,7 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
 
     // Push one clean payload entry
     segmentationsList.push({
-      dicomSegSeriesUID: entry.dicomSegSeriesUID,
+      segmentationId: entry.segmentationId,
       referencedSeriesUID: entry.sourceSeriesInstanceUid,
       segmentationLabel,
       segmentLabels,
@@ -249,7 +249,7 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
 exports.post_segmentationObjects = async (req, res) => {
     // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
     if (Object.keys(req.body).length > 0) {
-      // console.log('✅ Saving segmentations:', req.body);
+      console.log('✅ Saving segmentations:', req.body);
       const segmentations = [];
       const username = req.session.user.username;
       const study_id = req.session.study_id;
@@ -271,7 +271,7 @@ exports.post_segmentationObjects = async (req, res) => {
           
           if (blobFile) {
             // Generate safe filename
-            const safeSegId = metadata.dicomSegSeriesUID.replace(/[^a-zA-Z0-9-]/g, '_');
+            const safeSegId = metadata.segmentationId.replace(/[^a-zA-Z0-9-]/g, '_');
             const filename = `${study_id}_${username}_${safeSegId}.dcm`;
             const filepath = path.join(__dirname, '../segmentations', filename);
             
@@ -291,7 +291,7 @@ exports.post_segmentationObjects = async (req, res) => {
       }  // end for loop
 
       const validSegs = segmentations.filter(Boolean);
-      // console.log('✅ Reconstructed:', validSegs);
+      console.log('✅ Reconstructed:', validSegs);
       
       await saveSegmentationsToDB(validSegs, req);
       res.json({ success: true, count: validSegs.length });
@@ -455,69 +455,146 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
   }
   try {
 
-    for (const seg of segmentationObjects) {
-      const {
-        dicomSegSeriesUID,
-        sourceSeriesInstanceUid,
-        label,
-        segments,
-        segmentationDataRef,
-      } = seg;
+    // for (const seg of segmentationObjects) {
+    //   const {
+    //     segmentationId,
+    //     sourceSeriesInstanceUid,
+    //     label,
+    //     segments,
+    //     segmentationDataRef,
+    //   } = seg;
 
-      const parent = await Segmentations.findOne({
-        user_id: req.session.user._id,
-        study_id,
-      });
+    //   const parent = await Segmentations.findOne({
+    //     user_id: req.session.user._id,
+    //     study_id,
+    //   });
 
-      if (parent) {
-        console.log('✏️ Updating existing segmentations document');
+    //   if (parent) {
+    //     console.log('✏️ Updating existing segmentations document');
 
-        const index = parent.dicomSegSeriesUIDs.findIndex(
-          s => s.dicomSegSeriesUID === dicomSegSeriesUID
-        );
-        if (index !== -1) {
-          parent.dicomSegSeriesUIDs[index].label = label;
-          parent.dicomSegSeriesUIDs[index].segments = segments;
-          parent.dicomSegSeriesUIDs[index].sourceSeriesInstanceUid = sourceSeriesInstanceUid;
-          parent.dicomSegSeriesUIDs[index].segmentationDataRef = segmentationDataRef;
-          parent.dicomSegSeriesUIDs[index].created_at = new Date(); 
+    //     const index = parent.segmentationIds.findIndex(
+    //       s => s.segmentationId === segmentationId
+    //     );
+    //     if (index !== -1) {
+    //       parent.segmentationIds[index].label = label;
+    //       parent.segmentationIds[index].segments = segments;
+    //       parent.segmentationIds[index].sourceSeriesInstanceUid = sourceSeriesInstanceUid;
+    //       parent.segmentationIds[index].segmentationDataRef = segmentationDataRef;
+    //       parent.segmentationIds[index].created_at = new Date(); 
         
-        } else {
-          console.log('➕ Adding new segmentation entry');
+    //     } else {
+    //       console.log('➕ Adding new segmentation entry');
 
-          parent.dicomSegSeriesUIDs.push({
-            dicomSegSeriesUID,
-            sourceSeriesInstanceUid,
-            label,
-            segments,
-            segmentationDataRef,
-            created_at: new Date(),
-          });
-        }
+    //       parent.segmentationIds.push({
+    //         segmentationId,
+    //         sourceSeriesInstanceUid,
+    //         label,
+    //         segments,
+    //         segmentationDataRef,
+    //         created_at: new Date(),
+    //       });
+    //     }
 
+    //     await parent.save();
+    //     console.log('✅ Parent segmentation document updated in DB');
+
+    //   } else {
+    //     const newParent = new Segmentations({
+    //       user_id: req.session.user._id,
+    //       study_id,
+    //       segmentationIds: [
+    //         {
+    //           segmentationId,
+    //           sourceSeriesInstanceUid,
+    //           label,
+    //           segments,
+    //           segmentationDataRef,
+    //           created_at: new Date(),
+    //         }
+    //       ],
+    //     });
+
+    //     await newParent.save();
+    //     console.log('✅ New parent segmentation document saved to DB');
+    //   }
+    // } // for each segmentation object
+
+
+    const parent = await Segmentations.findOne({
+      user_id: req.session.user._id,
+      study_id,
+    });
+
+    if (segmentationObjects.length === 0) {
+      // no segmentation objects for this study (deleted in frontend)
+      if (parent) {
+        parent.segmentationIds = [];
         await parent.save();
-        console.log('✅ Parent segmentation document updated in DB');
+        console.log('🗑️ All segmentations deleted for this study');
+      }
+    } else {
 
-      } else {
+      const incomingSegs = segmentationObjects; // from frontend
+      const incomingIds = incomingSegs.map(s => s.segmentationId);
+
+      if (!parent) {
+        // No parent exists → create new document with all incoming segmentations
         const newParent = new Segmentations({
           user_id: req.session.user._id,
           study_id,
-          dicomSegSeriesUIDs: [
-            {
-              dicomSegSeriesUID,
-              sourceSeriesInstanceUid,
-              label,
-              segments,
-              segmentationDataRef,
-              created_at: new Date(),
-            }
-          ],
+          segmentationIds: incomingSegs.map(seg => ({
+            ...seg,
+            created_at: new Date(),
+          })),
         });
 
         await newParent.save();
-        console.log('✅ New parent segmentation document saved to DB');
+        console.log('✅ Created new segmentation parent document');
+        return;
       }
-    } // for each segmentation object
+
+      // -----------------------------
+      // 1. DELETE removed segmentations
+      // -----------------------------
+      parent.segmentationIds = parent.segmentationIds.filter(dbSeg =>
+        incomingIds.includes(dbSeg.segmentationId)
+      );
+
+      // -----------------------------
+      // 2. UPDATE existing + ADD new
+      // -----------------------------
+      for (const seg of incomingSegs) {
+        const index = parent.segmentationIds.findIndex(
+          s => s.segmentationId === seg.segmentationId
+        );
+
+        if (index !== -1) {
+          // Update existing
+          parent.segmentationIds[index] = {
+            ...parent.segmentationIds[index],
+            ...seg,
+            created_at: new Date(),
+          };
+        } else {
+          // Add new
+          parent.segmentationIds.push({
+            ...seg,
+            created_at: new Date(),
+          });
+        }
+      }
+
+      // -----------------------------
+      // 3. SAVE ONCE
+      // -----------------------------
+      await parent.save();
+      console.log('✅ Segmentation document updated (add/update/delete)');
+    }
+
+
+
+
+
   } catch (error) {
       console.error("❌ DB error trying to save segmentation objects:", error);
       throw error;

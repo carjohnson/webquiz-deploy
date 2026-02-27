@@ -12,7 +12,7 @@ const SegmentSchema = new mongoose.Schema({
 });
 
 const SegmentationEntrySchema = new mongoose.Schema({
-  dicomSegSeriesUID: { type: String, required: true },
+  segmentationId: { type: String, required: true },
   sourceSeriesInstanceUid: String,
   label: String,
   segments: [SegmentSchema],  
@@ -23,7 +23,7 @@ const SegmentationEntrySchema = new mongoose.Schema({
 const SegmentationsSchema = new Schema({
     user_id         : { type: Schema.Types.ObjectId, ref: "User", required: true },
     study_id        : { type: Schema.Types.ObjectId, ref: "Study", required: true },
-    dicomSegSeriesUIDs: [SegmentationEntrySchema],
+    segmentationIds: [SegmentationEntrySchema],
     created_at      : { type: Date, default: Date.now }
 },  { versionKey: false,
       collection: 'segmentations',

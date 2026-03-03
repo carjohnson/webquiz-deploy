@@ -116,10 +116,10 @@ function postDataToWebQuizBackend(path, payload) {
   }
 
   // ////////////  FOR DEBUG  ////////////////
-  console.log('🔍 In listener - SENDING FormData for', path);
-  for (let [key, value] of formData.entries()) {
-    console.log(`  📦 ${key} =`, value);
-  }
+  // console.log('🔍 In listener - SENDING FormData for', path);
+  // for (let [key, value] of formData.entries()) {
+  //   console.log(`  📦 ${key} =`, value);
+  // }
   // console.log('🔍 In listener - FormData size:', formData.entries().next().done ? 0 : 'HAS DATA');
 
 

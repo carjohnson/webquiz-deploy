@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const SegmentSchema = new mongoose.Schema({
     segmentIndex: Number,
     label: String,
+    cachedStats: Schema.Types.Mixed,
     lesionLocation: [String],
     lesionReferenceStandard: String,
     decisionCriteria: [String],

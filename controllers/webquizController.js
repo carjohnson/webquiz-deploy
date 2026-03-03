@@ -200,40 +200,41 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
       });
 
   for (const segDoc of userStudySegmentations) {
-  for (const entry of segDoc.segmentationIds) {
+    for (const entry of segDoc.segmentationIds) {
 
-    // Collect segmentation-level label
-    const segmentationLabel = entry.label;
+      // Collect segmentation-level label
+      const segmentationLabel = entry.label;
 
-    // Collect segment-level labels
-    const segmentLabels = entry.segments.map(seg => ({
-      segmentIndex: seg.segmentIndex,
-      label: seg.label,
-    }));
+      // Collect segment-level labels
+      const segmentLabels = entry.segments.map(seg => ({
+        segmentIndex: seg.segmentIndex,
+        label: seg.label,
+        cachedStats: seg.cachedStats,
+      }));
 
-    // Load SEG binary
-    let base64Buffer = null;
-    if (entry.segmentationDataRef) {
-      try {
-        const fileBuffer = await safeReadFile(entry.segmentationDataRef);
-        if (fileBuffer) {
-          base64Buffer = fileBuffer.toString("base64");
+      // Load SEG binary
+      let base64Buffer = null;
+      if (entry.segmentationDataRef) {
+        try {
+          const fileBuffer = await safeReadFile(entry.segmentationDataRef);
+          if (fileBuffer) {
+            base64Buffer = fileBuffer.toString("base64");
+          }
+        } catch (err) {
+          console.error("❌ Failed to read SEG file:", entry.segmentationDataRef, err);
         }
-      } catch (err) {
-        console.error("❌ Failed to read SEG file:", entry.segmentationDataRef, err);
       }
-    }
 
-    // Push one clean payload entry
-    segmentationsList.push({
-      segmentationId: entry.segmentationId,
-      referencedSeriesUID: entry.sourceSeriesInstanceUid,
-      segmentationLabel,
-      segmentLabels,
-      base64Buffer,
-    });
+      // Push one clean payload entry
+      segmentationsList.push({
+        segmentationId: entry.segmentationId,
+        referencedSeriesUID: entry.sourceSeriesInstanceUid,
+        segmentationLabel,
+        segmentLabels,
+        base64Buffer,
+      });
+    }
   }
-}
 
 
     // console.log('🧮 Segmentations list', segmentationsList);
@@ -248,8 +249,10 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
 //=========================================================
 exports.post_segmentationObjects = async (req, res) => {
     // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
+    console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length  );
     if (Object.keys(req.body).length > 0) {
-      console.log('✅ Saving segmentations:', req.body);
+      // console.log('✅ Saving segmentations:', req.body);
+      console.log('✅ Saving segmentations:');
       const segmentations = [];
       const username = req.session.user.username;
       const study_id = req.session.study_id;
@@ -298,20 +301,27 @@ exports.post_segmentationObjects = async (req, res) => {
       return;
     } else {
       // last segmentation was deleted - remove from DB and file storage
-
-      const userid = req.session.user._id
+      const userid = req.session.user._id;
       const study_id = req.session.study_id;
       if (!userid || !study_id) {
         console.warn('⚠️ Missing userid/studyid, skipping delete');
       } else {
         // get references to seg files stored - for deletion
-        const existingSegmentation = await Segmentations.findOne({
+        const existingSegmentations = await Segmentations.findOne({
           user_id: req.session.user._id,
           study_id,
         });
-
-        if (existingSegmentation) {
-          await fs.unlink(existingSegmentation.segmentationDataRef);
+                if (existingSegmentations) {
+          for (const segId of existingSegmentations.segmentationIds) {
+            if (segId.segmentationDataRef) {
+              try {
+                await fs.unlink(segId.segmentationDataRef);
+                console.log('🗑️ Deleted file:', segId.segmentationDataRef);
+              } catch (err) {
+                console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
+              }
+            }
+          } // end for each segId
 
           await Segmentations.deleteMany({ study_id, user_id: userid });
           console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);

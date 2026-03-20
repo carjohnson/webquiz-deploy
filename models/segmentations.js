@@ -7,9 +7,9 @@ const SegmentSchema = new mongoose.Schema({
     segmentIndex: Number,
     label: String,
     cachedStats: Schema.Types.Mixed,
-    lesionLocation: [String],
-    lesionReferenceStandard: String,
-    decisionCriteria: [String],
+    groundTruth: String,
+    referenceStandardMethod: String,
+    hepaticSegment: [String],
 });
 
 const SegmentationEntrySchema = new mongoose.Schema({

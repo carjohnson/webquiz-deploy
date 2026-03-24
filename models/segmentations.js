@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SegmentSchema = new mongoose.Schema({
-    segmentIndex: Number,
+    segmentMaskValue: Number,
     label: String,
     cachedStats: Schema.Types.Mixed,
     groundTruth: String,

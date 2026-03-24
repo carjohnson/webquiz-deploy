@@ -207,7 +207,7 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
 
       // Collect segment-level labels
       const segmentLabels = entry.segments.map(seg => ({
-        segmentIndex: seg.segmentIndex,
+        segmentMaskValue: seg.segmentMaskValue,
         label: seg.label,
         cachedStats: seg.cachedStats,
       }));
@@ -465,71 +465,6 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
   }
   try {
 
-    // for (const seg of segmentationObjects) {
-    //   const {
-    //     segmentationId,
-    //     sourceSeriesInstanceUid,
-    //     label,
-    //     segments,
-    //     segmentationDataRef,
-    //   } = seg;
-
-    //   const parent = await Segmentations.findOne({
-    //     user_id: req.session.user._id,
-    //     study_id,
-    //   });
-
-    //   if (parent) {
-    //     console.log('✏️ Updating existing segmentations document');
-
-    //     const index = parent.segmentationIds.findIndex(
-    //       s => s.segmentationId === segmentationId
-    //     );
-    //     if (index !== -1) {
-    //       parent.segmentationIds[index].label = label;
-    //       parent.segmentationIds[index].segments = segments;
-    //       parent.segmentationIds[index].sourceSeriesInstanceUid = sourceSeriesInstanceUid;
-    //       parent.segmentationIds[index].segmentationDataRef = segmentationDataRef;
-    //       parent.segmentationIds[index].created_at = new Date(); 
-        
-    //     } else {
-    //       console.log('➕ Adding new segmentation entry');
-
-    //       parent.segmentationIds.push({
-    //         segmentationId,
-    //         sourceSeriesInstanceUid,
-    //         label,
-    //         segments,
-    //         segmentationDataRef,
-    //         created_at: new Date(),
-    //       });
-    //     }
-
-    //     await parent.save();
-    //     console.log('✅ Parent segmentation document updated in DB');
-
-    //   } else {
-    //     const newParent = new Segmentations({
-    //       user_id: req.session.user._id,
-    //       study_id,
-    //       segmentationIds: [
-    //         {
-    //           segmentationId,
-    //           sourceSeriesInstanceUid,
-    //           label,
-    //           segments,
-    //           segmentationDataRef,
-    //           created_at: new Date(),
-    //         }
-    //       ],
-    //     });
-
-    //     await newParent.save();
-    //     console.log('✅ New parent segmentation document saved to DB');
-    //   }
-    // } // for each segmentation object
-
-
     const parent = await Segmentations.findOne({
       user_id: req.session.user._id,
       study_id,
@@ -544,7 +479,14 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
       }
     } else {
 
-      const incomingSegs = segmentationObjects; // from frontend
+      // const incomingSegs = segmentationObjects; // from frontend
+      const incomingSegs = segmentationObjects.map(seg => ({
+        ...seg,
+        segments: seg.segments.map(s => ({
+          ...s,
+          segmentMaskValue: s.segmentIndex,
+        })),
+      }));
       const incomingIds = incomingSegs.map(s => s.segmentationId);
 
       if (!parent) {

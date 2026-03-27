@@ -206,10 +206,13 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
       const segmentationLabel = entry.label;
 
       // Collect segment-level labels
-      const segmentLabels = entry.segments.map(seg => ({
+      const dbSegmentInfo = entry.segments.map(seg => ({
         segmentMaskValue: seg.segmentMaskValue,
         label: seg.label,
         cachedStats: seg.cachedStats,
+        groundTruth: seg.groundTruth,
+        referenceStandardMethod: seg.referenceStandardMethod,
+        hepaticSegment: seg.hepaticSegment,
       }));
 
       // Load SEG binary
@@ -230,7 +233,7 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
         segmentationId: entry.segmentationId,
         referencedSeriesUID: entry.sourceSeriesInstanceUid,
         segmentationLabel,
-        segmentLabels,
+        dbSegmentInfo,
         base64Buffer,
       });
     }

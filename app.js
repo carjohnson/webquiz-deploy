@@ -68,8 +68,8 @@ app.use(session({
   saveUninitialized: false, // 🔐 Better for security
   cookie: {
     httpOnly: true,
-    secure: true,           // ✅ Must be true for HTTPS
-    sameSite: 'none',       // ✅ Required for cross-origin iframe access
+    secure: process.env.RENDER === 'true' ? false : true,  // HTTP on Render   ✅ Must be true for HTTPS
+    sameSite: process.env.RENDER === 'true' ? 'lax' : 'none',  // lax for HTTP ✅ Required for cross-origin iframe access
     maxAge: 60 * 60 * 1000  // 1 hour
   }
 }));

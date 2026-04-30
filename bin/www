@@ -6,47 +6,73 @@
 
 var app = require('../app');
 var debug = require('debug')('webquizproject:server');
-const https = require('https');
-const fs = require('fs');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+var server;
 
-
-/**
- * Load certificates
- */
-const path = require('path');
-
-const certPath = path.join(__dirname, '../certs');
-// same certs also used in ohif viewer (common name set as CN=localhost)
-const options = {
-  key: fs.readFileSync(path.join(certPath, 'nginx.key')),
-  cert: fs.readFileSync(path.join(certPath, 'nginx.crt'))
-};
+const isRender = process.env.RENDER === 'true';  // true on Render, false local
 
 /**
  * Get port from environment and store in Express.
  */
-
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
 
-const server = https.createServer(options, app);
+if (isRender) {
+  server = app.listen(port, '0.0.0.0');
+} else {
+  // local: HTTPS with certs
+  const https = require('https');
+  const fs = require('fs');
+  const path = require('path');
+  /**
+   * Load certificates
+   */
+  const certPath = path.join(__dirname, '../certs');
+  // same certs also used in ohif viewer (common name set as CN=localhost)
+  const options = {
+    key: fs.readFileSync(path.join(certPath, 'nginx.key')),
+    cert: fs.readFileSync(path.join(certPath, 'nginx.crt'))
+  };
+  server = https.createServer(options, app);
+} 
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port, () => {
   console.log(`🚀 Server listening on port ${port}`);
 });
-
 server.on('error', onError);
 server.on('listening', onListening);
 
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * For development:
+ * Express will forward WebSocket upgrade requests (handshakes)
+ * -  to Webpack Dev Server at https://localhost:3000/ws
+ */
+if (process.env.NODE_ENV !== 'production') {
+  const { createProxyMiddleware } = require('http-proxy-middleware');
+
+const wsProxy = createProxyMiddleware({
+  target: 'https://localhost:3000',
+  changeOrigin: true,
+  ws: true,
+  secure: false,
+});
+  app.use('/ws', wsProxy);
+  // Attach the upgrade handler AFTER server.listen()
+  server.on('upgrade', (req, socket, head) => {
+    if (req.url.startsWith('/ws')) {
+      // console.log('Forwarding WebSocket upgrade for:', req.url);
+      wsProxy(req, socket, head);
+    }
+  });
+}
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -67,6 +93,7 @@ function normalizePort(val) {
   return false;
 }
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * Event listener for HTTP server "error" event.
  */
@@ -95,6 +122,7 @@ function onError(error) {
   }
 }
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * Event listener for HTTP server "listening" event.
  */
@@ -107,27 +135,3 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-/**
- * For development:
- * Express will forward WebSocket upgrade requests (handshakes)
- * -  to Webpack Dev Server at https://localhost:3000/ws
- */
-if (process.env.NODE_ENV !== 'production') {
-  const { createProxyMiddleware } = require('http-proxy-middleware');
-
-const wsProxy = createProxyMiddleware({
-  target: 'https://localhost:3000',
-  changeOrigin: true,
-  ws: true,
-  secure: false,
-});
-  app.use('/ws', wsProxy);
-}
-
-// Attach the upgrade handler AFTER server.listen()
-server.on('upgrade', (req, socket, head) => {
-  if (req.url.startsWith('/ws')) {
-    // console.log('Forwarding WebSocket upgrade for:', req.url);
-    wsProxy(req, socket, head);
-  }
-});

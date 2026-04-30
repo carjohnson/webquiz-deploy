@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .login-container
+    header
+      img(src="/assets/baineslogo.png", alt="Baines Imaging Logo", class="logo")
+      h1 Baines Imaging - Radiology Coach
+
+    .content-area
+      h4 #{message}
+      .link-group
+        a(href='/users/login') Return to Login
+        <br><br>
+        div
+          a(href='https://www.bainesimaging.com/') Baines Imaging Laboratories

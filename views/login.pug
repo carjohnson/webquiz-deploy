@@ -1,24 +1,32 @@
 extends layout
 
 block content
-  h1= title
+  .login-container
+    <header>
+      <img src="/assets/baineslogo.png" alt="Your Company Logo" class="logo">
+      <h1>Baines Imaging - Radiology Coach</h1>
+    </header>
+    p Welcome to #[em Baines Imaging - Radiology Coach], a web-based learning tool.
+    h2= title
 
-  <form action="/users/login" method="POST">
-    <fieldset>
-            
-        <label>Email ID</label>
-        <input type ="email" id = 'email' name="email" placeholder="abc@example.com" required>
-        <br><br>
+    form(action="/users/login", method="POST")
+      fieldset
+        label Email ID
+        input(type="email", id="email", name="email", placeholder="abc@example.com", required)
+        br
+        br
 
-        <label>Password</label>
-        <input type="password" id = "password" name="password" required>
-        <br><br>
+        label Password
+        input(type="password", id="password", name="password", required)
+        br
+        br
 
-        <button type ="reset">Reset</button>
-        <button type ="submit">Submit</button>
-        <br></br>
-        <a id="registerlink" href="/users/register">Register</a>
-    </fieldset>
-  </form>
-    
-  h3(style="color: #FF9500")=msg
+        div.button-group
+          button(type="reset") Reset
+          button(type="submit") Submit
+
+        br
+        br
+        a#registerlink(href="/users/register") Register
+
+    h3(style="color: #FF9500")= msg

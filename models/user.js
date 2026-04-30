@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    username  : { type: String, required: true },
+    username  : { type: String, required: true,maxlength: [8, 'Username cannot exceed 8 characters'] },
     email     : { type: String, required: true },
     password  : { type: String, required: true },
     role      : {
@@ -11,8 +11,9 @@ const UserSchema = new Schema({
       enum: ['reader', 'admin'],
       default: 'reader',
       required: true,
-    }
-});
+    },
+    authorized  : {type: Boolean, default: false }
+}, {collection: 'user' } );
 
 
 // Virtual for user's URL

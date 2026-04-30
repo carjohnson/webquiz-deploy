@@ -24,12 +24,7 @@ exports.register_get = asyncHandler(async (req, res, next) => {
 exports.register_post = asyncHandler(async (req, res, next) => {
   
       try{
-        const { username, email, password, role } = req.body;
-
-        // Validate role
-        if (!['reader', 'admin'].includes(role)) {
-          return res.status(400).send('Invalid role selected');
-        }
+        const { username, email, password } = req.body;
 
         const userExists = await User.find({username: username})
             .collation({ locale: "en", strength: 2 })
@@ -43,21 +38,24 @@ exports.register_post = asyncHandler(async (req, res, next) => {
               username    : username.trim().toLowerCase(),
               password    : hashPassword,
               email       : email.trim().toLowerCase(),
-              role        : role,
+              authorized  : false,
             });
 
             await newUser.save();
-            res.redirect('/users/login?msg=Account created!');
+            res.redirect('/users/login?msg=Account created! Please contact the administrator for authorization.');
             
           } else {
             res.redirect('/users/register?msg=Username Unavailable');
           }
-
     } catch (error) {
-        console.error("Error:", error);
-        res.send("usersController>register_post : Internal server error");
+      if (error.name === 'ValidationError') {
+        const errors = Object.values(error.errors).map(err => err.message).join(', ');
+        return res.render('register', { msg: errors, formData: req.body });
+      }
+      error.message = `usersController>register_post: ${error.message}`;
+      throw error; 
     }
-});
+  });
 
 exports.login_post = asyncHandler(async (req, res, next) => {
     try{
@@ -68,14 +66,18 @@ exports.login_post = asyncHandler(async (req, res, next) => {
           .exec();
 
         if(userExists.length){
-
+            const user = userExists[0];
             let submittedPass = password
             let storedPass = userExists[0].password; 
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
             if (passwordMatch) {
-                
+              if (!user.authorized) {
+                res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
+              } else {
+                req.session.user = user;
                 res.redirect('/iframehost');
+              }
 
             } else {
                 res.redirect('/users/login?msg=Invalid email or password');
@@ -89,7 +91,43 @@ exports.login_post = asyncHandler(async (req, res, next) => {
             res.redirect('/users/login?msg=Invalid email or password');
         }
     } catch (error) {
-        console.error("Error:", error);
-        res.send("usersController>login_post : Internal server error");
+      error.message = `usersController>login_post: ${error.message}`;
+      throw error; 
     }
 }); 
+
+exports.logout_get = asyncHandler(async (req,res,next) => {
+  try {
+    req.session.destroy(() => {
+      res.render('logout', {message: "Thank you for participating!"});
+    });
+
+  } catch (error) {
+    error.message = `usersController>logout_get: ${error.message}`;
+    throw error; 
+  }
+
+});
+
+exports.about_get = asyncHandler(async (req,res,next) => {
+  try {
+    res.render('about');
+  } catch (error) {
+    error.message = `usersController>about_get: ${error.message}`;
+    throw error; 
+  }
+
+});
+
+exports.sessioninfo_get = asyncHandler(async (req, res, next) => {
+  try {
+    if (req.session && req.session.user) {
+      res.json(req.session.user);
+    } else {
+      res.status(401).json({ error: 'Not logged in' });
+    }
+  } catch (error) {
+    error.message = `usersController>sessioninfo_get: ${error.message}`;
+    throw error; // asyncHandler will pass this to your global error handler (catch 500 in app.js)
+  }
+});

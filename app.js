@@ -1,17 +1,39 @@
 // app.js
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
 require("dotenv").config();
 const app = express();
 var path = require('path');
 var logger = require('morgan');
-
+const createError = require('http-errors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
+var studyRoutes = require("./routes/study");
+
+// app sees NODE_ENV from the environment (Docker (highest priority or local)
+const environment = process.env.NODE_ENV || 'development';
+
+const allowedOrigins = ['https://localhost:3000', 'https://localhost', process.env.REACT_APP_API_BASE_URL];
+// for production (deployed app)
+if (process.env.REACT_APP_API_BASE_URL) {
+  allowedOrigins.push(process.env.REACT_APP_API_BASE_URL);
+}
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -37,18 +59,49 @@ app.use(express.urlencoded({ extended: false }));
 
 // set up session ID to store info that both client and server
 //  can access through req.session
+const isDev = process.env.NODE_ENV !== 'production';
+
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // 🔐 Better for security
+  cookie: {
+    httpOnly: true,
+    secure: true,           // ✅ Must be true for HTTPS
+    sameSite: 'none',       // ✅ Required for cross-origin iframe access
+    maxAge: 60 * 60 * 1000  // 1 hour
+  }
 }));
 
+// lock down all other routes unless logged in 
+
+app.use((req, res, next) => {
+  const publicPaths = [
+    '/users/login',
+    '/users/register',
+    '/about'
+  ];
+
+  const isPublicAsset =
+    req.originalUrl.startsWith('/stylesheets/') ||
+    req.originalUrl.startsWith('/assets/');
+
+  const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
+
+  if (isPublicPath || req.session.user || isPublicAsset) {
+    return next();
+  } else {
+    return res.redirect('/users/login?msg=Please log in');
+  }
+});
 
 // Mount routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
+app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -56,12 +109,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 // log incoming requests
 app.use((req, res, next) => {
   console.log(`📮 [${req.method}] ${req.originalUrl}`);
+  // console.log('🧠 Session:', req.session);
+  // console.log('📮 req', req.body);
   next();
 });
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// 404 handler (no throwing)
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Not Found' });
+});
+
+// Error handler (handles real errors)
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+
+  const status = err.status || 500;
+  res.status(status).json({ error: err.message });
 });
 
 // error handler

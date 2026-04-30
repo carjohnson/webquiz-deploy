@@ -15,8 +15,14 @@ var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
 
+// app sees NODE_ENV from the environment (Docker (highest priority or local)
+const environment = process.env.NODE_ENV || 'development';
 
-const allowedOrigins = ['https://localhost:3000', 'https://localhost'];
+const allowedOrigins = ['https://localhost:3000', 'https://localhost', process.env.REACT_APP_API_BASE_URL];
+// for production (deployed app)
+if (process.env.REACT_APP_API_BASE_URL) {
+  allowedOrigins.push(process.env.REACT_APP_API_BASE_URL);
+}
 
 app.use(cors({
   origin: function (origin, callback) {

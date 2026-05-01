@@ -8,6 +8,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     res.render("iframehost", {
       title: "",
       user: req.session.user,
+      serviceUrl: process.env.RENDER_SERVICE_URL || 'localhost'
     });
   } catch (error) {
     console.error("iframehostController>Error", error);

@@ -28,6 +28,6 @@ block content
     //-           command in docker-compose.yml
     //- iframe(src="https://localhost/ohif/" id="ohif_iframe" width="3000" height="800" style="border: none;")
 
-    iframe(src=`https://localhost/ohif/?role=${user && user.role}` id="ohif_iframe" width="3000" height="800" style="border: none;")
-
+  iframe(src=`https://${serviceUrl}/ohif/?role=${user && user.role}` 
+        id="ohif_iframe" width="3000" height="800" style="border: none;")
   script(src="/scripts/iframe-toggle.js")

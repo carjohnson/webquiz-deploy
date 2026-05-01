@@ -74,30 +74,6 @@ app.use(session({
   }
 }));
 
-// lock down all other routes unless logged in 
-
-app.use((req, res, next) => {
-  const publicPaths = [
-    '/users/login',
-    '/users/register',
-    '/about',
-    '/ohif'
-  ];
-
-  const isPublicAsset =
-    req.originalUrl.startsWith('/stylesheets/') ||
-    req.originalUrl.startsWith('/assets/');
-
-  const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
-
-  if (isPublicPath || req.session.user || isPublicAsset) {
-    return next();
-  } else {
-    return res.redirect('/users/login?msg=Please log in');
-  }
-});
-
-
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * For development:
@@ -121,6 +97,30 @@ if (process.env.NODE_ENV !== 'production') {
       pathRewrite: { '^/ohif': '' }, 
     }));
 }
+
+
+// lock down all other routes unless logged in 
+
+app.use((req, res, next) => {
+  const publicPaths = [
+    '/users/login',
+    '/users/register',
+    '/about',
+    '/ohif'
+  ];
+
+  const isPublicAsset =
+    req.originalUrl.startsWith('/stylesheets/') ||
+    req.originalUrl.startsWith('/assets/');
+
+  const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
+
+  if (isPublicPath || req.session.user || isPublicAsset) {
+    return next();
+  } else {
+    return res.redirect('/users/login?msg=Please log in');
+  }
+});
 
 
 

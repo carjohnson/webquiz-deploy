@@ -15,6 +15,37 @@ var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * Place proxy at top - intercept traffic before app.use and auth middleware is activated
+ *    This is to allow for access to /ohif/ in production.
+ * 
+ * For development:
+ * Express will forward WebSocket upgrade requests (handshakes)
+ * -  to Webpack Dev Server at https://localhost:3000/ws
+ */
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+if (process.env.NODE_ENV !== 'production') {
+  const wsProxy = createProxyMiddleware({
+    target: 'https://localhost:3000',
+    changeOrigin: true,
+    ws: true,
+    secure: false,
+  });
+} else {
+    // This intercepts /ohif traffic BEFORE it hits the auth or 404 handlers
+    app.use('/ohif', createProxyMiddleware({
+      target: process.env.OHIF_TARGET || 'http://ohif_viewer:80',
+      changeOrigin: true,
+      pathRewrite: { '^/ohif': '' }, 
+    }));
+}
+
+
+
+
+
 // app sees NODE_ENV from the environment (Docker (highest priority or local)
 const environment = process.env.NODE_ENV || 'development';
 
@@ -73,30 +104,6 @@ app.use(session({
     maxAge: 60 * 60 * 1000  // 1 hour
   }
 }));
-
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-/**
- * For development:
- * Express will forward WebSocket upgrade requests (handshakes)
- * -  to Webpack Dev Server at https://localhost:3000/ws
- */
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
-if (process.env.NODE_ENV !== 'production') {
-  const wsProxy = createProxyMiddleware({
-    target: 'https://localhost:3000',
-    changeOrigin: true,
-    ws: true,
-    secure: false,
-  });
-} else {
-    // This intercepts /ohif traffic BEFORE it hits the auth or 404 handlers
-    app.use('/ohif', createProxyMiddleware({
-      target: process.env.OHIF_TARGET || 'http://ohif_viewer:80',
-      changeOrigin: true,
-      pathRewrite: { '^/ohif': '' }, 
-    }));
-}
 
 
 // lock down all other routes unless logged in 

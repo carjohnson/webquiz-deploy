@@ -109,9 +109,14 @@ app.use(session({
 // lock down all other routes unless logged in 
 
 app.use((req, res, next) => {
+  // DEBUG LOGS
+  console.log("--- MIDDLEWARE DEBUG ---");
+  console.log("Original URL:", req.originalUrl);
+  console.log("User in session:", !!req.session.user);
+  
   if (req.originalUrl.startsWith('/ohif')) {
     console.log("Bypassing auth for /ohif");
-    return next(); // Absolutely bypass everything for ohif
+    return next(); 
   }
   const publicPaths = [
     '/users/login',

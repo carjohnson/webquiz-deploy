@@ -62,7 +62,8 @@ server.on('listening', onListening);
 //   secure: false,
 // });
 
-  app.use('/ws', wsProxy);
+  // app.use('/ws', wsProxy);
+  
   // Attach the upgrade handler AFTER server.listen()
   server.on('upgrade', (req, socket, head) => {
     if (req.url.startsWith('/ws')) {
@@ -70,7 +71,7 @@ server.on('listening', onListening);
       wsProxy(req, socket, head);
     }
   });
-}
+// }
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

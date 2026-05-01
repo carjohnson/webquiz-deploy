@@ -109,6 +109,10 @@ app.use(session({
 // lock down all other routes unless logged in 
 
 app.use((req, res, next) => {
+  if (req.originalUrl.startsWith('/ohif')) {
+    console.log("Bypassing auth for /ohif");
+    return next(); // Absolutely bypass everything for ohif
+  }
   const publicPaths = [
     '/users/login',
     '/users/register',

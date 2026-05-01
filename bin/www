@@ -46,21 +46,22 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-/**
- * For development:
- * Express will forward WebSocket upgrade requests (handshakes)
- * -  to Webpack Dev Server at https://localhost:3000/ws
- */
-if (process.env.NODE_ENV !== 'production') {
-  const { createProxyMiddleware } = require('http-proxy-middleware');
+// // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// /**
+//  * For development:
+//  * Express will forward WebSocket upgrade requests (handshakes)
+//  * -  to Webpack Dev Server at https://localhost:3000/ws
+//  */
+// if (process.env.NODE_ENV !== 'production') {
+//   const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const wsProxy = createProxyMiddleware({
-  target: 'https://localhost:3000',
-  changeOrigin: true,
-  ws: true,
-  secure: false,
-});
+// const wsProxy = createProxyMiddleware({
+//   target: 'https://localhost:3000',
+//   changeOrigin: true,
+//   ws: true,
+//   secure: false,
+// });
+
   app.use('/ws', wsProxy);
   // Attach the upgrade handler AFTER server.listen()
   server.on('upgrade', (req, socket, head) => {

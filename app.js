@@ -80,7 +80,8 @@ app.use((req, res, next) => {
   const publicPaths = [
     '/users/login',
     '/users/register',
-    '/about'
+    '/about',
+    '/ohif'
   ];
 
   const isPublicAsset =
@@ -95,6 +96,33 @@ app.use((req, res, next) => {
     return res.redirect('/users/login?msg=Please log in');
   }
 });
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * For development:
+ * Express will forward WebSocket upgrade requests (handshakes)
+ * -  to Webpack Dev Server at https://localhost:3000/ws
+ */
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+if (process.env.NODE_ENV !== 'production') {
+  const wsProxy = createProxyMiddleware({
+    target: 'https://localhost:3000',
+    changeOrigin: true,
+    ws: true,
+    secure: false,
+  });
+} else {
+    // This intercepts /ohif traffic BEFORE it hits the auth or 404 handlers
+    app.use('/ohif', createProxyMiddleware({
+      target: process.env.OHIF_TARGET || 'http://ohif_viewer:80',
+      changeOrigin: true,
+      pathRewrite: { '^/ohif': '' }, 
+    }));
+}
+
+
 
 // Mount routes
 app.use('/', indexRouter);

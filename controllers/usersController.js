@@ -71,17 +71,31 @@ exports.login_post = asyncHandler(async (req, res, next) => {
             let storedPass = userExists[0].password; 
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
+            // if (passwordMatch) {
+            //   if (!user.authorized) {
+            //     res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
+            //   } else {
+            //     req.session.user = user;
+            //     res.redirect('/iframehost');
+            //   }
+
+            // } else {
+            //     res.redirect('/users/login?msg=Invalid email or password');
+            // }
+
             if (passwordMatch) {
               if (!user.authorized) {
-                res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
-              } else {
-                req.session.user = user;
-                res.redirect('/iframehost');
+                return res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
               }
-
-            } else {
-                res.redirect('/users/login?msg=Invalid email or password');
+              // save session before redirect so that browser has session and cookie info
+              req.session.user = user;
+              return req.session.save((err) => {
+                if (err) return next(err);
+                res.redirect('/iframehost');
+              });
             }
+
+
         }
         else {
     

@@ -104,11 +104,12 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.RENDER === 'true' ? false : true,  // HTTP on Render   ✅ Must be true for HTTPS
-    sameSite: process.env.RENDER === 'true' ? 'lax' : 'none',  // lax for HTTP ✅ Required for cross-origin iframe access
+    // sameSite: process.env.RENDER === 'true' ? 'lax' : 'none',  // lax for HTTP ✅ Required for cross-origin iframe access
+    sameSite:  'none',  // lax for HTTP ✅ Required for cross-origin iframe access
     maxAge: 60 * 60 * 1000  // 1 hour
   }
 }));
-
+app.set('trust proxy', 1);
 
 // log incoming requests
 app.use((req, res, next) => {

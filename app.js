@@ -199,14 +199,26 @@ app.use((req, res, next) => {
 });
 
 const fs = require('fs');
-app.get('/debug-files', (req, res) => {
-  const targetDir = '/usr/share/nginx/html';
+// app.get('/debug-files', (req, res) => {
+//   const targetDir = '/usr/share/nginx/html';
+//   try {
+//     const files = fs.readdirSync(targetDir, { recursive: true });
+//     res.json({ directory: targetDir, files: files });
+//   } catch (err) {
+//     res.json({ error: err.message, path: targetDir });
+//   }
+// });
+
+app.get('/debug-root', (req, res) => {
   try {
-    const files = fs.readdirSync(targetDir, { recursive: true });
-    res.json({ directory: targetDir, files: files });
+    const files = fs.readdirSync('/');
+    res.json({ rootFiles: files });
   } catch (err) {
-    res.json({ error: err.message, path: targetDir });
+    res.json({ error: err.message });
   }
+});
+app.get('/debug-cwd', (req, res) => {
+  res.json({ cwd: process.cwd(), files: fs.readdirSync(process.cwd()) });
 });
 
 

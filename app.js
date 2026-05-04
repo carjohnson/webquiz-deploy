@@ -198,29 +198,16 @@ app.use((req, res, next) => {
   return res.redirect('/users/login?msg=Please log in');
 });
 
-const fs = require('fs');
-// app.get('/debug-files', (req, res) => {
-//   const targetDir = '/usr/share/nginx/html';
-//   try {
-//     const files = fs.readdirSync(targetDir, { recursive: true });
-//     res.json({ directory: targetDir, files: files });
-//   } catch (err) {
-//     res.json({ error: err.message, path: targetDir });
-//   }
-// });
-
-app.get('/debug-root', (req, res) => {
+app.get('/debug-ohif', (req, res) => {
+  const fs = require('fs');
+  const dir = path.join(__dirname, 'public/ohif');
   try {
-    const files = fs.readdirSync('/');
-    res.json({ rootFiles: files });
+    const files = fs.readdirSync(dir);
+    res.json({ exists: true, dir, files });
   } catch (err) {
-    res.json({ error: err.message });
+    res.json({ exists: false, dir, error: err.message });
   }
 });
-app.get('/debug-cwd', (req, res) => {
-  res.json({ cwd: process.cwd(), files: fs.readdirSync(process.cwd()) });
-});
-
 
 // Mount routes
 app.use('/', indexRouter);
@@ -240,10 +227,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// // 404 handler (no throwing)
-// app.use((req, res, next) => {
-//   res.status(404).json({ error: 'Not Found' });
-// });
+// 404 handler (no throwing)
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Not Found' });
+});
 
 // Error handler (handles real errors)
 app.use((err, req, res, next) => {
@@ -265,3 +252,28 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+///////////////// Debugging  ... doesn't work to read directory
+// const fs = require('fs');
+// // app.get('/debug-files', (req, res) => {
+// //   const targetDir = '/usr/share/nginx/html';
+// //   try {
+// //     const files = fs.readdirSync(targetDir, { recursive: true });
+// //     res.json({ directory: targetDir, files: files });
+// //   } catch (err) {
+// //     res.json({ error: err.message, path: targetDir });
+// //   }
+// // });
+
+// app.get('/debug-root', (req, res) => {
+//   try {
+//     const files = fs.readdirSync('/');
+//     res.json({ rootFiles: files });
+//   } catch (err) {
+//     res.json({ error: err.message });
+//   }
+// });
+// app.get('/debug-cwd', (req, res) => {
+//   res.json({ cwd: process.cwd(), files: fs.readdirSync(process.cwd()) });
+// });
+

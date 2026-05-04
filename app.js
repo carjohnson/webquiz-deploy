@@ -198,6 +198,16 @@ app.use((req, res, next) => {
   return res.redirect('/users/login?msg=Please log in');
 });
 
+const fs = require('fs');
+app.get('/debug-files', (req, res) => {
+  const targetDir = '/usr/share/nginx/html';
+  try {
+    const files = fs.readdirSync(targetDir, { recursive: true });
+    res.json({ directory: targetDir, files: files });
+  } catch (err) {
+    res.json({ error: err.message, path: targetDir });
+  }
+});
 
 
 // Mount routes
@@ -218,10 +228,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// 404 handler (no throwing)
-app.use((req, res, next) => {
-  res.status(404).json({ error: 'Not Found' });
-});
+// // 404 handler (no throwing)
+// app.use((req, res, next) => {
+//   res.status(404).json({ error: 'Not Found' });
+// });
 
 // Error handler (handles real errors)
 app.use((err, req, res, next) => {

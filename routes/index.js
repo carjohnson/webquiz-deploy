@@ -18,7 +18,7 @@ router.get("/", function (req, res) {
   // Check session directly in the route
   if (req.session && req.session.user) {
     // Redirect to your main app (e.g., iframehost or webquiz)
-    return res.redirect("/iframehost"); 
+    return res.redirect("/ohif"); 
   } else {
     // Only redirect to login if NOT authenticated
     return res.redirect("/users/login");

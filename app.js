@@ -125,39 +125,72 @@ app.use((req, res, next) => {
 });
 
 
-// lock down all other routes unless logged in 
+// // lock down all other routes unless logged in 
+// app.use((req, res, next) => {
+//   // DEBUG LOGS
+//   console.log("--- MIDDLEWARE DEBUG ---");
+//   console.log("Original URL:", req.originalUrl);
+//   console.log('has session:', !!req.session);
+//   console.log("User in session:", !!req.session.user);
+  
+//   if (req.originalUrl.startsWith('/ohif')) {
+//     console.log("Bypassing auth for /ohif");
+//     return next(); 
+//   }
 
+//   const publicPaths = [
+//     '/users/login',
+//     '/users/register',
+//     '/about',
+//     '/ohif'
+//   ];
+
+//   const isPublicAsset =
+//     req.originalUrl.startsWith('/stylesheets/') ||
+//     req.originalUrl.startsWith('/assets/');
+
+//   const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
+
+//   if (isPublicPath || req.session.user || isPublicAsset) {
+//     return next();
+//   } else {
+//     return res.redirect('/users/login?msg=Please log in');
+//   }
+// });
+
+
+
+// lock down all routes
 app.use((req, res, next) => {
-  // DEBUG LOGS
+  // 1. DEBUG LOGS
   console.log("--- MIDDLEWARE DEBUG ---");
   console.log("Original URL:", req.originalUrl);
-  console.log('has session:', !!req.session);
-  console.log("User in session:", !!req.session.user);
-  
+  console.log("User in session:", !!req.session?.user);
+
+  // 2. IMMEDIATE BYPASS (for ohif and auth)
   if (req.originalUrl.startsWith('/ohif')) {
     console.log("Bypassing auth for /ohif");
-    return next(); 
+    return next();
   }
 
-  const publicPaths = [
-    '/users/login',
-    '/users/register',
-    '/about',
-    '/ohif',
-    '/'
-  ];
+  // 3. IF LOGGED IN, PROCEED
+  if (req.session && req.session.user) {
+    return next();
+  }
 
-  const isPublicAsset =
-    req.originalUrl.startsWith('/stylesheets/') ||
-    req.originalUrl.startsWith('/assets/');
-
+  // 4. PUBLIC PATHS / ASSETS
+  const publicPaths = ['/users/login', '/users/register', '/about'];
+  const isPublicAsset = req.originalUrl.startsWith('/stylesheets/') || 
+                        req.originalUrl.startsWith('/assets/');
   const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
 
-  if (isPublicPath || req.session.user || isPublicAsset) {
+  if (isPublicPath || isPublicAsset) {
     return next();
-  } else {
-    return res.redirect('/users/login?msg=Please log in');
-  }
+  } 
+
+  // 5. OTHERWISE REDIRECT
+  console.log("Redirecting to login for:", req.originalUrl);
+  return res.redirect('/users/login?msg=Please log in');
 });
 
 

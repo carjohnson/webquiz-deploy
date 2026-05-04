@@ -138,11 +138,13 @@ app.use((req, res, next) => {
     console.log("Bypassing auth for /ohif");
     return next(); 
   }
+
   const publicPaths = [
     '/users/login',
     '/users/register',
     '/about',
-    '/ohif'
+    '/ohif',
+    '/'
   ];
 
   const isPublicAsset =

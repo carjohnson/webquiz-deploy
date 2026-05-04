@@ -89,15 +89,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-
-// log incoming requests
-app.use((req, res, next) => {
-  console.log(`📮 [${req.method}] ${req.originalUrl}`);
-  console.log('🧠 Session:', req.session);
-  console.log('📮 req', req.body);
-  next();
-});
-
 // set up session ID to store info that both client and server
 //  can access through req.session
 const isDev = process.env.NODE_ENV !== 'production';
@@ -116,12 +107,31 @@ app.use(session({
 }));
 
 
+// log incoming requests
+app.use((req, res, next) => {
+  console.log(`📮 [${req.method}] ${req.originalUrl}`);
+  console.log('🧠 Session:', req.session);
+  console.log('📮 req', req.body);
+  next();
+});
+app.use((req, res, next) => {
+  console.log('--- AFTER SESSION ---');
+  console.log('url:', req.originalUrl);
+  console.log('cookie:', req.headers.cookie);
+  console.log('session exists:', req.session !== undefined);
+  console.log('session keys:', req.session ? Object.keys(req.session) : null);
+  console.log('session user:', req.session?.user);
+  next();
+});
+
+
 // lock down all other routes unless logged in 
 
 app.use((req, res, next) => {
   // DEBUG LOGS
   console.log("--- MIDDLEWARE DEBUG ---");
   console.log("Original URL:", req.originalUrl);
+  console.log('has session:', !!req.session);
   console.log("User in session:", !!req.session.user);
   
   if (req.originalUrl.startsWith('/ohif')) {

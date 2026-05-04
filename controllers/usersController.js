@@ -91,6 +91,7 @@ exports.login_post = asyncHandler(async (req, res, next) => {
               req.session.user = user;
               return req.session.save((err) => {
                 if (err) return next(err);
+                console.log('session saved, redirecting to iframehost');
                 res.redirect('/iframehost');
               });
             }

@@ -106,7 +106,7 @@ app.use(session({
     // secure: process.env.RENDER === 'true' ? false : true,  // HTTP on Render   ✅ Must be true for HTTPS
     secure: true,
     // sameSite: process.env.RENDER === 'true' ? 'lax' : 'none',  // lax for HTTP ✅ Required for cross-origin iframe access
-    sameSite:  'none',  // lax for HTTP ✅ Required for cross-origin iframe access
+    sameSite:  'lax',  // lax for HTTP ✅ Required for cross-origin iframe access
     maxAge: 60 * 60 * 1000  // 1 hour
   }
 }));

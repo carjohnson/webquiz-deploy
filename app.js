@@ -15,19 +15,13 @@ var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
 
-// // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// /**
-//  * Place proxy at top - intercept traffic before app.use and auth middleware is activated
-//  *    This is to allow for access to /ohif/ in production.
-//  * 
-//  * For development:
-//  * Express will forward WebSocket upgrade requests (handshakes)
-//  * -  to Webpack Dev Server at https://localhost:3000/ws
-//  */
-
-
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * For development:
+ * Express will forward WebSocket upgrade requests (handshakes)
+ * -  to Webpack Dev Server at https://localhost:3000/ws
+ */
 const { createProxyMiddleware } = require('http-proxy-middleware');
-
 if (process.env.NODE_ENV !== 'production') {
   const wsProxy = createProxyMiddleware({
     target: 'https://localhost:3000',
@@ -36,18 +30,6 @@ if (process.env.NODE_ENV !== 'production') {
     secure: false,
   });
 }
-// } else {
-//     // This intercepts /ohif traffic BEFORE it hits the auth or 404 handlers
-//     app.use('/ohif', createProxyMiddleware({
-//       target: process.env.OHIF_TARGET || 'http://ohif_viewer:80',
-//       changeOrigin: true,
-//       pathRewrite: { '^/ohif': '' }, 
-//     }));
-// }
-
-
-
-
 
 // app sees NODE_ENV from the environment (Docker (highest priority or local)
 const environment = process.env.NODE_ENV || 'development';
@@ -106,7 +88,7 @@ app.use(session({
     // secure: process.env.RENDER === 'true' ? false : true,  // HTTP on Render   ✅ Must be true for HTTPS
     secure: true,
     // sameSite: process.env.RENDER === 'true' ? 'lax' : 'none',  // lax for HTTP ✅ Required for cross-origin iframe access
-    sameSite:  'lax',  // lax for HTTP ✅ Required for cross-origin iframe access
+    sameSite:  'none',  //  ✅ Required for cross-origin iframe access
     maxAge: 60 * 60 * 1000  // 1 hour
   }
 }));
@@ -128,41 +110,6 @@ app.use((req, res, next) => {
   console.log('session user:', req.session?.user);
   next();
 });
-
-
-// // lock down all other routes unless logged in 
-// app.use((req, res, next) => {
-//   // DEBUG LOGS
-//   console.log("--- MIDDLEWARE DEBUG ---");
-//   console.log("Original URL:", req.originalUrl);
-//   console.log('has session:', !!req.session);
-//   console.log("User in session:", !!req.session.user);
-  
-//   if (req.originalUrl.startsWith('/ohif')) {
-//     console.log("Bypassing auth for /ohif");
-//     return next(); 
-//   }
-
-//   const publicPaths = [
-//     '/users/login',
-//     '/users/register',
-//     '/about',
-//     '/ohif'
-//   ];
-
-//   const isPublicAsset =
-//     req.originalUrl.startsWith('/stylesheets/') ||
-//     req.originalUrl.startsWith('/assets/');
-
-//   const isPublicPath = publicPaths.some(path => req.originalUrl.startsWith(path));
-
-//   if (isPublicPath || req.session.user || isPublicAsset) {
-//     return next();
-//   } else {
-//     return res.redirect('/users/login?msg=Please log in');
-//   }
-// });
-
 
 
 // lock down all routes
@@ -196,17 +143,6 @@ app.use((req, res, next) => {
   // 5. OTHERWISE REDIRECT
   console.log("Redirecting to login for:", req.originalUrl);
   return res.redirect('/users/login?msg=Please log in');
-});
-
-app.get('/debug-ohif', (req, res) => {
-  const fs = require('fs');
-  const dir = path.join(__dirname, 'public/ohif');
-  try {
-    const files = fs.readdirSync(dir);
-    res.json({ exists: true, dir, files });
-  } catch (err) {
-    res.json({ exists: false, dir, error: err.message });
-  }
 });
 
 // Mount routes
@@ -253,7 +189,7 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-///////////////// Debugging  ... doesn't work to read directory
+///////////////// Debugging  ... no files as Render did not build the docker container
 // const fs = require('fs');
 // // app.get('/debug-files', (req, res) => {
 // //   const targetDir = '/usr/share/nginx/html';
@@ -277,3 +213,14 @@ module.exports = app;
 //   res.json({ cwd: process.cwd(), files: fs.readdirSync(process.cwd()) });
 // });
 
+///////////// works for static deploy ////////////
+// app.get('/debug-ohif', (req, res) => {
+//   const fs = require('fs');
+//   const dir = path.join(__dirname, 'public/ohif');
+//   try {
+//     const files = fs.readdirSync(dir);
+//     res.json({ exists: true, dir, files });
+//   } catch (err) {
+//     res.json({ exists: false, dir, error: err.message });
+//   }
+// });

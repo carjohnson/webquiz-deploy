@@ -16,29 +16,44 @@ block content
 
   //- div(class="ohif-container")
   //-   button#toggle-btn(style="position: absolute; top: 10px; left: 10px; z-index: 999;") <
-  //-   iframe(src="/webquiz" id="webquiz_iframe" width="1000" height="800" style="border: none;")
+  //-   iframe(
+  //-     src="/webquiz"
+  //-     id="webquiz_iframe"
+  //-     width="1000"
+  //-     height="800"
+  //-     style="border: none;"
+  //-   )
+  //-   iframe(
+  //-     src=`/ohif/?role=${user && user.role}`
+  //-     id="ohif_iframe"
+  //-     width="1000"
+  //-     height="800"
+  //-     style="border: none;"
+  //-   )
 
+div(
+  class="ohif-container"
+  style="display: flex; flex-direction: row; width: 100%; gap: 10px;"
+)
+  button#toggle-btn(
+    style="position: absolute; top: 10px; left: 10px; z-index: 999;"
+  ) <
 
-  //-   iframe(src=`/ohif/?role=${user && user.role}` 
-  //-       id="ohif_iframe" width="1000" height="800" style="border: none;")
-  //- script(src="/scripts/iframe-toggle.js")
+  iframe(
+    src="/webquiz"
+    id="webquiz_iframe"
+    width="1000"
+    height="800"
+    style="border: none;"
+  )
 
-  div(class="ohif-container")
-    button#toggle-btn(style="position: absolute; top: 10px; left: 10px; z-index: 999;") <
-    iframe(
-      src="/webquiz"
-      id="webquiz_iframe"
-      width="1000"
-      height="800"
-      style="border: none;"
-    )
-    iframe(
-      src=`/ohif/?role=${user && user.role}`
-      id="ohif_iframe"
-      width="1000"
-      height="800"
-      style="border: none;"
-    )
+  iframe(
+    src=`/ohif/?role=${user && user.role}`
+    id="ohif_iframe"
+    height="800"
+    style="border: none; flex: 1;"
+  )
+
   script(src="/scripts/iframe-toggle.js")
 
 

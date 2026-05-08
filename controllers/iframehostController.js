@@ -31,7 +31,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     res.render("iframehost", {
       title: "",
       user: user, // Pass the defined variable here
-      serviceUrl: process.env.RENDER_SERVICE_URL || 'localhost'
+      serviceUrl: process.env.RENDER_SERVICE_URL || 'https://localhost:3000'
     });
   } catch (error) {
     console.error("iframehostController>Error", error);

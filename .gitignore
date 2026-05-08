@@ -4,6 +4,6 @@ node_modules/
 dist
 # Other
 .env
-public/ohif-demo/
-public/ohif-pacs/
+public/ohif-prod/
+public/ohif-dev/
 

@@ -43,11 +43,11 @@ block content
       src="/webquiz"
       id="webquiz_iframe"
       height="800"
-      style="border: none; flex: 0 0 500px"
+      style="border: none; flex: 0 0 400px"
     )
 
     iframe(
-      src=`/ohif/?role=${user && user.role}`
+      src=`${serviceUrl}/ohif/?role=${user && user.role}`
       id="ohif_iframe"
       height="800"
       style="border: none; flex: 1;"

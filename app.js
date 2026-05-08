@@ -22,6 +22,7 @@ var studyRoutes = require("./routes/study");
  * -  to Webpack Dev Server at https://localhost:3000/ws
  */
 const { createProxyMiddleware } = require('http-proxy-middleware');
+console.log(' *** NODE_ENV, BASE_URL', process.env.NODE_ENV, process.env.REACT_APP_API_BASE_URL);
 if (process.env.NODE_ENV !== 'production') {
   const wsProxy = createProxyMiddleware({
     target: 'https://localhost:3000',
@@ -74,10 +75,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
+// =================================================
 // set up session ID to store info that both client and server
 //  can access through req.session
-const isDev = process.env.NODE_ENV !== 'production';
-
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
@@ -97,27 +97,28 @@ app.set('trust proxy', 1);
 // log incoming requests
 app.use((req, res, next) => {
   console.log(`📮 [${req.method}] ${req.originalUrl}`);
-  console.log('🧠 Session:', req.session);
-  console.log('📮 req', req.body);
+  // console.log('🧠 Session:', req.session);
+  // console.log('📮 req', req.body);
   next();
 });
-app.use((req, res, next) => {
-  console.log('--- AFTER SESSION ---');
-  console.log('url:', req.originalUrl);
-  console.log('cookie:', req.headers.cookie);
-  console.log('session exists:', req.session !== undefined);
-  console.log('session keys:', req.session ? Object.keys(req.session) : null);
-  console.log('session user:', req.session?.user);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('--- AFTER SESSION ---');
+//   console.log('url:', req.originalUrl);
+//   console.log('cookie:', req.headers.cookie);
+//   console.log('session exists:', req.session !== undefined);
+//   console.log('session keys:', req.session ? Object.keys(req.session) : null);
+//   console.log('session user:', req.session?.user);
+//   next();
+// });
 
 
+// =================================================
 // lock down all routes
 app.use((req, res, next) => {
-  // 1. DEBUG LOGS
-  console.log("--- MIDDLEWARE DEBUG ---");
-  console.log("Original URL:", req.originalUrl);
-  console.log("User in session:", !!req.session?.user);
+  // // 1. DEBUG LOGS
+  //   console.log("--- MIDDLEWARE DEBUG ---");
+  //   console.log("Original URL:", req.originalUrl);
+  //   console.log("User in session:", !!req.session?.user);
 
   // 2. IMMEDIATE BYPASS (for ohif and auth)
   if (req.originalUrl.startsWith('/ohif')) {
@@ -145,6 +146,7 @@ app.use((req, res, next) => {
   return res.redirect('/users/login?msg=Please log in');
 });
 
+// =================================================
 // Mount routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -152,22 +154,18 @@ app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
 app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
 
+// =================================================
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// log incoming requests
-app.use((req, res, next) => {
-  console.log(`📮 [${req.method}] ${req.originalUrl}`);
-  // console.log('🧠 Session:', req.session);
-  // console.log('📮 req', req.body);
-  next();
-});
 
+// =================================================
 // 404 handler (no throwing)
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
+// =================================================
 // Error handler (handles real errors)
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
@@ -176,12 +174,14 @@ app.use((err, req, res, next) => {
   res.status(status).json({ error: err.message });
 });
 
+// =================================================
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+// =================================================
   // render the error page
   res.status(err.status || 500);
   res.render('error');
@@ -189,31 +189,7 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-///////////////// Debugging  ... no files as Render did not build the docker container
-// const fs = require('fs');
-// // app.get('/debug-files', (req, res) => {
-// //   const targetDir = '/usr/share/nginx/html';
-// //   try {
-// //     const files = fs.readdirSync(targetDir, { recursive: true });
-// //     res.json({ directory: targetDir, files: files });
-// //   } catch (err) {
-// //     res.json({ error: err.message, path: targetDir });
-// //   }
-// // });
-
-// app.get('/debug-root', (req, res) => {
-//   try {
-//     const files = fs.readdirSync('/');
-//     res.json({ rootFiles: files });
-//   } catch (err) {
-//     res.json({ error: err.message });
-//   }
-// });
-// app.get('/debug-cwd', (req, res) => {
-//   res.json({ cwd: process.cwd(), files: fs.readdirSync(process.cwd()) });
-// });
-
-///////////// works for static deploy ////////////
+///////////// for debugging - list files ////////////
 // app.get('/debug-ohif', (req, res) => {
 //   const fs = require('fs');
 //   const dir = path.join(__dirname, 'public/ohif');

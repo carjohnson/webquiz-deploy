@@ -234,7 +234,8 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
         referencedSeriesUID: entry.sourceSeriesInstanceUid,
         segmentationLabel,
         dbSegmentInfo,
-        base64Buffer,
+        // base64Buffer,
+        segmentationFileUrl: `/webquiz/get-segmentation-file?segmentationId=${entry.segmentationId}`,
       });
     }
   }
@@ -248,6 +249,60 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
     next(err);
   }
   
+});
+//=========================================================
+exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
+  const { segmentationId } = req.query; // from ?segmentationId=...
+  const sessionUser = req.session.user;
+
+  if (!segmentationId) {
+    return res.status(400).json({ error: 'Missing segmentationId query param' });
+  }
+
+  if (!sessionUser) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
+  const segDoc = await Segmentations.findOne({
+    'segmentationIds.segmentationId': segmentationId,
+  });
+  console.log(' *** SegDoc', segDoc);
+
+  if (!segDoc) {
+    return res.status(404).json({ error: 'Segmentation not found' });
+  }
+
+  // Auth: ensure this segmentation belongs to the session user
+  if (segDoc.user_id.toString() !== sessionUser._id.toString()) {
+    return res.status(403).json({ error: 'Forbidden: not your segmentation' });
+  }
+
+  const entry = segDoc.segmentationIds.find(
+    e => e.segmentationId === segmentationId
+  );
+
+  if (!entry?.segmentationDataRef) {
+    return res.status(404).json({ error: 'SEG file reference missing' });
+  }
+
+  let fileBuffer;
+  try {
+    fileBuffer = await safeReadFile(entry.segmentationDataRef);
+  } catch (err) {
+    console.error('❌ Failed to read SEG file:', entry.segmentationDataRef, err);
+    return res.status(500).json({ error: 'Failed to read SEG file' });
+  }
+
+  if (!fileBuffer) {
+    return res.status(404).json({ error: 'SEG file not found on disk' });
+  }
+
+  res.set({
+    'Content-Type': 'application/dicom',
+    'Content-Length': fileBuffer.length,
+  });
+
+  res.send(fileBuffer);
 });
 //=========================================================
 exports.post_segmentationObjects = async (req, res) => {

@@ -26,4 +26,6 @@ router.post("/segmentationObjects", upload.any(), webquiz_controller.post_segmen
 
 router.get("/list-study-segmentations", webquiz_controller.list_study_segmentations);
 
+router.get("/get-segmentation-file", webquiz_controller.get_segmentation_file);
+
 module.exports = router;

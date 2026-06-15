@@ -789,7 +789,7 @@ async function getOrthancStudyId(studyInstanceUID) {
   const response = await fetch(`${process.env.ORTHANC_URL}/tools/lookup`, {
     method: 'POST',
     headers: orthancHeaders({ 'Content-Type': 'application/json' }),
-    body: JSON.stringify([studyInstanceUID]),
+    body: studyInstanceUID,  // plain string, not JSON.stringify([studyInstanceUID])
   });
 
   if (!response.ok) {
@@ -797,10 +797,11 @@ async function getOrthancStudyId(studyInstanceUID) {
   }
 
   const results = await response.json();
-  // results is an array of matches; find the Study-level one
+  console.log('🔍 Orthanc lookup results:', JSON.stringify(results));
+
   const studyMatch = results.find(r => r.Type === 'Study');
   if (!studyMatch) {
     throw new Error(`No Orthanc study found for UID: ${studyInstanceUID}`);
   }
-  return studyMatch.ID; // e.g. "a3f2c1d4-..."
+  return studyMatch.ID;
 }

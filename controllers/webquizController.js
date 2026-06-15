@@ -394,15 +394,24 @@ exports.post_segmentationObjects = async (req, res) => {
           // }
 
 
-                      try {
-              // Step 1: resolve Orthanc's internal study UUID from the DICOM UID
-              // const orthancStudyId = await getOrthancStudyId(study_id);
-              const orthancStudyId = study_id;
+            try {
+              // Step 1: Get DICOM StudyInstanceUID from MongoDB using session study_id
+              const studyDoc = await Study.findById(req.session.study_id);
+              if (!studyDoc) {
+                console.error('❌ Study not found in DB for study_id:', req.session.study_id);
+                return res.status(404).json({ error: 'Study not found' });
+              }
+              const studyInstanceUID = studyDoc.studyUID;
+              console.log('🔍 Resolved studyInstanceUID:', studyInstanceUID);
 
-              // Step 2: derive a stable per-user attachment ID
+              // Step 2: Resolve Orthanc's internal study UUID from the DICOM UID
+              const orthancStudyId = await getOrthancStudyId(studyInstanceUID);
+              console.log('🔍 Resolved Orthanc study ID:', orthancStudyId);
+
+              // Step 3: Derive a stable per-user attachment ID
               const attachmentId = attachmentIdFromUserId(req.session.user._id);
 
-              // Step 3: PUT the SEG binary as a custom attachment on the study
+              // Step 4: PUT the SEG binary as a custom attachment on the study
               const putUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`;
               const putResponse = await fetch(putUrl, {
                 method: 'PUT',
@@ -416,7 +425,7 @@ exports.post_segmentationObjects = async (req, res) => {
                 return res.status(500).json({ error: 'Orthanc rejected the SEG attachment' });
               }
 
-              // Step 4: store the reference needed to retrieve/delete it later
+              // Step 5: Store the reference needed to retrieve/delete it later
               metadata.segmentationDataRef = JSON.stringify({ orthancStudyId, attachmentId });
               console.log(`✅ SEG stored as Orthanc attachment ${attachmentId} on study ${orthancStudyId}`);
 

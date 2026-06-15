@@ -347,7 +347,7 @@ exports.post_segmentationObjects = async (req, res) => {
             // For production, POST the DICOM SEG binary directly to Orthanc
             let orthancResponse;
             try {
-              orthancResponse = await fetch(`${ORTHANC_URL}/instances`, {
+              orthancResponse = await fetch(`${process.env.ORTHANC_URL}/instances`, {
                 method: 'POST',
                 headers: orthancHeaders({ 'Content-Type': 'application/dicom' }),
                 body: blobFile.buffer,
@@ -415,7 +415,7 @@ exports.post_segmentationObjects = async (req, res) => {
           // segmentationDataRef is now an Orthanc UUID — delete from Orthanc
           const orthancId = segId.segmentationDataRef;
           try {
-            const deleteResponse = await fetch(`${ORTHANC_URL}/instances/${orthancId}`, {
+            const deleteResponse = await fetch(`${process.env.ORTHANC_URL}/instances/${orthancId}`, {
               method: 'DELETE',
               headers: orthancHeaders(),
             });

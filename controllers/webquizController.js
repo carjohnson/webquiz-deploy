@@ -314,7 +314,7 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
 
     const arrayBuffer = await response.arrayBuffer();
     console.log('🔍 arrayBuffer byteLength:', arrayBuffer?.byteLength);
-    const fileBuffer = Buffer.from(arrayBuffer);
+    fileBuffer = Buffer.from(arrayBuffer);
     console.log('🔍 fileBuffer length:', fileBuffer?.length);
 
   }

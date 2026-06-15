@@ -232,6 +232,7 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
 exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   const { segmentationId } = req.query;
   const sessionUser = req.session.user;
+  let fileBuffer;
 
   if (!segmentationId) {
     return res.status(400).json({ error: 'Missing segmentationId query param' });
@@ -259,7 +260,6 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ error: 'SEG file reference missing' });
   }
 
-  let fileBuffer;
   if (process.env.NODE_ENV !== 'production') {
 
     try {

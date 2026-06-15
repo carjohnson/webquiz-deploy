@@ -396,7 +396,8 @@ exports.post_segmentationObjects = async (req, res) => {
 
                       try {
               // Step 1: resolve Orthanc's internal study UUID from the DICOM UID
-              const orthancStudyId = await getOrthancStudyId(study_id);
+              // const orthancStudyId = await getOrthancStudyId(study_id);
+              const orthancStudyId = study_id;
 
               // Step 2: derive a stable per-user attachment ID
               const attachmentId = attachmentIdFromUserId(req.session.user._id);

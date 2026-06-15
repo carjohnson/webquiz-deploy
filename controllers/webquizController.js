@@ -177,88 +177,65 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
 exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
   const sessionUser = req.session.user;
   const { username, studyUID } = req.query;
-  const study = await Study.findOne({ studyUID });
-  const study_id = study._id;
-  const user = await User.findOne({username})
-  const user_id = user._id;
 
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
   }
-  if (!study_id) {
-    return res.status(400).json({ error: 'Missing study ID in session' });
+
+  const study = await Study.findOne({ studyUID });
+  if (!study) {
+    return res.status(400).json({ error: 'Study not found' });
+  }
+
+  const user = await User.findOne({ username });
+  if (!user) {
+    return res.status(400).json({ error: 'User not found' });
   }
 
   try {
+    const userStudySegmentations = await Segmentations.find({
+      user_id: user._id,
+      study_id: study._id,
+    });
 
-    let segmentationsList = [];
+    const segmentationsList = [];
 
+    for (const segDoc of userStudySegmentations) {
+      for (const entry of segDoc.segmentationIds) {
+        const dbSegmentInfo = entry.segments.map(seg => ({
+          segmentMaskValue: seg.segmentMaskValue,
+          label: seg.label,
+          cachedStats: seg.cachedStats,
+          groundTruth: seg.groundTruth,
+          referenceStandardMethod: seg.referenceStandardMethod,
+          hepaticSegment: seg.hepaticSegment,
+        }));
 
-      const userStudySegmentations = await Segmentations.find({
-        user_id,
-        study_id,
-      });
-
-  for (const segDoc of userStudySegmentations) {
-    for (const entry of segDoc.segmentationIds) {
-
-      // Collect segmentation-level label
-      const segmentationLabel = entry.label;
-
-      // Collect segment-level labels
-      const dbSegmentInfo = entry.segments.map(seg => ({
-        segmentMaskValue: seg.segmentMaskValue,
-        label: seg.label,
-        cachedStats: seg.cachedStats,
-        groundTruth: seg.groundTruth,
-        referenceStandardMethod: seg.referenceStandardMethod,
-        hepaticSegment: seg.hepaticSegment,
-      }));
-
-      // Load SEG binary
-      let base64Buffer = null;
-      if (entry.segmentationDataRef) {
-        try {
-          const fileBuffer = await safeReadFile(entry.segmentationDataRef);
-          if (fileBuffer) {
-            base64Buffer = fileBuffer.toString("base64");
-          }
-        } catch (err) {
-          console.error("❌ Failed to read SEG file:", entry.segmentationDataRef, err);
-        }
+        segmentationsList.push({
+          segmentationId: entry.segmentationId,
+          referencedSeriesUID: entry.sourceSeriesInstanceUid,
+          segmentationLabel: entry.label,
+          dbSegmentInfo,
+          segmentationFileUrl: `/webquiz/get-segmentation-file?segmentationId=${entry.segmentationId}`,
+        });
       }
-
-      // Push one clean payload entry
-      segmentationsList.push({
-        segmentationId: entry.segmentationId,
-        referencedSeriesUID: entry.sourceSeriesInstanceUid,
-        segmentationLabel,
-        dbSegmentInfo,
-        // base64Buffer,
-        segmentationFileUrl: `/webquiz/get-segmentation-file?segmentationId=${entry.segmentationId}`,
-      });
     }
-  }
 
-
-    // console.log('🧮 Segmentations list', segmentationsList);
     res.json({ type: 'list-study-segmentations', payload: segmentationsList });
-
   } catch (err) {
     console.error('❌ Error retrieving segmentations:', err);
     next(err);
   }
-  
 });
-//=========================================================
+
+// =========================================================
 exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
-  const { segmentationId } = req.query; // from ?segmentationId=...
+  const { segmentationId } = req.query;
   const sessionUser = req.session.user;
 
   if (!segmentationId) {
     return res.status(400).json({ error: 'Missing segmentationId query param' });
   }
-
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
   }
@@ -266,7 +243,6 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   const segDoc = await Segmentations.findOne({
     'segmentationIds.segmentationId': segmentationId,
   });
-  console.log(' *** SegDoc', segDoc);
 
   if (!segDoc) {
     return res.status(404).json({ error: 'Segmentation not found' });
@@ -277,24 +253,47 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
     return res.status(403).json({ error: 'Forbidden: not your segmentation' });
   }
 
-  const entry = segDoc.segmentationIds.find(
-    e => e.segmentationId === segmentationId
-  );
+  const entry = segDoc.segmentationIds.find(e => e.segmentationId === segmentationId);
 
   if (!entry?.segmentationDataRef) {
     return res.status(404).json({ error: 'SEG file reference missing' });
   }
 
   let fileBuffer;
-  try {
-    fileBuffer = await safeReadFile(entry.segmentationDataRef);
-  } catch (err) {
-    console.error('❌ Failed to read SEG file:', entry.segmentationDataRef, err);
-    return res.status(500).json({ error: 'Failed to read SEG file' });
-  }
+  if (process.env.NODE_ENV !== 'production') {
 
-  if (!fileBuffer) {
-    return res.status(404).json({ error: 'SEG file not found on disk' });
+    try {
+      fileBuffer = await safeReadFile(entry.segmentationDataRef);
+    } catch (err) {
+      console.error('❌ Failed to read SEG file:', entry.segmentationDataRef, err);
+      return res.status(500).json({ error: 'Failed to read SEG file' });
+    }
+
+    if (!fileBuffer) {
+      return res.status(404).json({ error: 'SEG file not found on disk' });
+    }
+  } else {
+    // for production, entry.segmentationDataRef is now the Orthanc instance UUID e.g. "a3f2c1d4-..."
+    const orthancId = entry.segmentationDataRef;
+    const orthancFileUrl = `${ORTHANC_URL}/instances/${orthancId}/file`;
+
+    let response;
+    try {
+      response = await fetch(orthancFileUrl, {
+        headers: orthancHeaders(),
+      });
+    } catch (err) {
+      console.error('❌ Failed to reach Orthanc:', err);
+      return res.status(502).json({ error: 'Could not connect to Orthanc' });
+    }
+
+    if (!response.ok) {
+      console.error(`❌ Orthanc returned ${response.status} for instance ${orthancId}`);
+      return res.status(404).json({ error: 'SEG file not found in Orthanc' });
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const fileBuffer = Buffer.from(arrayBuffer);
   }
 
   res.set({
@@ -306,31 +305,31 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
 });
 //=========================================================
 exports.post_segmentationObjects = async (req, res) => {
-    // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
-    console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length  );
-    if (Object.keys(req.body).length > 0) {
-      // console.log('✅ Saving segmentations:', req.body);
-      console.log('✅ Saving segmentations:');
-      const segmentations = [];
-      const username = req.session.user.username;
-      const study_id = req.session.study_id;
+  // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
+  console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length);
 
-      // Reconstruct array from segObj_X_metadata + blobs (add files check later)
-      for (const field of Object.keys(req.body)) {
-        if (field.endsWith('_metadata')) {
+  if (Object.keys(req.body).length > 0) {
+    // console.log('✅ Saving segmentations:', req.body);
+    console.log('✅ Saving segmentations:');
+    const segmentations = [];
+    const username = req.session.user.username;
+    const study_id = req.session.study_id;
 
-          const match = field.match(/segObj_(\d+)_metadata/);
-          if (!match) return;
-          
-          const index = parseInt(match[1]);
-          const metadata = JSON.parse(req.body[field]);
-          
-          // ✅ Now safely find matching blob
-          const blobFile = req.files?.find(f => 
-            f.fieldname === `segObj_${index}_blob`
-          );
-          
-          if (blobFile) {
+    // Reconstruct array from segObj_X_metadata + blobs 
+    for (const field of Object.keys(req.body)) {
+      if (field.endsWith('_metadata')) {
+
+        const match = field.match(/segObj_(\d+)_metadata/);
+        if (!match) continue;
+        
+        const index = parseInt(match[1]);
+        const metadata = JSON.parse(req.body[field]);
+        
+        // ✅ Now safely find matching blob
+        const blobFile = req.files?.find(f => f.fieldname === `segObj_${index}_blob`);
+        
+        if (blobFile) {
+          if (process.env.NODE_ENV !== 'production') {
             // Generate safe filename
             const safeSegId = metadata.segmentationId.replace(/[^a-zA-Z0-9-]/g, '_');
             const filename = `${study_id}_${username}_${safeSegId}.dcm`;
@@ -344,48 +343,99 @@ exports.post_segmentationObjects = async (req, res) => {
             console.log(`💾 Saved ${blobFile.size} bytes to ${filepath}`);
             
             metadata.segmentationDataRef = filepath;
-        } else {
-          console.warn(`⚠️ No blob found for segObj_${index}_blob`);
-        }
-          segmentations[index] = metadata;
-        }
-      }  // end for loop
-
-      const validSegs = segmentations.filter(Boolean);
-      console.log('✅ Reconstructed:', validSegs);
-      
-      await saveSegmentationsToDB(validSegs, req);
-      res.json({ success: true, count: validSegs.length });
-      return;
-    } else {
-      // last segmentation was deleted - remove from DB and file storage
-      const userid = req.session.user._id;
-      const study_id = req.session.study_id;
-      if (!userid || !study_id) {
-        console.warn('⚠️ Missing userid/studyid, skipping delete');
-      } else {
-        // get references to seg files stored - for deletion
-        const existingSegmentations = await Segmentations.findOne({
-          user_id: req.session.user._id,
-          study_id,
-        });
-                if (existingSegmentations) {
-          for (const segId of existingSegmentations.segmentationIds) {
-            if (segId.segmentationDataRef) {
-              try {
-                await fs.unlink(segId.segmentationDataRef);
-                console.log('🗑️ Deleted file:', segId.segmentationDataRef);
-              } catch (err) {
-                console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
-              }
+          } else {
+            // For production, POST the DICOM SEG binary directly to Orthanc
+            let orthancResponse;
+            try {
+              orthancResponse = await fetch(`${ORTHANC_URL}/instances`, {
+                method: 'POST',
+                headers: orthancHeaders({ 'Content-Type': 'application/dicom' }),
+                body: blobFile.buffer,
+              });
+            } catch (err) {
+              console.error('❌ Failed to reach Orthanc during upload:', err);
+              return res.status(502).json({ error: 'Could not connect to Orthanc' });
             }
-          } // end for each segId
 
-          await Segmentations.deleteMany({ study_id, user_id: userid });
-          console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
-        }
+            if (!orthancResponse.ok) {
+              const text = await orthancResponse.text();
+              console.error(`❌ Orthanc rejected SEG upload (${orthancResponse.status}):`, text);
+              return res.status(500).json({ error: 'Orthanc rejected the SEG file' });
+            }
+
+            const orthancResult = await orthancResponse.json();
+            // orthancResult.ID is the Orthanc instance UUID — this is our persistent reference
+            const orthancInstanceId = orthancResult.ID;
+
+            console.log(`✅ SEG stored in Orthanc with instance ID: ${orthancInstanceId}`);
+
+            // Store the Orthanc UUID in place of the old filepath
+            metadata.segmentationDataRef = orthancInstanceId;
+
+          }
+        
+      } else {
+        console.warn(`⚠️ No blob found for segObj_${index}_blob`);
       }
-    } // end else - last seg deleted
+        segmentations[index] = metadata;
+      }
+    }  // end for loop
+
+    const validSegs = segmentations.filter(Boolean);
+    console.log('✅ Reconstructed:', validSegs);
+    
+    await saveSegmentationsToDB(validSegs, req);
+    res.json({ success: true, count: validSegs.length });
+
+  } else {
+    // last segmentation was deleted - remove from DB and file storage
+    const userid = req.session.user._id;
+    const study_id = req.session.study_id;
+    if (!userid || !study_id) {
+      console.warn('⚠️ Missing userid/studyid, skipping delete');
+      return res.json({ success: true });
+    } 
+    // get references to seg files stored - for deletion
+    const existingSegmentations = await Segmentations.findOne({
+      user_id: userid,
+      study_id,
+    });
+    if (existingSegmentations) {
+      for (const segId of existingSegmentations.segmentationIds) {
+        if (segId.segmentationDataRef) {
+          if (process.env.NODE_ENV !== 'production') {
+          try {
+            await fs.unlink(segId.segmentationDataRef);
+            console.log('🗑️ Deleted file:', segId.segmentationDataRef);
+          } catch (err) {
+            console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
+          }
+        } else {
+          // For production:
+          // segmentationDataRef is now an Orthanc UUID — delete from Orthanc
+          const orthancId = segId.segmentationDataRef;
+          try {
+            const deleteResponse = await fetch(`${ORTHANC_URL}/instances/${orthancId}`, {
+              method: 'DELETE',
+              headers: orthancHeaders(),
+            });
+            if (deleteResponse.ok) {
+              console.log(`🗑️ Deleted Orthanc instance: ${orthancId}`);
+            } else {
+              console.warn(`⚠️ Orthanc DELETE returned ${deleteResponse.status} for ${orthancId}`);
+            }
+          } catch (err) {
+            console.warn('⚠️ Failed to delete from Orthanc:', orthancId, err);
+          }
+        } // for production
+        }
+      } // end for each segId
+
+      await Segmentations.deleteMany({ study_id, user_id: userid });
+      console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
+    }
+    res.json({ success: true });
+  } // end else - last seg deleted
 }
 
 //=========================================================
@@ -611,6 +661,12 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
   }
 }
 
+//=========================================================
+//=========================================================
+//===================  HELPERS  ===========================
+//=========================================================
+//=========================================================
+
 
 
 //=========================================================
@@ -624,4 +680,16 @@ async function safeReadFile(path) {
     }
     throw err;
   }
+}
+
+//=========================================================
+// Build auth header — currently unused (Orthanc is open), but wired up ready.
+// When you lock down Orthanc, set ORTHANC_USER and ORTHANC_PASS in your env vars.
+function orthancHeaders(extra = {}) {
+  const headers = { ...extra };
+  if (process.env.ORTHANC_USER && process.env.ORTHANC_PASS) {
+    const creds = Buffer.from(`${process.env.ORTHANC_USER}:${process.env.ORTHANC_PASS}`).toString('base64');
+    headers['Authorization'] = `Basic ${creds}`;
+  }
+  return headers;
 }

@@ -275,7 +275,7 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   } else {
     // for production, entry.segmentationDataRef is now the Orthanc instance UUID e.g. "a3f2c1d4-..."
     const orthancId = entry.segmentationDataRef;
-    const orthancFileUrl = `${ORTHANC_URL}/instances/${orthancId}/file`;
+    const orthancFileUrl = `${process.env.ORTHANC_URL}/instances/${orthancId}/file`;
 
     let response;
     try {

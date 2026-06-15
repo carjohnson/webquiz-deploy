@@ -273,15 +273,34 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
       return res.status(404).json({ error: 'SEG file not found on disk' });
     }
   } else {
-    // for production, entry.segmentationDataRef is now the Orthanc instance UUID e.g. "a3f2c1d4-..."
-    const orthancId = entry.segmentationDataRef;
-    const orthancFileUrl = `${process.env.ORTHANC_URL}/instances/${orthancId}/file`;
+    // // for production, entry.segmentationDataRef is now the Orthanc instance UUID e.g. "a3f2c1d4-..."
+    // const orthancId = entry.segmentationDataRef;
+    // const orthancFileUrl = `${process.env.ORTHANC_URL}/instances/${orthancId}/file`;
+
+    // let response;
+    // try {
+    //   response = await fetch(orthancFileUrl, {
+    //     headers: orthancHeaders(),
+    //   });
+    // } catch (err) {
+    //   console.error('❌ Failed to reach Orthanc:', err);
+    //   return res.status(502).json({ error: 'Could not connect to Orthanc' });
+    // }
+
+    // Parse the stored reference — { orthancStudyId, attachmentId }
+    let ref;
+    try {
+      ref = JSON.parse(entry.segmentationDataRef);
+    } catch {
+      return res.status(500).json({ error: 'Malformed segmentationDataRef in DB' });
+    }
+
+    const { orthancStudyId, attachmentId } = ref;
+    const attachmentUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}/data`;
 
     let response;
     try {
-      response = await fetch(orthancFileUrl, {
-        headers: orthancHeaders(),
-      });
+      response = await fetch(attachmentUrl, { headers: orthancHeaders() });
     } catch (err) {
       console.error('❌ Failed to reach Orthanc:', err);
       return res.status(502).json({ error: 'Could not connect to Orthanc' });
@@ -330,7 +349,7 @@ exports.post_segmentationObjects = async (req, res) => {
         
         if (blobFile) {
           if (process.env.NODE_ENV !== 'production') {
-            // Generate safe filename
+            // ---- Development: save to local disk ----
             const safeSegId = metadata.segmentationId.replace(/[^a-zA-Z0-9-]/g, '_');
             const filename = `${study_id}_${username}_${safeSegId}.dcm`;
             const filepath = path.join(__dirname, '../segmentations', filename);
@@ -344,34 +363,66 @@ exports.post_segmentationObjects = async (req, res) => {
             
             metadata.segmentationDataRef = filepath;
           } else {
-            // For production, POST the DICOM SEG binary directly to Orthanc
-            let orthancResponse;
-            try {
-              orthancResponse = await fetch(`${process.env.ORTHANC_URL}/instances`, {
-                method: 'POST',
-                headers: orthancHeaders({ 'Content-Type': 'application/dicom' }),
+            // ---- Production: store as Orthanc custom attachment ----
+          //   let orthancResponse;
+          //   try {
+          //     orthancResponse = await fetch(`${process.env.ORTHANC_URL}/instances`, {
+          //       method: 'POST',
+          //       headers: orthancHeaders({ 'Content-Type': 'application/dicom' }),
+          //       body: blobFile.buffer,
+          //     });
+          //   } catch (err) {
+          //     console.error('❌ Failed to reach Orthanc during upload:', err);
+          //     return res.status(502).json({ error: 'Could not connect to Orthanc' });
+          //   }
+
+          //   if (!orthancResponse.ok) {
+          //     const text = await orthancResponse.text();
+          //     console.error(`❌ Orthanc rejected SEG upload (${orthancResponse.status}):`, text);
+          //     return res.status(500).json({ error: 'Orthanc rejected the SEG file' });
+          //   }
+
+          //   const orthancResult = await orthancResponse.json();
+          //   // orthancResult.ID is the Orthanc instance UUID — this is our persistent reference
+          //   const orthancInstanceId = orthancResult.ID;
+
+          //   console.log(`✅ SEG stored in Orthanc with instance ID: ${orthancInstanceId}`);
+
+          //   // Store the Orthanc UUID in place of the old filepath
+          //   metadata.segmentationDataRef = orthancInstanceId;
+
+          // }
+
+
+                      try {
+              // Step 1: resolve Orthanc's internal study UUID from the DICOM UID
+              const orthancStudyId = await getOrthancStudyId(study_id);
+
+              // Step 2: derive a stable per-user attachment ID
+              const attachmentId = attachmentIdFromUserId(req.session.user._id);
+
+              // Step 3: PUT the SEG binary as a custom attachment on the study
+              const putUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`;
+              const putResponse = await fetch(putUrl, {
+                method: 'PUT',
+                headers: orthancHeaders({ 'Content-Type': 'application/octet-stream' }),
                 body: blobFile.buffer,
               });
+
+              if (!putResponse.ok) {
+                const text = await putResponse.text();
+                console.error(`❌ Orthanc rejected attachment PUT (${putResponse.status}):`, text);
+                return res.status(500).json({ error: 'Orthanc rejected the SEG attachment' });
+              }
+
+              // Step 4: store the reference needed to retrieve/delete it later
+              metadata.segmentationDataRef = JSON.stringify({ orthancStudyId, attachmentId });
+              console.log(`✅ SEG stored as Orthanc attachment ${attachmentId} on study ${orthancStudyId}`);
+
             } catch (err) {
-              console.error('❌ Failed to reach Orthanc during upload:', err);
-              return res.status(502).json({ error: 'Could not connect to Orthanc' });
+              console.error('❌ Failed to store SEG in Orthanc:', err);
+              return res.status(502).json({ error: 'Could not store SEG in Orthanc' });
             }
-
-            if (!orthancResponse.ok) {
-              const text = await orthancResponse.text();
-              console.error(`❌ Orthanc rejected SEG upload (${orthancResponse.status}):`, text);
-              return res.status(500).json({ error: 'Orthanc rejected the SEG file' });
-            }
-
-            const orthancResult = await orthancResponse.json();
-            // orthancResult.ID is the Orthanc instance UUID — this is our persistent reference
-            const orthancInstanceId = orthancResult.ID;
-
-            console.log(`✅ SEG stored in Orthanc with instance ID: ${orthancInstanceId}`);
-
-            // Store the Orthanc UUID in place of the old filepath
-            metadata.segmentationDataRef = orthancInstanceId;
-
           }
         
       } else {
@@ -388,46 +439,66 @@ exports.post_segmentationObjects = async (req, res) => {
     res.json({ success: true, count: validSegs.length });
 
   } else {
-    // last segmentation was deleted - remove from DB and file storage
+    // ---- Last segmentation deleted ---- remove from DB and file storage
     const userid = req.session.user._id;
     const study_id = req.session.study_id;
     if (!userid || !study_id) {
-      console.warn('⚠️ Missing userid/studyid, skipping delete');
+      console.warn('⚠️ Missing userid/study_id, skipping delete');
       return res.json({ success: true });
     } 
     // get references to seg files stored - for deletion
-    const existingSegmentations = await Segmentations.findOne({
-      user_id: userid,
-      study_id,
-    });
+    const existingSegmentations = await Segmentations.findOne({ user_id: userid, study_id });
+
     if (existingSegmentations) {
       for (const segId of existingSegmentations.segmentationIds) {
         if (segId.segmentationDataRef) {
           if (process.env.NODE_ENV !== 'production') {
-          try {
-            await fs.unlink(segId.segmentationDataRef);
-            console.log('🗑️ Deleted file:', segId.segmentationDataRef);
-          } catch (err) {
-            console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
-          }
-        } else {
-          // For production:
-          // segmentationDataRef is now an Orthanc UUID — delete from Orthanc
-          const orthancId = segId.segmentationDataRef;
-          try {
-            const deleteResponse = await fetch(`${process.env.ORTHANC_URL}/instances/${orthancId}`, {
-              method: 'DELETE',
-              headers: orthancHeaders(),
-            });
-            if (deleteResponse.ok) {
-              console.log(`🗑️ Deleted Orthanc instance: ${orthancId}`);
-            } else {
-              console.warn(`⚠️ Orthanc DELETE returned ${deleteResponse.status} for ${orthancId}`);
+            // Development: delete local file
+            try {
+              await fs.unlink(segId.segmentationDataRef);
+              console.log('🗑️ Deleted file:', segId.segmentationDataRef);
+            } catch (err) {
+              console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
             }
-          } catch (err) {
-            console.warn('⚠️ Failed to delete from Orthanc:', orthancId, err);
-          }
-        } // for production
+          } else {
+            // Production: delete Orthanc attachment
+            // const orthancId = segId.segmentationDataRef;
+            // try {
+            //   const deleteResponse = await fetch(`${process.env.ORTHANC_URL}/instances/${orthancId}`, {
+            //     method: 'DELETE',
+            //     headers: orthancHeaders(),
+            //   });
+            //   if (deleteResponse.ok) {
+            //     console.log(`🗑️ Deleted Orthanc instance: ${orthancId}`);
+            //   } else {
+            //     console.warn(`⚠️ Orthanc DELETE returned ${deleteResponse.status} for ${orthancId}`);
+            //   }
+            // } catch (err) {
+            //   console.warn('⚠️ Failed to delete from Orthanc:', orthancId, err);
+            // }
+            let ref;
+            try {
+              ref = JSON.parse(segId.segmentationDataRef);
+            } catch {
+              console.warn('⚠️ Malformed segmentationDataRef, skipping:', segId.segmentationDataRef);
+              continue;
+            }
+
+            const { orthancStudyId, attachmentId } = ref;
+            try {
+              const deleteResponse = await fetch(
+                `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`,
+                { method: 'DELETE', headers: orthancHeaders() }
+              );
+              if (deleteResponse.ok) {
+                console.log(`🗑️ Deleted Orthanc attachment ${attachmentId} from study ${orthancStudyId}`);
+              } else {
+                console.warn(`⚠️ Orthanc DELETE returned ${deleteResponse.status}`);
+              }
+            } catch (err) {
+              console.warn('⚠️ Failed to delete from Orthanc:', err);
+            }
+          } // for production
         }
       } // end for each segId
 
@@ -692,4 +763,34 @@ function orthancHeaders(extra = {}) {
     headers['Authorization'] = `Basic ${creds}`;
   }
   return headers;
+}
+
+//=========================================================
+// Converts a MongoDB ObjectId string to a stable attachment ID in [1024, 65535]
+function attachmentIdFromUserId(userId) {
+  const hex = userId.toString().slice(-4);
+  const num = parseInt(hex, 16); // 0 - 65535
+  return Math.max(1024, num);    // ensure >= 1024
+}
+
+//=========================================================
+// Looks up the Orthanc internal study UUID from a DICOM StudyInstanceUID
+async function getOrthancStudyId(studyInstanceUID) {
+  const response = await fetch(`${process.env.ORTHANC_URL}/tools/lookup`, {
+    method: 'POST',
+    headers: orthancHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify([studyInstanceUID]),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Orthanc lookup failed: ${response.status}`);
+  }
+
+  const results = await response.json();
+  // results is an array of matches; find the Study-level one
+  const studyMatch = results.find(r => r.Type === 'Study');
+  if (!studyMatch) {
+    throw new Error(`No Orthanc study found for UID: ${studyInstanceUID}`);
+  }
+  return studyMatch.ID; // e.g. "a3f2c1d4-..."
 }

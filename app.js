@@ -96,7 +96,7 @@ app.set('trust proxy', 1);
 
 // log incoming requests
 app.use((req, res, next) => {
-  console.log(`📮 [${req.method}] ${req.originalUrl}`);
+  // console.log(`📮 [${req.method}] ${req.originalUrl}`);
   // console.log('🧠 Session:', req.session);
   // console.log('📮 req', req.body);
   next();
@@ -122,7 +122,7 @@ app.use((req, res, next) => {
 
   // 2. IMMEDIATE BYPASS (for ohif and auth)
   if (req.originalUrl.startsWith('/ohif')) {
-    console.log("Bypassing auth for /ohif");
+    // console.log("Bypassing auth for /ohif");
     return next();
   }
 

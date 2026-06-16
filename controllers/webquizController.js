@@ -88,15 +88,15 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
   const sessionUser = req.session.user;
   const { username, studyUID } = req.query;
   const study = await Study.findOne({ studyUID });
+  if (!study) {
+    return res.status(400).json({ error: 'Study not found' });  // front end checks for this error
+  }
   const study_id = study._id;
 
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
   }
 
-  if (!study_id) {
-    return res.status(400).json({ error: 'Missing study ID in session' });
-  }
 
   try {
 
@@ -184,7 +184,7 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
 
   const study = await Study.findOne({ studyUID });
   if (!study) {
-    return res.status(400).json({ error: 'Study not found' });
+    return res.status(400).json({ error: 'Study not found' });  // front end checks for this error
   }
 
   const user = await User.findOne({ username });
@@ -232,7 +232,6 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
 exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   const { segmentationId } = req.query;
   const sessionUser = req.session.user;
-  let fileBuffer;
 
   if (!segmentationId) {
     return res.status(400).json({ error: 'Missing segmentationId query param' });
@@ -260,6 +259,7 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ error: 'SEG file reference missing' });
   }
 
+  let fileBuffer;
   if (process.env.NODE_ENV !== 'production') {
 
     try {
@@ -273,20 +273,7 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
       return res.status(404).json({ error: 'SEG file not found on disk' });
     }
   } else {
-    // // for production, entry.segmentationDataRef is now the Orthanc instance UUID e.g. "a3f2c1d4-..."
-    // const orthancId = entry.segmentationDataRef;
-    // const orthancFileUrl = `${process.env.ORTHANC_URL}/instances/${orthancId}/file`;
-
-    // let response;
-    // try {
-    //   response = await fetch(orthancFileUrl, {
-    //     headers: orthancHeaders(),
-    //   });
-    // } catch (err) {
-    //   console.error('❌ Failed to reach Orthanc:', err);
-    //   return res.status(502).json({ error: 'Could not connect to Orthanc' });
-    // }
-
+    // for production, entry.segmentationDataRef is now the Orthanc instance UUID e.g. "a3f2c1d4-..."
     // Parse the stored reference — { orthancStudyId, attachmentId }
     let ref;
     try {
@@ -313,9 +300,7 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
     }
 
     const arrayBuffer = await response.arrayBuffer();
-    console.log('🔍 arrayBuffer byteLength:', arrayBuffer?.byteLength);
     fileBuffer = Buffer.from(arrayBuffer);
-    console.log('🔍 fileBuffer length:', fileBuffer?.length);
 
   }
 

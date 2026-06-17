@@ -60,10 +60,19 @@ app.set("view engine", "pug");
 // import mongoose module
 mongoose.set("strictQuery", 'throw');  // error if querying something missing from db
 
-// Wait for database to connect, logging an error if there is a problem
+const mongoUri = process.env.NODE_ENV === 'production' 
+  ? process.env.MONGO_URI 
+  : process.env.MONGO_URI_DEV;
+
+if (!mongoUri) {
+  console.error(`MongoDB URI not set for ${process.env.NODE_ENV || 'development'} environment`);
+  return;
+}
+
+  // Wait for database to connect, logging an error if there is a problem
 main().catch((err) =>  console.log(err));
 async function main() {
-  await mongoose.connect(process.env.MONGO_URI)
+  await mongoose.connect(mongoUri)
   .then(() => console.log("Connected to MongoDB"))
   .catch ((err) => {
     console.error("MongoDB connection error", err);

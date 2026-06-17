@@ -295,7 +295,7 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
     }
 
     if (!response.ok) {
-      console.error(`❌ Orthanc returned ${response.status} for instance ${orthancId}`);
+      console.error(`❌ Orthanc returned ${response.status} for instance ${attachmentId}`);
       return res.status(404).json({ error: 'SEG file not found in Orthanc' });
     }
 

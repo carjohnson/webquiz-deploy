@@ -69,6 +69,14 @@ if (!mongoUri) {
   return;
 }
 
+const sessionSecretKey = process.env.NODE_ENV === 'production'
+  ? process.env.SESSION_SECRET_PROD
+  : process.env.SESSION_SECRET_DEV;
+if (!sessionSecretKey) {
+  console.error(`SESSION_SECRET key for cookies not set for ${process.env.NODE_ENV || 'development'} environment`);
+  return;
+}
+
   // Wait for database to connect, logging an error if there is a problem
 main().catch((err) =>  console.log(err));
 async function main() {
@@ -89,7 +97,7 @@ app.use(express.urlencoded({ extended: false }));
 //  can access through req.session
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'fallbackSecretKey',
+  secret: sessionSecretKey,
   resave: false,
   saveUninitialized: false, // 🔐 Better for security
   cookie: {

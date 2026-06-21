@@ -751,7 +751,7 @@ async function safeReadFile(path) {
 function orthancHeaders(extra = {}) {
   const headers = { ...extra };
   if (process.env.ORTHANC_USER && process.env.ORTHANC_PASS) {
-    console.out(' *** Secrets:', process.env.ORTHANC_USER, process.env.ORTHANC_PASS);
+    console.log(' *** Secrets:', process.env.ORTHANC_USER, process.env.ORTHANC_PASS);
     const creds = Buffer.from(`${process.env.ORTHANC_USER}:${process.env.ORTHANC_PASS}`).toString('base64');
     headers['Authorization'] = `Basic ${creds}`;
   }

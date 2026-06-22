@@ -24,34 +24,6 @@ const suspicionScores = [
 ];
 
 //=========================================================
-// Storage strategy differs by environment because the two services have
-// different filesystem realities:
-//
-// DEV: backend runs as a plain Node process on the dev host (not containerized).
-//   SEG files are saved directly to a project-relative folder:
-//     ./segmentations/webquiz-liverstudy/<username>/<studyUID>/<segmentationId>.dcm
-//
-// PROD: backend (Node service on Render) and Orthanc (webquiz-orthanc-server) are
-//   SEPARATE services/containers with no shared filesystem — the Node backend
-//   cannot fs.writeFile onto Orthanc's disk. Orthanc has the persistent disk
-//   attached, so SEG files are stored there as custom attachments via Orthanc's
-//   HTTP API (PUT/GET/DELETE). segmentationDataRef in Mongo is a JSON string of
-//   { orthancStudyId, attachmentId } in prod, vs a plain path string in dev.
-const SEG_DEV_STORAGE_ROOT = path.join(__dirname, '../segmentations', 'webquiz-liverstudy');
- 
-/**
- * Resolves the on-disk directory + file path for a given user/study/segmentation,
- * as <root>/<username>/<studyUID>/<segmentationId>.dcm — DEV ONLY.
- */
-function segFilePath(username, studyUID, segmentationId) {
-  const safeUsername = String(username).replace(/[^a-zA-Z0-9-_]/g, '_');
-  const safeStudyUID = String(studyUID).replace(/[^a-zA-Z0-9.-]/g, '_');
-  const safeSegId = String(segmentationId).replace(/[^a-zA-Z0-9-]/g, '_');
-  const dir = path.join(SEG_DEV_STORAGE_ROOT, safeUsername, safeStudyUID);
-  return { dir, filepath: path.join(dir, `${safeSegId}.dcm`) };
-}
-
-//=========================================================
 exports.index = asyncHandler(async (req, res, next) => {
   const legend = req.session.legend || [];
 
@@ -746,12 +718,10 @@ async function safeReadFile(path) {
 }
 
 //=========================================================
-// Build auth header — currently unused (Orthanc is open), but wired up ready.
-// When you lock down Orthanc, set ORTHANC_USER and ORTHANC_PASS in your env vars.
+// Build auth header from ORTHANC_USER and ORTHANC_PASS in env vars
 function orthancHeaders(extra = {}) {
   const headers = { ...extra };
   if (process.env.ORTHANC_USER && process.env.ORTHANC_PASS) {
-    console.log(' *** Secrets:', process.env.ORTHANC_USER, process.env.ORTHANC_PASS);
     const creds = Buffer.from(`${process.env.ORTHANC_USER}:${process.env.ORTHANC_PASS}`).toString('base64');
     headers['Authorization'] = `Basic ${creds}`;
   }
@@ -787,4 +757,32 @@ async function getOrthancStudyId(studyInstanceUID) {
     throw new Error(`No Orthanc study found for UID: ${studyInstanceUID}`);
   }
   return studyMatch.ID;
+}
+
+//=========================================================
+// Storage strategy differs by environment because the two services have
+// different filesystem realities:
+//
+// DEV: backend runs as a plain Node process on the dev host (not containerized).
+//   SEG files are saved directly to a project-relative folder:
+//     ./segmentations/webquiz-liverstudy/<username>/<studyUID>/<segmentationId>.dcm
+//
+// PROD: backend (Node service on Render) and Orthanc (webquiz-orthanc-server) are
+//   SEPARATE services/containers with no shared filesystem — the Node backend
+//   cannot fs.writeFile onto Orthanc's disk. Orthanc has the persistent disk
+//   attached, so SEG files are stored there as custom attachments via Orthanc's
+//   HTTP API (PUT/GET/DELETE). segmentationDataRef in Mongo is a JSON string of
+//   { orthancStudyId, attachmentId } in prod, vs a plain path string in dev.
+const SEG_DEV_STORAGE_ROOT = path.join(__dirname, '../segmentations', 'webquiz-liverstudy');
+ 
+/**
+ * Resolves the on-disk directory + file path for a given user/study/segmentation,
+ * as <root>/<username>/<studyUID>/<segmentationId>.dcm — DEV ONLY.
+ */
+function segFilePath(username, studyUID, segmentationId) {
+  const safeUsername = String(username).replace(/[^a-zA-Z0-9-_]/g, '_');
+  const safeStudyUID = String(studyUID).replace(/[^a-zA-Z0-9.-]/g, '_');
+  const safeSegId = String(segmentationId).replace(/[^a-zA-Z0-9-]/g, '_');
+  const dir = path.join(SEG_DEV_STORAGE_ROOT, safeUsername, safeStudyUID);
+  return { dir, filepath: path.join(dir, `${safeSegId}.dcm`) };
 }

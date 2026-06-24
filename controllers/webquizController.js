@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const SEG_TEST_DIR = '/var/lib/orthanc/db/segmentations';
 
 const asyncHandler = require("express-async-handler");
 const RulerMeasurements = require('../models/rulermeasurements');
@@ -398,6 +399,19 @@ exports.post_segmentationObjects = async (req, res) => {
               // Step 5: Store the reference needed to retrieve/delete it later
               metadata.segmentationDataRef = JSON.stringify({ orthancStudyId, attachmentId });
               console.log(`✅ SEG stored as Orthanc attachment ${attachmentId} on study ${orthancStudyId}`);
+
+              // --- TEST: dual-write to mounted disk to check persistence across redeploys ---
+              // Best-effort only — never let this fail the request, Orthanc is still
+              // the source of truth referenced in Mongo.
+              try {
+                const { dir, filepath } = segTestFilePath(username, studyInstanceUID, metadata.segmentationId);
+                await fs.mkdir(dir, { recursive: true });
+                await fs.writeFile(filepath, blobFile.buffer);
+                console.log(`🧪 [persistence test] also wrote ${blobFile.size} bytes to ${filepath}`);
+              } catch (testErr) {
+                console.warn('🧪 [persistence test] disk dual-write failed (non-fatal):', testErr);
+              }
+          
  
             } catch (err) {
               console.error('❌ Failed to store SEG in Orthanc:', err);
@@ -463,6 +477,18 @@ exports.post_segmentationObjects = async (req, res) => {
             } catch (err) {
               console.warn('⚠️ Failed to delete from Orthanc:', err);
             }
+
+
+            // --- TEST: clean up the dual-written disk copy too ---
+            try {
+              const { filepath } = segTestFilePath(username, studyInstanceUID, segId.segmentationId);
+              await fs.unlink(filepath);
+              console.log('🧪 [persistence test] deleted disk copy:', filepath);
+            } catch (testErr) {
+              console.warn('🧪 [persistence test] disk delete failed (non-fatal):', testErr);
+            }
+
+
           } // for production
         }
       } // end for each segId
@@ -785,4 +811,11 @@ function segFilePath(username, studyUID, segmentationId) {
   const safeSegId = String(segmentationId).replace(/[^a-zA-Z0-9-]/g, '_');
   const dir = path.join(SEG_DEV_STORAGE_ROOT, safeUsername, safeStudyUID);
   return { dir, filepath: path.join(dir, `${safeSegId}.dcm`) };
+}
+
+// helper — mirrors segFilePath but rooted at the Orthanc-mounted test folder
+function segTestFilePath(username, studyUID, segmentationId) {
+  const dir = path.join(SEG_TEST_DIR, username, studyUID);
+  const filepath = path.join(dir, `${segmentationId}.seg`);
+  return { dir, filepath };
 }

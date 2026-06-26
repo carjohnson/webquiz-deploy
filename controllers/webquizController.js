@@ -262,7 +262,7 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   }
  
   let fileBuffer;
-  if (process.env.NODE_ENV !== 'production') {
+  // if (process.env.NODE_ENV !== 'production') {
     // DEV: segmentationDataRef is a plain filesystem path
     try {
       fileBuffer = await safeReadFile(entry.segmentationDataRef);
@@ -274,36 +274,36 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
     if (!fileBuffer) {
       return res.status(404).json({ error: 'SEG file not found on disk' });
     }
-  } else {
-    // PROD: segmentationDataRef is a JSON string — { orthancStudyId, attachmentId } —
-    // pointing at a custom attachment stored on webquiz-orthanc-server's disk.
-    let ref;
-    try {
-      ref = JSON.parse(entry.segmentationDataRef);
-      console.log('🔍 Parsed ref:', ref);
-    } catch {
-      return res.status(500).json({ error: 'Malformed segmentationDataRef in DB' });
-    }
+  // } else {
+  //   // PROD: segmentationDataRef is a JSON string — { orthancStudyId, attachmentId } —
+  //   // pointing at a custom attachment stored on webquiz-orthanc-server's disk.
+  //   let ref;
+  //   try {
+  //     ref = JSON.parse(entry.segmentationDataRef);
+  //     console.log('🔍 Parsed ref:', ref);
+  //   } catch {
+  //     return res.status(500).json({ error: 'Malformed segmentationDataRef in DB' });
+  //   }
  
-    const { orthancStudyId, attachmentId } = ref;
-    const attachmentUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}/data`;
+  //   const { orthancStudyId, attachmentId } = ref;
+  //   const attachmentUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}/data`;
  
-    let response;
-    try {
-      response = await fetch(attachmentUrl, { headers: orthancHeaders() });
-    } catch (err) {
-      console.error('❌ Failed to reach Orthanc:', err);
-      return res.status(502).json({ error: 'Could not connect to Orthanc' });
-    }
+  //   let response;
+  //   try {
+  //     response = await fetch(attachmentUrl, { headers: orthancHeaders() });
+  //   } catch (err) {
+  //     console.error('❌ Failed to reach Orthanc:', err);
+  //     return res.status(502).json({ error: 'Could not connect to Orthanc' });
+  //   }
  
-    if (!response.ok) {
-      console.error(`❌ Orthanc returned ${response.status} for instance ${attachmentId}`);
-      return res.status(404).json({ error: 'SEG file not found in Orthanc' });
-    }
+  //   if (!response.ok) {
+  //     console.error(`❌ Orthanc returned ${response.status} for instance ${attachmentId}`);
+  //     return res.status(404).json({ error: 'SEG file not found in Orthanc' });
+  //   }
  
-    const arrayBuffer = await response.arrayBuffer();
-    fileBuffer = Buffer.from(arrayBuffer);
-  }
+  //   const arrayBuffer = await response.arrayBuffer();
+  //   fileBuffer = Buffer.from(arrayBuffer);
+  // }
  
   res.set({
     'Content-Type': 'application/dicom',

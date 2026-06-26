@@ -338,7 +338,7 @@ exports.post_segmentationObjects = async (req, res) => {
         const blobFile = req.files?.find(f => f.fieldname === `segObj_${index}_blob`);
         
         if (blobFile) {
-          if (process.env.NODE_ENV !== 'production') {
+          // if (process.env.NODE_ENV !== 'production') {
             // ---- Development: save to local disk ----
             // Resolve the DICOM StudyInstanceUID so dev mirrors prod's
             // username/studyUID/ folder shape.
@@ -363,47 +363,47 @@ exports.post_segmentationObjects = async (req, res) => {
               console.error('❌ Failed to save SEG file to disk:', filepath, err);
               return res.status(500).json({ error: 'Failed to save SEG file' });
             }
-          } else {
-            try {
-              // Step 1: Get DICOM StudyInstanceUID from MongoDB using session study_id
-              const studyDoc = await Study.findById(req.session.study_id);
-              if (!studyDoc) {
-                console.error('❌ Study not found in DB for study_id:', req.session.study_id);
-                return res.status(404).json({ error: 'Study not found' });
-              }
-              const studyInstanceUID = studyDoc.studyUID;
-              console.log('🔍 Resolved studyInstanceUID:', studyInstanceUID);
+          // } else {
+          //   try {
+          //     // Step 1: Get DICOM StudyInstanceUID from MongoDB using session study_id
+          //     const studyDoc = await Study.findById(req.session.study_id);
+          //     if (!studyDoc) {
+          //       console.error('❌ Study not found in DB for study_id:', req.session.study_id);
+          //       return res.status(404).json({ error: 'Study not found' });
+          //     }
+          //     const studyInstanceUID = studyDoc.studyUID;
+          //     console.log('🔍 Resolved studyInstanceUID:', studyInstanceUID);
  
-              // Step 2: Resolve Orthanc's internal study UUID from the DICOM UID
-              const orthancStudyId = await getOrthancStudyId(studyInstanceUID);
-              console.log('🔍 Resolved Orthanc study ID:', orthancStudyId);
+          //     // Step 2: Resolve Orthanc's internal study UUID from the DICOM UID
+          //     const orthancStudyId = await getOrthancStudyId(studyInstanceUID);
+          //     console.log('🔍 Resolved Orthanc study ID:', orthancStudyId);
  
-              // Step 3: Derive a stable per-user attachment ID
-              const attachmentId = attachmentIdFromUserId(req.session.user._id);
+          //     // Step 3: Derive a stable per-user attachment ID
+          //     const attachmentId = attachmentIdFromUserId(req.session.user._id);
  
-              // Step 4: PUT the SEG binary as a custom attachment on the study
-              const putUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`;
-              const putResponse = await fetch(putUrl, {
-                method: 'PUT',
-                headers: orthancHeaders({ 'Content-Type': 'application/octet-stream' }),
-                body: blobFile.buffer,
-              });
+          //     // Step 4: PUT the SEG binary as a custom attachment on the study
+          //     const putUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`;
+          //     const putResponse = await fetch(putUrl, {
+          //       method: 'PUT',
+          //       headers: orthancHeaders({ 'Content-Type': 'application/octet-stream' }),
+          //       body: blobFile.buffer,
+          //     });
  
-              if (!putResponse.ok) {
-                const text = await putResponse.text();
-                console.error(`❌ Orthanc rejected attachment PUT (${putResponse.status}):`, text);
-                return res.status(500).json({ error: 'Orthanc rejected the SEG attachment' });
-              }
+          //     if (!putResponse.ok) {
+          //       const text = await putResponse.text();
+          //       console.error(`❌ Orthanc rejected attachment PUT (${putResponse.status}):`, text);
+          //       return res.status(500).json({ error: 'Orthanc rejected the SEG attachment' });
+          //     }
  
-              // Step 5: Store the reference needed to retrieve/delete it later
-              metadata.segmentationDataRef = JSON.stringify({ orthancStudyId, attachmentId });
-              console.log(`✅ SEG stored as Orthanc attachment ${attachmentId} on study ${orthancStudyId}`);
+          //     // Step 5: Store the reference needed to retrieve/delete it later
+          //     metadata.segmentationDataRef = JSON.stringify({ orthancStudyId, attachmentId });
+          //     console.log(`✅ SEG stored as Orthanc attachment ${attachmentId} on study ${orthancStudyId}`);
  
-            } catch (err) {
-              console.error('❌ Failed to store SEG in Orthanc:', err);
-              return res.status(502).json({ error: 'Could not store SEG in Orthanc' });
-            }
-          }
+          //   } catch (err) {
+          //     console.error('❌ Failed to store SEG in Orthanc:', err);
+          //     return res.status(502).json({ error: 'Could not store SEG in Orthanc' });
+          //   }
+          // }
  
         } else {
           console.warn(`⚠️ No blob found for segObj_${index}_blob`);
@@ -766,7 +766,7 @@ async function getOrthancStudyId(studyInstanceUID) {
 //
 // DEV: backend runs as a plain Node process on the dev host (not containerized).
 //   SEG files are saved directly to a project-relative folder:
-//     ./segmentations/webquiz-liverstudy/<username>/<studyUID>/<segmentationId>.dcm
+//     ./outputs/webquiz-liverstudy/segmentations/<username>/<studyUID>/<segmentationId>.dcm
 //
 // PROD: backend (Node service on Render) and Orthanc (webquiz-orthanc-server) are
 //   SEPARATE services/containers with no shared filesystem — the Node backend
@@ -774,7 +774,7 @@ async function getOrthancStudyId(studyInstanceUID) {
 //   attached, so SEG files are stored there as custom attachments via Orthanc's
 //   HTTP API (PUT/GET/DELETE). segmentationDataRef in Mongo is a JSON string of
 //   { orthancStudyId, attachmentId } in prod, vs a plain path string in dev.
-const SEG_DEV_STORAGE_ROOT = path.join(__dirname, '../segmentations', 'webquiz-liverstudy');
+const SEG_STORAGE_ROOT = path.join(__dirname, '../outputs', 'webquiz-liverstudy', 'segmentations');
  
 /**
  * Resolves the on-disk directory + file path for a given user/study/segmentation,
@@ -784,6 +784,6 @@ function segFilePath(username, studyUID, segmentationId) {
   const safeUsername = String(username).replace(/[^a-zA-Z0-9-_]/g, '_');
   const safeStudyUID = String(studyUID).replace(/[^a-zA-Z0-9.-]/g, '_');
   const safeSegId = String(segmentationId).replace(/[^a-zA-Z0-9-]/g, '_');
-  const dir = path.join(SEG_DEV_STORAGE_ROOT, safeUsername, safeStudyUID);
+  const dir = path.join(SEG_STORAGE_ROOT, safeUsername, safeStudyUID);
   return { dir, filepath: path.join(dir, `${safeSegId}.dcm`) };
 }

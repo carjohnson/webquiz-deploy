@@ -14,6 +14,7 @@ var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
+var backupRoutes = require("./routes/backup");
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
@@ -170,6 +171,7 @@ app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
 app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
+app.use('/backup', backupRoutes);
 
 // =================================================
 // Serve static files from the 'public' directory

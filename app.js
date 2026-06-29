@@ -139,7 +139,9 @@ app.use((req, res, next) => {
   //   console.log("User in session:", !!req.session?.user);
 
   // 2. IMMEDIATE BYPASS (for ohif and auth)
-  if (req.originalUrl.startsWith('/ohif')) {
+  if (req.originalUrl.startsWith('/ohif') ||
+      req.originalUrl.startsWith('/backup')
+  ) {
     // console.log("Bypassing auth for /ohif");
     return next();
   }

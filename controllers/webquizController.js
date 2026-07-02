@@ -630,6 +630,106 @@ async function saveAnnotationsToDB(annotationObjects, req) {
 
 
 //=========================================================
+// async function saveSegmentationsToDB(segmentationObjects, req) {
+//   // first get user id based on user name
+//   const username = req.session.user.username;
+//   const study_id = req.session.study_id;
+
+//   // console.log("*** USER NAME: ", username,  "  STUDY:", study_id, "Seg Objects:", segmentationObjects);
+//   if (!username || !study_id) {
+//     console.error("❌ Missing user or study ID in session");
+//     return;
+//   }
+//   try {
+
+//     const parent = await Segmentations.findOne({
+//       user_id: req.session.user._id,
+//       study_id,
+//     });
+
+//     if (segmentationObjects.length === 0) {
+//       // no segmentation objects for this study (deleted in frontend)
+//       if (parent) {
+//         parent.segmentationIds = [];
+//         await parent.save();
+//         console.log('🗑️ All segmentations deleted for this study');
+//       }
+//     } else {
+
+//       // const incomingSegs = segmentationObjects; // from frontend
+//       const incomingSegs = segmentationObjects.map(seg => ({
+//         ...seg,
+//         segments: seg.segments.map(s => ({
+//           ...s,
+//           segmentMaskValue: s.segmentIndex,
+//         })),
+//       }));
+//       const incomingIds = incomingSegs.map(s => s.segmentationId);
+
+//       if (!parent) {
+//         // No parent exists → create new document with all incoming segmentations
+//         const newParent = new Segmentations({
+//           user_id: req.session.user._id,
+//           study_id,
+//           segmentationIds: incomingSegs.map(seg => ({
+//             ...seg,
+//             created_at: new Date(),
+//           })),
+//         });
+
+//         await newParent.save();
+//         console.log('✅ Created new segmentation parent document');
+//         return;
+//       }
+
+//       // -----------------------------
+//       // 1. DELETE removed segmentations
+//       // -----------------------------
+//       parent.segmentationIds = parent.segmentationIds.filter(dbSeg =>
+//         incomingIds.includes(dbSeg.segmentationId)
+//       );
+
+//       // -----------------------------
+//       // 2. UPDATE existing + ADD new
+//       // -----------------------------
+//       for (const seg of incomingSegs) {
+//         const index = parent.segmentationIds.findIndex(
+//           s => s.segmentationId === seg.segmentationId
+//         );
+
+//         if (index !== -1) {
+//           // Update existing
+//           parent.segmentationIds[index] = {
+//             ...parent.segmentationIds[index],
+//             ...seg,
+//             created_at: new Date(),
+//           };
+//         } else {
+//           // Add new
+//           parent.segmentationIds.push({
+//             ...seg,
+//             created_at: new Date(),
+//           });
+//         }
+//       }
+
+//       // -----------------------------
+//       // 3. SAVE ONCE
+//       // -----------------------------
+//       await parent.save();
+//       console.log('✅ Segmentation document updated (add/update/delete)');
+//     }
+
+
+
+
+
+//   } catch (error) {
+//       console.error("❌ DB error trying to save segmentation objects:", error);
+//       throw error;
+//   }
+// }
+
 async function saveSegmentationsToDB(segmentationObjects, req) {
   // first get user id based on user name
   const username = req.session.user.username;
@@ -650,6 +750,17 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
     if (segmentationObjects.length === 0) {
       // no segmentation objects for this study (deleted in frontend)
       if (parent) {
+        // ✅ Delete the SEG files on disk for every entry before wiping the DB record
+        for (const seg of parent.segmentationIds) {
+          if (seg.segmentationDataRef) {
+            try {
+              await fs.unlink(seg.segmentationDataRef);
+              console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
+            } catch (err) {
+              console.warn('⚠️ Failed to delete SEG file:', seg.segmentationDataRef, err);
+            }
+          }
+        }
         parent.segmentationIds = [];
         await parent.save();
         console.log('🗑️ All segmentations deleted for this study');
@@ -683,8 +794,23 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
       }
 
       // -----------------------------
-      // 1. DELETE removed segmentations
+      // 1. DELETE removed segmentations (DB entry + SEG file on disk)
       // -----------------------------
+      const removedSegs = parent.segmentationIds.filter(
+        dbSeg => !incomingIds.includes(dbSeg.segmentationId)
+      );
+
+      for (const seg of removedSegs) {
+        if (seg.segmentationDataRef) {
+          try {
+            await fs.unlink(seg.segmentationDataRef);
+            console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
+          } catch (err) {
+            console.warn('⚠️ Failed to delete SEG file:', seg.segmentationDataRef, err);
+          }
+        }
+      }
+
       parent.segmentationIds = parent.segmentationIds.filter(dbSeg =>
         incomingIds.includes(dbSeg.segmentationId)
       );
@@ -729,6 +855,10 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
       throw error;
   }
 }
+
+
+
+
 
 //=========================================================
 //=========================================================

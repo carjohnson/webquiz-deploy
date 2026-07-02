@@ -138,7 +138,7 @@ exports.list_users_annotations = asyncHandler(async (req, res, next) => {
         index: userIndexMap.get(userId)
       }));
 
-    } else {
+    } else if (sessionUser.role === 'reader') {
       // Reader: get annotations for this user and study
       const userid = sessionUser._id;
       const userAnnotations = await RulerMeasurements.find({
@@ -274,36 +274,6 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
     if (!fileBuffer) {
       return res.status(404).json({ error: 'SEG file not found on disk' });
     }
-  // } else {
-  //   // PROD: segmentationDataRef is a JSON string — { orthancStudyId, attachmentId } —
-  //   // pointing at a custom attachment stored on webquiz-orthanc-server's disk.
-  //   let ref;
-  //   try {
-  //     ref = JSON.parse(entry.segmentationDataRef);
-  //     console.log('🔍 Parsed ref:', ref);
-  //   } catch {
-  //     return res.status(500).json({ error: 'Malformed segmentationDataRef in DB' });
-  //   }
- 
-  //   const { orthancStudyId, attachmentId } = ref;
-  //   const attachmentUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}/data`;
- 
-  //   let response;
-  //   try {
-  //     response = await fetch(attachmentUrl, { headers: orthancHeaders() });
-  //   } catch (err) {
-  //     console.error('❌ Failed to reach Orthanc:', err);
-  //     return res.status(502).json({ error: 'Could not connect to Orthanc' });
-  //   }
- 
-  //   if (!response.ok) {
-  //     console.error(`❌ Orthanc returned ${response.status} for instance ${attachmentId}`);
-  //     return res.status(404).json({ error: 'SEG file not found in Orthanc' });
-  //   }
- 
-  //   const arrayBuffer = await response.arrayBuffer();
-  //   fileBuffer = Buffer.from(arrayBuffer);
-  // }
  
   res.set({
     'Content-Type': 'application/dicom',
@@ -313,6 +283,128 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   res.send(fileBuffer);
 });
 //=========================================================
+// exports.post_segmentationObjects = async (req, res) => {
+//   // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
+//   console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length);
+ 
+//   if (Object.keys(req.body).length > 0) {
+//     // console.log('✅ Saving segmentations:', req.body);
+//     console.log('✅ Saving segmentations:');
+//     const segmentations = [];
+//     const username = req.session.user.username;
+//     const study_id = req.session.study_id;
+ 
+//     // Reconstruct array from segObj_X_metadata + blobs 
+//     for (const field of Object.keys(req.body)) {
+//       if (field.endsWith('_metadata')) {
+ 
+//         const match = field.match(/segObj_(\d+)_metadata/);
+//         if (!match) continue;
+        
+//         const index = parseInt(match[1]);
+//         const metadata = JSON.parse(req.body[field]);
+        
+//         // ✅ Now safely find matching blob
+//         const blobFile = req.files?.find(f => f.fieldname === `segObj_${index}_blob`);
+        
+//         if (blobFile) {
+//           // if (process.env.NODE_ENV !== 'production') {
+//             // ---- Development: save to local disk ----
+//             // Resolve the DICOM StudyInstanceUID so dev mirrors prod's
+//             // username/studyUID/ folder shape.
+//             const studyDoc = await Study.findById(study_id);
+//             if (!studyDoc) {
+//               console.error('❌ Study not found in DB for study_id:', study_id);
+//               return res.status(404).json({ error: 'Study not found' });
+//             }
+//             const studyUID = studyDoc.studyUID;
+ 
+//             const { dir, filepath } = segFilePath(username, studyUID, metadata.segmentationId);
+ 
+//             try {
+//               // Ensure directory exists
+//               await fs.mkdir(dir, { recursive: true });
+//               // ✅ Save blob to disk
+//               await fs.writeFile(filepath, blobFile.buffer);
+//               console.log(`💾 Saved ${blobFile.size} bytes to ${filepath}`);
+ 
+//               metadata.segmentationDataRef = filepath;
+//             } catch (err) {
+//               console.error('❌ Failed to save SEG file to disk:', filepath, err);
+//               return res.status(500).json({ error: 'Failed to save SEG file' });
+//             }
+ 
+//         } else {
+//           console.warn(`⚠️ No blob found for segObj_${index}_blob`);
+//         }
+//         segmentations[index] = metadata;
+//       }
+//     }  // end for loop
+ 
+//     const validSegs = segmentations.filter(Boolean);
+//     console.log('✅ Reconstructed:', validSegs);
+    
+//     await saveSegmentationsToDB(validSegs, req);
+//     res.json({ success: true, count: validSegs.length });
+ 
+//   } else {
+//     // ---- Last segmentation deleted ---- remove from DB and file storage
+//     const userid = req.session.user._id;
+//     const study_id = req.session.study_id;
+//     if (!userid || !study_id) {
+//       console.warn('⚠️ Missing userid/study_id, skipping delete');
+//       return res.json({ success: true });
+//     } 
+//     // get references to seg files stored - for deletion
+//     const existingSegmentations = await Segmentations.findOne({ user_id: userid, study_id });
+ 
+//     if (existingSegmentations) {
+//       for (const segId of existingSegmentations.segmentationIds) {
+//         if (segId.segmentationDataRef) {
+//           if (process.env.NODE_ENV !== 'production') {
+//             // Development: delete local file
+//             try {
+//               await fs.unlink(segId.segmentationDataRef);
+//               console.log('🗑️ Deleted file:', segId.segmentationDataRef);
+//             } catch (err) {
+//               console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
+//             }
+//           } else {
+//             let ref;
+//             try {
+//               ref = JSON.parse(segId.segmentationDataRef);
+//             } catch {
+//               console.warn('⚠️ Malformed segmentationDataRef, skipping:', segId.segmentationDataRef);
+//               continue;
+//             }
+ 
+//             const { orthancStudyId, attachmentId } = ref;
+//             try {
+//               const deleteResponse = await fetch(
+//                 `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`,
+//                 { method: 'DELETE', headers: orthancHeaders() }
+//               );
+//               if (deleteResponse.ok) {
+//                 console.log(`🗑️ Deleted Orthanc attachment ${attachmentId} from study ${orthancStudyId}`);
+//               } else {
+//                 console.warn(`⚠️ Orthanc DELETE returned ${deleteResponse.status}`);
+//               }
+//             } catch (err) {
+//               console.warn('⚠️ Failed to delete from Orthanc:', err);
+//             }
+
+//           } // for production
+//         }
+//       } // end for each segId
+ 
+//       await Segmentations.deleteMany({ study_id, user_id: userid });
+//       console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
+//     }
+//     res.json({ success: true });
+//   } // end else - last seg deleted
+// }
+
+
 exports.post_segmentationObjects = async (req, res) => {
   // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
   console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length);
@@ -338,73 +430,36 @@ exports.post_segmentationObjects = async (req, res) => {
         const blobFile = req.files?.find(f => f.fieldname === `segObj_${index}_blob`);
         
         if (blobFile) {
-          // if (process.env.NODE_ENV !== 'production') {
-            // ---- Development: save to local disk ----
-            // Resolve the DICOM StudyInstanceUID so dev mirrors prod's
-            // username/studyUID/ folder shape.
-            const studyDoc = await Study.findById(study_id);
-            if (!studyDoc) {
-              console.error('❌ Study not found in DB for study_id:', study_id);
-              return res.status(404).json({ error: 'Study not found' });
-            }
-            const studyUID = studyDoc.studyUID;
- 
-            const { dir, filepath } = segFilePath(username, studyUID, metadata.segmentationId);
- 
-            try {
-              // Ensure directory exists
-              await fs.mkdir(dir, { recursive: true });
-              // ✅ Save blob to disk
-              await fs.writeFile(filepath, blobFile.buffer);
-              console.log(`💾 Saved ${blobFile.size} bytes to ${filepath}`);
- 
-              metadata.segmentationDataRef = filepath;
-            } catch (err) {
-              console.error('❌ Failed to save SEG file to disk:', filepath, err);
-              return res.status(500).json({ error: 'Failed to save SEG file' });
-            }
-          // } else {
-          //   try {
-          //     // Step 1: Get DICOM StudyInstanceUID from MongoDB using session study_id
-          //     const studyDoc = await Study.findById(req.session.study_id);
-          //     if (!studyDoc) {
-          //       console.error('❌ Study not found in DB for study_id:', req.session.study_id);
-          //       return res.status(404).json({ error: 'Study not found' });
-          //     }
-          //     const studyInstanceUID = studyDoc.studyUID;
-          //     console.log('🔍 Resolved studyInstanceUID:', studyInstanceUID);
- 
-          //     // Step 2: Resolve Orthanc's internal study UUID from the DICOM UID
-          //     const orthancStudyId = await getOrthancStudyId(studyInstanceUID);
-          //     console.log('🔍 Resolved Orthanc study ID:', orthancStudyId);
- 
-          //     // Step 3: Derive a stable per-user attachment ID
-          //     const attachmentId = attachmentIdFromUserId(req.session.user._id);
- 
-          //     // Step 4: PUT the SEG binary as a custom attachment on the study
-          //     const putUrl = `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`;
-          //     const putResponse = await fetch(putUrl, {
-          //       method: 'PUT',
-          //       headers: orthancHeaders({ 'Content-Type': 'application/octet-stream' }),
-          //       body: blobFile.buffer,
-          //     });
- 
-          //     if (!putResponse.ok) {
-          //       const text = await putResponse.text();
-          //       console.error(`❌ Orthanc rejected attachment PUT (${putResponse.status}):`, text);
-          //       return res.status(500).json({ error: 'Orthanc rejected the SEG attachment' });
-          //     }
- 
-          //     // Step 5: Store the reference needed to retrieve/delete it later
-          //     metadata.segmentationDataRef = JSON.stringify({ orthancStudyId, attachmentId });
-          //     console.log(`✅ SEG stored as Orthanc attachment ${attachmentId} on study ${orthancStudyId}`);
- 
-          //   } catch (err) {
-          //     console.error('❌ Failed to store SEG in Orthanc:', err);
-          //     return res.status(502).json({ error: 'Could not store SEG in Orthanc' });
-          //   }
-          // }
- 
+          // ---- Save to flat file storage on the Node app's disk ----
+          // Resolve the DICOM StudyInstanceUID so the folder shape is
+          // consistent: <root>/username/studyUID/segmentationId.dcm
+          const studyDoc = await Study.findById(study_id);
+          if (!studyDoc) {
+            console.error('❌ Study not found in DB for study_id:', study_id);
+            return res.status(404).json({ error: 'Study not found' });
+          }
+          const studyUID = studyDoc.studyUID;
+
+          const { dir, filepath } = segFilePath(username, studyUID, metadata.segmentationId);
+
+          try {
+            // Ensure directory exists, and keep permissions open so the
+            // node app (and any other process on the box) can read/write/
+            // delete these files later regardless of the umask.
+            await fs.mkdir(dir, { recursive: true });
+            await fs.chmod(dir, 0o777);
+
+            // ✅ Save blob to disk
+            await fs.writeFile(filepath, blobFile.buffer);
+            // await fs.chmod(filepath, 0o666);
+            console.log(`💾 Saved ${blobFile.size} bytes to ${filepath}`);
+
+            metadata.segmentationDataRef = filepath;
+          } catch (err) {
+            console.error('❌ Failed to save SEG file to disk:', filepath, err);
+            return res.status(500).json({ error: 'Failed to save SEG file' });
+          }
+
         } else {
           console.warn(`⚠️ No blob found for segObj_${index}_blob`);
         }
@@ -432,39 +487,15 @@ exports.post_segmentationObjects = async (req, res) => {
     if (existingSegmentations) {
       for (const segId of existingSegmentations.segmentationIds) {
         if (segId.segmentationDataRef) {
-          if (process.env.NODE_ENV !== 'production') {
-            // Development: delete local file
-            try {
-              await fs.unlink(segId.segmentationDataRef);
-              console.log('🗑️ Deleted file:', segId.segmentationDataRef);
-            } catch (err) {
-              console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
-            }
-          } else {
-            let ref;
-            try {
-              ref = JSON.parse(segId.segmentationDataRef);
-            } catch {
-              console.warn('⚠️ Malformed segmentationDataRef, skipping:', segId.segmentationDataRef);
-              continue;
-            }
- 
-            const { orthancStudyId, attachmentId } = ref;
-            try {
-              const deleteResponse = await fetch(
-                `${process.env.ORTHANC_URL}/studies/${orthancStudyId}/attachments/${attachmentId}`,
-                { method: 'DELETE', headers: orthancHeaders() }
-              );
-              if (deleteResponse.ok) {
-                console.log(`🗑️ Deleted Orthanc attachment ${attachmentId} from study ${orthancStudyId}`);
-              } else {
-                console.warn(`⚠️ Orthanc DELETE returned ${deleteResponse.status}`);
-              }
-            } catch (err) {
-              console.warn('⚠️ Failed to delete from Orthanc:', err);
-            }
-
-          } // for production
+          // segmentationDataRef is always a plain filesystem path now
+          // (Orthanc attachments are no longer used) - delete the file
+          // from the Node app's flat file storage.
+          try {
+            await fs.unlink(segId.segmentationDataRef);
+            console.log('🗑️ Deleted file:', segId.segmentationDataRef);
+          } catch (err) {
+            console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
+          }
         }
       } // end for each segId
  
@@ -474,6 +505,8 @@ exports.post_segmentationObjects = async (req, res) => {
     res.json({ success: true });
   } // end else - last seg deleted
 }
+
+
 //=========================================================
 exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
 

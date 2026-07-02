@@ -58,58 +58,52 @@ exports.register_post = asyncHandler(async (req, res, next) => {
   });
 
 exports.login_post = asyncHandler(async (req, res, next) => {
-    try{
-          const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-          const userExists = await User.find({email: email.toLowerCase().trim()})
-          .collation({ locale: "en", strength: 2 })
-          .exec();
+    const userExists = await User.find({ email: email.toLowerCase().trim() })
+      .collation({ locale: "en", strength: 2 })
+      .exec();
 
-        if(userExists.length){
-            const user = userExists[0];
-            let submittedPass = password
-            let storedPass = userExists[0].password; 
-    
-            const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
-            // if (passwordMatch) {
-            //   if (!user.authorized) {
-            //     res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
-            //   } else {
-            //     req.session.user = user;
-            //     res.redirect('/iframehost');
-            //   }
+    if (userExists.length) {
+      const user = userExists[0];
+      const storedPass = user.password;
 
-            // } else {
-            //     res.redirect('/users/login?msg=Invalid email or password');
-            // }
+      const passwordMatch = await bcrypt.compare(password, storedPass);
 
-            if (passwordMatch) {
-              if (!user.authorized) {
-                return res.redirect('/users/login?msg=Your account is not authorized. Please contact your administrator for authorization.');
-              }
-              // save session before redirect so that browser has session and cookie info
-              req.session.user = user;
-              return req.session.save((err) => {
-                if (err) return next(err);
-                console.log('session saved, redirecting to iframehost');
-                res.redirect('/iframehost');
-              });
-            }
-
-
+      if (passwordMatch) {
+        if (!user.authorized) {
+          return res.redirect(
+            "/users/login?msg=Your account is not authorized. Please contact your administrator for authorization."
+          );
         }
-        else {
-    
-            let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
-            await bcrypt.compare(password, fakePass);
-    
-            res.redirect('/users/login?msg=Invalid email or password');
-        }
-    } catch (error) {
-      error.message = `usersController>login_post: ${error.message}`;
-      throw error; 
+
+        req.session.user = user;
+
+        return req.session.save((err) => {
+          if (err) return next(err);
+          if (user.role !== 'manager') {
+          console.log("session saved, redirecting to iframehost");
+          res.redirect("/iframehost");
+          } else {
+          console.log("session saved, redirecting to manager dashboard");
+          res.redirect("/manager");
+          }
+        });
+      }
+    } else {
+      const fakePass = "$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga";
+      await bcrypt.compare(password, fakePass);
+      return res.redirect("/users/login?msg=Invalid email or password");
     }
-}); 
+
+    return res.redirect("/users/login?msg=Invalid email or password");
+  } catch (error) {
+    error.message = `usersController>login_post: ${error.message}`;
+    throw error;
+  }
+});
+
 
 exports.logout_get = asyncHandler(async (req,res,next) => {
   try {
@@ -133,6 +127,8 @@ exports.about_get = asyncHandler(async (req,res,next) => {
   }
 
 });
+
+
 
 exports.sessioninfo_get = asyncHandler(async (req, res, next) => {
   try {

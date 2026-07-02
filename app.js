@@ -14,7 +14,7 @@ var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
-var backupRoutes = require("./routes/backup");
+var managerRoutes = require("./routes/manager");
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
@@ -139,9 +139,7 @@ app.use((req, res, next) => {
   //   console.log("User in session:", !!req.session?.user);
 
   // 2. IMMEDIATE BYPASS (for ohif and auth)
-  if (req.originalUrl.startsWith('/ohif') ||
-      req.originalUrl.startsWith('/backup')
-  ) {
+  if (req.originalUrl.startsWith('/ohif')) {
     // console.log("Bypassing auth for /ohif");
     return next();
   }
@@ -173,7 +171,7 @@ app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
 app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
-app.use('/backup', backupRoutes);
+app.use('/manager', managerRoutes);
 
 // =================================================
 // Serve static files from the 'public' directory

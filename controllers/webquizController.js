@@ -451,7 +451,7 @@ exports.post_segmentationObjects = async (req, res) => {
 
             // ✅ Save blob to disk
             await fs.writeFile(filepath, blobFile.buffer);
-            // await fs.chmod(filepath, 0o666);
+            await fs.chmod(filepath, 0o666);
             console.log(`💾 Saved ${blobFile.size} bytes to ${filepath}`);
 
             metadata.segmentationDataRef = filepath;

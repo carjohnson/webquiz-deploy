@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+  h1= title
+  if message
+    p= message
+
+  form#backupForm(action="/manager/backup", method="POST")
+    label(for="outputDir") Backup output directory
+    input#outputDir(type="text", name="outputDir", required)
+    br
+    br
+    button(type="submit") Run backup

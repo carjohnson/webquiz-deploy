@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
   .login-container
@@ -11,7 +11,7 @@ block content
         h4= message
 
       .link-group
-        form(action="/manager/backup", method="post")
+        form(action="/manager/backup", method="get")
           button(type="submit") Backup database
 
         form(action="/manager/reset-user-password", method="get")

@@ -16,20 +16,30 @@
 // });
 
 const asyncHandler = require("express-async-handler");
+const backupService = require("../services/manager/backupService");
 
 exports.index_get = asyncHandler(async (req, res, next) => {
-  res.render("manager", {
+  res.render("manager/manager", {
     title: "Management Functions",
     message: ""
   });
 });
 
-exports.backup_post = asyncHandler(async (req, res, next) => {
-  try {
-    // TODO: replace with real backup job logic
-    // Example: trigger server-side backup process here.
 
-    res.render("manager", {
+
+exports.backup_get = asyncHandler(async (req, res, next) => {
+  // connect to *.pug view
+  res.render("manager/backup", {
+    title: "Backup Database",
+    message: ""
+  });
+
+});exports.backup_post = asyncHandler(async (req, res, next) => {
+  try {
+    const { outputDir } = req.body;
+    await backupService.runBackup(outputDir);
+
+    res.render("manager/manager", {
       title: "Management Functions",
       message: "Backup request submitted."
     });
@@ -39,21 +49,21 @@ exports.backup_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.reset_user_password_get = asyncHandler(async (req, res, next) => {
-    res.render("manager", {
+    res.render("manager/manager", {
       title: "Management Functions",
       message: "Reset password for user."
     });
 });
 
 exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {
-    res.render("manager", {
+    res.render("manager/manager", {
       title: "Management Functions",
       message: "Scrape PACS to get list of Dicom studies and series."
     });
 });
 
 exports.upload_db_studies_post = asyncHandler(async (req, res, next) => {
-    res.render("manager", {
+    res.render("manager/manager", {
       title: "Management Functions",
       message: "Upload studies and series to be annotated to database."
     });

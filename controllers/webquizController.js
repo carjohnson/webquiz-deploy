@@ -937,7 +937,7 @@ async function getOrthancStudyId(studyInstanceUID) {
 //   attached, so SEG files are stored there as custom attachments via Orthanc's
 //   HTTP API (PUT/GET/DELETE). segmentationDataRef in Mongo is a JSON string of
 //   { orthancStudyId, attachmentId } in prod, vs a plain path string in dev.
-const SEG_STORAGE_ROOT = path.join(__dirname, '../outputs', 'webquiz-liverstudy', 'segmentations');
+const SEG_STORAGE_ROOT = path.join(__dirname, '../outputs', 'segmentations');
  
 /**
  * Resolves the on-disk directory + file path for a given user/study/segmentation,

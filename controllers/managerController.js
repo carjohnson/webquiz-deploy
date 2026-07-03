@@ -1,24 +1,8 @@
-// /***
-//  *  Get the seg files from the server - download 
-//  */
-// const path = require("path");
-// const asyncHandler = require("express-async-handler");
-
-// exports.segfile_get = asyncHandler(async (req, res, next) => {
-//   try {
-//     const filePath = req.query.path;
-//     if (!filePath) return res.status(400).send("Missing path");
-
-//     res.download(filePath, path.basename(filePath));
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
 const asyncHandler = require("express-async-handler");
 const backupService = require("../services/manager/backupService");
 const userManagementService = require("../services/manager/userManagementService");
 
+// =========================================================
 exports.index_get = asyncHandler(async (req, res, next) => {
   res.render("manager/manager", {
     title: "Management Functions",
@@ -26,8 +10,7 @@ exports.index_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-
-
+// =========================================================
 exports.backup_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   res.render("manager/backup", {
@@ -37,20 +20,37 @@ exports.backup_get = asyncHandler(async (req, res, next) => {
 
 });
 
+// =========================================================
 exports.backup_post = asyncHandler(async (req, res, next) => {
   try {
     const { outputDir } = req.body;
-    await backupService.runBackup(outputDir);
 
-    res.render("manager/manager", {
-      title: "Management Functions",
-      message: "Backup request submitted."
+    const result = await backupService.runBackup(outputDir);
+
+    const status =
+      result.failCount > 0 ? "partial" : "success";
+
+    res.render("manager/backupStatus", {
+      title: "Backup Status",
+      status,
+      outputDir,
+      backupDir: result.backupDir,
+      logFile: result.logFile,
+      successCount: result.successCount,
+      failCount: result.failCount,
+      failures: result.failures
     });
+
   } catch (err) {
-    next(err);
+    res.render("manager/backupStatus", {
+      title: "Backup Status",
+      status: "error",
+      error: err.message
+    });
   }
 });
 
+// =========================================================
 exports.reset_user_password_get = asyncHandler(async (req, res, next) => {
     // connect to *.pug view
     res.render("manager/resetpassword", {
@@ -59,6 +59,7 @@ exports.reset_user_password_get = asyncHandler(async (req, res, next) => {
     });
 });
 
+// =========================================================
 exports.reset_user_password_post = asyncHandler(async (req, res, next) => {
   try {
     const { userEmail, newPassword } = req.body;
@@ -81,6 +82,7 @@ exports.reset_user_password_post = asyncHandler(async (req, res, next) => {
   }
 });
 
+// =========================================================
 exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {
     res.render("manager/manager", {
       title: "Management Functions",
@@ -88,6 +90,7 @@ exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {
     });
 });
 
+// =========================================================
 exports.upload_db_studies_post = asyncHandler(async (req, res, next) => {
     res.render("manager/manager", {
       title: "Management Functions",
@@ -95,6 +98,7 @@ exports.upload_db_studies_post = asyncHandler(async (req, res, next) => {
     });
 });
 
+// =========================================================
 exports.exit_post = asyncHandler(async (req, res, next) => {
   try {
     if (!req.session) {

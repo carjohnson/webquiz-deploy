@@ -30,7 +30,7 @@ exports.backup_post = asyncHandler(async (req, res, next) => {
     const status =
       result.failCount > 0 ? "partial" : "success";
 
-    res.render("manager/backupStatus", {
+    res.render("manager/backupstatus", {
       title: "Backup Status",
       status,
       outputDir,
@@ -42,7 +42,7 @@ exports.backup_post = asyncHandler(async (req, res, next) => {
     });
 
   } catch (err) {
-    res.render("manager/backupStatus", {
+    res.render("manager/backupstatus", {
       title: "Backup Status",
       status: "error",
       error: err.message

@@ -17,6 +17,7 @@
 
 const asyncHandler = require("express-async-handler");
 const backupService = require("../services/manager/backupService");
+const userManagementService = require("../services/manager/userManagementService");
 
 exports.index_get = asyncHandler(async (req, res, next) => {
   res.render("manager/manager", {
@@ -34,7 +35,9 @@ exports.backup_get = asyncHandler(async (req, res, next) => {
     message: ""
   });
 
-});exports.backup_post = asyncHandler(async (req, res, next) => {
+});
+
+exports.backup_post = asyncHandler(async (req, res, next) => {
   try {
     const { outputDir } = req.body;
     await backupService.runBackup(outputDir);
@@ -49,10 +52,33 @@ exports.backup_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.reset_user_password_get = asyncHandler(async (req, res, next) => {
-    res.render("manager/manager", {
-      title: "Management Functions",
+    // connect to *.pug view
+    res.render("manager/resetpassword", {
+      title: "User Management",
       message: "Reset password for user."
     });
+});
+
+exports.reset_user_password_post = asyncHandler(async (req, res, next) => {
+  try {
+    const { userEmail, newPassword } = req.body;
+    const result = await userManagementService.runResetPassword(userEmail, newPassword);
+
+    if (!result) {
+      return res.render("manager/resetpassword", {
+        title: "User Management",
+        message: "Reset password for user.",
+        errmessage: "User not found."
+      });
+    }
+
+    return res.render("manager/manager", {
+      title: "Management Functions",
+      message: "Reset password complete."
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {

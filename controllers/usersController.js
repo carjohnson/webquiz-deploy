@@ -1,10 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const Progress = require('../models/progress');
+const Study = require("../models/study");
+
 
 const bcrypt = require('bcrypt')
 const User = require("../models/user");
 
 
+//=========================================================
 exports.login_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   res.render("login", {
@@ -13,6 +17,7 @@ exports.login_get = asyncHandler(async (req, res, next) => {
   });
 });
 
+//=========================================================
 exports.register_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   res.render("register", {
@@ -21,6 +26,7 @@ exports.register_get = asyncHandler(async (req, res, next) => {
   });
 });
 
+//=========================================================
 exports.register_post = asyncHandler(async (req, res, next) => {
   
       try{
@@ -57,6 +63,7 @@ exports.register_post = asyncHandler(async (req, res, next) => {
     }
   });
 
+//=========================================================
 exports.login_post = asyncHandler(async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -105,8 +112,33 @@ exports.login_post = asyncHandler(async (req, res, next) => {
 });
 
 
+//=========================================================
 exports.logout_get = asyncHandler(async (req,res,next) => {
   try {
+    // log the date/time that the user is logging out
+    const userId = req.session?.userId || req.session?.user?._id;
+    const studyUID = req.session?.studyUID;
+    const study = await Study.findOne({ studyUID });
+    
+
+    if (userId && studyUID) {
+      await Progress.findOneAndUpdate(
+        { user_id: userId, study_id: study._id },
+        {
+          $push: {
+            closed_events: {
+              closed_at: new Date(),
+              close_method: 'logout',
+            },
+          },
+          $set: {
+            updated_at: new Date(),
+          },
+        },
+        { new: true }
+      );
+    }
+
     req.session.destroy(() => {
       res.render('logout', {message: "Thank you for participating!"});
     });
@@ -118,6 +150,7 @@ exports.logout_get = asyncHandler(async (req,res,next) => {
 
 });
 
+//=========================================================
 exports.about_get = asyncHandler(async (req,res,next) => {
   try {
     res.render('about');
@@ -130,6 +163,7 @@ exports.about_get = asyncHandler(async (req,res,next) => {
 
 
 
+//=========================================================
 exports.sessioninfo_get = asyncHandler(async (req, res, next) => {
   try {
     if (req.session && req.session.user) {
@@ -140,5 +174,27 @@ exports.sessioninfo_get = asyncHandler(async (req, res, next) => {
   } catch (error) {
     error.message = `usersController>sessioninfo_get: ${error.message}`;
     throw error; // asyncHandler will pass this to your global error handler (catch 500 in app.js)
+  }
+});
+
+//=========================================================
+// add the studyUID to the session
+exports.sessionstudy_post = asyncHandler(async (req, res, next) => {
+  try {
+    const { studyUID } = req.body;
+
+    if (!studyUID) {
+      return res.status(400).json({ error: 'studyUID is required' });
+    }
+
+    req.session.studyUID = studyUID;
+
+    return res.status(200).json({
+      ok: true,
+      studyUID: req.session.studyUID,
+    });
+  } catch (error) {
+    error.message = `usersController>sessionstudy_post: ${error.message}`;
+    throw error;
   }
 });

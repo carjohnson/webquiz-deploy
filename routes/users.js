@@ -18,5 +18,7 @@ router.get("/about", users_controller.about_get);
 
 router.get("/session-info", users_controller.sessioninfo_get);
 
+router.post("/session-study", users_controller.sessionstudy_post);
+
 
 module.exports = router;

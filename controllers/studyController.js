@@ -234,3 +234,97 @@ exports.study_progress_get = asyncHandler(async (req, res, next) => {
   }
 });
 
+//=========================================================
+// Append timestamp to array in progress document when study was opened/ re-opened
+exports.study_opened_post = asyncHandler(async (req, res, next) => {
+  try {
+    const { username, studyUID } = req.body;
+
+    if (!username || !studyUID) {
+      return res.status(400).json({ error: 'username and studyUID are required' });
+    }
+
+    const user = await User.findOne({ username });
+    const study = await Study.findOne({ studyUID });
+
+    if (!user || !study) {
+      return res.status(404).json({ error: 'User or Study not found' });
+    }
+
+    // Check if progress already exists
+    let progress = await Progress.findOne({
+      user_id: user._id,
+      study_id: study._id,
+    });
+
+    if (!progress) {
+      progress = new Progress({
+        user_id: user._id,
+        study_id: study._id,
+        // opened_events: [{ opened_at: new Date(), open_method: 'study_entry' }],
+        opened_events: [new Date()],
+        closed_events: [],
+      });
+    } else {
+      progress.opened_events.push(
+        new Date(),
+      );
+    }
+
+    progress.updated_at = new Date();
+    await progress.save();
+
+    return res.status(200).json({ ok: true, message: 'Study opened event recorded', progress });
+  } catch (err) {
+    console.error('postStudyOpened error:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+//=========================================================
+// Append timestamp to array in progress document when study was closed
+exports.study_closed_post = asyncHandler(async (req, res, next) => {
+  try {
+    const { username, studyUID, closeMethod } = req.body;
+
+    if (!username || !studyUID) {
+      return res.status(400).json({ error: 'username and studyUID are required' });
+    }
+
+    const user = await User.findOne({ username });
+    const study = await Study.findOne({ studyUID });
+
+    if (!user || !study) {
+      return res.status(404).json({ error: 'User or Study not found' });
+    }
+
+    // Check if progress already exists
+    let progress = await Progress.findOne({
+      user_id: user._id,
+      study_id: study._id,
+    });
+
+    if (!progress) {
+      progress = new Progress({
+        user_id: user._id,
+        study_id: study._id,
+        opened_events: [],
+        closed_events: [{ closed_at: new Date(), close_method: closeMethod}],
+      });
+    } else {
+      progress.closed_events.push(
+        { closed_at: new Date(),
+          close_method: closeMethod,
+        }
+      );
+    }
+
+    progress.updated_at = new Date();
+    await progress.save();
+
+    return res.status(200).json({ ok: true, message: 'Study closed event recorded', progress });
+  } catch (err) {
+    console.error('postStudyClosed error:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});

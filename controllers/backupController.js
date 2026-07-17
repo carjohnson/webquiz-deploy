@@ -1,6 +1,6 @@
+const path = require("path");
+const crypto = require("crypto");
 const asyncHandler = require("express-async-handler");
-
-
 
 // =========================================================
 // Server-side handler for GET /backup?path=...
@@ -12,7 +12,6 @@ exports.segfile_get = asyncHandler(async (req, res, next) => {
   try {
     const expectedKey = process.env.BACKUP_API_KEY;
     const providedKey = req.get("x-backup-key");
-    const crypto = require("crypto");
     const keyOk =
       expectedKey &&
       providedKey &&

@@ -495,8 +495,6 @@ var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
-var managerRoutes = require("./routes/manager");
-// Adjust this path if backupController.js lives somewhere else in your project
 var backupController = require("./controllers/backupController");
 
 
@@ -680,7 +678,6 @@ app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
 app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
-app.use('/manager', managerRoutes);
 app.get('/backup', backupController.segfile_get);
 
 // =================================================

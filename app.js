@@ -167,7 +167,7 @@ app.use((req, res, next) => {
   // 2b. Backup route: allow only with a valid machine credential.
   // No key (or a wrong one) falls through to the normal login wall
   // below — this route is never treated as public.
-  if (req.path === '/backup' && hasValidBackupKey(req)) {
+  if ((req.path === '/backup' || req.path === '/backup/restore') && hasValidBackupKey(req)) {
     return next();
   }
 
@@ -199,6 +199,7 @@ app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
 app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
 app.get('/backup', backupController.segfile_get);
+app.post('/backup/restore', backupController.segfile_post);
 
 // =================================================
 // Serve static files from the 'public' directory

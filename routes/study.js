@@ -15,9 +15,10 @@ router.get("/study-progress", study_controller.study_progress_get);
 
 router.post("/study-complete", study_controller.study_complete_post);
 
-router.post("/study-opened", study_controller.study_opened_post);
+router.post("/timed-event", study_controller.timed_event_post);
+// router.post("/study-opened", study_controller.study_opened_post);
 
-router.post("/study-closed", study_controller.study_closed_post);
+// router.post("/study-closed", study_controller.study_closed_post);
 
 
 module.exports = router;

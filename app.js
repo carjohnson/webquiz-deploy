@@ -98,18 +98,16 @@ app.use(express.urlencoded({ extended: false }));
 // =================================================
 // set up session ID to store info that both client and server
 //  can access through req.session
-
 app.use(session({
   secret: sessionSecretKey,
   resave: false,
-  saveUninitialized: false, // 🔐 Better for security
+  saveUninitialized: false,
+  rolling: true,          // resets maxAge on every request — active users stay logged in
   cookie: {
     httpOnly: true,
-    // secure: process.env.RENDER === 'true' ? false : true,  // HTTP on Render   ✅ Must be true for HTTPS
     secure: true,
-    // sameSite: process.env.RENDER === 'true' ? 'lax' : 'none',  // lax for HTTP ✅ Required for cross-origin iframe access
-    sameSite:  'none',  //  ✅ Required for cross-origin iframe access
-    maxAge: 60 * 60 * 1000  // 1 hour
+    sameSite: 'none',
+    maxAge: 15 * 60 * 1000  // 15 min of *inactivity* logs them out, not 15 min total
   }
 }));
 app.set('trust proxy', 1);

@@ -2,12 +2,17 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const StudyCloseSchema = new Schema(
+const EventSchema = new Schema(
   {
-    closed_at: { type: Date, default: Date.now },
-    close_method: {
+    event: {
       type: String,
-      enum: ['logout', 'browser', 'tab_close', 'study_browser', 'route_change', 'unknown'],
+      enum: ['open', 'close', 'unknown'],
+      default: 'unknown',
+    },
+    occurred_at: { type: Date, default: Date.now },
+    method: {
+      type: String,
+      enum: ['logout', 'browser_close', 'tab_close', 'visibility_lost', 'exit_extension', 'enter_extension', 'unknown'],
       default: 'unknown',
     },
   },
@@ -18,9 +23,7 @@ const ProgressSchema = new Schema({
   user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   study_id: { type: Schema.Types.ObjectId, ref: 'Study', required: true },
 
-  opened_events: [{ type: Date }],
-
-  closed_events: [StudyCloseSchema],
+  timed_events: [EventSchema],
 
   series_progress: [{
     seriesUID: { type: String, required: true },

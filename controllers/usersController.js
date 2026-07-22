@@ -121,9 +121,10 @@ exports.logout_get = asyncHandler(async (req,res,next) => {
         { user_id: userId, study_id: study._id },
         {
           $push: {
-            closed_events: {
-              closed_at: new Date(),
-              close_method: 'logout',
+            timed_events: {
+              event: 'close',
+              occurred_at: new Date(),
+              method: 'logout',
             },
           },
           $set: {

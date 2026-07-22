@@ -257,18 +257,20 @@ exports.study_opened_post = asyncHandler(async (req, res, next) => {
       study_id: study._id,
     });
 
+    const event_item = {
+            event: 'open',
+            occurred_at: new Date(),
+            method: 'enter_extension'
+          }
+
     if (!progress) {
       progress = new Progress({
         user_id: user._id,
         study_id: study._id,
-        // opened_events: [{ opened_at: new Date(), open_method: 'study_entry' }],
-        opened_events: [new Date()],
-        closed_events: [],
+        timed_events: [ event_item ],
       });
     } else {
-      progress.opened_events.push(
-        new Date(),
-      );
+        progress.timed_events.push( event_item)
     }
 
     progress.updated_at = new Date();
@@ -286,6 +288,7 @@ exports.study_opened_post = asyncHandler(async (req, res, next) => {
 exports.study_closed_post = asyncHandler(async (req, res, next) => {
   try {
     const { username, studyUID, closeMethod } = req.body;
+    console.log(' *** IN POST CLOSE:',  req.body);
 
     if (!username || !studyUID) {
       return res.status(400).json({ error: 'username and studyUID are required' });
@@ -304,19 +307,27 @@ exports.study_closed_post = asyncHandler(async (req, res, next) => {
       study_id: study._id,
     });
 
+    const event_item = {
+        event: 'close',
+        occurred_at: new Date(),
+        method: closeMethod
+      }
+
     if (!progress) {
       progress = new Progress({
         user_id: user._id,
         study_id: study._id,
-        opened_events: [],
-        closed_events: [{ closed_at: new Date(), close_method: closeMethod}],
+        // opened_events: [],
+        // closed_events: [{ closed_at: new Date(), close_method: closeMethod}],
+        timed_events: [ event_item ],
       });
     } else {
-      progress.closed_events.push(
-        { closed_at: new Date(),
-          close_method: closeMethod,
-        }
-      );
+      // progress.closed_events.push(
+      //   { closed_at: new Date(),
+      //     close_method: closeMethod,
+      //   }
+      // );
+      progress.timed_events.push( event_item );
     }
 
     progress.updated_at = new Date();

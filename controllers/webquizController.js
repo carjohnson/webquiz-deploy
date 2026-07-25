@@ -83,6 +83,25 @@ exports.post_studyid = async (req, res) => {
 };
 
 //=========================================================
+exports.list_study_seriesToBeAnnotated = asyncHandler(async (req, res, next) => {
+  const { studyUID } = req.query;
+
+  if (!studyUID || typeof studyUID !== 'string') {
+    return res.status(400).json({ error: 'studyUID query parameter is required' });
+  }
+
+  const study = await Study.findOne({ studyUID });
+
+  if (!study) {
+    return res.status(404).json({ error: 'Study not found' });
+  }
+
+  return res.json({
+    type: 'list_study_seriesToBeAnnotated',
+    payload: study.seriesUIDsToBeAnnotated,
+  });
+});
+//=========================================================
 // route to send either all users' annotations or a specific user's annotations to the Viewer iframe when requested
 //  This is not relayed through the parent. The request from the viewer is direct to the server
 exports.list_users_annotations = asyncHandler(async (req, res, next) => {

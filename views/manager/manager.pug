@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  .index-container
+    header
+      .header-top
+        img(src="/assets/baineslogo.png", alt="Baines Imaging Logo", class="logo")
+        span.company-name Baines Imaging
+
+    h2.page-title= title
+
+    .content-area
+      if message
+        h4= message
+
+      .link-group
+        form(action="/manager/backup", method="get")
+          button.manager-button(type="submit") Backup database
+
+        form(action="/manager/restore", method="get")
+          button.manager-button(type="submit") Restore database
+
+        form(action="/manager/reset-user-password", method="get")
+          button.manager-button(type="submit") Reset user's password
+
+        form(action="/manager/scrape-pacs-post", method="post")
+          button.manager-button(type="submit") Scrape PACS for list of Dicom studies and series
+
+        form(action="/manager/upload-db-studies-post", method="post")
+          button.manager-button(type="submit") Upload studies list to database
+
+        form(action="/manager/exit-post", method="post")
+          button.manager-button(type="submit") Exit

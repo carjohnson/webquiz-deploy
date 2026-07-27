@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  h2= title
+  if message
+    h5= message
+
+  form#backupForm(action="/manager/backup", method="POST")
+    button(type="submit") Run backup
+    br
+    br
+    a(href="/manager") Return
+
+  if errmessage
+    br
+    br
+    h4(style="color: #FF9500")= errmessage

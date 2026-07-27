@@ -89,8 +89,13 @@ exports.login_post = asyncHandler(async (req, res, next) => {
 
         return req.session.save((err) => {
           if (err) return next(err);
-          console.log("session saved, redirecting to iframehost");
-          res.redirect("/iframehost");
+          if (user.role !== 'manager') {
+            console.log("session saved, redirecting to iframehost");
+            res.redirect("/iframehost");
+          } else {
+            console.log("session saved, redirecting to manager dashboard");
+            res.redirect("/manager");
+          }
         });
       }
     } else {

@@ -15,6 +15,7 @@ var usersRouter = require('./routes/users');
 var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
+var managerRoutes = require("./routes/manager");
 var backupController = require("./controllers/backupController");
 
 
@@ -196,6 +197,7 @@ app.use('/users', usersRouter);
 app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
 app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
+app.use('/manager', managerRoutes);
 app.get('/backup', backupController.segfile_get);
 app.post('/backup/restore', backupController.segfile_post);
 

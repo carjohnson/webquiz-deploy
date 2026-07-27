@@ -16,6 +16,7 @@ header {
 
 .logo {
   height: 40px; /* adjust as needed */
+  width: auto;
 }
 
 .login-container {
@@ -149,7 +150,7 @@ input, select {
 }
 
 .link-group a {
-  margin-left: 1rem;
+  margin-left: 1rem 0;
   text-decoration: none;
   color: #007BFF;                  /* Optional: link color */
 }
@@ -165,4 +166,38 @@ input, select {
   justify-content: space-evenly; /* Even vertical spacing */
   align-items: center;
   padding: 2rem 0;
+}
+
+/* ============================ */
+/*   Management tasks styling   */
+/* ============================ */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center the whole group */
+  gap: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.company-name {
+  font-size: 2rem;   /* increase size */
+  font-weight: 600;    /* semi-bold */
+}
+
+/* Title centered under the logo/company name */
+.page-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Container for the manager page */
+.index-container {
+  text-align: center;
+}
+
+.manager-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;  
 }

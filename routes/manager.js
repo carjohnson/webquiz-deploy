@@ -7,6 +7,7 @@ router.get("/", managerController.index_get);
 
 router.get("/backup", managerController.backup_get);
 router.post("/backup", managerController.backup_post);
+router.get("/backup/download/:file", managerController.backup_download);
 
 router.get("/restore", managerController.restore_get);
 router.post("/restore", managerController.restore_post);

@@ -7,8 +7,7 @@
  *
  * ENV VARS REQUIRED:
  *  NODE_ENV                production / development 
- *  MONGO_URI_DEV           e.g. mongodb+srv://user:pass@cluster/dbname
- *  MONGO_URI_PROD
+ *  MONGO_URI               e.g. mongodb+srv://user:pass@cluster/dbname (either production or development)
  *  REACT_APP_API_BASE_URL  internal Render URL for the node app, e.g. http://baines-webquiz-deplot.onrender.com
  *                          (use the Render *internal* hostname, not the public one,
  *                          to avoid egress charges and auth exposure)
@@ -23,6 +22,8 @@ const path = require("path");
 const mongoose = require("mongoose");
 const { pipeline } = require("stream/promises");
 const asyncHandler = require("express-async-handler");
+const archiver = require('archiver');
+const { connectToModeDb } = require('../../utils/dbConnection');
 
 
 // =========================================================
@@ -63,10 +64,27 @@ async function transferSegFile({ raw, dest, apiBase, isProd }) {
   }
 
   const localPath = apiBase && raw.startsWith(apiBase) ? raw.slice(apiBase.length) : raw;
-  console.log("*** LOCAL PATH:", localPath);
   await fsPromise.mkdir(path.dirname(dest), { recursive: true });
   await fsPromise.copyFile(localPath, dest);
   return `Copied file: ${localPath}`;
+}
+
+// =========================================================
+async function zipDirectory (dirPath, zipPath) {
+  await fsPromise.mkdir(path.dirname(zipPath), { recursive: true });
+
+  return new Promise((resolve, reject) => {
+    const output = fsSync.createWriteStream(zipPath);
+    const archive = archiver("zip", { zlib: { level: 9 } });
+
+    output.on("close", resolve);
+    output.on("error", reject);
+    archive.on("error", reject);
+
+    archive.pipe(output);
+    archive.directory(dirPath, false);
+    archive.finalize();
+  });
 }
 
 // =========================================================
@@ -74,29 +92,20 @@ async function runBackup(outputDir) {
     const NODE_ENV = process.env.NODE_ENV;
     const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL ;
 
-    const BACKUP_DIR = path.join(outputDir,NODE_ENV,getStamp());
+    const backupTimestamp = getStamp();
+    const BACKUP_DIR = path.join(outputDir,backupTimestamp);
     const SEG_DIR = path.join(BACKUP_DIR, "seg-files");
     const LOG_FILE = path.join(BACKUP_DIR, "LogBackup.log");
+    const ZIP_FILENAME = backupTimestamp + '.zip';
 
+    const { db, dbName, dbCollections } = await connectToModeDb(NODE_ENV);
     
     console.log("*** RUNNING BACKUP", BACKUP_DIR);
 
     await fsPromise.mkdir(SEG_DIR, { recursive: true });
 
-    // export collections from MongoDB
-    const db = mongoose.connection.db;
-    if (!db) {
-    throw new Error("MongoDB connection is not ready");
-    }
-
     // 1. Dump each raw collection as JSON
-    const collectionsToBackup = [
-    "progress",
-    "rulermeasurements",
-    "segmentations",
-    "study",
-    "user",
-    ];
+    const collectionsToBackup = dbCollections;
 
     let segDocs = [];
     for (const collectionName of collectionsToBackup) {
@@ -152,37 +161,26 @@ async function runBackup(outputDir) {
         }
     }
     await logLine(`SEG transfer summary: ${successCount} succeeded, ${failCount} failed.`, LOG_FILE);
-
+    
     return {
         backupDir: BACKUP_DIR,
         logFile: LOG_FILE,
         successCount,
         failCount,
-        failures
+        failures,
+        zipFileName: ZIP_FILENAME,
     };
 }
 
-
-/***
- *  Get the seg files from the server - download 
- */
-
-// exports.segfile_get = asyncHandler(async (req, res, next) => {
-//   try {
-//     const filePath = req.query.path;
-//     if (!filePath) return res.status(400).send("Missing path");
-
-//     res.download(filePath, path.basename(filePath));
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
+// =========================================================
 async function cleanupBackup() {
   // optional helper
 }
 
+// =========================================================
+// =========================================================
 module.exports = {
   runBackup,
+  zipDirectory,
   cleanupBackup
 };

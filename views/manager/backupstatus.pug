@@ -3,9 +3,10 @@ extends ../layout
 block content
   h1 Backup Status
 
-  if status === "success"
+  if status === "success" && zipFileName
     p Backup completed successfully.
     p #{successCount} segmentation files copied.
+    a.level2-button(href=`/manager/backup/download/${zipFileName}`) Download ZIP
 
   if status === "partial"
     p(style="color: orange; font-weight: bold") Backup completed with warnings.
@@ -28,5 +29,6 @@ block content
     p(style="color: red; font-weight: bold") Backup failed.
     p Error: #{error}
 
+  br
   br
   a.button(href="/manager") Return to Manager

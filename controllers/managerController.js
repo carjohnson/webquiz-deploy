@@ -1,6 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const backupService = require("../services/manager/backupService");
 const userManagementService = require("../services/manager/userManagementService");
+const path = require("path");
+const BACKUP_ROOT = path.join(process.cwd(),'backups');
+
+
 
 // =========================================================
 exports.index_get = asyncHandler(async (req, res, next) => {
@@ -21,31 +25,56 @@ exports.backup_get = asyncHandler(async (req, res, next) => {
 });
 
 // =========================================================
+exports.backup_download = asyncHandler(async (req, res, next) => {
+  try {
+    const file = req.params.file;
+    if (!file) {
+      return res.status(400).send("Missing file name");
+    }
+
+    const zipPath = path.join(BACKUP_ROOT, file);
+
+    return res.download(zipPath, file);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// =========================================================
 exports.backup_post = asyncHandler(async (req, res, next) => {
   try {
-    const { outputDir } = req.body;
 
-    const result = await backupService.runBackup(outputDir);
-
+    const result = await backupService.runBackup(BACKUP_ROOT);
+    
     const status =
       result.failCount > 0 ? "partial" : "success";
+      let zipFileName = null;
+
+    if (status === "success") {
+        const zipPath = `${result.backupDir}.zip`;
+        await backupService.zipDirectory(result.backupDir, zipPath);
+        zipFileName = path.basename(zipPath);
+    }
 
     res.render("manager/backupstatus", {
       title: "Backup Status",
       status,
-      outputDir,
       backupDir: result.backupDir,
       logFile: result.logFile,
       successCount: result.successCount,
       failCount: result.failCount,
-      failures: result.failures
+      failures: result.failures,
+      zipFileName,
+      error: null,
     });
 
   } catch (err) {
     res.render("manager/backupstatus", {
       title: "Backup Status",
       status: "error",
-      error: err.message
+      error: err.message,
+      failures: [],
+      zipFileName: null,
     });
   }
 });

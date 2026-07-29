@@ -201,3 +201,19 @@ input, select {
   font-size: 1rem;
   cursor: pointer;  
 }
+
+.level2-button {
+  display: inline-block;
+  padding: 10px 16px;
+  background: #2f80ed;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.level2-button:hover {
+  background: #2563c7;
+}

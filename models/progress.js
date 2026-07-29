@@ -6,13 +6,13 @@ const EventSchema = new Schema(
   {
     event: {
       type: String,
-      enum: ['open', 'close', 'unknown'],
+      enum: ['open', 'close', 'case_completed', 'unknown'],
       default: 'unknown',
     },
     occurred_at: { type: Date, default: Date.now },
     method: {
       type: String,
-      enum: ['logout', 'browser_close', 'tab_close', 'visibility_lost', 'visibility_regained', 'exit_extension', 'enter_extension', 'unknown'],
+      enum: ['logout', 'browser_close', 'tab_close', 'visibility_lost', 'visibility_regained', 'exit_extension', 'enter_extension', 'user_marked_complete', 'unknown'],
       default: 'unknown',
     },
   },

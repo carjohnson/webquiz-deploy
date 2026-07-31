@@ -108,7 +108,7 @@ app.use(session({
     httpOnly: true,
     secure: true,
     sameSite: 'none',
-    maxAge: 15 * 60 * 1000  // 15 min of *inactivity* logs them out, not 15 min total
+    maxAge: 50 * 60 * 1000  // 50 min of *inactivity* logs them out
   }
 }));
 app.set('trust proxy', 1);

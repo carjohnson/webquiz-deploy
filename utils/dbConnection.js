@@ -11,6 +11,7 @@ function getDbNameFromUri(uri) {
 
 // =========================================================
 async function getDbCollections(db) {
+
   const collections = await db
     .listCollections({}, { nameOnly: true })
     .toArray();
@@ -21,15 +22,13 @@ async function getDbCollections(db) {
 }
 
 // =========================================================
-async function connectToModeDb(mode) {
-  const mongoUri =
-    mode === "production"
-      ? process.env.MONGO_URI
-      : process.env.MONGO_URI_DEV;
+async function connectToModeDb(envMode) {
+
+    const mongoUri = process.env.MONGO_URI
 
   if (!mongoUri) {
     throw new Error(
-      `Missing Mongo URI for mode "${mode}" (${mode === "production" ? "MONGO_URI" : "MONGO_URI_DEV"})`
+      `Missing Mongo URI for envMode "${envMode}" : "${mongoUri}"`
     );
   }
 
@@ -47,8 +46,22 @@ async function connectToModeDb(mode) {
 }
 
 // =========================================================
+async function ensureDatabaseExists(db) {
+  // A simple ping ensures the DB is reachable
+  await db.command({ ping: 1 });
+  return true;
+}
+
+// =========================================================
+// function collectionsAreEqual(listA, listB) {
+//   const a = [...listA].sort();
+//   const b = [...listB].sort();
+//   return a.length === b.length && a.every((name, i) => name === b[i]);
+// }
+ 
+
+// =========================================================
 module.exports = {
   connectToModeDb,
-  getDbNameFromUri,
-  getDbCollections,
+  ensureDatabaseExists,
 };

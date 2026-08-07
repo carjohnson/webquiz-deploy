@@ -3,7 +3,7 @@ extends ../layout
 block content
   h2= title
   if message
-    h5= message
+    h5(style="color: #4CAF50")= message
 
   form#backupForm(action="/manager/backup", method="POST")
     button(type="submit") Run backup

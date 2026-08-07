@@ -22,25 +22,24 @@ const path = require("path");
 const mongoose = require("mongoose");
 const { pipeline } = require("stream/promises");
 const asyncHandler = require("express-async-handler");
+const { EJSON } = require('bson');
 const archiver = require('archiver');
 const { connectToModeDb } = require('../../utils/dbConnection');
+const { getStamp } = require('../../utils/backupDirUtils');
+
+// Matches getStamp()'s format exactly: YYYY-MM-DD_HH-MM-SS, optionally
+// with a .zip extension. cleanupBackups only ever touches entries that
+// match this — anything else dropped into BACKUP_ROOT (by hand, or by
+// something else entirely) is left alone rather than swept up by a
+// recursive delete.
+const BACKUP_ENTRY_RE = /^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(\.zip)?$/;
+const DEFAULT_MAX_BACKUP_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
 
 
 // =========================================================
 async function logLine(msg, LOG_FILE) {
   await fsPromise.appendFile(LOG_FILE, `[${new Date().toISOString()}] ${msg}\n`);
-}
-
-// =========================================================
-function getStamp() {
-  const d = new Date();
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mi = String(d.getMinutes()).padStart(2, "0");
-  const ss = String(d.getSeconds()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}_${hh}-${mi}-${ss}`;
 }
 
 // =========================================================
@@ -117,7 +116,7 @@ async function runBackup(outputDir) {
         }
 
         const outputFile = path.join(BACKUP_DIR, `${collectionName}-collection.json`);
-        await fsPromise.writeFile(outputFile, JSON.stringify(docs, null, 2));
+        await fsPromise.writeFile(outputFile, EJSON.stringify(docs, null, 2));
 
         const sLogMsg = `Wrote ${docs.length} docs to ${collectionName}-collection.json`;
         console.log(sLogMsg);
@@ -173,14 +172,58 @@ async function runBackup(outputDir) {
 }
 
 // =========================================================
-async function cleanupBackup() {
-  // optional helper
+/**
+ * Removes backup folders and .zip files from outputDir (BACKUP_ROOT)
+ * once they're older than maxAgeMs, giving the user a window to
+ * download a backup's zip before it's swept away.
+ *
+ * A backup produces two sibling entries per run under outputDir: the
+ * raw timestamped folder (e.g. "2026-08-07_19-27-01/") and its zip
+ * (e.g. "2026-08-07_19-27-01.zip"). Both are removed once past
+ * maxAgeMs — only entries matching that exact timestamp naming pattern
+ * are touched; anything else in outputDir is left alone.
+ *
+ * @param {string} outputDir - BACKUP_ROOT
+ * @param {number} [maxAgeMs] - defaults to 7 days
+ * @returns {Promise<string[]>} names of entries that were removed
+ */
+async function cleanupBackups(outputDir, maxAgeMs = DEFAULT_MAX_BACKUP_AGE_MS) {
+  await fsPromise.mkdir(outputDir, { recursive: true });
+
+  const entries = await fsPromise.readdir(outputDir, { withFileTypes: true });
+  const now = Date.now();
+  const removed = [];
+
+  for (const entry of entries) {
+    if (!BACKUP_ENTRY_RE.test(entry.name)) continue;
+
+    const entryPath = path.join(outputDir, entry.name);
+
+    try {
+      const stat = await fsPromise.stat(entryPath);
+      if (now - stat.mtimeMs <= maxAgeMs) continue;
+
+      await fsPromise.rm(entryPath, { recursive: true, force: true });
+      removed.push(entry.name);
+    } catch {
+      // ignore races (entry vanished between readdir and stat, permission
+      // hiccups, etc.) — best-effort sweep, not worth failing the caller
+    }
+  }
+
+  return removed;
 }
+
+// // =========================================================
+// // Kept for backward compatibility with existing callers/imports.
+// async function cleanupBackup(outputDir, maxAgeMs) {
+//   return cleanupBackups(outputDir, maxAgeMs);
+// }
 
 // =========================================================
 // =========================================================
 module.exports = {
   runBackup,
   zipDirectory,
-  cleanupBackup
+  cleanupBackups,
 };

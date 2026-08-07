@@ -16,7 +16,6 @@ var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
 var managerRoutes = require("./routes/manager");
-var backupController = require("./controllers/backupController");
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -64,9 +63,11 @@ app.set("view engine", "pug");
 // import mongoose module
 mongoose.set("strictQuery", 'throw');  // error if querying something missing from db
 
-const mongoUri = process.env.NODE_ENV === 'production' 
-  ? process.env.MONGO_URI 
-  : process.env.MONGO_URI_DEV;
+// const mongoUri = process.env.NODE_ENV === 'production' 
+//   ? process.env.MONGO_URI 
+//   : process.env.MONGO_URI_DEV;
+const mongoUri = process.env.MONGO_URI
+
 
 if (!mongoUri) {
   console.error(`MongoDB URI not set for ${process.env.NODE_ENV || 'development'} environment`);
@@ -132,24 +133,6 @@ app.use((req, res, next) => {
 
 
 // =================================================
-// Machine-to-machine auth check, used below for the backup download
-// route. It requires a shared-secret header (BACKUP_API_KEY) instead
-// of a browser session, since it's called by a script, not a logged-in
-// user. This is intentionally NOT added to publicPaths: a request
-// without a valid key gets no special treatment and falls through to
-// the normal session/login wall like any other protected route.
-function hasValidBackupKey(req) {
-  const expectedKey = process.env.BACKUP_API_KEY;
-  const providedKey = req.get('x-backup-key');
-  if (!expectedKey || !providedKey) return false;
-
-  const bufA = Buffer.from(String(providedKey));
-  const bufB = Buffer.from(String(expectedKey));
-  if (bufA.length !== bufB.length) return false;
-  return crypto.timingSafeEqual(bufA, bufB);
-}
-
-// =================================================
 // lock down all routes
 app.use((req, res, next) => {
   // // 1. DEBUG LOGS
@@ -160,13 +143,6 @@ app.use((req, res, next) => {
   // 2. IMMEDIATE BYPASS (for ohif and auth)
   if (req.originalUrl.startsWith('/ohif')) {
     // console.log("Bypassing auth for /ohif");
-    return next();
-  }
-
-  // 2b. Backup route: allow only with a valid machine credential.
-  // No key (or a wrong one) falls through to the normal login wall
-  // below — this route is never treated as public.
-  if ((req.path === '/backup' || req.path === '/backup/restore') && hasValidBackupKey(req)) {
     return next();
   }
 
@@ -198,8 +174,6 @@ app.use('/webquiz', webquizRouter);
 app.use('/iframehost', iframehostRouter);
 app.use('/api', studyRoutes);  // endpoint accessible at GET /api/study/:studyUID
 app.use('/manager', managerRoutes);
-app.get('/backup', backupController.segfile_get);
-app.post('/backup/restore', backupController.segfile_post);
 
 // =================================================
 // Serve static files from the 'public' directory

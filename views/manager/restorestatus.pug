@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  h1 Restore Status
+
+  if status === "success"
+    p(style="color: green; font-weight: bold") Restore completed successfully.
+    p #{successCountDBCollections} of #{totalDBCollections} database collections restored
+    p #{successCountSegFiles} segmentation files restored.
+
+  if status === "partial"
+    p(style="color: orange; font-weight: bold") Restore completed with warnings.
+    p(style="color: orange") #{successCountDBCollections} of #{totalDBCollections} database collections restored
+    p(style="color: orange") #{successCountSegFiles} segmentation files restored.
+
+  if status === "error"
+    p(style="color: red; font-weight: bold") Restore failed.
+    p Error: #{error}
+
+  br
+  a.button(href="/manager") Return to Manager
+

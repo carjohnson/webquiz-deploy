@@ -1,0 +1,164 @@
+extends ../layout
+
+block content
+  h2= title
+
+  if message
+    h5(style="color: #4CAF50")= message
+
+  if errmessage
+    h5(style="color: #FF9500")= errmessage
+
+  form#restoreForm(action="/manager/restore", method="POST")
+    label(for="backupZip") Backup zip file to restore
+    br
+    input#backupZip(type="file", name="backupZip", accept=".zip", required)
+    br
+    br
+
+    #selectedFile(style="display:none; margin-bottom:8px")
+      strong Selected file:
+      |  
+      span#selectedFileName
+      |  (
+      span#selectedFileSize
+      | )
+
+    #backupStatus(style="color:#888") Choose the backup .zip file you downloaded earlier.
+    #backupError(style="color:#FF9500; display:none")
+
+    .backup-collections(id="backupCollectionsWrap", style="display:none")
+      strong Collections found in backup:
+      ul#backupCollectionsList
+
+    // Set once the upload has been staged server-side; restore_post uses
+    // this to find the extracted files. Never a raw filesystem path.
+    input#uploadId(type="hidden", name="uploadId", value="")
+
+    br
+
+    // Run restore button — disabled until a zip has been uploaded and
+    // successfully extracted with at least one collection found.
+    button#runRestoreBtn(type="submit", disabled) Run Restore
+    br
+    br
+
+    a#returnLink(href="/manager") Return
+
+  script.
+    (function () {
+      var fileInput = document.getElementById('backupZip');
+      var statusEl = document.getElementById('backupStatus');
+      var errorEl = document.getElementById('backupError');
+      var listWrap = document.getElementById('backupCollectionsWrap');
+      var listEl = document.getElementById('backupCollectionsList');
+      var uploadIdInput = document.getElementById('uploadId');
+      var runBtn = document.getElementById('runRestoreBtn');
+      var selectedFileEl = document.getElementById('selectedFile');
+      var selectedFileNameEl = document.getElementById('selectedFileName');
+      var selectedFileSizeEl = document.getElementById('selectedFileSize');
+      var returnLink = document.getElementById('returnLink');
+
+      var currentRequestId = 0;
+
+      function formatBytes(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+
+      function resetDisplay() {
+        errorEl.style.display = 'none';
+        errorEl.textContent = '';
+        listWrap.style.display = 'none';
+        listEl.innerHTML = '';
+        uploadIdInput.value = '';
+        runBtn.disabled = true;
+      }
+
+      // Tells the server to delete a staged-but-never-restored upload.
+      // Fired right before the page navigates away (Return) or right
+      // before a newer upload supersedes an older one. sendBeacon is
+      // used instead of fetch because it's designed specifically to
+      // survive the page unloading — a normal fetch can get cancelled
+      // mid-flight when the browser navigates.
+      function cancelStagedUpload(id) {
+        if (!id) return;
+        navigator.sendBeacon('/manager/restore/upload/' + encodeURIComponent(id) + '/cancel');
+      }
+
+      function showStatus(text) {
+        statusEl.style.display = 'block';
+        statusEl.textContent = text;
+      }
+
+      function uploadBackup() {
+        // If a previous file was already staged on the server, this new
+        // selection supersedes it — clean up the old one so it doesn't
+        // sit orphaned in restore-uploads.
+        cancelStagedUpload(uploadIdInput.value);
+
+        resetDisplay();
+
+        var file = fileInput.files && fileInput.files[0];
+        if (!file) {
+          selectedFileEl.style.display = 'none';
+          showStatus('Choose the backup .zip file you downloaded earlier.');
+          return;
+        }
+
+        // Browsers only expose the file name, not its local folder path,
+        // so that's all we can show here.
+        selectedFileNameEl.textContent = file.name;
+        selectedFileSizeEl.textContent = formatBytes(file.size);
+        selectedFileEl.style.display = 'block';
+
+        showStatus('Uploading and reading backup\u2026');
+
+        var requestId = ++currentRequestId;
+        var formData = new FormData();
+        formData.append('backupZip', file);
+
+        fetch('/manager/restore/upload', { method: 'POST', body: formData })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            // Ignore stale responses if the user picked another file
+            // before this one finished.
+            if (requestId !== currentRequestId) return;
+
+            if (!data.ok) {
+              statusEl.style.display = 'none';
+              errorEl.style.display = 'block';
+              errorEl.textContent = data.error || 'Could not read that backup file.';
+              return;
+            }
+
+            statusEl.style.display = 'none';
+            listEl.innerHTML = '';
+            data.backupCollections.forEach(function (name) {
+              var li = document.createElement('li');
+              li.textContent = name;
+              listEl.appendChild(li);
+            });
+            listWrap.style.display = 'block';
+            uploadIdInput.value = data.uploadId;
+            runBtn.disabled = false;
+          })
+          .catch(function () {
+            if (requestId !== currentRequestId) return;
+            statusEl.style.display = 'none';
+            errorEl.style.display = 'block';
+            errorEl.textContent = 'Could not reach the server to upload that file.';
+          });
+      }
+
+      fileInput.addEventListener('change', uploadBackup);
+
+      // If the user backs out via Return after a file was staged (but
+      // never restored), clean it up. We don't preventDefault the
+      // navigation — sendBeacon is designed to keep working after the
+      // page starts unloading, so the request still reaches the server.
+      returnLink.addEventListener('click', function () {
+        cancelStagedUpload(uploadIdInput.value);
+      });
+    })();

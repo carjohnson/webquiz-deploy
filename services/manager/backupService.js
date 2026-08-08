@@ -24,6 +24,7 @@ const { pipeline } = require("stream/promises");
 const asyncHandler = require("express-async-handler");
 const { EJSON } = require('bson');
 const archiver = require('archiver');
+const axios = require('axios');
 const { connectToModeDb } = require('../../utils/dbConnection');
 const { getStamp } = require('../../utils/backupDirUtils');
 
@@ -51,6 +52,23 @@ function getDestPath(raw, SEG_DIR) {
 
   const rel = normalized.slice(idx + marker.length);
   return path.join(SEG_DIR, rel);
+}
+
+// =========================================================
+// Streams a GET response body straight to dest on disk — used in
+// production, where the seg file lives on the separate project app's
+// disk and has to come across the network rather than being copied
+// locally (see transferSegFile's isProd branch).
+//
+// responseType: 'stream' + pipeline() means the file is written as it
+// arrives rather than buffered fully in memory first, which matters
+// here since seg files can be large.
+async function downloadToFile(url, dest) {
+  await fsPromise.mkdir(path.dirname(dest), { recursive: true });
+
+  const response = await axios.get(url, { responseType: "stream" });
+
+  await pipeline(response.data, fsSync.createWriteStream(dest));
 }
 
 // =========================================================
@@ -213,12 +231,6 @@ async function cleanupBackups(outputDir, maxAgeMs = DEFAULT_MAX_BACKUP_AGE_MS) {
 
   return removed;
 }
-
-// // =========================================================
-// // Kept for backward compatibility with existing callers/imports.
-// async function cleanupBackup(outputDir, maxAgeMs) {
-//   return cleanupBackups(outputDir, maxAgeMs);
-// }
 
 // =========================================================
 // =========================================================

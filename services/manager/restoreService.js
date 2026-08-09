@@ -6,7 +6,7 @@ const fsPromise = require("fs/promises");
 const { EJSON } = require("bson");
 
 const { connectToModeDb, ensureDatabaseExists } = require('../../utils/dbConnection');
-const { getBackupCollections, getStamp } = require('../../utils/backupDirUtils');
+const { getBackupCollections } = require('../../utils/backupDirUtils');
 
 const CONCURRENCY = 4;
 
@@ -17,6 +17,20 @@ const CONCURRENCY = 4;
 // =========================================================
 async function logLine(msg, LOG_FILE) {
   await fsPromise.appendFile(LOG_FILE, `[${new Date().toISOString()}] ${msg}\n`);
+}
+
+// =========================================================
+// Same timestamp shape as backupService.getStamp(), so backup and
+// restore log/file names are consistent and sortable.
+function getStamp() {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mi = String(d.getMinutes()).padStart(2, "0");
+  const ss = String(d.getSeconds()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}_${hh}-${mi}-${ss}`;
 }
 
 // =========================================================
@@ -77,11 +91,19 @@ async function walkFiles(rootDir) {
  * had under seg-files (which itself mirrors the original project app's
  * /outputs/... structure — see backupService.getDestPath).
  *
- * outputsRoot is ALWAYS wiped clean first, unconditionally — even if
- * this particular backup turns out to have zero seg files (missing or
- * empty seg-files/ folder). A restore should fully replace outputsRoot's
- * contents with whatever this backup has; for zero seg files that means
- * outputsRoot ends up empty too, not "leave whatever was already there."
+ * outputsRoot's CONTENTS are ALWAYS wiped clean first, unconditionally
+ * — even if this particular backup turns out to have zero seg files
+ * (missing or empty seg-files/ folder). A restore should fully replace
+ * outputsRoot's contents with whatever this backup has; for zero seg
+ * files that means outputsRoot ends up empty too, not "leave whatever
+ * was already there."
+ *
+ * IMPORTANT: outputsRoot itself is never removed/recreated — only the
+ * entries inside it. On hosts like Render, outputsRoot is the mount
+ * point of a persistent disk, not a plain directory; attempting to
+ * rmdir a mount point throws EBUSY ("resource busy or locked") because
+ * the OS holds it open as an active mount. Deleting each entry inside
+ * it individually is safe; deleting the mount point itself is not.
  *
  * This is a plain local file copy — no HTTP involved — because the
  * management app and the project app's disk are the same process now.
@@ -93,10 +115,15 @@ async function walkFiles(rootDir) {
 async function restoreSegFiles(stagingDir, outputsRoot) {
   const segRoot = path.join(stagingDir, "seg-files");
 
-  // Always start from a clean outputsRoot, regardless of whether this
-  // backup has any seg files at all.
-  await fsPromise.rm(outputsRoot, { recursive: true, force: true });
+  // Ensure outputsRoot exists, then clear its CONTENTS only — never the
+  // directory/mount point itself (see EBUSY note above).
   await fsPromise.mkdir(outputsRoot, { recursive: true });
+  const existingEntries = await fsPromise.readdir(outputsRoot);
+  await Promise.all(
+    existingEntries.map((name) =>
+      fsPromise.rm(path.join(outputsRoot, name), { recursive: true, force: true })
+    )
+  );
 
   if (!fsSync.existsSync(segRoot)) {
     return { successCount: 0, failCount: 0, failures: [], totalSegFiles: 0 };

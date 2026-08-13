@@ -54,36 +54,105 @@ function getDestPath(raw, SEG_DIR) {
   return path.join(SEG_DIR, rel);
 }
 
+// // =========================================================
+// // Streams a GET response body straight to dest on disk — used in
+// // production, where the seg file lives on the separate project app's
+// // disk and has to come across the network rather than being copied
+// // locally (see transferSegFile's isProd branch).
+// //
+// // responseType: 'stream' + pipeline() means the file is written as it
+// // arrives rather than buffered fully in memory first, which matters
+// // here since seg files can be large.
+// async function downloadToFile(url, dest) {
+//   await fsPromise.mkdir(path.dirname(dest), { recursive: true });
+
+//   const response = await axios.get(url, { responseType: "stream" });
+
+//   await pipeline(response.data, fsSync.createWriteStream(dest));
+// }
+
+// // =========================================================
+// async function transferSegFile({ raw, dest, apiBase, isProd }) {
+//   if (isProd) {
+//     const downloadUrl = `${apiBase}/backup?path=${encodeURIComponent(raw)}`;
+//     console.log("*** DOWNLOAD URL:", downloadUrl);
+//     await downloadToFile(downloadUrl, dest);
+//     return `Downloaded file: ${downloadUrl} -> ${dest}`;
+//   }
+
+//   const localPath = apiBase && raw.startsWith(apiBase) ? raw.slice(apiBase.length) : raw;
+//   await fsPromise.mkdir(path.dirname(dest), { recursive: true });
+//   await fsPromise.copyFile(localPath, dest);
+//   return `Copied file: ${localPath}`;
+// }
+
 // =========================================================
-// Streams a GET response body straight to dest on disk — used in
-// production, where the seg file lives on the separate project app's
-// disk and has to come across the network rather than being copied
-// locally (see transferSegFile's isProd branch).
-//
-// responseType: 'stream' + pipeline() means the file is written as it
-// arrives rather than buffered fully in memory first, which matters
-// here since seg files can be large.
-async function downloadToFile(url, dest) {
-  await fsPromise.mkdir(path.dirname(dest), { recursive: true });
+async function assertDicomPart10(filePath) {
+  const fd = await fsPromise.open(filePath, "r");
+  const header = Buffer.alloc(132);
 
-  const response = await axios.get(url, { responseType: "stream" });
+  try {
+    const { bytesRead } = await fd.read(header, 0, 132, 0);
 
-  await pipeline(response.data, fsSync.createWriteStream(dest));
+    if (bytesRead < 132) {
+      throw new Error(
+        `File is shorter than 132 bytes: ${filePath}`
+      );
+    }
+
+    const prefix = header.subarray(128, 132);
+
+    if (!prefix.equals(Buffer.from("DICM"))) {
+      throw new Error(
+        `Not a DICOM Part 10 file: ${filePath}; ` +
+        `offset 128 = ${prefix.toString("hex")}`
+      );
+    }
+  } finally {
+    await fd.close();
+  }
 }
 
 // =========================================================
-async function transferSegFile({ raw, dest, apiBase, isProd }) {
-  if (isProd) {
-    const downloadUrl = `${apiBase}/backup?path=${encodeURIComponent(raw)}`;
-    console.log("*** DOWNLOAD URL:", downloadUrl);
-    await downloadToFile(downloadUrl, dest);
-    return `Downloaded file: ${downloadUrl} -> ${dest}`;
+async function transferSegFile({ raw, dest }) {
+  const sourcePath = resolveSegSourcePath(raw);
+
+  await fsPromise.mkdir(path.dirname(dest), { recursive: true });
+
+  const sourceStat = await fsPromise.stat(sourcePath);
+
+  if (!sourceStat.isFile()) {
+    throw new Error(`SEG source is not a regular file: ${sourcePath}`);
   }
 
-  const localPath = apiBase && raw.startsWith(apiBase) ? raw.slice(apiBase.length) : raw;
-  await fsPromise.mkdir(path.dirname(dest), { recursive: true });
-  await fsPromise.copyFile(localPath, dest);
-  return `Copied file: ${localPath}`;
+  const tempPath = `${dest}.tmp-${process.pid}-${Date.now()}`;
+
+  try {
+    await fsPromise.copyFile(sourcePath, tempPath);
+    await assertDicomPart10(tempPath);
+    await fsPromise.rename(tempPath, dest);
+
+    return `Copied file: ${sourcePath} -> ${dest}`;
+  } catch (err) {
+    await fsPromise.rm(tempPath, { force: true });
+    throw err;
+  }
+}
+
+// =========================================================
+function resolveSegSourcePath(raw) {
+  if (!raw || typeof raw !== "string") {
+    throw new Error(`Invalid segmentationDataRef: ${raw}`);
+  }
+
+  // Preferred case: raw already contains the absolute filesystem path.
+  if (path.isAbsolute(raw)) {
+    return raw;
+  }
+
+  throw new Error(
+    `Expected an absolute filesystem path for segmentationDataRef: ${raw}`
+  );
 }
 
 // =========================================================
@@ -163,7 +232,8 @@ async function runBackup(outputDir) {
                 console.log("DEST:", dest);
                 console.log("apiBase", apiBase);
                 console.log("isProd",isProd);
-            const msg = await transferSegFile({ raw, dest, apiBase, isProd });
+            // const msg = await transferSegFile({ raw, dest, apiBase, isProd });
+            const msg = await transferSegFile({ raw, dest, });
             successCount++;
             await logLine(msg, LOG_FILE);
             } catch (err) {

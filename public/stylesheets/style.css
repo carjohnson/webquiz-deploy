@@ -1,3 +1,22 @@
+/* Make the iframe content fill the entire iframe */
+html, body {
+  background-color: black !important;
+  color: white !important;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Bootstrap containers must stretch to full height */
+.container-fluid,
+.col-12 {
+  background-color: black !important;
+  color: white !important;
+  min-height: 100vh;   /* CRITICAL */
+}
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+
 body {
   margin: 0;
   padding: 0rem 2rem 2rem 0;  /* top, right, bottom, left */
@@ -6,6 +25,7 @@ body {
   width: 100vw;
   box-sizing: border-box;
   overflow-x: hidden;
+  border-right: 1px solid #595959;
 }
 
 header {
@@ -33,7 +53,8 @@ header {
   justify-content: space-between;  /* h1 left, links right */
   align-items: center;             /* vertical alignment within the bar */
   padding: 1rem 2rem;
-  background-color: #f8f8f8;
+  background-color: #000000;
+  color: #f8f8f8;
   border-bottom: 1px solid #ccc;
 }
 
@@ -54,6 +75,7 @@ header {
 
 form {
   background-color: #f9f9f9;
+  color: #000000;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -140,8 +162,8 @@ input, select {
   display: flex;
   justify-content: space-between;  /* Push h1 left, links right */
   align-items: center;             /* Vertically align items */
-  padding: 1rem;
-  border-bottom: 1px solid #ccc;   /* Optional: visual separation */
+  padding: .5rem;
+  border-bottom: 1px solid #595959;   /* Optional: visual separation */
 }
 
 .header-bar h1 {

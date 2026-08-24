@@ -1,0 +1,45 @@
+//- views/manager/usermanagement.pug
+extends ../layout
+
+block content
+  h2= title
+  if message
+    h5= message
+
+  form#manageUserForm(action="/manager/user-management", method="POST")
+    div.form-group
+      label(for="userName") Select User:
+      br
+      select#userName.form-control(
+        name="userName" 
+        required=true 
+        style="font-family: monospace, Courier, 'Courier New'; width: auto; min-width: 650px;"
+      )
+        option(value="" disabled selected) -- Select a User --
+        if users && users.length
+          each user in users
+            option(value=user.username)= user.displayText
+        else
+          option(value="" disabled) No users found
+
+    br
+    div.form-group
+      label(for="newPassword") New Password (Required only for Password Reset):
+      br
+      input#newPassword(type="text", name="newPassword", placeholder="Enter new password")
+
+    br
+    br
+    button.btn.btn-primary(type="submit", name="action", value="authorize", style="margin-right: 10px;") Authorize User
+    button.btn.btn-warning(type="submit", name="action", value="reset_password") Reset Password
+
+  br
+  //- Status and error messages
+  if statusmessage
+    p(style="color: green; font-weight: bold;")= statusmessage
+
+  if errmessage
+    p(style="color: #FF9500; font-weight: bold;")= errmessage
+
+  br
+  a(href="/manager") Return

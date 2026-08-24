@@ -1,50 +1,98 @@
-//- h1= title
+//- //- h1= title
 
+//- //- p= message
+
+//- //- table.progress-report
+//- //-   thead
+//- //-     tr
+//- //-       th(scope="col") Username
+//- //-       th(scope="col") Study UID
+//- //-       th(scope="col") Study Status
+//- //-       th(scope="col") Series UID
+//- //-       th(scope="col") Series Status
+
+//- //-   tbody
+//- //-     tr
+//- //-       td(colspan="5") No data yet
+
+//- //- h1= title
+
+//- //- p= message
+
+//- //- table.progress-report
+//- //-   thead
+//- //-     tr
+//- //-       th(scope="col") Username
+//- //-       th(scope="col") Study UID
+//- //-       th(scope="col") Study Status
+//- //-       th(scope="col") Series UID
+//- //-       th(scope="col") Series Status
+
+//- //-   tbody
+//- //-     if rows && rows.length
+//- //-       each row in rows
+//- //-         tr
+//- //-           td= row.username
+//- //-           td= row.studyUID
+//- //-           td= row.studyStatus
+//- //-           td= row.seriesUID
+//- //-           td= row.seriesStatus
+//- //-     else
+//- //-       tr
+//- //-         td(colspan="5") No data yet
+
+//- h1= title
 //- p= message
 
 //- table.progress-report
 //-   thead
 //-     tr
-//-       th(scope="col") Username
-//-       th(scope="col") Study UID
-//-       th(scope="col") Study Status
-//-       th(scope="col") Series UID
-//-       th(scope="col") Series Status
+//-       th Study Name
+//-       each user in allUsers
+//-         th= user
 
 //-   tbody
-//-     tr
-//-       td(colspan="5") No data yet
-
-//- h1= title
-
-//- p= message
-
-//- table.progress-report
-//-   thead
-//-     tr
-//-       th(scope="col") Username
-//-       th(scope="col") Study UID
-//-       th(scope="col") Study Status
-//-       th(scope="col") Series UID
-//-       th(scope="col") Series Status
-
-//-   tbody
-//-     if rows && rows.length
-//-       each row in rows
-//-         tr
-//-           td= row.username
-//-           td= row.studyUID
-//-           td= row.studyStatus
-//-           td= row.seriesUID
-//-           td= row.seriesStatus
-//-     else
+//-     each row in rows
 //-       tr
-//-         td(colspan="5") No data yet
+//-         td= row.studyName
+//-         each user in allUsers
+//-           - const entry = row.statuses.find(s => s.username === user)
+//-           td= entry ? entry.studyStatus : ''
+//- br
+//- br
+//- a(href="/manager") Return
 
+
+
+//- views/manager/reportprogress.pug
 h1= title
 p= message
 
-table.progress-report
+style.
+  .monospace-table {
+    font-family: monospace, Courier, "Courier New";
+    border-collapse: collapse;
+    width: auto;
+    margin-top: 15px;
+  }
+  .monospace-table th, .monospace-table td {
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    text-align: left;
+    white-space: pre;
+  }
+  .monospace-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  .monospace-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  .status-cell {
+    text-align: center;
+  }
+
+table.monospace-table
   thead
     tr
       th Study Name
@@ -52,13 +100,17 @@ table.progress-report
         th= user
 
   tbody
-    each row in rows
+    if rows && rows.length
+      each row in rows
+        tr
+          td= row.studyName
+          each user in allUsers
+            - const entry = row.statuses.find(s => s.username === user)
+            td.status-cell= entry ? entry.studyStatus : '-'
+    else
       tr
-        td= row.studyName
-        each user in allUsers
-          - const entry = row.statuses.find(s => s.username === user)
-          td= entry ? entry.studyStatus : ''
+        td(colspan=allUsers.length + 1) No progress data available
+
 br
 br
 a(href="/manager") Return
-

@@ -24,11 +24,11 @@ router.post("/restore/upload", upload.single("backupZip"), managerController.res
 router.post("/restore/upload/:uploadId/cancel", managerController.restore_cancel_upload);
 router.post("/restore", managerController.restore_post);
 
-router.get("/report-progress", managerController.report_progress_get);
-router.get("/report-progress/data", managerController.report_progress_data_get);
 
-router.get("/reset-user-password", managerController.reset_user_password_get);
-router.post("/reset-user-password", managerController.reset_user_password_post);
+router.get("/user-management", managerController.manage_user_get);
+router.post("/user-management", managerController.manage_user_post);
+
+router.get("/report-progress", managerController.report_progress_get);
 
 router.post("/upload-pacs-folder-post",managerController.upload_pacs_folder_post);
 router.post("/scrape-pacs-post", managerController.scrape_pacs_post);

@@ -1,3 +1,4 @@
+// controllers/managerController.js
 const asyncHandler = require("express-async-handler");
 const backupService = require("../services/manager/backupService");
 const restoreService = require("../services/manager/restoreService");
@@ -219,63 +220,120 @@ exports.restore_post = asyncHandler(async (req, res, next) => {
     }
   });
 
-  // =========================================================
-// exports.report_progress_get = asyncHandler(async (req, res, next) => {
-//   res.render("manager/reportprogress", {
-//     title: "Management Functions",
-//     message: "Report user/study progress",
-//     rows: []
-//   });
-// });
+// =========================================================
+// GET User Management (Combined Authorize & Reset Password)
+exports.manage_user_get = asyncHandler(async (req, res, next) => {
+  const allUsers = await userManagementService.getAllUsersFormatted();
 
+  res.render("manager/usermanagement", {
+    title: "User Management",
+    message: "Authorize users or reset user passwords.",
+    users: allUsers,
+    errmessage: null,
+    statusmessage: null
+  });
+});
 
+// =========================================================
+// POST User Management Action Handler
+exports.manage_user_post = asyncHandler(async (req, res, next) => {
+  try {
+    const { userName, newPassword, action } = req.body;
+    let statusMsg = "";
+
+    if (action === "authorize") {
+      const result = await userManagementService.runAuthorizeUser(userName);
+      if (!result) throw new Error(`Failed to authorize user '${userName}'.`);
+      statusMsg = `User '${userName}' was successfully authorized.`;
+    } 
+    else if (action === "reset_password") {
+      if (!newPassword || !newPassword.trim()) {
+        const allUsers = await userManagementService.getAllUsersFormatted();
+        return res.render("manager/usermanagement", {
+          title: "User Management",
+          message: "Authorize users or reset user passwords.",
+          errmessage: "Please provide a new password before clicking Reset Password.",
+          statusmessage: null,
+          users: allUsers
+        });
+      }
+
+      const result = await userManagementService.runResetPasswordByUsername(userName, newPassword);
+      if (!result) throw new Error(`Failed to reset password for user '${userName}'.`);
+      statusMsg = `Password for user '${userName}' was reset successfully.`;
+    }
+
+    // Refresh user list so updated states (like authorized status) display immediately
+    const updatedUsers = await userManagementService.getAllUsersFormatted();
+
+    return res.render("manager/usermanagement", {
+      title: "User Management",
+      message: "Authorize users or reset user passwords.",
+      users: updatedUsers,
+      statusmessage: statusMsg,
+      errmessage: null
+    });
+
+  } catch (err) {
+    const allUsers = await userManagementService.getAllUsersFormatted();
+    return res.render("manager/usermanagement", {
+      title: "User Management",
+      message: "Authorize users or reset user passwords.",
+      errmessage: err.message,
+      statusmessage: null,
+      users: allUsers
+    });
+  }
+});
+// =========================================================
 exports.report_progress_get = asyncHandler(async (req, res, next) => {
-const rows = await Progress.aggregate([
-  // Join user
-  {
-    $lookup: {
-      from: "user",
-      localField: "user_id",
-      foreignField: "_id",
-      as: "user"
-    }
-  },
-  { $unwind: "$user" },
+  const rows = await Progress.aggregate([
+    // Join user
+    {
+      $lookup: {
+        from: "user",
+        localField: "user_id",
+        foreignField: "_id",
+        as: "user"
+      }
+    },
+    { $unwind: "$user" },
 
-  // Join study
-  {
-    $lookup: {
-      from: "study",
-      localField: "study_id",
-      foreignField: "_id",
-      as: "study"
-    }
-  },
-  { $unwind: "$study" },
+    // Join study
+    {
+      $lookup: {
+        from: "study",
+        localField: "study_id",
+        foreignField: "_id",
+        as: "study"
+      }
+    },
+    { $unwind: "$study" },
 
-  // Group by study, pivot users
-  {
-    $group: {
-      _id: "$study._id",
-      studyUID: { $first: "$study.studyUID" },
-      studyName: { $first: "$study.studyName" },
-      statuses: {
-        $push: {
-          username: "$user.username",
-          studyStatus: "$study_status"
+    // Group by study, pivot users
+    {
+      $group: {
+        _id: "$study._id",
+        studyUID: { $first: "$study.studyUID" },
+        studyName: { $first: "$study.studyName" },
+        statuses: {
+          $push: {
+            username: "$user.username",
+            studyStatus: "$study_status"
+          }
         }
       }
-    }
-  },
+    },
 
-  // Sort by study name
-  { $sort: { studyName: 1 } }
-]);
-const allUsers = [
-  ...new Set(
-    rows.flatMap(r => r.statuses.map(s => s.username))
-  )
-].sort();
+    // Sort by study name
+    { $sort: { studyName: 1 } }
+  ]);
+
+  const allUsers = [
+    ...new Set(
+      rows.flatMap(r => r.statuses.map(s => s.username))
+    )
+  ].sort();
 
   res.render("manager/reportprogress", {
     title: "Management Functions",
@@ -285,55 +343,6 @@ const allUsers = [
   });
 });
 
-
-exports.report_progress_data_get = asyncHandler(async (req, res, next) => {
-  res.json({
-    rows: [
-      {
-        username: null,
-        studyUID: null,
-        studyStatus: null,
-        seriesUID: null,
-        seriesStatus: null
-      }
-    ],
-    meta: {
-      generatedAt: new Date().toISOString(),
-      note: "Placeholder structure for progress report; data not implemented yet"
-    }
-  });
-});
-// =========================================================
-exports.reset_user_password_get = asyncHandler(async (req, res, next) => {
-    // connect to *.pug view
-    res.render("manager/resetpassword", {
-      title: "User Management",
-      message: "Reset password for user."
-    });
-});
-
-// =========================================================
-exports.reset_user_password_post = asyncHandler(async (req, res, next) => {
-  try {
-    const { userEmail, newPassword } = req.body;
-    const result = await userManagementService.runResetPassword(userEmail, newPassword);
-
-    if (!result) {
-      return res.render("manager/resetpassword", {
-        title: "User Management",
-        message: "Reset password for user.",
-        errmessage: "User not found."
-      });
-    }
-
-    return res.render("manager/manager", {
-      title: "Management Functions",
-      message: "Reset password complete."
-    });
-  } catch (err) {
-    next(err);
-  }
-});
 
 // =========================================================
 exports.upload_pacs_folder_post = asyncHandler(async (req, res, next) => {

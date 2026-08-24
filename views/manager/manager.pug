@@ -26,6 +26,19 @@ block content
           button.manager-button(type="submit") Restore database
 
       // ============================
+      //   USER GROUP
+      // ============================
+      .task-group
+        h3.task-title User
+
+        form(action="/manager/user-management", method="get")
+          button.manager-button(type="submit") Manage users (reset password / authorize)
+
+
+        form(action="/manager/report-progress", method="get")
+          button.manager-button(type="submit") Get user progress report
+
+      // ============================
       //   PACS GROUP
       // ============================
       .task-group
@@ -39,21 +52,6 @@ block content
 
         form(action="/manager/upload-db-studies-post", method="post")
           button.manager-button(type="submit") Upload studies list to MongoDB
-
-        form(action="/manager/scan-dicom-studyuids", method="get")
-          button.manager-button(type="submit") Scan dicom studyUIDs per series
-
-      // ============================
-      //   USER GROUP
-      // ============================
-      .task-group
-        h3.task-title User
-
-        form(action="/manager/reset-user-password", method="get")
-          button.manager-button(type="submit") Reset user's password
-
-        form(action="/manager/report-progress", method="get")
-          button.manager-button(type="submit") Get user progress report
 
       // ============================
       //   EXIT BUTTON

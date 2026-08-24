@@ -4,6 +4,7 @@ const restoreService = require("../services/manager/restoreService");
 const userManagementService = require("../services/manager/userManagementService");
 const { connectToModeDb } = require("../utils/dbConnection");
 const { getBackupCollections } = require("../utils/backupDirUtils");
+const Progress = require("../models/progress");
 const {
     stageUploadedBackup,
     resolveStagedUploadDir,
@@ -218,6 +219,90 @@ exports.restore_post = asyncHandler(async (req, res, next) => {
     }
   });
 
+  // =========================================================
+// exports.report_progress_get = asyncHandler(async (req, res, next) => {
+//   res.render("manager/reportprogress", {
+//     title: "Management Functions",
+//     message: "Report user/study progress",
+//     rows: []
+//   });
+// });
+
+
+exports.report_progress_get = asyncHandler(async (req, res, next) => {
+const rows = await Progress.aggregate([
+  // Join user
+  {
+    $lookup: {
+      from: "user",
+      localField: "user_id",
+      foreignField: "_id",
+      as: "user"
+    }
+  },
+  { $unwind: "$user" },
+
+  // Join study
+  {
+    $lookup: {
+      from: "study",
+      localField: "study_id",
+      foreignField: "_id",
+      as: "study"
+    }
+  },
+  { $unwind: "$study" },
+
+  // Group by study, pivot users
+  {
+    $group: {
+      _id: "$study._id",
+      studyUID: { $first: "$study.studyUID" },
+      studyName: { $first: "$study.studyName" },
+      statuses: {
+        $push: {
+          username: "$user.username",
+          studyStatus: "$study_status"
+        }
+      }
+    }
+  },
+
+  // Sort by study name
+  { $sort: { studyName: 1 } }
+]);
+const allUsers = [
+  ...new Set(
+    rows.flatMap(r => r.statuses.map(s => s.username))
+  )
+].sort();
+
+  res.render("manager/reportprogress", {
+    title: "Management Functions",
+    message: "Report user/study progress",
+    rows,
+    allUsers
+  });
+});
+
+
+exports.report_progress_data_get = asyncHandler(async (req, res, next) => {
+  res.json({
+    rows: [
+      {
+        username: null,
+        studyUID: null,
+        studyStatus: null,
+        seriesUID: null,
+        seriesStatus: null
+      }
+    ],
+    meta: {
+      generatedAt: new Date().toISOString(),
+      note: "Placeholder structure for progress report; data not implemented yet"
+    }
+  });
+});
 // =========================================================
 exports.reset_user_password_get = asyncHandler(async (req, res, next) => {
     // connect to *.pug view

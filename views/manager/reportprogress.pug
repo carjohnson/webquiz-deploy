@@ -1,0 +1,64 @@
+//- h1= title
+
+//- p= message
+
+//- table.progress-report
+//-   thead
+//-     tr
+//-       th(scope="col") Username
+//-       th(scope="col") Study UID
+//-       th(scope="col") Study Status
+//-       th(scope="col") Series UID
+//-       th(scope="col") Series Status
+
+//-   tbody
+//-     tr
+//-       td(colspan="5") No data yet
+
+//- h1= title
+
+//- p= message
+
+//- table.progress-report
+//-   thead
+//-     tr
+//-       th(scope="col") Username
+//-       th(scope="col") Study UID
+//-       th(scope="col") Study Status
+//-       th(scope="col") Series UID
+//-       th(scope="col") Series Status
+
+//-   tbody
+//-     if rows && rows.length
+//-       each row in rows
+//-         tr
+//-           td= row.username
+//-           td= row.studyUID
+//-           td= row.studyStatus
+//-           td= row.seriesUID
+//-           td= row.seriesStatus
+//-     else
+//-       tr
+//-         td(colspan="5") No data yet
+
+h1= title
+p= message
+
+table.progress-report
+  thead
+    tr
+      th Study Name
+      each user in allUsers
+        th= user
+
+  tbody
+    each row in rows
+      tr
+        td= row.studyName
+        each user in allUsers
+          - const entry = row.statuses.find(s => s.username === user)
+          td= entry ? entry.studyStatus : ''
+br
+br
+a(href="/manager") Return
+

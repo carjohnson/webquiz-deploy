@@ -44,4 +44,7 @@ const ProgressSchema = new Schema({
 }, { collection: 'progress' });
 
 
+ProgressSchema.index({ user_id: 1, study_id: 1 });
+ProgressSchema.index({ study_id: 1 });
+
 module.exports = mongoose.model("Progress", ProgressSchema);

@@ -13,24 +13,53 @@ block content
       if message
         h4= message
 
-      .link-group
+      // ============================
+      //   DATABASE GROUP
+      // ============================
+      .task-group
+        h3.task-title Database
+
         form(action="/manager/backup", method="get")
           button.manager-button(type="submit") Backup database
 
         form(action="/manager/restore", method="get")
           button.manager-button(type="submit") Restore database
 
-        form(action="/manager/reset-user-password", method="get")
-          button.manager-button(type="submit") Reset user's password
+      // ============================
+      //   PACS GROUP
+      // ============================
+      .task-group
+        h3.task-title PACS
+
+        form(action="/manager/scrape-pacs-post", method="post")
+          button.manager-button(type="submit") Scrape PACS
 
         form(action="/manager/upload-pacs-folder-post", method="post")
           button.manager-button(type="submit") Upload studies folder to PACS
 
-        form(action="/manager/scrape-pacs-post", method="post")
-          button.manager-button(type="submit") Scrape PACS for list of Dicom studies and series
-
         form(action="/manager/upload-db-studies-post", method="post")
-          button.manager-button(type="submit") Upload studies list to Mongo database
+          button.manager-button(type="submit") Upload studies list to MongoDB
+
+        form(action="/manager/scan-dicom-studyuids", method="get")
+          button.manager-button(type="submit") Scan dicom studyUIDs per series
+
+      // ============================
+      //   USER GROUP
+      // ============================
+      .task-group
+        h3.task-title User
+
+        form(action="/manager/reset-user-password", method="get")
+          button.manager-button(type="submit") Reset user's password
+
+        form(action="/manager/report-progress", method="get")
+          button.manager-button(type="submit") Get user progress report
+
+      // ============================
+      //   EXIT BUTTON
+      // ============================
+      .task-group
+        h3.task-title System
 
         form(action="/manager/exit-post", method="post")
           button.manager-button(type="submit") Exit

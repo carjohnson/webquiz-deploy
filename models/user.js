@@ -15,6 +15,7 @@ const UserSchema = new Schema({
     authorized  : {type: Boolean, default: false }
 }, {collection: 'user' } );
 
+UserSchema.index({ username: 1 });
 
 // Virtual for user's URL
 UserSchema.virtual("url").get(function () {

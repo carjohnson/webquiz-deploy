@@ -184,79 +184,93 @@ async function runBackup(outputDir) {
     const LOG_FILE = path.join(BACKUP_DIR, "LogBackup.log");
     const ZIP_FILENAME = backupTimestamp + '.zip';
 
-    const { db, dbName, dbCollections } = await connectToModeDb(NODE_ENV);
-    
-    console.log("*** RUNNING BACKUP", BACKUP_DIR);
-
+    // Create the backup folder (and therefore LOG_FILE's parent dir)
+    // BEFORE connecting to Mongo, so that if the connection itself
+    // fails, there's still somewhere to write a log line about it -
+    // otherwise a connection failure would only ever show up in server
+    // console output, not in any persisted log.
     await fsPromise.mkdir(SEG_DIR, { recursive: true });
 
-    // 1. Dump each raw collection as JSON
-    const collectionsToBackup = dbCollections;
+    try {
+        const { db, dbName, dbCollections } = await connectToModeDb(NODE_ENV);
 
-    let segDocs = [];
-    for (const collectionName of collectionsToBackup) {
-        console.log(`Reading ${collectionName} collection...`);
+        console.log("*** RUNNING BACKUP", BACKUP_DIR);
 
-        const docs = await db.collection(collectionName).find({}).toArray();
-        if (collectionName === 'segmentations') {
-            segDocs = docs;
+        // 1. Dump each raw collection as JSON
+        const collectionsToBackup = dbCollections;
+
+        let segDocs = [];
+        for (const collectionName of collectionsToBackup) {
+            console.log(`Reading ${collectionName} collection...`);
+
+            const docs = await db.collection(collectionName).find({}).toArray();
+            if (collectionName === 'segmentations') {
+                segDocs = docs;
+            }
+
+            const outputFile = path.join(BACKUP_DIR, `${collectionName}-collection.json`);
+            await fsPromise.writeFile(outputFile, EJSON.stringify(docs, null, 2));
+
+            const sLogMsg = `Wrote ${docs.length} docs to ${collectionName}-collection.json`;
+            console.log(sLogMsg);
+            await logLine(sLogMsg, LOG_FILE);
         }
 
-        const outputFile = path.join(BACKUP_DIR, `${collectionName}-collection.json`);
-        await fsPromise.writeFile(outputFile, EJSON.stringify(docs, null, 2));
 
-        const sLogMsg = `Wrote ${docs.length} docs to ${collectionName}-collection.json`;
-        console.log(sLogMsg);
-        await logLine(sLogMsg, LOG_FILE);
-    }
+        // 2. Walk every segmentationEntry and pull its SEG file from server
+        let successCount = 0;
+        let failCount = 0;
+        const failures = [];
 
+        const isProd = process.env.NODE_ENV === "production";
+        const apiBase = (process.env.REACT_APP_API_BASE_URL || "").replace(/\/+$/, "");
 
-    // 2. Walk every segmentationEntry and pull its SEG file from server
-    let successCount = 0;
-    let failCount = 0;
-    const failures = [];
+        for (const doc of segDocs) {
+            for (const entry of doc.segmentationIds || []) {
+                const raw = entry.segmentationDataRef;
+                if (!raw) continue;
 
-    const isProd = process.env.NODE_ENV === "production";
-    const apiBase = (process.env.REACT_APP_API_BASE_URL || "").replace(/\/+$/, "");
+                try {
 
-    for (const doc of segDocs) {
-        for (const entry of doc.segmentationIds || []) {
-            const raw = entry.segmentationDataRef;
-            if (!raw) continue;
+                const dest = getDestPath(raw, SEG_DIR);
 
-            try {
-
-            const dest = getDestPath(raw, SEG_DIR);
-
-                console.log("RAW:", raw);
-                console.log("DEST:", dest);
-                console.log("apiBase", apiBase);
-                console.log("isProd",isProd);
-            // const msg = await transferSegFile({ raw, dest, apiBase, isProd });
-            const msg = await transferSegFile({ raw, dest, });
-            successCount++;
-            await logLine(msg, LOG_FILE);
-            } catch (err) {
-            failCount++;
-            failures.push({
-                segmentationId: entry.segmentationId,
-                source: raw,
-                error: err.message,
-            });
-            await logLine(`TRANSFER FAILED: ${err.message}`, LOG_FILE);
+                    console.log("RAW:", raw);
+                    console.log("DEST:", dest);
+                    console.log("apiBase", apiBase);
+                    console.log("isProd",isProd);
+                // const msg = await transferSegFile({ raw, dest, apiBase, isProd });
+                const msg = await transferSegFile({ raw, dest, });
+                successCount++;
+                await logLine(msg, LOG_FILE);
+                } catch (err) {
+                failCount++;
+                failures.push({
+                    segmentationId: entry.segmentationId,
+                    source: raw,
+                    error: err.message,
+                });
+                await logLine(`TRANSFER FAILED: ${err.message}`, LOG_FILE);
+                }
             }
         }
+        await logLine(`SEG transfer summary: ${successCount} succeeded, ${failCount} failed.`, LOG_FILE);
+
+        return {
+            backupDir: BACKUP_DIR,
+            logFile: LOG_FILE,
+            successCount,
+            failCount,
+            failures,
+            zipFileName: ZIP_FILENAME,
+        };
+    } catch (err) {
+        // Covers connectToModeDb failing, or any other unexpected error
+        // above - log it (best-effort; the log dir exists since we
+        // created it up front) and re-throw so backup_post's catch
+        // still renders the error page as before.
+        await logLine(`BACKUP FAILED: ${err.message}`, LOG_FILE).catch(() => {});
+        throw err;
     }
-    await logLine(`SEG transfer summary: ${successCount} succeeded, ${failCount} failed.`, LOG_FILE);
-    
-    return {
-        backupDir: BACKUP_DIR,
-        logFile: LOG_FILE,
-        successCount,
-        failCount,
-        failures,
-        zipFileName: ZIP_FILENAME,
-    };
 }
 
 // =========================================================

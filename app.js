@@ -16,6 +16,7 @@ var webquizRouter = require("./routes/webquiz");
 var iframehostRouter = require("./routes/iframehost");
 var studyRoutes = require("./routes/study");
 var managerRoutes = require("./routes/manager");
+const { connectToModeDb } = require('./utils/dbConnection');
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -82,14 +83,11 @@ if (!sessionSecretKey) {
   return;
 }
 
-  // Wait for database to connect, logging an error if there is a problem
-main().catch((err) =>  console.log(err));
+// Wait for database to connect, logging an error if there is a problem.
+main().catch((err) => console.error("MongoDB connection error", err));
 async function main() {
-  await mongoose.connect(mongoUri)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch ((err) => {
-    console.error("MongoDB connection error", err);
-  });
+  const { dbName, dbCollections } = await connectToModeDb(environment);
+  console.log(`Connected to MongoDB (db: ${dbName}, ${dbCollections.length} collections)`);
 }
 
 app.use(logger('dev'));

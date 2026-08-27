@@ -175,7 +175,7 @@ function requireDbConnection(req, res, next) {
   // 1 = connected, 0 = disconnected, 2 = connecting, 3 = disconnecting
   if (mongoose.connection.readyState !== 1) {
     console.error('❌ Blocked request - MongoDB not connected. State:', mongoose.connection.readyState);
-    return res.status(503).json({ error: 'Database unavailable' });
+    return res.status(503).json({ error: 'Database unavailable ... please contact administrator' });
   }
   next();
 }

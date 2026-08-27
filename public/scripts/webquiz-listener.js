@@ -81,6 +81,17 @@ window.addEventListener('message', async (event) => {
   console.log('\x1b[32m*******  Raw message received in listener:\x1b[0m"', event);
 
 
+  if (event.data?.type === 'backend-error') {
+    // Sent directly by frontend code inside the iframe (e.g.
+    // fetchAnnotations.ts, studyHandlers.ts) when one of its own direct
+    // fetch calls to the backend fails with a 5xx or network error -
+    // those calls aren't relayed through this listener, so they notify
+    // us this way instead. Reuses the same popup as the postAndTrack
+    // failures below.
+    console.error('\x1b[31m❌ In listener - backend-error from iframe:\x1b[0m', event.data.message);
+    showBackendErrorPopup(event.data.message || 'Unknown error');
+  }
+
   if (event.data?.type === 'annotations') {
     console.log('\x1b[32m********** In listener webquiz iframe - handling all annotations\x1b[0m"', event.data);
 

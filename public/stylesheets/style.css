@@ -190,6 +190,28 @@ input, select {
   padding: 2rem 0;
 }
 
+
+/* ============================ */
+/*   Login styling   */
+/* ============================ */
+.login-container form input[type="email"],
+.login-container form input[type="text"],
+.login-container form input[type="password"] {
+  width: 250px; /* Expands box width to fit email addresses */
+  padding: 8px 10px; /* Adds comfortable inner spacing */
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Ensure labels align cleanly next to wider inputs */
+.login-container label {
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+
 /* ============================ */
 /*   Management tasks styling   */
 /* ============================ */

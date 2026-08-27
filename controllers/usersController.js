@@ -51,7 +51,7 @@ exports.register_post = asyncHandler(async (req, res, next) => {
             res.redirect('/users/login?msg=Account created! Please contact the administrator for authorization.');
             
           } else {
-            res.redirect('/users/register?msg=Username Unavailable');
+            res.redirect('/users/register?msg=Username unavailable');
           }
     } catch (error) {
       if (error.name === 'ValidationError') {

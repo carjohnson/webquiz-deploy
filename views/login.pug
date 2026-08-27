@@ -2,30 +2,26 @@ extends layout
 
 block content
   .login-container
-    <header>
-      <img src="/assets/baineslogo.png" alt="Your Company Logo" class="logo">
-      <h1>Baines Imaging - Radiology Coach</h1>
-    </header>
+    header
+      img.logo(src="/assets/baineslogo.png", alt="Your Company Logo")
+      h1 Baines Imaging - Radiology Coach
     p Welcome to #[em Baines Imaging - Radiology Coach], a web-based learning tool.
     h2= title
 
     form(action="/users/login", method="POST")
       fieldset
-        label Email ID
-        input(type="email", id="email", name="email", placeholder="abc@example.com", required)
-        br
-        br
+        div.form-group
+          label(for="email") Email ID
+          input#email(type="email", name="email", placeholder="abc@example.com", required)
 
-        label Password
-        input(type="password", id="password", name="password", required)
-        br
-        br
+        div.form-group
+          label(for="password") Password
+          input#password(type="password", name="password", required)
 
         div.button-group
           button(type="reset") Reset
           button(type="submit") Submit
 
-        br
         br
         a#registerlink(href="/users/register") Register
 

@@ -336,9 +336,8 @@ exports.post_segmentationObjects = async (req, res) => {
             console.error('❌ Study not found in DB for study_id:', study_id);
             return res.status(404).json({ error: 'Study not found' });
           }
-          const studyUID = studyDoc.studyUID;
-
-          const { dir, filepath } = segFilePath(username, studyUID, metadata.segmentationId);
+          const studyName = studyDoc.studyName;
+          const { dir, filepath } = segFilePath(username, studyName, metadata.segmentationId);
 
           try {
             // Ensure directory exists, and keep permissions open so the
@@ -739,12 +738,12 @@ const SEG_STORAGE_ROOT = path.join(__dirname, '../outputs', 'segmentations');
  
 /**
  * Resolves the on-disk directory + file path for a given user/study/segmentation,
- * as <root>/<username>/<studyUID>/<segmentationId>.dcm — DEV ONLY.
+ * as <root>/<username>/<studyName>/<segmentationId>.dcm
  */
-function segFilePath(username, studyUID, segmentationId) {
+function segFilePath(username, studyName, segmentationId) {
   const safeUsername = String(username).replace(/[^a-zA-Z0-9-_]/g, '_');
-  const safeStudyUID = String(studyUID).replace(/[^a-zA-Z0-9.-]/g, '_');
+  const safeStudyName = String(studyName).replace(/[^a-zA-Z0-9.-]/g, '_');
   const safeSegId = String(segmentationId).replace(/[^a-zA-Z0-9-]/g, '_');
-  const dir = path.join(SEG_STORAGE_ROOT, safeUsername, safeStudyUID);
+  const dir = path.join(SEG_STORAGE_ROOT, safeUsername, safeStudyName);
   return { dir, filepath: path.join(dir, `${safeSegId}.dcm`) };
 }

@@ -64,9 +64,6 @@ app.set("view engine", "pug");
 // import mongoose module
 mongoose.set("strictQuery", 'throw');  // error if querying something missing from db
 
-// const mongoUri = process.env.NODE_ENV === 'production' 
-//   ? process.env.MONGO_URI 
-//   : process.env.MONGO_URI_DEV;
 const mongoUri = process.env.MONGO_URI
 
 
@@ -179,31 +176,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // =================================================
-// 404 handler (no throwing)
+// 404 handler (unmatched routes - no throwing)
+// =================================================
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
 // =================================================
-// Error handler (handles real errors)
+// Global Error handler (handles real errors)
+// =================================================
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
 
   const status = err.status || 500;
   res.status(status).json({ error: err.message });
-});
-
-// =================================================
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-// =================================================
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
 });
 
 module.exports = app;

@@ -19,9 +19,13 @@ window.addEventListener('message', (event) => {
     // Fetch user info from session or global state
     const userInfo = window.loggedInUser || {}; 
     if (viewerFrame && window.loggedInUser) {
+      const safeUserInfo = {
+        username: window.loggedInUser.username,
+        role: window.loggedInUser.role,
+      }; 
       viewerFrame.contentWindow.postMessage({
         type: 'user-info',
-        payload: userInfo
+        payload: safeUserInfo
       }, '*');
       // console.log('📨 Parent --- Sent user info to viewer iframe: ', userInfo);
     }

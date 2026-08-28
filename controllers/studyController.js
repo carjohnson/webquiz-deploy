@@ -76,7 +76,11 @@ exports.study_validate_series = asyncHandler(async (req, res, next) => {
 //=========================================================
 // Mark entire study as complete
 exports.study_complete_post = asyncHandler(async (req, res, next) => {
-  const { username, studyUID } = req.body;
+  // Acting user is always the logged-in session user, never a client-
+  // supplied value — prevents one user from completing studies as
+  // another by editing the request body.
+  const username = req.session.user.username;
+  const { studyUID } = req.body;
 
   if (!username || !studyUID) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -131,7 +135,10 @@ exports.study_complete_post = asyncHandler(async (req, res, next) => {
 // Update the user-study-progress documents for the specified series
 exports.series_progress_post = asyncHandler(async (req, res, next) => {
 
-  const { username, studyUID, seriesUID, status } = req.body;
+  // Acting user is always the logged-in session user, never a client-
+  // supplied value — see study_complete_post for rationale.
+  const username = req.session.user.username;
+  const { studyUID, seriesUID, status } = req.body;
 
   if (!username || !studyUID || !seriesUID || !status) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -194,7 +201,10 @@ exports.series_progress_post = asyncHandler(async (req, res, next) => {
 
 //=========================================================
 exports.study_progress_get = asyncHandler(async (req, res, next) => {
-  const { username, studyUID } = req.query;
+  // Acting user is always the logged-in session user, never a client-
+  // supplied value — see study_complete_post for rationale.
+  const username = req.session.user.username;
+  const { studyUID } = req.query;
 
   if (!username || !studyUID) {
     return res.status(400).json({ error: 'Missing username or studyUID' });
@@ -237,7 +247,10 @@ exports.study_progress_get = asyncHandler(async (req, res, next) => {
 //=========================================================
 exports.timed_event_post = asyncHandler(async (req, res, next) => {
   try {
-    const { username, studyUID, event, method } = req.body;
+    // Acting user is always the logged-in session user, never a client-
+    // supplied value — see study_complete_post for rationale.
+    const username = req.session.user.username;
+    const { studyUID, event, method } = req.body;
     console.log(' *** IN TIMED EVENT POST:', req.body);
     if (!username || !studyUID || !event) {
       return res.status(400).json({ error: 'username, studyUID, and event are required' });

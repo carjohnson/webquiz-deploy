@@ -168,7 +168,14 @@ exports.about_get = asyncHandler(async (req,res,next) => {
 exports.sessioninfo_get = asyncHandler(async (req, res, next) => {
   try {
     if (req.session && req.session.user) {
-      res.json(req.session.user);
+      // req.session.user is the full user document (it's assigned wholesale
+      // at login) — don't send the password hash to the frontend.
+      const sessionUser =
+        typeof req.session.user.toObject === 'function'
+          ? req.session.user.toObject()
+          : req.session.user;
+      const { password, ...safeUser } = sessionUser;
+      res.json(safeUser);
     } else {
       res.status(401).json({ error: 'Not logged in' });
     }

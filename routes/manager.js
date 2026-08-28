@@ -3,6 +3,10 @@ var express = require('express');
 var router = express.Router();
 const multer = require("multer");
 const managerController = require("../controllers/managerController");
+const { requireLogin, requireRole } = require("../middleware/auth");
+
+// Every /manager route requires an authenticated user with the 'manager' role.
+router.use(requireLogin, requireRole("manager"));
 
 // Buffer stays in memory only long enough to extract it — never written
 // to disk as a .zip, only the extracted contents are. Adjust fileSize

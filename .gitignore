@@ -11,3 +11,5 @@ segmentations/
 backups/
 restoreLogs/
 *.bak
+"certs/nginx.crt" 
+"certs/nginx.key" 

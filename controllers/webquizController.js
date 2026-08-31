@@ -42,7 +42,6 @@ exports.post_clear_session = (req, res) => {
   req.session.segmentationObjects = null;
   req.session.legend = null;
 
-  console.log("🧹 Session cleared");
   res.json({ status: "Session cleared" });
 };
 
@@ -64,7 +63,6 @@ exports.post_studyid = async (req, res) => {
     }
 
     const studyuid = payload.studyuid;
-    // console.log("📌 Extracted studyuid:", studyuid);
 
     const study = await Study.findOne({ studyUID: studyuid });
 
@@ -281,8 +279,6 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   }
  
   let fileBuffer;
-  // if (process.env.NODE_ENV !== 'production') {
-    // DEV: segmentationDataRef is a plain filesystem path
     try {
       fileBuffer = await safeReadFile(entry.segmentationDataRef);
     } catch (err) {
@@ -305,11 +301,11 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
 
 exports.post_segmentationObjects = async (req, res) => {
   // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
-  console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length);
+  // console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length);
  
   if (Object.keys(req.body).length > 0) {
     // console.log('✅ Saving segmentations:', req.body);
-    console.log('✅ Saving segmentations:');
+    // console.log('✅ Saving segmentations:');
     const segmentations = [];
     const username = req.session.user.username;
     const study_id = req.session.study_id;
@@ -349,7 +345,7 @@ exports.post_segmentationObjects = async (req, res) => {
             // ✅ Save blob to disk
             await fs.writeFile(filepath, blobFile.buffer);
             await fs.chmod(filepath, 0o666);
-            console.log(`💾 Saved ${blobFile.size} bytes to ${filepath}`);
+            // console.log(`💾 Saved segfile ${blobFile.size} bytes to ${filepath}`);
 
             metadata.segmentationDataRef = filepath;
           } catch (err) {
@@ -365,7 +361,7 @@ exports.post_segmentationObjects = async (req, res) => {
     }  // end for loop
  
     const validSegs = segmentations.filter(Boolean);
-    console.log('✅ Reconstructed:', validSegs);
+    // console.log('✅ Reconstructed:', validSegs);
     
     await saveSegmentationsToDB(validSegs, req);
     res.json({ success: true, count: validSegs.length });
@@ -384,12 +380,11 @@ exports.post_segmentationObjects = async (req, res) => {
     if (existingSegmentations) {
       for (const segId of existingSegmentations.segmentationIds) {
         if (segId.segmentationDataRef) {
-          // segmentationDataRef is always a plain filesystem path now
-          // (Orthanc attachments are no longer used) - delete the file
-          // from the Node app's flat file storage.
+          // segmentationDataRef is always a plain filesystem path 
+          //  - delete the file from the Node app's flat file storage.
           try {
             await fs.unlink(segId.segmentationDataRef);
-            console.log('🗑️ Deleted file:', segId.segmentationDataRef);
+            // console.log('🗑️ Deleted file:', segId.segmentationDataRef);
           } catch (err) {
             console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
           }
@@ -419,7 +414,8 @@ function handleSessionPost({ key, keyLabel }) {
   return async (req, res, next) => {
 
     // 🔎 Log the raw payload and the extracted data - for debug
-    console.log(`📥 Incoming POST for ${keyLabel}`, '... Key :', key);
+    // console.log(`📥 Incoming POST for ${keyLabel}`, '... Key :', key);
+
     // console.log('🔎 In handleSessionPost ... req', req.body);
     // console.log('Full req.body:', JSON.stringify(req.body, null, 2));
     // console.log(`Extracted data for key "${key}":`, JSON.stringify(data, null, 2));
@@ -452,7 +448,7 @@ function handleSessionPost({ key, keyLabel }) {
         });
       });
 
-      console.log(`✅ ${keyLabel} session saved`);
+      // console.log(`✅ ${keyLabel} session saved`);
       if (key === 'legend') {
       }
 
@@ -461,7 +457,7 @@ function handleSessionPost({ key, keyLabel }) {
       if (key === 'annotationObjects' && Array.isArray(data)) {
         if (data.length > 0) {
           await saveAnnotationsToDB(data, req);
-          console.log('✅ Annotations saved to DB');
+          // console.log('✅ Annotations saved to DB');
         } else {
           // last annotation for this userid/studyid has been deleted
           //  clear all entries from the database
@@ -504,20 +500,18 @@ async function saveAnnotationsToDB(annotationObjects, req) {
     });
 
     if (existingAnnotation) {
-      console.log('✏️ Updating existing annotation document');
       existingAnnotation.data = annotationObjects;
       existingAnnotation.created_at = new Date(); // optional: refresh timestamp
       await existingAnnotation.save();
-      console.log('✅ Annotation updated in DB');
+      // console.log('✅ Annotation updated in DB');
     } else {
-      console.log('🆕 Creating new annotation document');
       const newAnnotation = new RulerMeasurements({
         user_id: req.session.user._id,
         study_id,
         data: annotationObjects
       });
       await newAnnotation.save();
-      console.log('✅ Annotation saved to DB');
+      // console.log('✅ Annotation saved to DB');
     }
   } catch (error) {
       console.error("❌ DB error trying to save annotation objects:", error);
@@ -552,7 +546,7 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
           if (seg.segmentationDataRef) {
             try {
               await fs.unlink(seg.segmentationDataRef);
-              console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
+              // console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
             } catch (err) {
               console.warn('⚠️ Failed to delete SEG file:', seg.segmentationDataRef, err);
             }
@@ -560,7 +554,7 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
         }
         parent.segmentationIds = [];
         await parent.save();
-        console.log('🗑️ All segmentations deleted for this study');
+        // console.log('🗑️ All segmentations deleted for this study');
       }
     } else {
 
@@ -586,7 +580,7 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
         });
 
         await newParent.save();
-        console.log('✅ Created new segmentation parent document');
+        // console.log('✅ Created new segmentation parent document');
         return;
       }
 
@@ -601,7 +595,7 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
         if (seg.segmentationDataRef) {
           try {
             await fs.unlink(seg.segmentationDataRef);
-            console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
+            // console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
           } catch (err) {
             console.warn('⚠️ Failed to delete SEG file:', seg.segmentationDataRef, err);
           }
@@ -640,7 +634,7 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
       // 3. SAVE ONCE
       // -----------------------------
       await parent.save();
-      console.log('✅ Segmentation document updated (add/update/delete)');
+      // console.log('✅ Segmentation document updated (add/update/delete)');
     }
 
 
@@ -711,7 +705,7 @@ async function getOrthancStudyId(studyInstanceUID) {
   }
 
   const results = await response.json();
-  console.log('🔍 Orthanc lookup results:', JSON.stringify(results));
+  // console.log('🔍 Orthanc lookup results:', JSON.stringify(results));
 
   const studyMatch = results.find(r => r.Type === 'Study');
   if (!studyMatch) {
@@ -721,19 +715,6 @@ async function getOrthancStudyId(studyInstanceUID) {
 }
 
 //=========================================================
-// Storage strategy differs by environment because the two services have
-// different filesystem realities:
-//
-// DEV: backend runs as a plain Node process on the dev host (not containerized).
-//   SEG files are saved directly to a project-relative folder:
-//     ./outputs/webquiz-liverstudy/segmentations/<username>/<studyUID>/<segmentationId>.dcm
-//
-// PROD: backend (Node service on Render) and Orthanc (webquiz-orthanc-server) are
-//   SEPARATE services/containers with no shared filesystem — the Node backend
-//   cannot fs.writeFile onto Orthanc's disk. Orthanc has the persistent disk
-//   attached, so SEG files are stored there as custom attachments via Orthanc's
-//   HTTP API (PUT/GET/DELETE). segmentationDataRef in Mongo is a JSON string of
-//   { orthancStudyId, attachmentId } in prod, vs a plain path string in dev.
 const SEG_STORAGE_ROOT = path.join(__dirname, '../outputs', 'segmentations');
  
 /**

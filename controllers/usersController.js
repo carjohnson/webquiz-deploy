@@ -90,16 +90,14 @@ exports.login_post = asyncHandler(async (req, res, next) => {
         return req.session.save((err) => {
           if (err) return next(err);
           if (user.role !== 'manager') {
-            console.log("session saved, redirecting to iframehost");
             res.redirect("/iframehost");
           } else {
-            console.log("session saved, redirecting to manager dashboard");
             res.redirect("/manager");
           }
         });
       }
     } else {
-      const fakePass = "$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga";
+      const fakePass = "$2b$10$C/7y1VOyBQfMeQiSykkAvOPWZ8kVJ3fP1CfSktBw2CFseuziGGpuS";
       await bcrypt.compare(password, fakePass);
       return res.redirect("/users/login?msg=Invalid email or password");
     }

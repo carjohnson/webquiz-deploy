@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 require("dotenv").config();
 const app = express();
 var path = require('path');
-var logger = require('morgan');
 const createError = require('http-errors');
 const crypto = require('crypto');
 
@@ -87,7 +86,11 @@ async function main() {
   console.log(`Connected to MongoDB (db: ${dbName}, ${dbCollections.length} collections)`);
 }
 
-app.use(logger('dev'));
+if (process.env.NODE_ENV != 'production') {
+  var logger = require('morgan');   // logging every HTTP request
+  app.use(logger('dev'));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

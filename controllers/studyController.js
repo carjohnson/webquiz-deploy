@@ -77,7 +77,7 @@ exports.study_validate_series = asyncHandler(async (req, res, next) => {
 // Mark entire study as complete
 exports.study_complete_post = asyncHandler(async (req, res, next) => {
   // Acting user is always the logged-in session user, never a client-
-  // supplied value — prevents one user from completing studies as
+  // supplied value ï¿½ prevents one user from completing studies as
   // another by editing the request body.
   const username = req.session.user.username;
   const { studyUID } = req.body;
@@ -136,7 +136,7 @@ exports.study_complete_post = asyncHandler(async (req, res, next) => {
 exports.series_progress_post = asyncHandler(async (req, res, next) => {
 
   // Acting user is always the logged-in session user, never a client-
-  // supplied value — see study_complete_post for rationale.
+  // supplied value ï¿½ see study_complete_post for rationale.
   const username = req.session.user.username;
   const { studyUID, seriesUID, status } = req.body;
 
@@ -202,7 +202,7 @@ exports.series_progress_post = asyncHandler(async (req, res, next) => {
 //=========================================================
 exports.study_progress_get = asyncHandler(async (req, res, next) => {
   // Acting user is always the logged-in session user, never a client-
-  // supplied value — see study_complete_post for rationale.
+  // supplied value ï¿½ see study_complete_post for rationale.
   const username = req.session.user.username;
   const { studyUID } = req.query;
 
@@ -248,10 +248,10 @@ exports.study_progress_get = asyncHandler(async (req, res, next) => {
 exports.timed_event_post = asyncHandler(async (req, res, next) => {
   try {
     // Acting user is always the logged-in session user, never a client-
-    // supplied value — see study_complete_post for rationale.
+    // supplied value ï¿½ see study_complete_post for rationale.
     const username = req.session.user.username;
     const { studyUID, event, method } = req.body;
-    console.log(' *** IN TIMED EVENT POST:', req.body);
+    // console.log(' *** IN TIMED EVENT POST:', req.body);
     if (!username || !studyUID || !event) {
       return res.status(400).json({ error: 'username, studyUID, and event are required' });
     }

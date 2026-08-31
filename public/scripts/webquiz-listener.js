@@ -1,7 +1,7 @@
 // public/scripts/webquiz-listener.js
 console.log("\x1b[32m*******  In listener script\x1b[0m");
-console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
-console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
+// console.log("\x1b[32mCurrent path:\x1b[0m", window.location.pathname);
+// console.log("\x1b[32mIs inside iframe:\x1b[0m", window !== window.parent);
 
 let received = {
   annotationObjects: false,
@@ -219,7 +219,7 @@ function postDataToWebQuizBackend(path, payload) {
 // Check that all data has been received before reloading
 //  the panel. We only want one reload.
 function maybeReloadIframe() {
-  console.log('*** In listener - Request to reload. Received props:', received);
+  // console.log('*** In listener - Request to reload. Received props:', received);
   if (received.annotationObjects && received.studyid) {
     window.parent.postMessage({ type: 'reload-webquiz' }, '*');
     received = { annotationObjects: false, studyid: false };

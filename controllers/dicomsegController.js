@@ -41,10 +41,10 @@ exports.uploadSegmentation = async (req, res) => {
     const segLabels = dataset.SegmentSequence?.map(s => s.SegmentLabel);
     const seriesUID = dataset.SeriesInstanceUID;
 
-    console.log("📦 Segmentation Received:");
-    console.log("🧬 Modality:", modality);
-    console.log("🏷️ Segment Labels:", segLabels);
-    console.log("🆔 Series UID:", seriesUID);
+    // console.log("📦 Segmentation Received:");
+    // console.log("🧬 Modality:", modality);
+    // console.log("🏷️ Segment Labels:", segLabels);
+    // console.log("🆔 Series UID:", seriesUID);
 
     // save to session so that webquizController can access the data for view
     req.session.dicomMeta = {

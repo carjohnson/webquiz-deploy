@@ -8,6 +8,8 @@ const app = express();
 var path = require('path');
 const createError = require('http-errors');
 const crypto = require('crypto');
+const { randomUUID } = require('crypto');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -68,7 +70,7 @@ const mongoUri = process.env.MONGO_URI
 
 if (!mongoUri) {
   console.error(`MongoDB URI not set for ${process.env.NODE_ENV || 'development'} environment`);
-  return;
+  process.exit(1);
 }
 
 const sessionSecretKey = process.env.NODE_ENV === 'production'
@@ -76,7 +78,7 @@ const sessionSecretKey = process.env.NODE_ENV === 'production'
   : process.env.SESSION_SECRET_DEV;
 if (!sessionSecretKey) {
   console.error(`SESSION_SECRET key for cookies not set for ${process.env.NODE_ENV || 'development'} environment`);
-  return;
+  process.exit(1);
 }
 
 // Wait for database to connect, logging an error if there is a problem.
@@ -107,7 +109,7 @@ app.use(session({
     httpOnly: true,
     secure: true,
     sameSite: 'none',
-    maxAge: 50 * 60 * 1000  // 50 min of *inactivity* logs them out
+    maxAge: 90 * 60 * 1000  // 90 min of *inactivity* logs them out
   }
 }));
 app.set('trust proxy', 1);
@@ -131,6 +133,12 @@ app.use((req, res, next) => {
 
 
 // =================================================
+
+app.use((req, res, next) => {
+  req.id = randomUUID();
+  next();
+});
+
 // lock down all routes
 app.use((req, res, next) => {
   // // 1. DEBUG LOGS
@@ -158,6 +166,15 @@ app.use((req, res, next) => {
   if (isPublicPath || isPublicAsset) {
     return next();
   } 
+
+  // JSON-only API surfaces the iframe/frontend talks to directly —
+  // never redirect these, the caller is fetch(), not a browser navigation.
+  const isJsonApi = req.originalUrl.startsWith('/webquiz') ||
+                     req.originalUrl.startsWith('/api') ||
+                     req.originalUrl.startsWith('/users');
+  if (isJsonApi) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
 
   // 5. OTHERWISE REDIRECT
   console.log("Redirecting to login for:", req.originalUrl);
@@ -188,23 +205,19 @@ app.use((req, res, next) => {
 // =================================================
 // Global Error handler (handles real errors)
 // =================================================
-app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
 
-  const status = err.status || 500;
-  res.status(status).json({ error: err.message });
+app.use((err, req, res, next) => {
+  console.error(`[${new Date().toISOString()}] [${req.id}] ${req.method} ${req.url} Error:`, err);
+
+  const status = err.status || err.statusCode || 500;
+  const isSafe = err.expose === true || (err.status && err.status < 500);
+  // const isDev = process.env.NODE_ENV !== 'production';
+  const isDev = false;
+  res.status(status).json({
+    error: isSafe ? err.message : 'Internal server error',
+    requestId: req.id,
+    ...(isDev && !isSafe ? { debug: err.message, stack: err.stack } : {})
+  });
 });
 
 module.exports = app;
-
-///////////// for debugging - list files ////////////
-// app.get('/debug-ohif', (req, res) => {
-//   const fs = require('fs');
-//   const dir = path.join(__dirname, 'public/ohif');
-//   try {
-//     const files = fs.readdirSync(dir);
-//     res.json({ exists: true, dir, files });
-//   } catch (err) {
-//     res.json({ exists: false, dir, error: err.message });
-//   }
-// });

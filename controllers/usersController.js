@@ -2,18 +2,15 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Progress = require('../models/progress');
 const Study = require("../models/study");
-
-
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const User = require("../models/user");
-
 
 //=========================================================
 exports.login_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   res.render("login", {
-    title : "Login",
-    msg   : req.query.msg,
+    title: "Login",
+    msg: req.query.msg,
   });
 });
 
@@ -21,51 +18,38 @@ exports.login_get = asyncHandler(async (req, res, next) => {
 exports.register_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   res.render("register", {
-    title : "Register",
-    msg   : req.query.msg,
+    title: "Register",
+    msg: req.query.msg,
   });
 });
 
 //=========================================================
 exports.register_post = asyncHandler(async (req, res, next) => {
-  
-      try{
         const { username, email, password } = req.body;
 
-        const userExists = await User.find({username: username})
+  const userExists = await User.find({ username: username })
             .collation({ locale: "en", strength: 2 })
             .exec();
 
-          if(userExists.length === 0){
+  if (userExists.length === 0) {
+    const hashPassword = await bcrypt.hash(password, 10);
 
-            hashPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      username: username.trim().toLowerCase(),
+      password: hashPassword,
+      email: email.trim().toLowerCase(),
+      authorized: false,
+      });
 
-            const newUser = new User({
-              username    : username.trim().toLowerCase(),
-              password    : hashPassword,
-              email       : email.trim().toLowerCase(),
-              authorized  : false,
-            });
-
-            await newUser.save();
-            res.redirect('/users/login?msg=Account created! Please contact the administrator for authorization.');
-            
-          } else {
-            res.redirect('/users/register?msg=Username unavailable');
-          }
-    } catch (error) {
-      if (error.name === 'ValidationError') {
-        const errors = Object.values(error.errors).map(err => err.message).join(', ');
-        return res.render('register', { msg: errors, formData: req.body });
+    await newUser.save();
+        res.redirect('/users/login?msg=Account created! Please contact the administrator for authorization.');
+      } else {
+        res.redirect('/users/register?msg=Username unavailable');
       }
-      error.message = `usersController>register_post: ${error.message}`;
-      throw error; 
-    }
-  });
+});
 
 //=========================================================
 exports.login_post = asyncHandler(async (req, res, next) => {
-  try {
     const { email, password } = req.body;
 
     const userExists = await User.find({ email: email.toLowerCase().trim() })
@@ -103,25 +87,23 @@ exports.login_post = asyncHandler(async (req, res, next) => {
     }
 
     return res.redirect("/users/login?msg=Invalid email or password");
-  } catch (error) {
-    error.message = `usersController>login_post: ${error.message}`;
-    throw error;
-  }
 });
 
-
 //=========================================================
-exports.logout_get = asyncHandler(async (req,res,next) => {
-  try {
-    // log the date/time that the user is logging out
-    const userId = req.session?.userId || req.session?.user?._id;
-    const studyUID = req.session?.studyUID;
-    const study = await Study.findOne({ studyUID });
-    
+exports.logout_get = asyncHandler(async (req, res, next) => {
+  const userId = req.session?.userId || req.session?.user?._id;
+  const studyUID = req.session?.studyUID;
 
-    if (userId && studyUID) {
+  let studyErrorOccurred = false;
+
+  if (userId && studyUID) {
+    const studyInDB = await Study.findOne({ studyUID });
+    const userInDB = await User.findOne({ _id: userId });
+
+    if (userInDB && studyInDB) {
+      // Record standard 'close' event in Progress document
       await Progress.findOneAndUpdate(
-        { user_id: userId, study_id: study._id },
+        { user_id: userInDB._id, study_id: studyInDB._id },
         {
           $push: {
             timed_events: {
@@ -130,64 +112,70 @@ exports.logout_get = asyncHandler(async (req,res,next) => {
               method: 'logout',
             },
           },
-          $set: {
-            updated_at: new Date(),
-          },
+          $set: { updated_at: new Date() },
         },
         { new: true }
       );
+    } else {
+      // Flag that study or user record was missing/invalid
+      studyErrorOccurred = true;
     }
-
-    req.session.destroy(() => {
-      res.render('logout', {message: "Thank you for participating!"});
-    });
-
-  } catch (error) {
-    error.message = `usersController>logout_get: ${error.message}`;
-    throw error; 
+  } else if (studyUID && !userId) {
+    // Flag if session had a studyUID but no user session context
+    studyErrorOccurred = true;
   }
 
+  // Define user-facing feedback messages
+  const message = "Thank you for participating!";
+  const errorMessage = studyErrorOccurred
+    ? "An issue was detected with your session study record during logout. If you were working on a study, please notify your administrator."
+    : null;
+
+  // Always tear down session and clear cookie
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) return next(err);
+
+      res.clearCookie('connect.sid');
+      return res.render('logout', { 
+        message, 
+        errorMessage, 
+        hasError: studyErrorOccurred 
+      });
+    });
+  } else {
+    res.clearCookie('connect.sid');
+    return res.render('logout', { 
+      message, 
+      errorMessage, 
+      hasError: studyErrorOccurred 
+    });
+  }
 });
 
 //=========================================================
-exports.about_get = asyncHandler(async (req,res,next) => {
-  try {
+exports.about_get = asyncHandler(async (req, res, next) => {
     res.render('about');
-  } catch (error) {
-    error.message = `usersController>about_get: ${error.message}`;
-    throw error; 
-  }
-
 });
-
-
 
 //=========================================================
 exports.sessioninfo_get = asyncHandler(async (req, res, next) => {
-  try {
     if (req.session && req.session.user) {
-      // req.session.user is the full user document (it's assigned wholesale
-      // at login) only send relevant information to frontend
       const sessionUser = req.session.user;
 
       const safeUserInfo = {
         username: sessionUser.username,
         role: sessionUser.role,
-      }
+    };
       res.json(safeUserInfo);
     } else {
       res.status(401).json({ error: 'Not logged in' });
     }
-  } catch (error) {
-    error.message = `usersController>sessioninfo_get: ${error.message}`;
-    throw error; // asyncHandler will pass this to your global error handler (catch 500 in app.js)
-  }
 });
 
 //=========================================================
 // add the studyUID to the session
 exports.sessionstudy_post = asyncHandler(async (req, res, next) => {
-  try {
     const { studyUID } = req.body;
 
     if (!studyUID) {
@@ -200,8 +188,4 @@ exports.sessionstudy_post = asyncHandler(async (req, res, next) => {
       ok: true,
       studyUID: req.session.studyUID,
     });
-  } catch (error) {
-    error.message = `usersController>sessionstudy_post: ${error.message}`;
-    throw error;
-  }
 });

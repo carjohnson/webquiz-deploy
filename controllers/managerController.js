@@ -10,9 +10,10 @@ const {
     stageUploadedBackup,
     resolveStagedUploadDir,
     cleanupStagedUpload,
-    } = require("../utils/restoreUpload");
+} = require("../utils/restoreUpload");
 const path = require("path");
-const BACKUP_ROOT = path.join(process.cwd(),'backups');
+
+const BACKUP_ROOT = path.join(process.cwd(), 'backups');
 const RESTORE_UPLOADS_ROOT = path.join(process.cwd(), 'restore-uploads');
 const OUTPUTS_ROOT =  path.join(process.cwd(), 'outputs');
 const RESTORE_LOGS_ROOT = path.join(process.cwd(), 'restoreLogs');
@@ -41,18 +42,13 @@ exports.backup_get = asyncHandler(async (req, res, next) => {
  *  - currently at the backend server's disk in a folder name 'backups'
  */
 exports.backup_download = asyncHandler(async (req, res, next) => {
-  try {
     const file = req.params.file;
     if (!file) {
       return res.status(400).send("Missing file name");
     }
 
     const zipPath = path.join(BACKUP_ROOT, file);
-
     return res.download(zipPath, file);
-  } catch (err) {
-    next(err);
-  }
 });
 
 // =========================================================
@@ -74,8 +70,7 @@ exports.backup_post = asyncHandler(async (req, res, next) => {
 
     const result = await backupService.runBackup(BACKUP_ROOT);
     
-    const status =
-      result.failCount > 0 ? "partial" : "success";
+    const status = result.failCount > 0 ? "partial" : "success";
       let zipFileName = null;
 
     if (status === "success") {
@@ -97,6 +92,7 @@ exports.backup_post = asyncHandler(async (req, res, next) => {
     });
 
   } catch (err) {
+    // Render error view for user-facing status feedback
     res.render("manager/backupstatus", {
       title: "Backup Status",
       status: "error",
@@ -107,10 +103,8 @@ exports.backup_post = asyncHandler(async (req, res, next) => {
   }
 });
 
-
 // =========================================================
 exports.restore_get = asyncHandler(async (req, res, next) => {
-  // connect to *.pug view
   const envMode = process.env.NODE_ENV;
  
   res.render('manager/restore', {
@@ -174,9 +168,6 @@ exports.restore_cancel_upload = asyncHandler(async (req, res, next) => {
 // =========================================================
 exports.restore_post = asyncHandler(async (req, res, next) => {
   const { uploadId } = req.body;
- 
-  // uploadId is server-generated (see utils/restoreUpload.js) — never a
-  // raw client-supplied path — so resolving it here is safe.
   const stagingDir = resolveStagedUploadDir(uploadId, RESTORE_UPLOADS_ROOT);
  
   if (!stagingDir) {
@@ -189,9 +180,7 @@ exports.restore_post = asyncHandler(async (req, res, next) => {
  
   try {
     const envMode = process.env.NODE_ENV;
- 
     const result = await restoreService.runRestore(stagingDir, envMode, OUTPUTS_ROOT, RESTORE_LOGS_ROOT);
- 
     const status = result.failCount > 0 ? "partial" : "success";
  
     res.render("manager/restorestatus", {
@@ -218,10 +207,9 @@ exports.restore_post = asyncHandler(async (req, res, next) => {
       // succeeded or failed.
       cleanupStagedUpload(uploadId, RESTORE_UPLOADS_ROOT);
     }
-  });
+});
 
 // =========================================================
-// GET User Management (Combined Authorize & Reset Password)
 exports.manage_user_get = asyncHandler(async (req, res, next) => {
   const allUsers = await userManagementService.getAllUsersFormatted();
 
@@ -235,7 +223,6 @@ exports.manage_user_get = asyncHandler(async (req, res, next) => {
 });
 
 // =========================================================
-// POST User Management Action Handler
 exports.manage_user_post = asyncHandler(async (req, res, next) => {
   try {
     const { userName, newPassword, action } = req.body;
@@ -263,7 +250,6 @@ exports.manage_user_post = asyncHandler(async (req, res, next) => {
       statusMsg = `Password for user '${userName}' was reset successfully.`;
     }
 
-    // Refresh user list so updated states (like authorized status) display immediately
     const updatedUsers = await userManagementService.getAllUsersFormatted();
 
     return res.render("manager/usermanagement", {
@@ -285,6 +271,7 @@ exports.manage_user_post = asyncHandler(async (req, res, next) => {
     });
   }
 });
+
 // =========================================================
 exports.report_progress_get = asyncHandler(async (req, res, next) => {
   const rows = await Progress.aggregate([
@@ -343,7 +330,6 @@ exports.report_progress_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-
 // =========================================================
 exports.upload_pacs_folder_post = asyncHandler(async (req, res, next) => {
     res.render("manager/manager", {
@@ -370,7 +356,6 @@ exports.upload_db_studies_post = asyncHandler(async (req, res, next) => {
 
 // =========================================================
 exports.exit_post = asyncHandler(async (req, res, next) => {
-  try {
     if (!req.session) {
       return res.redirect("/users/login");
     }
@@ -380,8 +365,4 @@ exports.exit_post = asyncHandler(async (req, res, next) => {
       res.clearCookie("connect.sid");
       return res.redirect("/users/login");
     });
-  } catch (error) {
-    error.message = `managerController>exit_post: ${error.message}`;
-    throw error;
-  }
 });

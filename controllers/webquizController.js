@@ -7,7 +7,6 @@ const User = require('../models/user');
 const Study = require("../models/study");
 const Segmentations = require("../models/segmentations");
 
-
 const userColors = [
   '#e6194b', '#46f0f0', '#e6beff', '#4363d8', '#f58231',
   '#911eb4', '#b2b43c', '#f032e6', '#bcf60c', '#fabebe',
@@ -27,13 +26,11 @@ const suspicionScores = [
 exports.index = asyncHandler(async (req, res, next) => {
   const legend = req.session.legend || [];
 
-  // connect to *.pug view
   res.render("webquiz", {
     title: "Quiz",
     legend,
     suspicionScores,
   });
-
 });
 
 //=========================================================
@@ -46,39 +43,36 @@ exports.post_clear_session = (req, res) => {
 };
 
 //=========================================================
-exports.post_studyid = async (req, res) => {
-  // console.log("📥 Incoming POST for studyid");
-  // console.log("🔍 Body:", req.body);
-  // console.log("🧪 Session BEFORE lookup:", req.session);
+exports.post_studyid = asyncHandler(async (req, res, next) => {
+  let payload = req.body?.payload;
 
-  try {
-    let payload = req.body.payload;
-    if (typeof payload === 'string') {
-      try {
-        payload = JSON.parse(payload);
-      } catch (err) {
-        console.error("❌ Failed to parse payload JSON:", err, payload);
-        return res.status(400).json({ error: "Invalid JSON payload" });
-      }
-    }
-
-    const studyuid = payload.studyuid;
-
-    const study = await Study.findOne({ studyUID: studyuid });
-
-    if (!study) {
-      console.log("❌ Study not found for UID:", studyuid);
-      return res.status(404).json({ error: "Study not found" });
-    }
-
-    req.session.study_id = study._id;
-    // console.log("💾 Session AFTER saving study_id:", req.session);
-    res.json({ success: true, study_id: study._id });
-  } catch (err) {
-    console.error("❌ Error in post_studyid:", err);
-    res.status(500).json({ error: "Server error" });
+  if (!payload) {
+    return res.status(400).json({ error: "Missing payload in request body" });
   }
-};
+
+  // Handle stringified JSON safely
+  if (typeof payload === 'string') {
+    try {
+      payload = JSON.parse(payload);
+    } catch (err) {
+      return res.status(400).json({ error: "Invalid JSON payload format" });
+    }
+  }
+
+  const studyuid = payload?.studyuid;
+  if (!studyuid) {
+    return res.status(400).json({ error: "Missing studyuid in payload" });
+  }
+
+  const study = await Study.findOne({ studyUID: studyuid });
+
+  if (!study) {
+    return res.status(404).json({ error: `Study not found: ${studyuid}` });
+  }
+
+  req.session.study_id = study._id;
+  res.json({ success: true, study_id: study._id });
+});
 
 //=========================================================
 exports.list_study_seriesToBeAnnotated = asyncHandler(async (req, res, next) => {
@@ -91,7 +85,7 @@ exports.list_study_seriesToBeAnnotated = asyncHandler(async (req, res, next) => 
   const study = await Study.findOne({ studyUID });
 
   if (!study) {
-    return res.status(404).json({ error: 'Study not found' });
+    return res.status(404).json({ error: `Study not found: ${studyUID}` });
   }
 
   return res.json({
@@ -99,96 +93,81 @@ exports.list_study_seriesToBeAnnotated = asyncHandler(async (req, res, next) => 
     payload: study.seriesUIDsToBeAnnotated,
   });
 });
+
 //=========================================================
-// route to send either all users' annotations or a specific user's annotations to the Viewer iframe when requested
-//  This is not relayed through the parent. The request from the viewer is direct to the server
 exports.list_users_annotations = asyncHandler(async (req, res, next) => {
   const sessionUser = req.session.user;
   const { username, studyUID } = req.query;
+  
   const study = await Study.findOne({ studyUID });
   if (!study) {
-    return res.status(400).json({ error: 'Study not found' });  // front end checks for this error
+    return res.status(404).json({ error: `Study not found (${studyUID}) when listing annotations` });
   }
   const study_id = study._id;
 
   if (!sessionUser) {
-    return res.status(401).json({ error: 'User not authenticated' });
+    return res.status(401).json({ error: `User not authenticated (${username}) when listing annotations` });
   }
 
+  let annotationsList = [];
+  let legend = [];
 
-  try {
+  if (sessionUser.role === 'admin') {
+    const studyAnnotations = await RulerMeasurements.find({ study_id });
 
-    let annotationsList = [];
+    // 🧮 Map user ID to index
+    const uniqueUserIds = [...new Set(studyAnnotations.map(doc => doc.user_id.toString()))];
+    const userIndexMap = new Map();
+    uniqueUserIds.forEach((userId, idx) => {
+      userIndexMap.set(userId, idx);
+    });
 
+    // build list of annotations with user id and assigned color
+    annotationsList = studyAnnotations.map(doc => ({
+      data: doc.data,
+      user_id: doc.user_id,
+      color: userColors[userIndexMap.get(doc.user_id.toString()) % userColors.length]
+    }));
 
-    if (sessionUser.role === 'admin') {
-      // Admin: get all annotations for the specified study
-      const studyAnnotations = await RulerMeasurements.find({study_id});
+    const users = await User.find({ _id: { $in: uniqueUserIds } });
+    const userNameMap = new Map();
+    users.forEach(user => {
+      userNameMap.set(user._id.toString(), user.username);
+    });
 
-      // 🧮 Map user ID to index
-      const uniqueUserIds = [...new Set(studyAnnotations.map(doc => doc.user_id.toString()))];
-      const userIndexMap = new Map();
-      uniqueUserIds.forEach((userId, idx) => {
-        userIndexMap.set(userId, idx);
-      });
+    legend = uniqueUserIds.map(userId => ({
+      user_id: userId,
+      user_name: userNameMap.get(userId),
+      color: userColors[userIndexMap.get(userId) % userColors.length],
+      index: userIndexMap.get(userId)
+    }));
 
-      // build list of annotations with user id and assigned color
-      annotationsList = studyAnnotations.map(doc => ({
-        data: doc.data,
-        user_id: doc.user_id,
-        color: userColors[userIndexMap.get(doc.user_id.toString()) % userColors.length]
-      }));
+  } else if (sessionUser.role === 'reader') {
+    const userid = sessionUser._id;
+    const userAnnotations = await RulerMeasurements.find({
+      user_id: userid,
+      study_id,
+    });
 
-      // get user name for legend
-      const users = await User.find({
-        _id: { $in: uniqueUserIds}
-      });
-      const userNameMap = new Map();
-      users.forEach(user => {
-        userNameMap.set(user._id.toString(), user.username);
-      })
+    const user = await User.findOne({ _id: userid });
+    const username = user?.username ?? 'Unknown';
 
-      var legend = uniqueUserIds.map(userId => ({
-        user_id: userId,
-        user_name: userNameMap.get(userId),
-        color: userColors[userIndexMap.get(userId) % userColors.length],
-        index: userIndexMap.get(userId)
-      }));
+    annotationsList = userAnnotations.map(doc => ({
+      data: doc.data,
+      user_id: doc.user_id,
+      color: userColors[1]
+    }));
 
-    } else if (sessionUser.role === 'reader') {
-      // Reader: get annotations for this user and study
-      const userid = sessionUser._id;
-      const userAnnotations = await RulerMeasurements.find({
-        user_id: userid,
-        study_id,
-      });
-
-      const user = await(User.findOne({
-        _id: userid
-      }));
-      const username = user?.username ?? 'Unknown';
-
-      annotationsList = userAnnotations.map(doc => ({
-        data: doc.data,
-        user_id: doc.user_id,
-        color: userColors[1]
-      }));
-
-      var legend = [{
-        user_id: userid.toString(),
-        user_name: username,
-        color: userColors[1],
-        index: 1
-      }];
-
-    }
+    legend = [{
+      user_id: userid.toString(),
+      user_name: username,
+      color: userColors[1],
+      index: 1
+    }];
+  }
 
     // console.log('🧮 Annotations list with colours', annotationsList);
     res.json({ type: 'list-users-annotations', payload: annotationsList, legend });
-  } catch (err) {
-    console.error('❌ Error retrieving annotations:', err);
-    next(err);
-  }
 });
 
 //=========================================================
@@ -197,20 +176,19 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
   const { username, studyUID } = req.query;
 
   if (!sessionUser) {
-    return res.status(401).json({ error: 'User not authenticated' });
+    return res.status(401).json({ error: `User not authenticated (${username})` });
   }
 
   const study = await Study.findOne({ studyUID });
   if (!study) {
-    return res.status(400).json({ error: 'Study not found' });  // front end checks for this error
+    return res.status(404).json({ error: `Study not found (${studyUID}) when retrieving segmentations` });
   }
 
   const user = await User.findOne({ username });
   if (!user) {
-    return res.status(400).json({ error: 'User not found' });
+    return res.status(404).json({ error: `User not found (${username}) when retrieving segmentations` });
   }
 
-  try {
     const userStudySegmentations = await Segmentations.find({
       user_id: user._id,
       study_id: study._id,
@@ -240,20 +218,15 @@ exports.list_study_segmentations = asyncHandler(async (req, res, next) => {
     }
 
     res.json({ type: 'list-study-segmentations', payload: segmentationsList });
-  } catch (err) {
-    console.error('❌ Error retrieving segmentations:', err);
-    next(err);
-  }
 });
 
 // =========================================================
-
 exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   const { segmentationId } = req.query;
   const sessionUser = req.session.user;
  
   if (!segmentationId) {
-    return res.status(400).json({ error: 'Missing segmentationId query param' });
+    return res.status(400).json({ error: 'Missing segmentationId query parameter' });
   }
   if (!sessionUser) {
     return res.status(401).json({ error: 'User not authenticated' });
@@ -264,27 +237,20 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   });
  
   if (!segDoc) {
-    return res.status(404).json({ error: 'Segmentation not found' });
+    return res.status(404).json({ error: `Segmentation document not found for ID: ${segmentationId}` });
   }
  
-  // Auth: ensure this segmentation belongs to the session user
   if (segDoc.user_id.toString() !== sessionUser._id.toString()) {
-    return res.status(403).json({ error: 'Forbidden: not your segmentation' });
+    return res.status(403).json({ error: 'Forbidden: Access to segmentation denied' });
   }
  
   const entry = segDoc.segmentationIds.find(e => e.segmentationId === segmentationId);
  
   if (!entry?.segmentationDataRef) {
-    return res.status(404).json({ error: 'SEG file reference missing' });
+    return res.status(404).json({ error: 'SEG file reference missing in segmentation document' });
   }
  
-  let fileBuffer;
-    try {
-      fileBuffer = await safeReadFile(entry.segmentationDataRef);
-    } catch (err) {
-      console.error('❌ Failed to read SEG file:', entry.segmentationDataRef, err);
-      return res.status(500).json({ error: 'Failed to read SEG file' });
-    }
+  const fileBuffer = await safeReadFile(entry.segmentationDataRef);
  
     if (!fileBuffer) {
       return res.status(404).json({ error: 'SEG file not found on disk' });
@@ -298,8 +264,8 @@ exports.get_segmentation_file = asyncHandler(async (req, res, next) => {
   res.send(fileBuffer);
 });
 
-
-exports.post_segmentationObjects = async (req, res) => {
+// =========================================================
+exports.post_segmentationObjects = asyncHandler(async (req, res, next) => {
   // >>>>>  Segmentation objects - blob data  <<<<<<<<<<<<<<<<<<<<<<<<<<<
   // console.log('📥 Incoming POST for Segmentation ... length:', Object.keys(req.body).length);
  
@@ -307,69 +273,68 @@ exports.post_segmentationObjects = async (req, res) => {
     // console.log('✅ Saving segmentations:', req.body);
     // console.log('✅ Saving segmentations:');
     const segmentations = [];
-    const username = req.session.user.username;
-    const study_id = req.session.study_id;
+    const username = req.session?.user?.username;
+    const study_id = req.session?.study_id;
+
+    if (!username || !study_id) {
+      return res.status(400).json({ error: "Missing session context (username or study_id)" });
+    }
  
     // Reconstruct array from segObj_X_metadata + blobs 
     for (const field of Object.keys(req.body)) {
       if (field.endsWith('_metadata')) {
- 
         const match = field.match(/segObj_(\d+)_metadata/);
         if (!match) continue;
         
         const index = parseInt(match[1]);
-        const metadata = JSON.parse(req.body[field]);
         
-        // ✅ Now safely find matching blob
+        let metadata;
+        try {
+          metadata = JSON.parse(req.body[field]);
+        } catch (e) {
+          return res.status(400).json({ error: `Invalid JSON metadata for ${field}` });
+        }
+        
         const blobFile = req.files?.find(f => f.fieldname === `segObj_${index}_blob`);
         
         if (blobFile) {
           // ---- Save to flat file storage on the Node app's disk ----
           // Resolve the DICOM StudyInstanceUID so the folder shape is
-          // consistent: <root>/username/studyUID/segmentationId.dcm
+          // consistent: <root>/username/studyName/segmentationId.dcm
           const studyDoc = await Study.findById(study_id);
           if (!studyDoc) {
-            console.error('❌ Study not found in DB for study_id:', study_id);
-            return res.status(404).json({ error: 'Study not found' });
+            return res.status(404).json({ error: `Study not found in DB for ID: ${study_id}` });
           }
           const studyName = studyDoc.studyName;
           const { dir, filepath } = segFilePath(username, studyName, metadata.segmentationId);
 
-          try {
-            // Ensure directory exists, and keep permissions open so the
-            // node app (and any other process on the box) can read/write/
-            // delete these files later regardless of the umask.
-            await fs.mkdir(dir, { recursive: true });
-            await fs.chmod(dir, 0o777);
+          // Ensure directory exists, and keep permissions open so the
+          // node app (and any other process on the box) can read/write/
+          // delete these files later regardless of the umask.
+          await fs.mkdir(dir, { recursive: true });
+          await fs.chmod(dir, 0o777);
 
-            // ✅ Save blob to disk
-            await fs.writeFile(filepath, blobFile.buffer);
-            await fs.chmod(filepath, 0o666);
-            // console.log(`💾 Saved segfile ${blobFile.size} bytes to ${filepath}`);
+          await fs.writeFile(filepath, blobFile.buffer);
+          await fs.chmod(filepath, 0o666);
+          // console.log(`💾 Saved segfile ${blobFile.size} bytes to ${filepath}`);
 
-            metadata.segmentationDataRef = filepath;
-          } catch (err) {
-            console.error('❌ Failed to save SEG file to disk:', filepath, err);
-            return res.status(500).json({ error: 'Failed to save SEG file' });
-          }
-
+          metadata.segmentationDataRef = filepath;
         } else {
           console.warn(`⚠️ No blob found for segObj_${index}_blob`);
         }
         segmentations[index] = metadata;
       }
-    }  // end for loop
+    }
  
     const validSegs = segmentations.filter(Boolean);
-    // console.log('✅ Reconstructed:', validSegs);
     
     await saveSegmentationsToDB(validSegs, req);
     res.json({ success: true, count: validSegs.length });
  
   } else {
     // ---- Last segmentation deleted ---- remove from DB and file storage
-    const userid = req.session.user._id;
-    const study_id = req.session.study_id;
+    const userid = req.session?.user?._id;
+    const study_id = req.session?.study_id;
     if (!userid || !study_id) {
       console.warn('⚠️ Missing userid/study_id, skipping delete');
       return res.json({ success: true });
@@ -384,7 +349,6 @@ exports.post_segmentationObjects = async (req, res) => {
           //  - delete the file from the Node app's flat file storage.
           try {
             await fs.unlink(segId.segmentationDataRef);
-            // console.log('🗑️ Deleted file:', segId.segmentationDataRef);
           } catch (err) {
             console.warn('⚠️ Failed to delete file:', segId.segmentationDataRef, err);
           }
@@ -392,52 +356,35 @@ exports.post_segmentationObjects = async (req, res) => {
       } // end for each segId
  
       await Segmentations.deleteMany({ study_id, user_id: userid });
-      console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
+      // console.log('🗑️ All segmentations deleted from DB for study', study_id, 'user', userid);
     }
     res.json({ success: true });
   } // end else - last seg deleted
-}
-
-
-//=========================================================
-exports.post_annotationObjects = handleSessionPost( {key: 'annotationObjects', keyLabel: 'annotationObjects'});
+});
 
 //=========================================================
-exports.post_legend = handleSessionPost( {key: 'legend', keyLabel: 'legend'});
+exports.post_annotationObjects = handleSessionPost({ key: 'annotationObjects', keyLabel: 'annotationObjects' });
 
 //=========================================================
+exports.post_legend = handleSessionPost({ key: 'legend', keyLabel: 'legend' });
 
 //=========================================================
 // >>>>>>>>>>>>> Helper functions <<<<<<<<<<<<<
 //=========================================================
 function handleSessionPost({ key, keyLabel }) {
-  return async (req, res, next) => {
+  return asyncHandler(async (req, res, next) => {
+    let payload = req.body?.payload;
 
-    // 🔎 Log the raw payload and the extracted data - for debug
-    // console.log(`📥 Incoming POST for ${keyLabel}`, '... Key :', key);
-
-    // console.log('🔎 In handleSessionPost ... req', req.body);
-    // console.log('Full req.body:', JSON.stringify(req.body, null, 2));
-    // console.log(`Extracted data for key "${key}":`, JSON.stringify(data, null, 2));
-
-
-    // >>>>>  JSON strings  <<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-    let payload = req.body.payload;
-    // if payload is a JSON string, parse it
     if (typeof payload === 'string') {
       try {
         payload = JSON.parse(payload);
       } catch (e) {
-        console.error('❌ Failed to parse payload JSON:', e, 'payload:', req.body.payload);
-        return res.status(400).json({ error: 'Invalid JSON payload' });
+        return res.status(400).json({ error: `Invalid JSON payload format for ${keyLabel}` });
       }
     }
 
     const data = payload?.[key];
-    if (!data) return res.status(400).json({ error: `Missing ${keyLabel}` });
-
-    try {
+    if (!data) return res.status(400).json({ error: `Missing ${keyLabel} in payload` });
 
       req.session[key] = data;
 
@@ -448,52 +395,36 @@ function handleSessionPost({ key, keyLabel }) {
         });
       });
 
-      // console.log(`✅ ${keyLabel} session saved`);
-      if (key === 'legend') {
-      }
-
-      // >>>>>  annotation objects - JSON strings
-
       if (key === 'annotationObjects' && Array.isArray(data)) {
         if (data.length > 0) {
           await saveAnnotationsToDB(data, req);
-          // console.log('✅ Annotations saved to DB');
         } else {
           // last annotation for this userid/studyid has been deleted
           //  clear all entries from the database
-          const userid = req.session.user._id
-          const study_id = req.session.study_id;
+          const userid = req.session?.user?._id;
+          const study_id = req.session?.study_id;
 
           if (!userid || !study_id) {
             console.warn('⚠️ Missing userid/studyid, skipping delete');
           } else {
             await RulerMeasurements.deleteMany({ study_id, user_id: userid });
-            console.log('🗑️ All annotations deleted from DB for study', study_id, 'user', userid);
           }
         }
       }
 
       res.json({ status: 'ok' });
-    } catch (err) {
-      console.error(`❌ Error in webquizController>handleSessionPost:`, err);
-      next(err);
-    }
-  };
+  });
 }
-
 
 //=========================================================
 async function saveAnnotationsToDB(annotationObjects, req) {
-  // first get user id based on user name
-  const username = req.session.user.username;
-  const study_id = req.session.study_id;
+  const username = req.session?.user?.username;
+  const study_id = req.session?.study_id;
 
   if (!username || !study_id) {
-    console.error("❌ Missing user or study ID in session");
-    return;
+    throw new Error("Missing user or study ID in session when saving annotations");
   }
 
-  try {
     const existingAnnotation = await RulerMeasurements.findOne({
       user_id: req.session.user._id,
       study_id: req.session.study_id,
@@ -501,9 +432,8 @@ async function saveAnnotationsToDB(annotationObjects, req) {
 
     if (existingAnnotation) {
       existingAnnotation.data = annotationObjects;
-      existingAnnotation.created_at = new Date(); // optional: refresh timestamp
+    existingAnnotation.created_at = new Date();
       await existingAnnotation.save();
-      // console.log('✅ Annotation updated in DB');
     } else {
       const newAnnotation = new RulerMeasurements({
         user_id: req.session.user._id,
@@ -511,87 +441,28 @@ async function saveAnnotationsToDB(annotationObjects, req) {
         data: annotationObjects
       });
       await newAnnotation.save();
-      // console.log('✅ Annotation saved to DB');
-    }
-  } catch (error) {
-      console.error("❌ DB error trying to save annotation objects:", error);
-      throw error;
   }
 }
 
-
 //=========================================================
 async function saveSegmentationsToDB(segmentationObjects, req) {
-  // first get user id based on user name
-  const username = req.session.user.username;
-  const study_id = req.session.study_id;
+  const username = req.session?.user?.username;
+  const study_id = req.session?.study_id;
 
-  // console.log("*** USER NAME: ", username,  "  STUDY:", study_id, "Seg Objects:", segmentationObjects);
   if (!username || !study_id) {
-    console.error("❌ Missing user or study ID in session");
-    return;
+    throw new Error("Missing user or study ID in session when saving segmentations");
   }
-  try {
 
-    const parent = await Segmentations.findOne({
+  const parent = await Segmentations.findOne({
       user_id: req.session.user._id,
       study_id,
     });
 
-    if (segmentationObjects.length === 0) {
-      // no segmentation objects for this study (deleted in frontend)
-      if (parent) {
-        // ✅ Delete the SEG files on disk for every entry before wiping the DB record
-        for (const seg of parent.segmentationIds) {
-          if (seg.segmentationDataRef) {
-            try {
-              await fs.unlink(seg.segmentationDataRef);
-              // console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
-            } catch (err) {
-              console.warn('⚠️ Failed to delete SEG file:', seg.segmentationDataRef, err);
-            }
-          }
-        }
-        parent.segmentationIds = [];
-        await parent.save();
-        // console.log('🗑️ All segmentations deleted for this study');
-      }
-    } else {
-
-      // const incomingSegs = segmentationObjects; // from frontend
-      const incomingSegs = segmentationObjects.map(seg => ({
-        ...seg,
-        segments: seg.segments.map(s => ({
-          ...s,
-          segmentMaskValue: s.segmentIndex,
-        })),
-      }));
-      const incomingIds = incomingSegs.map(s => s.segmentationId);
-
-      if (!parent) {
-        // No parent exists → create new document with all incoming segmentations
-        const newParent = new Segmentations({
-          user_id: req.session.user._id,
-          study_id,
-          segmentationIds: incomingSegs.map(seg => ({
-            ...seg,
-            created_at: new Date(),
-          })),
-        });
-
-        await newParent.save();
-        // console.log('✅ Created new segmentation parent document');
-        return;
-      }
-
-      // -----------------------------
-      // 1. DELETE removed segmentations (DB entry + SEG file on disk)
-      // -----------------------------
-      const removedSegs = parent.segmentationIds.filter(
-        dbSeg => !incomingIds.includes(dbSeg.segmentationId)
-      );
-
-      for (const seg of removedSegs) {
+  if (segmentationObjects.length === 0) {
+    // no segmentation objects for this study (deleted in frontend)
+    if (parent) {
+      // ✅ Delete the SEG files on disk for every entry before wiping the DB record
+      for (const seg of parent.segmentationIds) {
         if (seg.segmentationDataRef) {
           try {
             await fs.unlink(seg.segmentationDataRef);
@@ -601,65 +472,90 @@ async function saveSegmentationsToDB(segmentationObjects, req) {
           }
         }
       }
-
-      parent.segmentationIds = parent.segmentationIds.filter(dbSeg =>
-        incomingIds.includes(dbSeg.segmentationId)
-      );
-
-      // -----------------------------
-      // 2. UPDATE existing + ADD new
-      // -----------------------------
-      for (const seg of incomingSegs) {
-        const index = parent.segmentationIds.findIndex(
-          s => s.segmentationId === seg.segmentationId
-        );
-
-        if (index !== -1) {
-          // Update existing
-          parent.segmentationIds[index] = {
-            ...parent.segmentationIds[index],
-            ...seg,
-            created_at: new Date(),
-          };
-        } else {
-          // Add new
-          parent.segmentationIds.push({
-            ...seg,
-            created_at: new Date(),
-          });
-        }
-      }
-
-      // -----------------------------
-      // 3. SAVE ONCE
-      // -----------------------------
+      parent.segmentationIds = [];
       await parent.save();
-      // console.log('✅ Segmentation document updated (add/update/delete)');
+      // console.log('🗑️ All segmentations deleted for this study');
+    }
+  } else {
+    const incomingSegs = segmentationObjects.map(seg => ({
+      ...seg,
+      segments: seg.segments.map(s => ({
+        ...s,
+        segmentMaskValue: s.segmentIndex,
+      })),
+    }));
+    const incomingIds = incomingSegs.map(s => s.segmentationId);
+
+    if (!parent) {
+      // No parent exists → create new document with all incoming segmentations
+      const newParent = new Segmentations({
+        user_id: req.session.user._id,
+        study_id,
+        segmentationIds: incomingSegs.map(seg => ({
+          ...seg,
+          created_at: new Date(),
+        })),
+      });
+
+      await newParent.save();
+      return;
     }
 
+    // -----------------------------
+    // 1. DELETE removed segmentations (DB entry + SEG file on disk)
+    // -----------------------------
+    const removedSegs = parent.segmentationIds.filter(
+      dbSeg => !incomingIds.includes(dbSeg.segmentationId)
+    );
 
+    for (const seg of removedSegs) {
+      if (seg.segmentationDataRef) {
+        try {
+          await fs.unlink(seg.segmentationDataRef);
+          // console.log('🗑️ Deleted SEG file:', seg.segmentationDataRef);
+        } catch (err) {
+          console.warn('⚠️ Failed to delete SEG file:', seg.segmentationDataRef, err);
+        }
+      }
+    }
 
+    parent.segmentationIds = parent.segmentationIds.filter(dbSeg =>
+      incomingIds.includes(dbSeg.segmentationId)
+    );
 
+    // -----------------------------
+    // 2. UPDATE existing + ADD new
+    // -----------------------------
+    for (const seg of incomingSegs) {
+      const index = parent.segmentationIds.findIndex(
+        s => s.segmentationId === seg.segmentationId
+      );
 
-  } catch (error) {
-      console.error("❌ DB error trying to save segmentation objects:", error);
-      throw error;
+      if (index !== -1) {
+        parent.segmentationIds[index] = {
+          ...parent.segmentationIds[index],
+          ...seg,
+          created_at: new Date(),
+        };
+      } else {
+        parent.segmentationIds.push({
+          ...seg,
+          created_at: new Date(),
+        });
+      }
+    }
+
+    // -----------------------------
+    // 3. SAVE ONCE
+    // -----------------------------
+    await parent.save();
   }
 }
 
-
-
-
-
 //=========================================================
-//=========================================================
-//===================  HELPERS  ===========================
-//=========================================================
+// HELPERS
 //=========================================================
 
-
-
-//=========================================================
 async function safeReadFile(path) {
   try {
     return await fs.readFile(path);
@@ -697,7 +593,7 @@ async function getOrthancStudyId(studyInstanceUID) {
   const response = await fetch(`${process.env.ORTHANC_URL}/tools/lookup`, {
     method: 'POST',
     headers: orthancHeaders({ 'Content-Type': 'application/json' }),
-    body: studyInstanceUID,  // plain string, not JSON.stringify([studyInstanceUID])
+    body: studyInstanceUID,
   });
 
   if (!response.ok) {
@@ -705,7 +601,6 @@ async function getOrthancStudyId(studyInstanceUID) {
   }
 
   const results = await response.json();
-  // console.log('🔍 Orthanc lookup results:', JSON.stringify(results));
 
   const studyMatch = results.find(r => r.Type === 'Study');
   if (!studyMatch) {

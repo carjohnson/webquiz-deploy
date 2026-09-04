@@ -192,6 +192,11 @@ function postDataToWebQuizBackend(path, payload) {
     .then(async res => {
       const text = await res.text(); // read raw response
 
+      if (res.status === 401) {
+        console.warn(`⚠️ In listener - Session expired while posting to /webquiz/${path}`);
+        throw Object.assign(new Error('Session expired'), { isAuthError: true });
+      }
+    
       // A non-2xx status (e.g. 500 from MongoDB being unreachable)
       // must be treated as a failure, not silently continued.
       if (!res.ok) {

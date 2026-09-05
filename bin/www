@@ -11,6 +11,13 @@ var server;
 const isRender = process.env.RENDER === 'true';  // true on Render, false local
 
 /**
+ * Render the environment-specific viewer config from its template
+ * before the app starts serving the static build. Cross-platform,
+ * no shell/sed dependency, runs identically on Render and locally.
+ */
+renderViewerConfig();
+
+/**
  * Get port from environment and store in Express.
  */
 const port = normalizePort(process.env.PORT || '3000');
@@ -57,6 +64,63 @@ server.on('listening', onListening);
   });
 // }
 
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * Render app-config.js in place, substituting {{VAR_NAME}} placeholders
+ * with the matching environment variable. OHIF's build (via APP_CONFIG=
+ * config/webquizConfig.template.js) copies the template to this exact
+ * path and filename, placeholders intact, so template and output are
+ * the same file here - this runs once per fresh deploy, before the
+ * placeholder-filled file is ever served. Only variables that are
+ * actually set are substituted, so a missing env var causes a loud
+ * failure rather than silently writing "undefined" into the deployed
+ * config.
+ */
+function renderViewerConfig() {
+  const fs = require('fs');
+  const path = require('path');
+
+  // This is where OHIF's build places app-config.js - adjust only if
+  // your static output directory differs from public/ohif.
+  const templatePath = path.join(__dirname, '../public/ohif/app-config.js');
+  const outputPath = templatePath;
+
+  if (!fs.existsSync(templatePath)) {
+    debug('No app-config.js found at %s, skipping render', templatePath);
+    return;
+  }
+
+  let contents = fs.readFileSync(templatePath, 'utf8');
+  const placeholders = contents.match(/{{\s*[A-Z0-9_]+\s*}}/g) || [];
+
+  if (placeholders.length === 0) {
+    // Already rendered (or a restart of the same instance, not a fresh
+    // deploy) - nothing left to substitute, safe to no-op.
+    return;
+  }
+
+  const missing = [];
+
+  placeholders.forEach(placeholder => {
+    const varName = placeholder.replace(/[{}\s]/g, '');
+    const value = process.env[varName];
+    if (value === undefined) {
+      missing.push(varName);
+      return;
+    }
+    contents = contents.split(placeholder).join(value);
+  });
+
+  if (missing.length > 0) {
+    // Fail loudly rather than deploying a viewer that silently points nowhere.
+    console.error(`Missing required env vars for viewer config: ${missing.join(', ')}`);
+    process.exit(1);
+  }
+
+  fs.writeFileSync(outputPath, contents);
+  console.log(`✅ Rendered viewer config -> ${outputPath}`);
+}
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
@@ -120,4 +184,3 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-

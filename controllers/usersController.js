@@ -4,6 +4,7 @@ const Progress = require('../models/progress');
 const Study = require("../models/study");
 const bcrypt = require('bcrypt');
 const User = require("../models/user");
+const Manager = require('../models/manager');
 
 //=========================================================
 exports.login_get = asyncHandler(async (req, res, next) => {
@@ -25,68 +26,89 @@ exports.register_get = asyncHandler(async (req, res, next) => {
 
 //=========================================================
 exports.register_post = asyncHandler(async (req, res, next) => {
-        const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-  const userExists = await User.find({ username: username })
-            .collation({ locale: "en", strength: 2 })
-            .exec();
+  const normalizedUsername = username.trim().toLowerCase();
+  const normalizedEmail = email.trim().toLowerCase();
 
-  if (userExists.length === 0) {
-    const hashPassword = await bcrypt.hash(password, 10);
+  // 1. Check User / Manager collections
+  const models = [User, Manager];
 
-    const newUser = new User({
-      username: username.trim().toLowerCase(),
-      password: hashPassword,
-      email: email.trim().toLowerCase(),
-      authorized: false,
-      });
+  for (const Model of models) {
+    const exists = await Model.findOne({ username: normalizedUsername })
+      .collation({ locale: "en", strength: 2 })
+      .exec();
+    if (exists) {
+      return res.redirect('/users/register?msg=Username unavailable');
+    }
+  }
 
-    await newUser.save();
-        res.redirect('/users/login?msg=Account created! Please contact the administrator for authorization.');
-      } else {
-        res.redirect('/users/register?msg=Username unavailable');
-      }
+  // 2. Create new User
+  const hashPassword = await bcrypt.hash(password, 10);
+
+  const newUser = new User({
+    username: normalizedUsername,
+    password: hashPassword,
+    email: normalizedEmail,
+    authorized: false,
+  });
+
+  await newUser.save();
+
+  return res.redirect(
+    '/users/login?msg=Account created! Please contact the administrator for authorization.'
+  );
 });
+
 
 //=========================================================
 exports.login_post = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
+  const normalizedEmail = email.toLowerCase().trim();
 
-    const userExists = await User.find({ email: email.toLowerCase().trim() })
+  // 1. Search User and Manager collections for login
+  const collections = [User, Manager];
+  let user = null;
+
+  for (const Model of collections) {
+    user = await Model.findOne({ email: normalizedEmail })
       .collation({ locale: "en", strength: 2 })
       .exec();
+    if (user) break;
+  }
 
-    if (userExists.length) {
-      const user = userExists[0];
-      const storedPass = user.password;
-
-      const passwordMatch = await bcrypt.compare(password, storedPass);
-
-      if (passwordMatch) {
-        if (!user.authorized) {
-          return res.redirect(
-            "/users/login?msg=Your account is not authorized. Please contact your administrator for authorization."
-          );
-        }
-
-        req.session.user = user;
-
-        return req.session.save((err) => {
-          if (err) return next(err);
-          if (user.role !== 'manager') {
-            res.redirect("/iframehost");
-          } else {
-            res.redirect("/manager");
-          }
-        });
-      }
-    } else {
-      const fakePass = "$2b$10$C/7y1VOyBQfMeQiSykkAvOPWZ8kVJ3fP1CfSktBw2CFseuziGGpuS";
-      await bcrypt.compare(password, fakePass);
-      return res.redirect("/users/login?msg=Invalid email or password");
-    }
-
+  // 2. If not found → fake bcrypt timing attack protection
+  if (!user) {
+    const fakePass = "$2b$10$C/7y1VOyBQfMeQiSykkAvOPWZ8kVJ3fP1CfSktBw2CFseuziGGpuS";
+    await bcrypt.compare(password, fakePass);
     return res.redirect("/users/login?msg=Invalid email or password");
+  }
+
+  // 3. Validate password
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    return res.redirect("/users/login?msg=Invalid email or password");
+  }
+
+  // 4. Check authorization
+  if (!user.authorized) {
+    return res.redirect(
+      "/users/login?msg=Your account is not authorized. Please contact your administrator for authorization."
+    );
+  }
+
+  // 5. Save session + redirect based on role
+  req.session.user = user;
+
+  return req.session.save((err) => {
+    if (err) return next(err);
+
+    if (user.role === "manager") {
+      res.redirect("/manager");
+    } else {
+      res.redirect("/iframehost");
+    }
+  });
 });
 
 //=========================================================

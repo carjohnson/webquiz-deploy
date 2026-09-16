@@ -8,6 +8,7 @@ const COLLECTION_FILE_RE = /^(.+)-collection\.json$/i;
 // =========================================================
 // Reads a backup directory and returns the list of collection names
 // found in it, derived from files named "<name>-collection.json".
+// Ignore manager collection - not for backup or restore - should not exist.
 function getBackupCollections(backupDir) {
   if (!backupDir || !backupDir.trim()) {
     throw new Error("Backup directory is required.");
@@ -27,6 +28,7 @@ function getBackupCollections(backupDir) {
   return entries
     .filter((entry) => entry.isFile() && COLLECTION_FILE_RE.test(entry.name))
     .map((entry) => entry.name.match(COLLECTION_FILE_RE)[1])
+    .filter((collectionName) => collectionName !== "manager-collection" )
     .sort();
 }
 

@@ -5,7 +5,7 @@ const fsSync = require("fs");
 const fsPromise = require("fs/promises");
 const { EJSON } = require("bson");
 
-const { connectToModeDb, ensureDatabaseExists } = require('../../utils/dbConnection');
+const { connectToModeDb, ensureDatabaseExists, getDbCollections } = require('../../utils/dbConnection');
 const { getBackupCollections } = require('../../utils/backupDirUtils');
 
 const CONCURRENCY = 4;
@@ -34,6 +34,20 @@ function getStamp() {
 }
 
 // =========================================================
+/**
+ * Drops all non-system, non-manager collections in the database
+ * prior to restoring to clean out any stale or orphaned collections.
+ */
+async function clearAllNonManagerCollections(db, LOG_FILE) {
+  const targetCollections = await getDbCollections(db);
+
+  for (const name of targetCollections) {
+    await db.collection(name).drop();
+    await logLine(`Dropped existing collection '${name}' prior to restore`, LOG_FILE);
+  }
+}
+
+// =========================================================
 async function restoreSingleCollection(db, stagingDir, colName) {
   // Map MongoDB collection name → backup filename
   const backupFileName = `${colName}-collection`;
@@ -50,9 +64,7 @@ async function restoreSingleCollection(db, stagingDir, colName) {
 
   const collection = db.collection(colName);
 
-  // Clear the collection first so the restore fully replaces its
-  // contents — otherwise documents already in the DB but absent from
-  // this backup would stick around as stale entries.
+  // Clear the collection first to ensure a clean insertion state
   await collection.deleteMany({});
 
   if (Array.isArray(docs) && docs.length > 0) {
@@ -219,9 +231,13 @@ exports.runRestore = async (stagingDir, envMode, outputsRoot, restoreLogsRoot) =
     const failures = [];
 
 
-    // restore database collections to Mongo
+    // Ensure database exists prior to modification
     await ensureDatabaseExists(db);
 
+    // Drop all non-manager collections to eliminate stale data
+    await clearAllNonManagerCollections(db, LOG_FILE);
+
+    // Restore database collections to Mongo
     for (const colName of dbCollections) {
         try {
         // restoreSingleCollection deletes the collection's existing

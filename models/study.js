@@ -9,7 +9,7 @@ const StudySchema = new Schema({
   protocol: { 
     type: String, 
     required: true,
-    enum: ['full', 'abbreviated']
+    enum: ['full', 'abbreviated', 'simulated-abbreviated']
   }
 
 }, {collection: 'study' } );

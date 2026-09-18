@@ -35,7 +35,10 @@ router.post("/user-management", managerController.manage_user_post);
 router.get("/report-progress", managerController.report_progress_get);
 
 router.post("/upload-pacs-folder-post",managerController.upload_pacs_folder_post);
+
+router.get("/scrape-pacs-get", managerController.scrape_pacs_get);
 router.post("/scrape-pacs-post", managerController.scrape_pacs_post);
+router.get("/scrapepacs/download/:file", managerController.scrape_download);
 router.post("/upload-db-studies-post",managerController.upload_db_studies_post);
 
 router.post("/exit-post", managerController.exit_post);

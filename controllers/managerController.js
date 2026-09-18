@@ -3,8 +3,9 @@ const asyncHandler = require("express-async-handler");
 const backupService = require("../services/manager/backupService");
 const restoreService = require("../services/manager/restoreService");
 const userManagementService = require("../services/manager/userManagementService");
+const pacsScrapeService = require("../services/manager/pacsScrapeService");
 const { connectToModeDb } = require("../utils/dbConnection");
-const { getBackupCollections } = require("../utils/backupDirUtils");
+const { getBackupCollections, cleanupWorkDir } = require("../utils/dirUtils");
 const Progress = require("../models/progress");
 const {
     stageUploadedBackup,
@@ -13,10 +14,18 @@ const {
 } = require("../utils/restoreUpload");
 const path = require("path");
 
-const BACKUP_ROOT = path.join(process.cwd(), 'backups');
-const RESTORE_UPLOADS_ROOT = path.join(process.cwd(), 'restore-uploads');
-const OUTPUTS_ROOT =  path.join(process.cwd(), 'outputs');
-const RESTORE_LOGS_ROOT = path.join(process.cwd(), 'restoreLogs');
+// outputs dir for segmentation files 
+const OUTPUTS_SEGFILES_ROOT = path.join(process.cwd(), 'outputs');
+
+// All manager-task working directories live under this one parent so they
+// don't get mixed in with the rest of the backend server's own directories.
+const MANAGEMENT_WORK_ROOT = path.join(process.cwd(), 'management-work');
+
+const BACKUP_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'backups');
+const RESTORE_UPLOADS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'restore-uploads');
+const PACS_SCRAPE_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'pacs-scrape');
+// Shared run-log directory — used by restore and, now, the PACS scrape.
+const LOGS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'logs');
 
 // =========================================================
 exports.index_get = asyncHandler(async (req, res, next) => {
@@ -59,8 +68,21 @@ exports.backup_post = asyncHandler(async (req, res, next) => {
     // about to run, rather than needing a separate scheduled job. Best-
     // effort — a cleanup failure here should never block the backup
     // that was actually requested.
+    
+    //  A backup produces two sibling entries per run under outputDir: the
+    //  raw timestamped folder (e.g. "2026-08-07_19-27-01/") and its zip
+    //  (e.g. "2026-08-07_19-27-01.zip"). Both are removed once past
+
+
     try {
-      const removed = await backupService.cleanupBackups(BACKUP_ROOT);
+      // BACKUP_FILE_ENTRY_RE matches getStamp()'s format exactly: YYYY-MM-DD_HH-MM-SS, optionally
+      // with a .zip extension. cleanupBackups only ever touches entries that
+      // match this — anything else dropped into BACKUP_ROOT (by hand, or by
+      // something else entirely) is left alone rather than swept up by a
+      // recursive delete.
+
+      const BACKUP_FILE_ENTRY_RE = /^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(\.zip)?$/;
+      const removed = await cleanupWorkDir(BACKUP_ROOT, BACKUP_FILE_ENTRY_RE);
       if (removed.length > 0) {
         console.log(`*** Cleaned up ${removed.length} old backup entr${removed.length === 1 ? 'y' : 'ies'}:`, removed);
       }
@@ -180,7 +202,7 @@ exports.restore_post = asyncHandler(async (req, res, next) => {
  
   try {
     const envMode = process.env.NODE_ENV;
-    const result = await restoreService.runRestore(stagingDir, envMode, OUTPUTS_ROOT, RESTORE_LOGS_ROOT);
+    const result = await restoreService.runRestore(stagingDir, envMode, OUTPUTS_SEGFILES_ROOT, LOGS_ROOT);
     const status = result.failCount > 0 ? "partial" : "success";
  
     res.render("manager/restorestatus", {
@@ -249,12 +271,17 @@ exports.manage_user_post = asyncHandler(async (req, res, next) => {
       if (!result) throw new Error(`Failed to reset password for user '${userName}'.`);
       statusMsg = `Password for user '${userName}' was reset successfully.`;
     }
+    else if (action === "transfer_to_manager") {
+      const result = await userManagementService.runTransferToManager(userName);
+      if (!result) throw new Error(`Failed to transfer user to manager role '${userName}'.`);
+      statusMsg = `User '${userName}' was successfully transfered to manager role.`;
+    }
 
     const updatedUsers = await userManagementService.getAllUsersFormatted();
 
     return res.render("manager/usermanagement", {
       title: "User Management",
-      message: "Authorize users or reset user passwords.",
+      message: "Authorize users, reset user password or transfer to Manager role.",
       users: updatedUsers,
       statusmessage: statusMsg,
       errmessage: null
@@ -264,7 +291,7 @@ exports.manage_user_post = asyncHandler(async (req, res, next) => {
     const allUsers = await userManagementService.getAllUsersFormatted();
     return res.render("manager/usermanagement", {
       title: "User Management",
-      message: "Authorize users or reset user passwords.",
+      message: "Authorize users, reset user password or transfer to Manager role.",
       errmessage: err.message,
       statusmessage: null,
       users: allUsers
@@ -339,11 +366,73 @@ exports.upload_pacs_folder_post = asyncHandler(async (req, res, next) => {
 });
 
 // =========================================================
+exports.scrape_pacs_get = asyncHandler(async (req, res, next) => {
+  // connect to *.pug view
+  const envMode = process.env.NODE_ENV;
+  res.render("manager/scrapepacs", {
+    title: "Scrape PACS for dicom metadata",
+    message: `for ${envMode}`
+  });
+});
+
+// =========================================================
+/**
+ * The extracted .xlsx (dicom_index_<timestamp>.xlsx) is written to
+ * PACS_SCRAPE_ROOT, same disk-based download pattern as backup_download.
+ */
+exports.scrape_download = asyncHandler(async (req, res, next) => {
+    const file = req.params.file;
+    if (!file) {
+      return res.status(400).send("Missing file name");
+    }
+
+    const filePath = path.join(PACS_SCRAPE_ROOT, file);
+    return res.download(filePath, file);
+});
+
+// =========================================================
 exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {
-    res.render("manager/manager", {
-      title: "Management Functions",
-      message: "Scrape PACS to get list of Dicom studies and series."
+  try {
+
+    // Opportunistic cleanup: sweep old backups every time a new one is
+    // about to run, rather than needing a separate scheduled job. Best-
+    // effort — a cleanup failure here should never block the backup
+    // that was actually requested.
+    try {
+      const SCRAPE_ENTRY_RE = /^dicom_index_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}\.xlsx$/;
+      const removed = await cleanupWorkDir(PACS_SCRAPE_ROOT, SCRAPE_ENTRY_RE);
+      if (removed.length > 0) {
+        console.log(`*** Cleaned up ${removed.length} old scraped PACS file entr${removed.length === 1 ? 'y' : 'ies'}:`, removed);
+      }
+    } catch (cleanupErr) {
+      console.log("*** Scrape PACS files cleanup sweep failed (continuing with scrape PACS anyway):", cleanupErr.message);
+    }
+
+
+    const result = await pacsScrapeService.scrapePacs(PACS_SCRAPE_ROOT, LOGS_ROOT);
+    const status = result.failCount > 0 ? "partial" : "success";
+
+    res.render("manager/scrapestatus", {
+      title: "PACS Scrape Status",
+      status,
+      studyCount: result.studyCount,
+      successCount: result.successCount,
+      failCount: result.failCount,
+      failures: result.failures,
+      outputFileName: result.outputFileName,
+      logFile: result.logFile,
+      error: null,
     });
+
+  } catch (err) {
+    res.render("manager/scrapestatus", {
+      title: "PACS Scrape Status",
+      status: "error",
+      error: err.message,
+      failures: [],
+      outputFileName: null,
+    });
+  }
 });
 
 // =========================================================

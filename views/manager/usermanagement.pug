@@ -24,14 +24,19 @@ block content
 
     br
     div.form-group
-      label(for="newPassword") New Password (Required only for Password Reset):
+      label(for="newPassword") New Password #[br] (Required only for Password Reset):
       br
       input#newPassword(type="text", name="newPassword", placeholder="Enter new password")
+    br
+    button.btn.btn-warning(type="submit", name="action", value="reset_password") Reset Password
 
     br
     br
     button.btn.btn-primary(type="submit", name="action", value="authorize", style="margin-right: 10px;") Authorize User
-    button.btn.btn-warning(type="submit", name="action", value="reset_password") Reset Password
+    
+    br
+    br
+    button.btn.btn-primary(type="submit", name="action", value="transfer_to_manager") Transfer to Manager role
 
   br
   //- Status and error messages

@@ -21,6 +21,7 @@
     "dcmjs": "^0.43.1",
     "debug": "^4.4.1",
     "dotenv": "^16.5.0",
+    "exceljs": "^4.4.0",
     "express": "^5.1.0",
     "express-async-handler": "^1.2.0",
     "express-session": "^1.19.0",

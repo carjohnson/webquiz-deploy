@@ -6,7 +6,7 @@ const fsPromise = require("fs/promises");
 const { EJSON } = require("bson");
 
 const { connectToModeDb, ensureDatabaseExists, getDbCollections } = require('../../utils/dbConnection');
-const { getBackupCollections } = require('../../utils/backupDirUtils');
+const { getBackupCollections } = require('../../utils/dirUtils');
 
 const CONCURRENCY = 4;
 

@@ -31,6 +31,11 @@ exports.register_post = asyncHandler(async (req, res, next) => {
   const normalizedUsername = username.trim().toLowerCase();
   const normalizedEmail = email.trim().toLowerCase();
 
+  // Validate username length
+  if (normalizedUsername.length > 8) {
+    return res.redirect('/users/register?msg=Username must be 8 characters or less');
+  }
+
   // 1. Check User / Manager collections
   const models = [User, Manager];
 

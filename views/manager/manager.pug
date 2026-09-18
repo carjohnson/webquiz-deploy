@@ -32,7 +32,7 @@ block content
         h3.task-title User
 
         form(action="/manager/user-management", method="get")
-          button.manager-button(type="submit") Manage users (reset password / authorize)
+          button.manager-button(type="submit") Manage users #[br] (reset password / authorize / transfer to manager)
 
 
         form(action="/manager/report-progress", method="get")
@@ -44,7 +44,7 @@ block content
       .task-group
         h3.task-title PACS
 
-        form(action="/manager/scrape-pacs-post", method="post")
+        form(action="/manager/scrape-pacs-get", method="get")
           button.manager-button(type="submit") Scrape PACS
 
         form(action="/manager/upload-pacs-folder-post", method="post")

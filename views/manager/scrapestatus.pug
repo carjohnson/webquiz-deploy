@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  h1 Scrape PACS Status
+
+  if status === "success" && outputFileName
+    p(style="color: green; font-weight: bold") Scrape PACS completed successfully.
+    p #{studyCount} studies scraped
+    p #{successCount} series added
+    br 
+    a.level2-button(href=`/manager/scrapepacs/download/${outputFileName}`) Download Excel file
+
+
+
+  if status === "partial"
+    p(style="color: orange; font-weight: bold") Scrape PACS completed with warnings.
+    p #{studyCount} studies scraped
+    p #{successCount} series added
+    p #{failCount} series failed
+
+  if status === "error"
+    p(style="color: red; font-weight: bold") Scrape PACS failed.
+    p(style="color: red") #{failCount} series failed to be added
+    p #{studyCount} studies scraped
+    p Error: #{error}
+
+  br
+  br
+  p  Excel file created : #{outputFileName}
+  
+  br
+  a.button(href="/manager") Return to Manager

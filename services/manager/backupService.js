@@ -11,7 +11,6 @@
  *  REACT_APP_API_BASE_URL  internal Render URL for the node app, e.g. http://baines-webquiz-deplot.onrender.com
  *                          (use the Render *internal* hostname, not the public one,
  *                          to avoid egress charges and auth exposure)
- *  BACKUP_DIR              local staging folder, default ./backup-output
  */
 
 require("dotenv").config();
@@ -26,16 +25,7 @@ const { EJSON } = require('bson');
 const archiver = require('archiver');
 const axios = require('axios');
 const { connectToModeDb } = require('../../utils/dbConnection');
-const { getStamp } = require('../../utils/backupDirUtils');
-
-// Matches getStamp()'s format exactly: YYYY-MM-DD_HH-MM-SS, optionally
-// with a .zip extension. cleanupBackups only ever touches entries that
-// match this — anything else dropped into BACKUP_ROOT (by hand, or by
-// something else entirely) is left alone rather than swept up by a
-// recursive delete.
-const BACKUP_ENTRY_RE = /^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(\.zip)?$/;
-const DEFAULT_MAX_BACKUP_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
-
+const { getStamp } = require('../../utils/dirUtils');
 
 
 // =========================================================
@@ -54,37 +44,6 @@ function getDestPath(raw, SEG_DIR) {
   return path.join(SEG_DIR, rel);
 }
 
-// // =========================================================
-// // Streams a GET response body straight to dest on disk — used in
-// // production, where the seg file lives on the separate project app's
-// // disk and has to come across the network rather than being copied
-// // locally (see transferSegFile's isProd branch).
-// //
-// // responseType: 'stream' + pipeline() means the file is written as it
-// // arrives rather than buffered fully in memory first, which matters
-// // here since seg files can be large.
-// async function downloadToFile(url, dest) {
-//   await fsPromise.mkdir(path.dirname(dest), { recursive: true });
-
-//   const response = await axios.get(url, { responseType: "stream" });
-
-//   await pipeline(response.data, fsSync.createWriteStream(dest));
-// }
-
-// // =========================================================
-// async function transferSegFile({ raw, dest, apiBase, isProd }) {
-//   if (isProd) {
-//     const downloadUrl = `${apiBase}/backup?path=${encodeURIComponent(raw)}`;
-//     console.log("*** DOWNLOAD URL:", downloadUrl);
-//     await downloadToFile(downloadUrl, dest);
-//     return `Downloaded file: ${downloadUrl} -> ${dest}`;
-//   }
-
-//   const localPath = apiBase && raw.startsWith(apiBase) ? raw.slice(apiBase.length) : raw;
-//   await fsPromise.mkdir(path.dirname(dest), { recursive: true });
-//   await fsPromise.copyFile(localPath, dest);
-//   return `Copied file: ${localPath}`;
-// }
 
 // =========================================================
 async function assertDicomPart10(filePath) {
@@ -274,52 +233,8 @@ async function runBackup(outputDir) {
 }
 
 // =========================================================
-/**
- * Removes backup folders and .zip files from outputDir (BACKUP_ROOT)
- * once they're older than maxAgeMs, giving the user a window to
- * download a backup's zip before it's swept away.
- *
- * A backup produces two sibling entries per run under outputDir: the
- * raw timestamped folder (e.g. "2026-08-07_19-27-01/") and its zip
- * (e.g. "2026-08-07_19-27-01.zip"). Both are removed once past
- * maxAgeMs — only entries matching that exact timestamp naming pattern
- * are touched; anything else in outputDir is left alone.
- *
- * @param {string} outputDir - BACKUP_ROOT
- * @param {number} [maxAgeMs] - defaults to 7 days
- * @returns {Promise<string[]>} names of entries that were removed
- */
-async function cleanupBackups(outputDir, maxAgeMs = DEFAULT_MAX_BACKUP_AGE_MS) {
-  await fsPromise.mkdir(outputDir, { recursive: true });
-
-  const entries = await fsPromise.readdir(outputDir, { withFileTypes: true });
-  const now = Date.now();
-  const removed = [];
-
-  for (const entry of entries) {
-    if (!BACKUP_ENTRY_RE.test(entry.name)) continue;
-
-    const entryPath = path.join(outputDir, entry.name);
-
-    try {
-      const stat = await fsPromise.stat(entryPath);
-      if (now - stat.mtimeMs <= maxAgeMs) continue;
-
-      await fsPromise.rm(entryPath, { recursive: true, force: true });
-      removed.push(entry.name);
-    } catch {
-      // ignore races (entry vanished between readdir and stat, permission
-      // hiccups, etc.) — best-effort sweep, not worth failing the caller
-    }
-  }
-
-  return removed;
-}
-
-// =========================================================
 // =========================================================
 module.exports = {
   runBackup,
   zipDirectory,
-  cleanupBackups,
 };

@@ -9,8 +9,8 @@ const { getStamp } = require('../../utils/dirUtils');
 
 // Rename these to match whatever you called them in your Render env settings.
 const ORTHANC_URL = process.env.ORTHANC_URL;
-const ORTHANC_USERNAME = process.env.ORTHANC_USERNAME;
-const ORTHANC_PASSWORD = process.env.ORTHANC_PASSWORD;
+const ORTHANC_USER = process.env.ORTHANC_USER;
+const ORTHANC_PASS = process.env.ORTHANC_PASS;
 const ALLOW_INSECURE_TLS = process.env.ORTHANC_ALLOW_INSECURE_TLS === "true" || "false"; // true for dev
 
 const COLUMNS = [
@@ -25,14 +25,14 @@ const COLUMNS = [
 
 
 function getClient() {
-  if (!ORTHANC_URL || !ORTHANC_USERNAME || !ORTHANC_PASSWORD) {
+  if (!ORTHANC_URL || !ORTHANC_USER || !ORTHANC_PASS) {
     throw new Error(
-      "Missing ORTHANC_URL, ORTHANC_USERNAME, or ORTHANC_PASSWORD environment variables."
+      "Missing ORTHANC_URL, ORTHANC_USER, or ORTHANC_PASS environment variables."
     );
   }
   return axios.create({
     baseURL: ORTHANC_URL.replace(/\/+$/, ""),
-    auth: { username: ORTHANC_USERNAME, password: ORTHANC_PASSWORD },
+    auth: { username: ORTHANC_USER, password: ORTHANC_PASS },
     timeout: 30000,
     ...(ALLOW_INSECURE_TLS && {
       httpsAgent: new https.Agent({ rejectUnauthorized: false }),

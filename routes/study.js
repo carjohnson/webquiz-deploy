@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 const study_controller = require("../controllers/studyController");
-const { requireLogin } = require("../middleware/auth");
+const { requireLogin, requireRole } = require("../middleware/auth");
 
-// Every /api/study route requires an authenticated session. Controllers
-// derive the acting user from req.session.user rather than trusting any
-// client-supplied username.
-router.use(requireLogin);
+// Every /api/study route requires an authenticated user with the 'admin'
+// or 'reader' role. Controllers derive the acting user from
+// req.session.user rather than trusting any client-supplied username.
+router.use(requireLogin, requireRole("admin", "reader"));
 
 router.get("/study/:studyUID", study_controller.study_get);
 

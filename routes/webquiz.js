@@ -5,12 +5,13 @@ const upload = multer({ storage: multer.memoryStorage() });  // Explicit memory 
 
 const webquiz_controller = require("../controllers/webquizController");
 const { requireDbConnection } = require('../utils/dbConnection');
-const { requireLogin } = require('../middleware/auth');
+const { requireLogin, requireRole } = require('../middleware/auth');
 
-// Every /webquiz route requires an authenticated session. Several
-// controllers dereference req.session.user directly, so this also
-// prevents those from crashing on an unauthenticated request.
-router.use(requireLogin);
+// Every /webquiz route requires an authenticated user with the 'admin' or
+// 'reader' role. Several controllers dereference req.session.user
+// directly, so this also prevents those from crashing on an
+// unauthenticated request.
+router.use(requireLogin, requireRole("admin", "reader"));
 
 
 /// WEBQUIZ ROUTES ///

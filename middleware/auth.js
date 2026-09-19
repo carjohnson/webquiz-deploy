@@ -8,11 +8,12 @@ function requireLogin(req, res, next) {
 }
 
 // requireRole('manager') -> middleware that only lets that role through.
+// requireRole('admin', 'reader') -> middleware that lets either role through.
 // Must run after requireLogin (or anything that populates req.session.user),
 // since it assumes req.session.user already exists.
-function requireRole(role) {
+function requireRole(...roles) {
   return function (req, res, next) {
-    if (req.session && req.session.user && req.session.user.role === role) {
+    if (req.session && req.session.user && roles.includes(req.session.user.role)) {
       return next();
     } else {
       return res.redirect('/users/login?msg=You are not authorized to access this page');

@@ -41,6 +41,9 @@ router.post("/scrape-pacs-post", managerController.scrape_pacs_post);
 router.get("/scrapepacs/download/:file", managerController.scrape_download);
 router.post("/upload-db-studies-post",managerController.upload_db_studies_post);
 
+router.get("/delete-pacs-get", managerController.delete_pacs_get);
+router.post("/delete-pacs-post", managerController.delete_pacs_post);
+
 router.post("/exit-post", managerController.exit_post);
 
 module.exports = router;

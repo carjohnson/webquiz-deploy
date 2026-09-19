@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+  h1 Delete PACS Status
+
+  if dryRun && status !== "error"
+    h4(style="color: #2196F3; font-weight: bold") DRY RUN — no studies were actually deleted
+
+  if status === "success"
+    p(style="color: green; font-weight: bold")= dryRun ? "Dry run completed successfully." : "Delete PACS completed successfully."
+    p #{studyCount} studies found
+    p= dryRun ? `${studyCount} studies would be deleted` : `${successCount} studies deleted`
+
+  if status === "partial"
+    p(style="color: orange; font-weight: bold") Delete PACS completed with warnings.
+    p #{studyCount} studies found
+    p #{successCount} studies deleted
+    p #{failCount} studies failed
+    if failures && failures.length
+      ul
+        each failure in failures
+          li= failure
+
+  if status === "error"
+    p(style="color: red; font-weight: bold") Delete PACS failed.
+    if failCount
+      p(style="color: red") #{failCount} studies failed to be deleted
+    if studyCount
+      p #{studyCount} studies found
+    p Error: #{error}
+
+  if logFile
+    p Log file: #{logFile}
+
+  br
+  br
+  a.button(href="/manager") Return to Manager

@@ -17,6 +17,16 @@ const ManagerSchema = new Schema({
 
 ManagerSchema.index({ username: 1 });
 
+// Case-insensitive uniqueness on email within this collection. Note this
+// only guards against duplicates among managers — it can't stop a manager
+// and a user from sharing an email, since Mongo indexes are per-collection.
+// The cross-collection check for that still lives in
+// usersController.register_post.
+ManagerSchema.index(
+  { email: 1 },
+  { unique: true, collation: { locale: "en", strength: 2 } }
+);
+
 // Virtual for user's URL
 ManagerSchema.virtual("url").get(function () {
   // We don't use an arrow function as we'll need the this object

@@ -1,17 +1,9 @@
 // services/manager/pacsScrapeService.js
 const fs = require("fs");
 const path = require("path");
-const https = require("https");
-const axios = require("axios");
 const ExcelJS = require("exceljs");
-const { getStamp } = require('../../utils/dirUtils');
-
-
-// Rename these to match whatever you called them in your Render env settings.
-const ORTHANC_URL = process.env.ORTHANC_URL;
-const ORTHANC_USER = process.env.ORTHANC_USER;
-const ORTHANC_PASS = process.env.ORTHANC_PASS;
-const ALLOW_INSECURE_TLS = process.env.ORTHANC_ALLOW_INSECURE_TLS === "true" || "false"; // true for dev
+const { getClient } = require("../../utils/orthancClient");
+const { getStamp } = require("../../utils/dirUtils");
 
 const COLUMNS = [
   "OrthancStudyID",
@@ -22,23 +14,6 @@ const COLUMNS = [
   "PatientID",
   "SeriesDescription",
 ];
-
-
-function getClient() {
-  if (!ORTHANC_URL || !ORTHANC_USER || !ORTHANC_PASS) {
-    throw new Error(
-      "Missing ORTHANC_URL, ORTHANC_USER, or ORTHANC_PASS environment variables."
-    );
-  }
-  return axios.create({
-    baseURL: ORTHANC_URL.replace(/\/+$/, ""),
-    auth: { username: ORTHANC_USER, password: ORTHANC_PASS },
-    timeout: 30000,
-    ...(ALLOW_INSECURE_TLS && {
-      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-    }),
-  });
-}
 
 /**
  * Scrapes study/series metadata from Orthanc and writes it to an .xlsx file.
@@ -54,7 +29,6 @@ async function scrapePacs(outputsRoot, logsRoot) {
   fs.mkdirSync(outputsRoot, { recursive: true });
   fs.mkdirSync(logsRoot, { recursive: true });
 
-//   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   const timestamp = getStamp();
   const outputFileName = `dicom_index_${timestamp}.xlsx`;
   const outputPath = path.join(outputsRoot, outputFileName);

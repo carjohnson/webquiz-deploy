@@ -32,7 +32,7 @@ block content
         h3.task-title User
 
         form(action="/manager/user-management", method="get")
-          button.manager-button(type="submit") Manage users #[br] (reset password / authorize / transfer to manager)
+          button.manager-button(type="submit") Manage users #[br] (reset password / authorize / assign roles)
 
 
         form(action="/manager/report-progress", method="get")
@@ -52,6 +52,9 @@ block content
 
         form(action="/manager/upload-db-studies-post", method="post")
           button.manager-button(type="submit") Upload studies list to MongoDB
+
+        form(action="/manager/delete-pacs-get", method="get")
+          button.manager-button(type="submit") XXX Delete PACS XXX
 
       // ============================
       //   EXIT BUTTON

@@ -1,0 +1,53 @@
+extends ../layout
+
+block content
+  h2= title
+  if message
+    h5(style="color: #4CAF50")= message
+
+  h3(style="color: #FF0000; font-weight: bold") This is a destructive operation - It cannot be undone
+
+  br
+  br
+  form#deleteForm(action="/manager/delete-pacs-post", method="POST")
+    div
+      label
+        input#dryRunCheckbox(type="checkbox" name="dryRun" value="on" checked)
+        |  Dry run only (preview what would be deleted — no studies are actually removed)
+    br
+    #liveWarning(style="display: none; color: #FF9500; font-weight: bold;")
+      | Please be patient during the delete process. This can take several minutes. A status page will appear when complete.
+    br
+    div
+      label
+        input#confirmCheckbox(type="checkbox" name="confirm" value="on" required)
+        |  I understand this will permanently delete studies from PACS and cannot be undone
+    br
+    button#submitBtn(type="submit" disabled) Run delete PACS
+    br
+    br
+    a(href="/manager") Return
+
+  if errmessage
+    br
+    br
+    h4(style="color: #FF9500")= errmessage
+
+  script.
+    const dryRunCheckbox = document.getElementById('dryRunCheckbox');
+    const confirmCheckbox = document.getElementById('confirmCheckbox');
+    const submitBtn = document.getElementById('submitBtn');
+    const liveWarning = document.getElementById('liveWarning');
+
+    function updateWarning() {
+      liveWarning.style.display = dryRunCheckbox.checked ? 'none' : 'block';
+    }
+
+    // Belt-and-suspenders client-side gate; the server re-validates
+    // "confirm" regardless of what happens here.
+    confirmCheckbox.addEventListener('change', () => {
+      submitBtn.disabled = !confirmCheckbox.checked;
+    });
+
+    dryRunCheckbox.addEventListener('change', updateWarning);
+    updateWarning();

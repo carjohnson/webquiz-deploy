@@ -29,14 +29,12 @@ block content
       input#newPassword(type="text", name="newPassword", placeholder="Enter new password")
     br
     button.btn.btn-warning(type="submit", name="action", value="reset_password") Reset Password
-
     br
     br
-    button.btn.btn-primary(type="submit", name="action", value="authorize", style="margin-right: 10px;") Authorize User
-    
-    br
-    br
-    button.btn.btn-primary(type="submit", name="action", value="transfer_to_manager") Transfer to Manager role
+    .div(style="display:flex; gap:1rem;")
+      button.btn.btn-primary(type="submit", name="action", value="authorize", style="margin-right: 10px;") Authorize User
+      button.btn.btn-primary(type="submit", name="action", value="assign_to_admin") Assign to Admin role
+      button.btn.btn-primary(type="submit", name="action", value="transfer_to_manager") Transfer to Manager role
 
   br
   //- Status and error messages

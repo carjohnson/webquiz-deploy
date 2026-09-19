@@ -24,6 +24,46 @@ exports.register_get = asyncHandler(async (req, res, next) => {
   });
 });
 
+// //=========================================================
+// exports.register_post = asyncHandler(async (req, res, next) => {
+//   const { username, email, password } = req.body;
+
+//   const normalizedUsername = username.trim().toLowerCase();
+//   const normalizedEmail = email.trim().toLowerCase();
+
+//   // Validate username length
+//   if (normalizedUsername.length > 8) {
+//     return res.redirect('/users/register?msg=Username must be 8 characters or less');
+//   }
+
+//   // 1. Check User / Manager collections
+//   const models = [User, Manager];
+
+//   for (const Model of models) {
+//     const exists = await Model.findOne({ username: normalizedUsername })
+//       .collation({ locale: "en", strength: 2 })
+//       .exec();
+//     if (exists) {
+//       return res.redirect('/users/register?msg=Username unavailable');
+//     }
+//   }
+
+//   // 2. Create new User
+//   const hashPassword = await bcrypt.hash(password, 10);
+
+//   const newUser = new User({
+//     username: normalizedUsername,
+//     password: hashPassword,
+//     email: normalizedEmail,
+//     authorized: false,
+//   });
+
+//   await newUser.save();
+
+//   return res.redirect(
+//     '/users/login?msg=Account created! Please contact the administrator for authorization.'
+//   );
+// });
 //=========================================================
 exports.register_post = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -36,15 +76,23 @@ exports.register_post = asyncHandler(async (req, res, next) => {
     return res.redirect('/users/register?msg=Username must be 8 characters or less');
   }
 
-  // 1. Check User / Manager collections
+  // 1. Check User / Manager collections for a clashing username or email.
+  // Case-insensitive via collation, same approach as the original username check.
   const models = [User, Manager];
 
   for (const Model of models) {
-    const exists = await Model.findOne({ username: normalizedUsername })
+    const existingUsername = await Model.findOne({ username: normalizedUsername })
       .collation({ locale: "en", strength: 2 })
       .exec();
-    if (exists) {
+    if (existingUsername) {
       return res.redirect('/users/register?msg=Username unavailable');
+    }
+
+    const existingEmail = await Model.findOne({ email: normalizedEmail })
+      .collation({ locale: "en", strength: 2 })
+      .exec();
+    if (existingEmail) {
+      return res.redirect('/users/register?msg=Email already registered');
     }
   }
 
@@ -58,14 +106,24 @@ exports.register_post = asyncHandler(async (req, res, next) => {
     authorized: false,
   });
 
-  await newUser.save();
+  try {
+    await newUser.save();
+  } catch (err) {
+    if (err.code === 11000) {
+      // Duplicate key — the unique index caught a race the earlier
+      // findOne() checks missed (two near-simultaneous registrations).
+      if (err.keyPattern && err.keyPattern.email) {
+        return res.redirect('/users/register?msg=Email already registered');
+      }
+      return res.redirect('/users/register?msg=Username unavailable');
+    }
+    throw err; // anything else is a real error — let asyncHandler forward it
+  }
 
   return res.redirect(
     '/users/login?msg=Account created! Please contact the administrator for authorization.'
   );
 });
-
-
 //=========================================================
 exports.login_post = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;

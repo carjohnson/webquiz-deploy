@@ -63,6 +63,24 @@ async function runAuthorizeUser(userName) {
 }
 
 // =========================================================
+async function runAssignToAdmin(userName) {
+  const userExists = await User.findOne({
+    username: userName.trim()
+  })
+    .collation({ locale: "en", strength: 2 })
+    .exec();
+
+  if (!userExists) {
+    return false;
+  }
+
+  userExists.role = "admin";
+  await userExists.save();
+
+  return true;
+}
+
+// =========================================================
 async function runTransferToManager(userName) {
   const cleanUsername = userName.trim();
 
@@ -124,4 +142,5 @@ module.exports = {
   runResetPasswordByUsername,
   runAuthorizeUser,
   runTransferToManager,
+  runAssignToAdmin,
 };

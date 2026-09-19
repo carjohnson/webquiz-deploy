@@ -4,6 +4,7 @@ const backupService = require("../services/manager/backupService");
 const restoreService = require("../services/manager/restoreService");
 const userManagementService = require("../services/manager/userManagementService");
 const pacsScrapeService = require("../services/manager/pacsScrapeService");
+const deletePacsService = require("../services/manager/deletePacsService");
 const { connectToModeDb } = require("../utils/dbConnection");
 const { getBackupCollections, cleanupWorkDir } = require("../utils/dirUtils");
 const Progress = require("../models/progress");
@@ -276,6 +277,11 @@ exports.manage_user_post = asyncHandler(async (req, res, next) => {
       if (!result) throw new Error(`Failed to transfer user to manager role '${userName}'.`);
       statusMsg = `User '${userName}' was successfully transfered to manager role.`;
     }
+    else if (action === "assign_to_admin") {
+      const result = await userManagementService.runAssignToAdmin(userName);
+      if (!result) throw new Error(`Failed to assign user to admin role '${userName}'.`);
+      statusMsg = `User '${userName}' was successfully assigned to admin role.`;
+    }
 
     const updatedUsers = await userManagementService.getAllUsersFormatted();
 
@@ -441,6 +447,64 @@ exports.upload_db_studies_post = asyncHandler(async (req, res, next) => {
       title: "Management Functions",
       message: "Upload studies and series to be annotated to database."
     });
+});
+
+// =========================================================
+exports.delete_pacs_get = asyncHandler(async (req, res, next) => {
+  // connect to *.pug view
+  const envMode = process.env.NODE_ENV;
+  res.render("manager/deletepacs", {
+    title: "Delete all studies in PACS",
+    message: `for ${envMode}`,
+    errmessage: null,
+  });
+});
+
+// =========================================================
+exports.delete_pacs_post = asyncHandler(async (req, res, next) => {
+  // Checkboxes only appear in req.body when checked (value "on"); anything
+  // else (missing, "off", etc.) is treated as false. Never trust the
+  // client's disabled-button gate alone — re-validate here.
+  const confirm = req.body.confirm === "on";
+  const dryRun = req.body.dryRun === "on";
+
+  if (!confirm) {
+    return res.render("manager/deletepacs", {
+      title: "Delete all studies in PACS",
+      message: null,
+      errmessage: "You must check the confirmation box before running this operation.",
+    });
+  }
+
+  try {
+    const result = await deletePacsService.deleteAllStudies(LOGS_ROOT, { confirm, dryRun });
+    const status = result.failCount > 0 ? "partial" : "success";
+
+    res.render("manager/deletepacsstatus", {
+      title: "PACS Delete Status",
+      status,
+      dryRun: result.dryRun,
+      studyCount: result.studyCount,
+      successCount: result.successCount,
+      failCount: result.failCount,
+      failures: result.failures,
+      logFile: result.logFile,
+      error: null,
+    });
+
+  } catch (err) {
+    res.render("manager/deletepacsstatus", {
+      title: "PACS Delete Status",
+      status: "error",
+      dryRun,
+      error: err.message,
+      failures: [],
+      studyCount: null,
+      successCount: null,
+      failCount: null,
+      logFile: null,
+    });
+  }
 });
 
 // =========================================================

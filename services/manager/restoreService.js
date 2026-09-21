@@ -7,6 +7,7 @@ const { EJSON } = require("bson");
 
 const { connectToModeDb, ensureDatabaseExists, getDbCollections } = require('../../utils/dbConnection');
 const { getBackupCollections } = require('../../utils/dirUtils');
+const { walkFiles } = require('../../utils/fileWalk');
 
 const CONCURRENCY = 4;
 
@@ -72,28 +73,6 @@ async function restoreSingleCollection(db, stagingDir, colName) {
   }
 
   return docs.length;
-}
-
-// =========================================================
-// Recursively lists every file under rootDir, returned as paths
-// relative to rootDir (POSIX-style, forward slashes, regardless of OS).
-async function walkFiles(rootDir) {
-  const relFiles = [];
-
-  async function walk(currentDir) {
-    const entries = await fsPromise.readdir(currentDir, { withFileTypes: true });
-    for (const entry of entries) {
-      const fullPath = path.join(currentDir, entry.name);
-      if (entry.isDirectory()) {
-        await walk(fullPath);
-      } else {
-        relFiles.push(path.relative(rootDir, fullPath).split(path.sep).join("/"));
-      }
-    }
-  }
-
-  await walk(rootDir);
-  return relFiles;
 }
 
 // =========================================================

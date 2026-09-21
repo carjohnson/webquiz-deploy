@@ -34,11 +34,16 @@ router.post("/user-management", managerController.manage_user_post);
 
 router.get("/report-progress", managerController.report_progress_get);
 
-router.post("/upload-pacs-folder-post",managerController.upload_pacs_folder_post);
 
 router.get("/scrape-pacs-get", managerController.scrape_pacs_get);
 router.post("/scrape-pacs-post", managerController.scrape_pacs_post);
 router.get("/scrapepacs/download/:file", managerController.scrape_download);
+
+router.get("/upload-dicoms-get", managerController.upload_dicoms_get);
+router.post("/uploaddicoms/upload", upload.single("dicomsZip"), managerController.upload_dicoms);
+router.post("/uploaddicoms/upload/:uploadId/cancel", managerController.cancel_upload_dicoms);
+router.post("/upload-dicoms-post",managerController.upload_dicoms_post);
+
 router.post("/upload-db-studies-post",managerController.upload_db_studies_post);
 
 router.get("/delete-pacs-get", managerController.delete_pacs_get);

@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+  h1 Upload DICOM Studies Status
+
+  if status === "success"
+    p(style="color: green; font-weight: bold") Upload DICOM studies completed successfully.
+    p #{successCount} of #{totalFileCount} file(s) uploaded
+    if ignoredJsonCount
+      p(style="color: #888") #{ignoredJsonCount} JSON file(s) ignored (not DICOM)
+
+  if status === "partial"
+    p(style="color: orange; font-weight: bold") Upload DICOM studies completed with warnings.
+    p(style="color: orange") #{successCount} of #{totalFileCount} file(s) uploaded
+    p(style="color: orange") #{failCount} of #{totalFileCount} file(s) failed
+    if ignoredJsonCount
+      p(style="color: orange") #{ignoredJsonCount} JSON file(s) ignored (not DICOM)
+    
+  if status === "success" || status === "partial"
+    if studies && studies.length
+      h3 Studies
+      table(style="border-collapse: collapse; width: 100%")
+        thead
+          tr
+            th(style="text-align:left; border-bottom: 1px solid #ccc; padding: 4px 8px") Study
+            th(style="text-align:right; border-bottom: 1px solid #ccc; padding: 4px 8px") Files
+            th(style="text-align:right; border-bottom: 1px solid #ccc; padding: 4px 8px") Uploaded
+            th(style="text-align:right; border-bottom: 1px solid #ccc; padding: 4px 8px") Skipped
+            th(style="text-align:right; border-bottom: 1px solid #ccc; padding: 4px 8px") JSON ignored
+        tbody
+          each study in studies
+            tr
+              td(style="padding: 4px 8px") #{study.name}
+              td(style="text-align:right; padding: 4px 8px") #{study.totalFiles}
+              td(style="text-align:right; padding: 4px 8px") #{study.imported}
+              td(style=`text-align:right; padding: 4px 8px; color: ${study.skipped ? 'orange' : 'inherit'}`) #{study.skipped}
+              td(style="text-align:right; padding: 4px 8px; color: #888") #{study.ignoredJson}
+
+    if failures && failures.length
+      h3(style="color: orange") Skipped files
+      ul
+        each failure in failures
+          li #{failure.file} — #{failure.error}
+
+    p(style="color: #888; font-size: 0.9em") Full log: #{logFile}
+
+  if status === "error"
+    p(style="color: red; font-weight: bold") Upload DICOM studies failed.
+    p Error: #{error}
+
+  br
+  a.button(href="/manager") Return to Manager

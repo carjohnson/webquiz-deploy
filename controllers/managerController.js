@@ -2,11 +2,12 @@
 const asyncHandler = require("express-async-handler");
 const backupService = require("../services/manager/backupService");
 const restoreService = require("../services/manager/restoreService");
+const dicomUploadService = require("../services/manager/dicomUploadService");
 const userManagementService = require("../services/manager/userManagementService");
 const pacsScrapeService = require("../services/manager/pacsScrapeService");
 const deletePacsService = require("../services/manager/deletePacsService");
 const { connectToModeDb } = require("../utils/dbConnection");
-const { getBackupCollections, cleanupWorkDir } = require("../utils/dirUtils");
+const { getBackupCollections, getDicomStudies, cleanupWorkDir } = require("../utils/dirUtils");
 const Progress = require("../models/progress");
 const {
     stageUploadedBackup,
@@ -24,6 +25,7 @@ const MANAGEMENT_WORK_ROOT = path.join(process.cwd(), 'management-work');
 
 const BACKUP_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'backups');
 const RESTORE_UPLOADS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'restore-uploads');
+const DICOMS_UPLOADS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'dicoms-uploads');
 const PACS_SCRAPE_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'pacs-scrape');
 // Shared run-log directory — used by restore and, now, the PACS scrape.
 const LOGS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'logs');
@@ -138,7 +140,6 @@ exports.restore_get = asyncHandler(async (req, res, next) => {
 });
 
 // =========================================================
-
 // Handles the uploaded backup zip (multer middleware puts the file on
 // req.file as a buffer — see router wiring). Extracts it into a fresh
 // server-side staging directory under RESTORE_UPLOADS_ROOT and returns
@@ -364,14 +365,6 @@ exports.report_progress_get = asyncHandler(async (req, res, next) => {
 });
 
 // =========================================================
-exports.upload_pacs_folder_post = asyncHandler(async (req, res, next) => {
-    res.render("manager/manager", {
-      title: "Management Functions",
-      message: "Upload folder to Orthanc PACS."
-    });
-});
-
-// =========================================================
 exports.scrape_pacs_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   const envMode = process.env.NODE_ENV;
@@ -438,6 +431,111 @@ exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {
       failures: [],
       outputFileName: null,
     });
+  }
+});
+
+// =========================================================
+exports.upload_dicoms_get = asyncHandler(async (req, res, next) => {
+  const envMode = process.env.NODE_ENV;
+ 
+  res.render('manager/uploaddicoms', {
+    title: 'Upload DICOMS to PACS',
+    message: `for ${envMode}`,
+    errmessage: null,
+  });
+});
+
+// =========================================================
+// Handles the uploaded dicoms zip (multer middleware puts the file on
+// req.file as a buffer — see router wiring). Extracts it into a fresh
+// server-side staging directory under DICOMS_UPLOADS_ROOT and returns
+// the dicom studies found, along with
+// an uploadId the client echoes back on Run.
+// POST /manager/uploaddicoms/upload  (multipart/form-data, field "dicomsZip")
+exports.upload_dicoms = asyncHandler(async (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).json({ ok: false, error: "No file uploaded." });
+  }
+  if (!req.file.originalname.toLowerCase().endsWith(".zip")) {
+    return res.status(400).json({ ok: false, error: "Please upload a .zip file." });
+  }
+ 
+  let uploadId;
+  try {
+    const staged = stageUploadedBackup(req.file.buffer, DICOMS_UPLOADS_ROOT);
+    uploadId = staged.uploadId;
+ 
+    const dicomStudies = getDicomStudies(staged.stagingDir);
+ 
+    if (dicomStudies.length === 0) {
+      cleanupStagedUpload(uploadId, DICOMS_UPLOADS_ROOT);
+      return res.status(400).json({ ok: false, error: "No dicom studies found in that zip file." });
+    }
+ 
+    res.json({ ok: true, uploadId, dicomStudies });
+  } catch (err) {
+    if (uploadId) cleanupStagedUpload(uploadId, DICOMS_UPLOADS_ROOT);
+    res.status(400).json({ ok: false, error: err.message });
+  }
+});
+ 
+// ============================================================
+// Called when a staged upload is abandoned — either the user clicks
+// Return without running the dicoms upload, or they pick a different file
+// before running it (superseding the first one). uploadId is validated
+// by cleanupStagedUpload itself (via resolveStagedUploadDir's UUID
+// check), so an invalid/unknown/already-removed id is just a safe
+// no-op — the client fires this best-effort via navigator.sendBeacon
+// on navigation, so there's no meaningful error to report back anyway.
+//
+// POST /manager/restore/upload/:uploadId/cancel
+exports.cancel_upload_dicoms = asyncHandler(async (req, res, next) => {
+  const { uploadId } = req.params;
+  cleanupStagedUpload(uploadId, DICOMS_UPLOADS_ROOT);
+  res.status(204).end();
+});
+
+// =========================================================
+exports.upload_dicoms_post = asyncHandler(async (req, res, next) => {
+  const { uploadId } = req.body;
+  const stagingDir = resolveStagedUploadDir(uploadId, DICOMS_UPLOADS_ROOT);
+
+  if (!stagingDir) {
+    return res.render("manager/uploaddicomsstatus", {
+      title: "Upload DICOMS Status",
+      status: "error",
+      error: "Dicoms upload not found or expired. Please upload it again.",
+    });
+  }
+
+  try {
+    const result = await dicomUploadService.runDicomUpload(stagingDir, LOGS_ROOT);
+    const status = result.failCount > 0 ? "partial" : "success";
+
+    res.render("manager/uploaddicomsstatus", {
+      title: "Upload DICOMS Status",
+      status,
+      stagingDir: result.stagingDir,
+      logFile: result.logFile,
+      totalFileCount: result.totalFileCount,
+      successCount: result.successCount,
+      ignoredJsonCount: result.ignoredJsonCount,
+      skippedCount: result.skippedCount,
+      failCount: result.failCount,
+      failures: result.failures,
+      studies: result.studies,
+    });
+
+  } catch (err) {
+    res.render("manager/uploaddicomsstatus", {
+      title: "Upload DICOMS Status",
+      status: "error",
+      error: err.message,
+    });
+  } finally {
+    // Staged upload is single-use: clean it up whether the upload
+    // succeeded or failed.
+    cleanupStagedUpload(uploadId, DICOMS_UPLOADS_ROOT);
   }
 });
 

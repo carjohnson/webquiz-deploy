@@ -47,8 +47,8 @@ block content
         form(action="/manager/scrape-pacs-get", method="get")
           button.manager-button(type="submit") Scrape PACS
 
-        form(action="/manager/upload-pacs-folder-post", method="post")
-          button.manager-button(type="submit") Upload studies folder to PACS
+        form(action="/manager/upload-dicoms-get", method="get")
+          button.manager-button(type="submit") Upload zipped DICOM studies to PACS
 
         form(action="/manager/upload-db-studies-post", method="post")
           button.manager-button(type="submit") Upload studies list to MongoDB

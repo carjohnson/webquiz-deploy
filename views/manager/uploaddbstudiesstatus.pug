@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h1 Upload Studies and Series to be Annotated to DB Status
+
+  if status === "success"
+    p(style="color: green; font-weight: bold") Upload studies to DB completed successfully.
+    ul
+      li Total studies processed: #{totalStudies}
+      li Studies inserted: #{insertedCount}
+      li Previous studies wiped before import: #{deletedCount}
+  
+  if status === "error"
+    p(style="color: red; font-weight: bold") Upload studies to DB  failed.
+    p Error: #{error}
+
+  br
+  a.button(href="/manager") Return to Manager

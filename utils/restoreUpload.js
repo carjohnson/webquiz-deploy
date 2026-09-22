@@ -97,9 +97,33 @@ function cleanupStaleUploads(uploadsRoot, maxAgeMs = MAX_STAGING_AGE_MS) {
   }
 }
 
+// =========================================================
+/**
+ * Stages a raw uploaded file (e.g., .xlsx) under uploadsRoot: creates a fresh
+ * UUID-named directory and writes the file into it under its original name.
+ */
+function stageUploadedFile(fileBuffer, originalName, uploadsRoot) {
+  fs.mkdirSync(uploadsRoot, { recursive: true });
+
+  const uploadId = crypto.randomUUID();
+  const stagingDir = path.join(uploadsRoot, uploadId);
+  fs.mkdirSync(stagingDir, { recursive: true });
+
+  try {
+    const filePath = path.join(stagingDir, originalName);
+    fs.writeFileSync(filePath, fileBuffer);
+  } catch (err) {
+    fs.rmSync(stagingDir, { recursive: true, force: true });
+    throw err;
+  }
+
+  return { uploadId, stagingDir, filePath: path.join(stagingDir, originalName) };
+}
+
 module.exports = {
   stageUploadedBackup,
   resolveStagedUploadDir,
+  stageUploadedFile,
   cleanupStagedUpload,
   cleanupStaleUploads,
 };

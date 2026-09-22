@@ -4,6 +4,7 @@ const backupService = require("../services/manager/backupService");
 const restoreService = require("../services/manager/restoreService");
 const dicomUploadService = require("../services/manager/dicomUploadService");
 const userManagementService = require("../services/manager/userManagementService");
+const uploadDbStudiesService = require("../services/manager/uploadDbStudiesService");
 const pacsScrapeService = require("../services/manager/pacsScrapeService");
 const deletePacsService = require("../services/manager/deletePacsService");
 const { connectToModeDb } = require("../utils/dbConnection");
@@ -11,6 +12,7 @@ const { getBackupCollections, getDicomStudies, cleanupWorkDir } = require("../ut
 const Progress = require("../models/progress");
 const {
     stageUploadedBackup,
+    stageUploadedFile,
     resolveStagedUploadDir,
     cleanupStagedUpload,
 } = require("../utils/restoreUpload");
@@ -27,7 +29,7 @@ const BACKUP_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'backups');
 const RESTORE_UPLOADS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'restore-uploads');
 const DICOMS_UPLOADS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'dicoms-uploads');
 const PACS_SCRAPE_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'pacs-scrape');
-// Shared run-log directory — used by restore and, now, the PACS scrape.
+const STUDIES_UPLOADS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'studies-uploads');
 const LOGS_ROOT = path.join(MANAGEMENT_WORK_ROOT, 'logs');
 
 // =========================================================
@@ -365,71 +367,59 @@ exports.report_progress_get = asyncHandler(async (req, res, next) => {
 });
 
 // =========================================================
-exports.scrape_pacs_get = asyncHandler(async (req, res, next) => {
+exports.delete_pacs_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   const envMode = process.env.NODE_ENV;
-  res.render("manager/scrapepacs", {
-    title: "Scrape PACS for dicom metadata",
-    message: `for ${envMode}`
+  res.render("manager/deletepacs", {
+    title: "Delete all studies in PACS",
+    message: `for ${envMode}`,
+    errmessage: null,
   });
 });
 
 // =========================================================
-/**
- * The extracted .xlsx (dicom_index_<timestamp>.xlsx) is written to
- * PACS_SCRAPE_ROOT, same disk-based download pattern as backup_download.
- */
-exports.scrape_download = asyncHandler(async (req, res, next) => {
-    const file = req.params.file;
-    if (!file) {
-      return res.status(400).send("Missing file name");
-    }
+exports.delete_pacs_post = asyncHandler(async (req, res, next) => {
+  // Checkboxes only appear in req.body when checked (value "on"); anything
+  // else (missing, "off", etc.) is treated as false. Never trust the
+  // client's disabled-button gate alone — re-validate here.
+  const confirm = req.body.confirm === "on";
+  const dryRun = req.body.dryRun === "on";
 
-    const filePath = path.join(PACS_SCRAPE_ROOT, file);
-    return res.download(filePath, file);
-});
+  if (!confirm) {
+    return res.render("manager/deletepacs", {
+      title: "Delete all studies in PACS",
+      message: null,
+      errmessage: "You must check the confirmation box before running this operation.",
+    });
+  }
 
-// =========================================================
-exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {
   try {
-
-    // Opportunistic cleanup: sweep old backups every time a new one is
-    // about to run, rather than needing a separate scheduled job. Best-
-    // effort — a cleanup failure here should never block the backup
-    // that was actually requested.
-    try {
-      const SCRAPE_ENTRY_RE = /^dicom_index_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}\.xlsx$/;
-      const removed = await cleanupWorkDir(PACS_SCRAPE_ROOT, SCRAPE_ENTRY_RE);
-      if (removed.length > 0) {
-        console.log(`*** Cleaned up ${removed.length} old scraped PACS file entr${removed.length === 1 ? 'y' : 'ies'}:`, removed);
-      }
-    } catch (cleanupErr) {
-      console.log("*** Scrape PACS files cleanup sweep failed (continuing with scrape PACS anyway):", cleanupErr.message);
-    }
-
-
-    const result = await pacsScrapeService.scrapePacs(PACS_SCRAPE_ROOT, LOGS_ROOT);
+    const result = await deletePacsService.deleteAllStudies(LOGS_ROOT, { confirm, dryRun });
     const status = result.failCount > 0 ? "partial" : "success";
 
-    res.render("manager/scrapestatus", {
-      title: "PACS Scrape Status",
+    res.render("manager/deletepacsstatus", {
+      title: "PACS Delete Status",
       status,
+      dryRun: result.dryRun,
       studyCount: result.studyCount,
       successCount: result.successCount,
       failCount: result.failCount,
       failures: result.failures,
-      outputFileName: result.outputFileName,
       logFile: result.logFile,
       error: null,
     });
 
   } catch (err) {
-    res.render("manager/scrapestatus", {
-      title: "PACS Scrape Status",
+    res.render("manager/deletepacsstatus", {
+      title: "PACS Delete Status",
       status: "error",
+      dryRun,
       error: err.message,
       failures: [],
-      outputFileName: null,
+      studyCount: null,
+      successCount: null,
+      failCount: null,
+      logFile: null,
     });
   }
 });
@@ -540,68 +530,177 @@ exports.upload_dicoms_post = asyncHandler(async (req, res, next) => {
 });
 
 // =========================================================
-exports.upload_db_studies_post = asyncHandler(async (req, res, next) => {
-    res.render("manager/manager", {
-      title: "Management Functions",
-      message: "Upload studies and series to be annotated to database."
-    });
-});
-
-// =========================================================
-exports.delete_pacs_get = asyncHandler(async (req, res, next) => {
+exports.scrape_pacs_get = asyncHandler(async (req, res, next) => {
   // connect to *.pug view
   const envMode = process.env.NODE_ENV;
-  res.render("manager/deletepacs", {
-    title: "Delete all studies in PACS",
-    message: `for ${envMode}`,
-    errmessage: null,
+  res.render("manager/scrapepacs", {
+    title: "Scrape PACS for dicom metadata",
+    message: `for ${envMode}`
   });
 });
 
 // =========================================================
-exports.delete_pacs_post = asyncHandler(async (req, res, next) => {
-  // Checkboxes only appear in req.body when checked (value "on"); anything
-  // else (missing, "off", etc.) is treated as false. Never trust the
-  // client's disabled-button gate alone — re-validate here.
-  const confirm = req.body.confirm === "on";
-  const dryRun = req.body.dryRun === "on";
+/**
+ * The extracted .xlsx (dicom_index_<timestamp>.xlsx) is written to
+ * PACS_SCRAPE_ROOT, same disk-based download pattern as backup_download.
+ */
+exports.scrape_download = asyncHandler(async (req, res, next) => {
+    const file = req.params.file;
+    if (!file) {
+      return res.status(400).send("Missing file name");
+    }
 
-  if (!confirm) {
-    return res.render("manager/deletepacs", {
-      title: "Delete all studies in PACS",
-      message: null,
-      errmessage: "You must check the confirmation box before running this operation.",
-    });
-  }
+    const filePath = path.join(PACS_SCRAPE_ROOT, file);
+    return res.download(filePath, file);
+});
 
+// =========================================================
+exports.scrape_pacs_post = asyncHandler(async (req, res, next) => {
   try {
-    const result = await deletePacsService.deleteAllStudies(LOGS_ROOT, { confirm, dryRun });
+
+    // Opportunistic cleanup: sweep old backups every time a new one is
+    // about to run, rather than needing a separate scheduled job. Best-
+    // effort — a cleanup failure here should never block the backup
+    // that was actually requested.
+    try {
+      const SCRAPE_ENTRY_RE = /^dicom_index_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}\.xlsx$/;
+      const removed = await cleanupWorkDir(PACS_SCRAPE_ROOT, SCRAPE_ENTRY_RE);
+      if (removed.length > 0) {
+        console.log(`*** Cleaned up ${removed.length} old scraped PACS file entr${removed.length === 1 ? 'y' : 'ies'}:`, removed);
+      }
+    } catch (cleanupErr) {
+      console.log("*** Scrape PACS files cleanup sweep failed (continuing with scrape PACS anyway):", cleanupErr.message);
+    }
+
+
+    const result = await pacsScrapeService.scrapePacs(PACS_SCRAPE_ROOT, LOGS_ROOT);
     const status = result.failCount > 0 ? "partial" : "success";
 
-    res.render("manager/deletepacsstatus", {
-      title: "PACS Delete Status",
+    res.render("manager/scrapestatus", {
+      title: "PACS Scrape Status",
       status,
-      dryRun: result.dryRun,
       studyCount: result.studyCount,
       successCount: result.successCount,
       failCount: result.failCount,
       failures: result.failures,
+      outputFileName: result.outputFileName,
       logFile: result.logFile,
       error: null,
     });
 
   } catch (err) {
-    res.render("manager/deletepacsstatus", {
-      title: "PACS Delete Status",
+    res.render("manager/scrapestatus", {
+      title: "PACS Scrape Status",
       status: "error",
-      dryRun,
       error: err.message,
       failures: [],
-      studyCount: null,
-      successCount: null,
-      failCount: null,
-      logFile: null,
+      outputFileName: null,
     });
+  }
+});
+
+// =========================================================
+exports.assign_series_post = asyncHandler(async (req, res, next) => {
+ 
+    res.render("manager/assignseries", {
+      title: "Assign series to be annotated ",
+      error: null,
+    });
+ 
+});
+
+// =========================================================
+exports.upload_db_studies_get = asyncHandler(async (req, res, next) => {
+  res.render("manager/uploaddbstudies", {
+    title: "Management Functions",
+    message: "Upload studies and series to be annotated to database."
+  });
+});
+
+// =========================================================
+// POST /manager/uploaddbstudies/upload
+// Stage uploaded Excel file server-side and return summary to client view.
+exports.stage_upload_db_studies = asyncHandler(async (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).json({ ok: false, error: "No Excel file uploaded." });
+  }
+
+  const ext = path.extname(req.file.originalname).toLowerCase();
+  if (ext !== ".xlsx" && ext !== ".xls") {
+    return res.status(400).json({ ok: false, error: "Please upload an .xlsx Excel file." });
+  }
+
+  let uploadId;
+  try {
+    const staged = stageUploadedFile(req.file.buffer, req.file.originalname, STUDIES_UPLOADS_ROOT);
+    uploadId = staged.uploadId;
+
+    const summary = await uploadDbStudiesService.getStagedExcelStudiesCount(staged.stagingDir);
+
+    // Return backupCollections array matching client-side uploaddbstudies.pug template
+    res.json({
+      ok: true,
+      uploadId,
+      backupCollections: [`Parsed ${summary.studyCount} studies from '${summary.fileName}'`],
+    });
+  } catch (err) {
+    if (uploadId) cleanupStagedUpload(uploadId, STUDIES_UPLOADS_ROOT);
+    res.status(400).json({ ok: false, error: err.message });
+  }
+});
+
+// =========================================================
+// POST /manager/uploaddbstudies/upload/:uploadId/cancel
+exports.cancel_upload_db_studies = asyncHandler(async (req, res, next) => {
+  const { uploadId } = req.params;
+  cleanupStagedUpload(uploadId, STUDIES_UPLOADS_ROOT);
+  res.status(204).end();
+});
+
+// =========================================================
+// POST /manager/upload-db-studies-post
+exports.upload_db_studies_post = asyncHandler(async (req, res, next) => {
+  const { uploadId } = req.body;
+  const stagingDir = resolveStagedUploadDir(uploadId, STUDIES_UPLOADS_ROOT);
+
+  if (!stagingDir) {
+    return res.render("manager/uploaddbstudiesstatus", {
+      title: "Upload Studies Status",
+      status: "error",
+      error: "Staged Excel file not found or expired. Please upload it again.",
+    });
+  }
+
+  try {
+    const envMode = process.env.NODE_ENV;
+    const result = await uploadDbStudiesService.runUploadDbStudies(
+      stagingDir,
+      envMode,
+      LOGS_ROOT
+    );
+
+    const status = result.failCount > 0 ? "partial" : "success";
+
+    res.render("manager/uploaddbstudiesstatus", {
+      title: "Upload Studies Status",
+      status,
+      insertedCount: result.insertedCount,
+      totalStudies: result.totalStudies,
+      deletedCount: result.deletedCount,
+      logFile: result.logFile,
+      failCount: result.failCount,
+      failures: result.failures,
+      error: result.error || null,
+    });
+  } catch (err) {
+    res.render("manager/uploaddbstudiesstatus", {
+      title: "Upload Studies Status",
+      status: "error",
+      error: err.message,
+    });
+  } finally {
+    // Clean up staged Excel upload directory after completion
+    cleanupStagedUpload(uploadId, STUDIES_UPLOADS_ROOT);
   }
 });
 

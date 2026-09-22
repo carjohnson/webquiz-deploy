@@ -44,17 +44,20 @@ block content
       .task-group
         h3.task-title PACS
 
-        form(action="/manager/scrape-pacs-get", method="get")
-          button.manager-button(type="submit") Scrape PACS
+        form(action="/manager/delete-pacs-get", method="get")
+          button.manager-button(type="submit") XXX Delete PACS XXX
 
         form(action="/manager/upload-dicoms-get", method="get")
           button.manager-button(type="submit") Upload zipped DICOM studies to PACS
 
-        form(action="/manager/upload-db-studies-post", method="post")
-          button.manager-button(type="submit") Upload studies list to MongoDB
+        form(action="/manager/scrape-pacs-get", method="get")
+          button.manager-button(type="submit") 1. Scrape PACS
 
-        form(action="/manager/delete-pacs-get", method="get")
-          button.manager-button(type="submit") XXX Delete PACS XXX
+        form(action="/manager/assign-series-post", method="post")
+          button.manager-button(type="submit") 2. Assign series to be annotated
+
+        form(action="/manager/upload-db-studies-get", method="get")
+          button.manager-button(type="submit") 3. Upload studies list to MongoDB
 
       // ============================
       //   EXIT BUTTON

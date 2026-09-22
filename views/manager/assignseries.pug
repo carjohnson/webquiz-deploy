@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  h2= title
+  if message
+    h5(style="color: #4CAF50")= message
+
+  br
+  br
+  h5(style="color:  #FF9500") Currently a manual step.
+  br
+  br
+  p ...Edit excel file from Scrape PACS 
+  p ...Trim rows such that only series to be annotated for a study remain.
+  p ...Insert 'Protocol' column and assign each row to 'full, simulated-abbreviated, or abbreviated' 
+  br
+  p Proceed with next step to upload studies to DB
+
+  br
+  a(href="/manager") Return
